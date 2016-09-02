@@ -1,0 +1,101 @@
+﻿@model Model.RegisterModel
+@using (Ajax.BeginForm("_ProfileConfig", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CompletedFormRegister", }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-title">
+        Informacion personal
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.name)
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.fLastName)
+                @Html.TextBoxFor(m => m.fLastName, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.fLastName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.sLastName)
+                @Html.TextBoxFor(m => m.sLastName, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.sLastName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.id)
+                @Html.TextBoxFor(m => m.id, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.id, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.email)
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.userName)
+                @Html.TextBoxFor(m => m.userName, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.phoneNumber)
+                @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", @placeholder = "" })
+                @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.birthdate)
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    @Html.TextBoxFor(m => m.birthdate, new { @class = "form-control", @placeholder = "dd/mm/yyyy" })
+                </div>
+                @Html.ValidationMessageFor(m => m.birthdate, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-xs-8">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.photo)
+                    @Html.TextBoxFor(m => m.photo, new { @class = "filestyle", @type = "file" })
+                    @Html.ValidationMessageFor(m => m.photo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @if (Model.photo != "")
+            {
+                <div class="col-xs-4">
+                    <img src="@Model.photo" alt="@Model.photo" />
+                </div>
+            }
+        </div>
+    </div>
+    <hr class="wide">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.province)
+                @Html.DropDownListFor(m => m.province, new SelectList(Model._ProvincesSelect, "Value", "Text"), "-Selecione la provincia-", new { @class = "form-control", @id = "selectPronvices", @onchage = "Model.refreshCantones()" })
+                @Html.ValidationMessageFor(m => m.province, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.canton)
+                @Html.DropDownListFor(m => m.province, new SelectList(Model._CantonesSelect, "Value", "Text"), "-Selecione el canton-", new { @class = "form-control", @id = "selectCantones" })
+                @Html.ValidationMessageFor(m => m.canton, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.direction)
+                @Html.TextAreaFor(m => m.direction, new { @class = "form-control", @placeholder = "Dirección...", @rows = "3" })
+                @Html.ValidationMessageFor(m => m.direction, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-11">
+            <button type="submit" class="btn btn-primary">Guardar </button>
+        </div>
+    </div>
+}

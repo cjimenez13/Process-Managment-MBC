@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Radius-Bordered Widget").Closeable("darkorange").Maximizable("blue")))
+        {
+            using (WidgetSectionPanel header = widget.BeginHeader())
+            {
+            }
+            using (widget.BeginBody())
+            {
+               <div class="row">
+                   <div class="col-xs-12">
+                       <div class="row">
+                           <div class="col-xs-12">
+                               <h2>Preguntas de si/no o varias preguntas</h2>
+                               <div class="col-xs-4" style="margin-top:30px">
+                                   <div class="chartcontainer">
+                                       <canvas id="doughnut" height="100"></canvas>
+
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-xs-12">
+                               <h2>Preguntas de texto</h2>
+                               <div class="col-xs-12" style="margin-top:30px">
+                                   <div class="table-scrollable">
+                                       <table class="table table-bordered table-hover">
+                                           <thead>
+                                               <tr>
+                                                   <th scope="col" style="width:450px !important">
+                                                       Respuestas
+                                                   </th>
+                                               </tr>
+                                           </thead>
+                                           <tbody>
+                                               <tr>
+                                                   <td>
+                                                       Table data
+                                                   </td>
+                                               </tr>
+                                               <tr>
+                                                   <td>
+                                                       Table data
+                                                   </td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+            }
+        }
+    </div>
+
+</div>
+
+@section PageScripts{
+    <script src="~/assets/js/charts/chartjs/Chart.js"></script>
+    <script src="~/assets/js/charts/chartjs/chartjs-init.js"></script>
+    <script>
+        $(window).bind("load", function () {
+
+            /*Sets Themed Colors Based on Themes*/
+            themeprimary = getThemeColorFromCss('themeprimary');
+            themesecondary = getThemeColorFromCss('themesecondary');
+            themethirdcolor = getThemeColorFromCss('themethirdcolor');
+            themefourthcolor = getThemeColorFromCss('themefourthcolor');
+            themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+            InitiateChartJS.init();
+        });
+    </script>
+}

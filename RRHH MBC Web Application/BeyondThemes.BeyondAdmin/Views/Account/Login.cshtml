@@ -1,0 +1,46 @@
+﻿@using BeyondThemes.BeyondAdmin.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login Page";
+    ViewBag.Description = "login page";
+    Layout = "~/Views/Shared/_Empty.cshtml";
+}
+
+<div class="login-container animated fadeIn" style="margin: 5% auto;">
+    <div class="row" style="margin-bottom:15px">
+        <div class="col-md-12">
+            <img alt="image" class="img-responsive" src="~/assets/img/logoMBC.png">
+        </div>
+    </div>
+    <div class="loginbox bg-white">
+        <div class="loginbox-title">Inicio de Sesión</div>
+        <div class="loginbox-or">
+            <div class="or-line"></div>
+        </div>
+        @using (var form = Html.Bootstrap().Begin(new Form().Type(FormType.Vertical)))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            <div class="loginbox-textbox">
+                @Html.Bootstrap().TextBoxFor(t => t.Email).Placeholder("Correo o usuario")
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="loginbox-textbox">
+                @Html.Bootstrap().PasswordFor(t => t.Password).Placeholder("Contraseña")
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="loginbox-forgot">
+                <a href="">Olvidó la contraseña?</a>
+            </div>
+            <div class="loginbox-submit">
+                @Html.Bootstrap().SubmitButton().Text("Iniciar sesión").Color(BootstrapColors.Primary).ButtonBlock()
+            </div>
+
+        }
+    </div>
+    <div class="logobox">
+    </div>
+</div>
+@section PageScripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

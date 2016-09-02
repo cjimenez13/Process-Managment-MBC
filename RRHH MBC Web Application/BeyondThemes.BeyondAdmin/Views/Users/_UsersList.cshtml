@@ -1,0 +1,52 @@
+﻿@model Model.ListUserModel
+<!-- Filter area -->
+<div class="row" style="margin-bottom:30px">
+    <!-- search bar -->
+    <div class="col-md-6">
+        <span class="input-icon">
+            <input type="text" class="form-control" id="searchUsers" placeholder="Buscar">
+            <i class="glyphicon glyphicon-search blue"></i>
+        </span>
+    </div>
+    <div class="col-md-offset-4 col-md-2" style="">
+        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_register">Registrar persona</button>
+    </div>
+</div>
+<!-- Users box -->
+<div class="row" id="userList">
+    @foreach (var user in Model.usersList)
+    {
+        if (user.email != "")
+        {
+            <div class="col-lg-3 col-sm-4 col-xs-12 userBox">
+                <div class="databox databox-graded">
+                    <div class="databox-left no-padding">
+                        <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
+                    </div>
+                    <a href="@Url.Action("Profile/"+@HttpUtility.UrlPathEncode(user.email))">
+                        <div class="databox-right padding-top-20 bg-whitesmoke">
+                            <div class="databox-text darkgray" style="font-size:14px">@user.name</div>
+                            <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.email</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-3 col-sm-4 col-xs-12 userBox">
+                <div class="databox databox-graded">
+                    <div class="databox-left no-padding">
+                        <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
+                    </div>
+                    <a href="@Url.Action("Profile/"+HttpUtility.UrlPathEncode(user.userName))">
+                        <div class="databox-right padding-top-20 bg-whitesmoke">
+                            <div class="databox-text darkgray" style="font-size:14px">@user.name</div>
+                            <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.userName</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    }
+</div>

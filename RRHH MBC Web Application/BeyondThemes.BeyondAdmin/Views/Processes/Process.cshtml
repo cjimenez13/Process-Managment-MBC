@@ -1,0 +1,410 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Gestion #12351512";
+    ViewBag.Description = "Nombre de la gestion";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Gestion #23314123")))
+        {
+            using (WidgetSectionPanel header = widget.BeginHeader())
+            {
+            }
+            using (widget.BeginBody())
+            {
+                <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
+                    <div class="col-xs-12">
+                        <div class="col-md-4">
+                            <dl class="dl-horizontal">
+                                <dt>Estado</dt>
+                                <dd><span class="label label-success">Activo</span></dd>
+                                <dt>Creado por</dt>
+                                <dd>Jocsan Padilla</dd>
+                                <dt># Gestión</dt>
+                                <dd> 11241132</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-4">
+                            <dl class="dl-horizontal">
+                                <dt>Actualizado</dt>
+                                <dd>16.08.2014 12:15:57</dd>
+                                <dt>Creado</dt>
+                                <dd>16.08.2014 12:15:57</dd>
+                                <dt>Gestión anterior</dt>
+                                <dd><a>#123144512</a></dd>
+                                <dt>Siguiente gestión</dt>
+                                <dd><a>#123144512</a></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project progress -->
+                <div class="row" style="font-size:14px;">
+                    <div class="col-md-8">
+                        <dl class="dl-horizontal">
+                            <dt>Completado</dt>
+                            <dd style="width:70%">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                        <span class="sr-only">40% Complete (success)</span>
+                                    </div>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget-main ">
+                            @using (var tabs = Html.Bootstrap().Begin(new Tabs("FlatTab").Flat()))
+                            {
+                                tabs.Tab("Etapas");
+                                tabs.Tab("Participantes");
+                                tabs.Tab("Actividad");
+                                <!-- Etapas -->
+                                using (tabs.BeginPanel())
+                                {
+                                    <ul class="todo-list">
+                                        <li>
+                                            <!-- drag handle -->
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <!-- checkbox -->
+                                            <input type="checkbox" value="">
+                                            <!-- todo text -->
+                                            <span class="text">Design a nice theme</span>
+                                            <!-- Emphasis label -->
+                                            <!-- General tools such as edit or delete-->
+                                            <div class="tools" style="display:inline-block">
+                                                <a href="/Processes/Tasks">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <input type="checkbox" value="">
+                                            <span class="text">Make the theme responsive</span>
+                                            <div class="tools">
+                                                <i class="fa fa-eye"></i>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <input type="checkbox" value="">
+                                            <span class="text">Let theme shine like a star</span>
+                                            <div class="tools">
+                                                <i class="fa fa-eye"></i>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <input type="checkbox" value="">
+                                            <span class="text">Let theme shine like a star</span>
+                                            <div class="tools">
+                                                <i class="fa fa-eye"></i>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                }
+                                <!-- Participantes -->
+                                using (tabs.BeginPanel())
+                                {
+                                    <div class="row" style="margin-bottom:30px">
+                                        <!-- search bar -->
+                                        <div class="col-md-6">
+                                            <span class="input-icon">
+                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                                <i class="glyphicon glyphicon-search blue"></i>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-offset-4 col-md-2" style="">
+                                            <button class="btn btn-success btn-block">Agregar integrante</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p>Mostrando 10 integrantes</p>
+                                        </div>
+                                    </div>
+                                    <!-- Users box -->
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-4 col-xs-12">
+                                            <div class="databox databox-graded">
+                                                <div class="databox-left no-padding">
+                                                    <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
+                                                </div>
+                                                <a href="@Url.Action("Profile")">
+                                                    <div class="databox-right padding-top-20 bg-whitesmoke">
+                                                        <div class="databox-text darkgray" style="font-size:14px">JAVI JIMENEZ</div>
+                                                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>cjimenez13@outlook.com</div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <!-- Actividad -->
+                                using (tabs.BeginPanel())
+                                {
+                                    <ul class="timeline animated fadeInDown">
+                                        <li>
+                                            <div class="timeline-datetime">
+                                                <span class="timeline-time">
+                                                    8:19
+                                                </span><span class="timeline-date">Hoy</span>
+                                            </div>
+                                            <div class="timeline-badge blue">
+                                                <i class="fa fa-suitcase"></i>
+                                            </div>
+                                            <div class="timeline-panel bordered-top-3 bordered-azure">
+                                                <div class="timeline-header bordered-bottom bordered-blue">
+                                                    <span class="timeline-title">
+                                                        La gestion #12351521 inició
+                                                    </span>
+                                                    <p class="timeline-datetime">
+                                                        <small class="text-muted">
+                                                            <i class="glyphicon glyphicon-time">
+                                                            </i>
+                                                            <span class="timeline-date">Hoy</span>
+                                                            -
+                                                            <span class="timeline-time">8:19</span>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p>La gestión (nombre de la gestión) ha sido creada por Diego Padilla</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-datetime">
+                                                <span class="timeline-time">
+                                                    7:00
+                                                </span><span class="timeline-date">Yesterday</span>
+                                            </div>
+                                            <div class="timeline-badge danger">
+                                                <i class="fa fa-exclamation font-120"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-header bordered-bottom bordered-blue">
+                                                    <span class="timeline-title danger">
+                                                        Etapa 1
+                                                    </span>
+                                                    <p class="timeline-datetime">
+                                                        <small class="text-muted">
+                                                            <i class="glyphicon glyphicon-time">
+                                                            </i>
+                                                            <span class="timeline-date">Yesterday</span>
+                                                            -
+                                                            <span class="timeline-time">7:00</span>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p>
+                                                        La etapa 1 ha iniciado, se encuentran 5 tareas pendiente por realizar en esta etapa.<br />
+                                                        La gestión lleva 40% completado
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="timeline-inverted">
+                                            <div class="timeline-datetime">
+                                                <span class="timeline-time">
+                                                    6:08
+                                                </span><span class="timeline-date">Ayer</span>
+                                            </div>
+                                            <div class="timeline-badge sky">
+                                                <img src="~/assets/img/avatars/Sergey-Azovskiy.jpg" class="badge-picture" />
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-header bordered-bottom bordered-blue">
+                                                    <span class="timeline-title">
+                                                        La tarea <a href="">nombre de la tarea</a> ha sido completada por <a href="/Users/Profile">Sergey Azovskiy</a>
+                                                    </span>
+                                                    <p class="timeline-datetime">
+                                                        <small class="text-muted">
+                                                            <i class="glyphicon glyphicon-time">
+                                                            </i>
+                                                            <span class="timeline-date">Ayer</span>
+                                                            -
+                                                            <span class="timeline-time">6:08</span>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p>
+                                                        Descripcion: <br>
+                                                        Tipo:
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-datetime">
+                                                <span class="timeline-time">
+                                                    7:00
+                                                </span><span class="timeline-date">Yesterday</span>
+                                            </div>
+                                            <div class="timeline-badge danger">
+                                                <i class="fa fa-exclamation font-120"></i>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-header bordered-bottom bordered-blue">
+                                                    <span class="timeline-title danger">
+                                                        Etapa 2
+                                                    </span>
+                                                    <p class="timeline-datetime">
+                                                        <small class="text-muted">
+                                                            <i class="glyphicon glyphicon-time">
+                                                            </i>
+                                                            <span class="timeline-date">Yesterday</span>
+                                                            -
+                                                            <span class="timeline-time">7:00</span>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p>
+                                                        La etapa 1 ha iniciado, se encuentran 5 tareas pendiente por realizar en esta etapa.<br />
+                                                        La gestión lleva 40% completado
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="timeline-inverted">
+                                            <div class="timeline-datetime">
+                                                <span class="timeline-time">
+                                                    6:08
+                                                </span><span class="timeline-date">Ayer</span>
+                                            </div>
+                                            <div class="timeline-badge sky">
+                                                <img src="~/assets/img/avatars/Sergey-Azovskiy.jpg" class="badge-picture" />
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-header bordered-bottom bordered-blue">
+                                                    <span class="timeline-title">
+                                                        La tarea <a href="">nombre de la tarea</a> ha sido completada por <a href="/Users/Profile">Sergey Azovskiy</a>
+                                                    </span>
+                                                    <p class="timeline-datetime">
+                                                        <small class="text-muted">
+                                                            <i class="glyphicon glyphicon-time">
+                                                            </i>
+                                                            <span class="timeline-date">Ayer</span>
+                                                            -
+                                                            <span class="timeline-time">6:08</span>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p>
+                                                        Descripcion: <br>
+                                                        Tipo:
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+@section PageScripts{
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<script>
+    (function ($) {
+
+        'use strict';
+
+        $.fn.todolist = function (options) {
+            // Render options
+            var settings = $.extend({
+                //When the user checks the input
+                onCheck: function (ele) {
+                    return ele;
+                },
+                //When the user unchecks the input
+                onUncheck: function (ele) {
+                    return ele;
+                }
+            }, options);
+
+            return this.each(function () {
+
+                if (typeof $.fn.iCheck != 'undefined') {
+                    $('input', this).on('ifChecked', function () {
+                        var ele = $(this).parents("li").first();
+                        ele.toggleClass("done");
+                        settings.onCheck.call(ele);
+                    });
+
+                    $('input', this).on('ifUnchecked', function () {
+                        var ele = $(this).parents("li").first();
+                        ele.toggleClass("done");
+                        settings.onUncheck.call(ele);
+                    });
+                } else {
+                    $('input', this).on('change', function () {
+                        var ele = $(this).parents("li").first();
+                        ele.toggleClass("done");
+                        if ($('input', ele).is(":checked")) {
+                            settings.onCheck.call(ele);
+                        } else {
+                            settings.onUncheck.call(ele);
+                        }
+                    });
+                }
+            });
+        };
+    }(jQuery));
+        /* The todo list plugin */
+        $(".todo-list").todolist({
+            onCheck: function (ele) {
+                window.console.log("The element has been checked");
+                return ele;
+            },
+            onUncheck: function (ele) {
+                window.console.log("The element has been unchecked");
+                return ele;
+            }
+        });
+
+
+        //jQuery UI sortable for the todo list
+        $(".todo-list").sortable({
+            placeholder: "sort-highlight",
+            handle: ".handle",
+            forcePlaceholderSize: true,
+            zIndex: 999999
+        });
+</script>
+}

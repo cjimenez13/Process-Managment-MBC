@@ -1,0 +1,289 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Categoria Vacaciones";
+    ViewBag.Description = "Lista de categorías";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (var tabs = Html.Bootstrap().Begin(new Tabs("JustifiedTab").RadiusBordered()))
+        {
+            tabs.Tab("Información General", BootstrapColors.Info);
+            tabs.Tab("Atributos Generales", BootstrapColors.Info);
+            tabs.Tab("Atributos Personales", BootstrapColors.Info);
+
+
+            <!-- General information tab-->
+            using (tabs.BeginPanel())
+            {
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-md-11">
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                        <div class="row" style=" margin-bottom:30px;margin-left:15px">
+                            <div class="col-xs-12">
+                                <h4><strong>Descripcion: </strong></h4>
+                                <p>
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+                                    wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                                    eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
+                                    assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                                    labore sustainable VHS.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().Caption("Gestiones relacionadas a la categoría").HeaderBorder(BootstrapColors.Sky, Direction.Bottom)))
+                                {
+                                    using (WidgetSectionPanel header = widget.BeginHeader())
+                                    {
+                                    }
+                                    using (widget.BeginBody())
+                                    {
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <!-- General atributes tab-->
+            using (tabs.BeginPanel())
+            {
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-md-11">
+                                <h2>Datos relacionados solamente con la categoría</h2>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_Lists">Listas</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="flip-scroll">
+                                    <table class="table flip-content table-hover">
+                                        <!-- column titles -->
+                                        <thead class="flip-content ">
+                                            <tr>
+                                                <th>Atributo</th>
+                                                <th>Tipo</th>
+                                                <th>Valor</th>
+                                                <th>Habilitado</th>
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Table data-->
+                                            <tr>
+                                                <td>
+                                                    <div class="entry input-group">
+                                                        <input class="form-control" name="fields[]" type="text" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control">
+                                                        <option>Texto</option>
+                                                        <option>Numero entero</option>
+                                                        <option>Numero décimal</option>
+                                                        <option>Fecha</option>
+                                                        <option>Condición</option>
+                                                        <option>Lista</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <div class="entry input-group">
+                                                        <input class="form-control" name="fields[]" type="text" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-success btn-sm btn-add" type="button">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- Personal atributes tab-->
+            using (tabs.BeginPanel())
+            {
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-md-11">
+                                <h2>Datos relacionados con la categoria y las personas</h2>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_Lists">Listas</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="flip-scroll">
+                                    <table class="table flip-content table-hover">
+                                        <!-- column titles -->
+                                        <thead class="flip-content ">
+                                            <tr>
+                                                <th>Atributo</th>
+                                                <th>Tipo</th>
+                                                <th>Valor</th>
+                                                <th>Habilitado</th>
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Table data-->
+                                            <tr>
+                                                <td>
+                                                    <div class="entry input-group">
+                                                        <input class="form-control" name="fields[]" type="text" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control">
+                                                        <option>Texto</option>
+                                                        <option>Numero entero</option>
+                                                        <option>Numero décimal</option>
+                                                        <option>Fecha</option>
+                                                        <option>Condición</option>
+                                                        <option>Lista</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <div class="entry input-group">
+                                                        <input class="form-control" name="fields[]" type="text" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-success btn-sm btn-add" type="button">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Modal to see lists-->
+<div class="modal fade" id="modal_Lists" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Nueva Lista</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form role="form">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>Atributo</th>
+                                        <th>Tipo</th>
+                                        <th>Valor</th>
+                                        <th>Habilitado</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="entry input-group">
+                                                <input class="form-control" name="fields[]" type="text" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Texto</option>
+                                                <option>Numero entero</option>
+                                                <option>Numero décimal</option>
+                                                <option>Fecha</option>
+                                                <option>Condición</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <div class="entry input-group">
+                                                <input class="form-control" name="fields[]" type="text" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm btn-add" type="button">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Crear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section PageScripts{
+    <script>
+    $(function () {
+        $(document).on('click', '.btn-add', function (e) {
+            e.preventDefault();
+
+            var controlForm = $(this).parents('.table:first'),
+                currentEntry = $(this).parents('tr:first'),
+                newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+            controlForm.find('tr:not(:last) .btn-add')
+                .removeClass('btn-add').addClass('btn-remove')
+                .removeClass('btn-success').addClass('btn-danger')
+                .html('<span class="glyphicon glyphicon-minus"></span>');
+        }).on('click', '.btn-remove', function (e) {
+            $(this).parents('tr:first').remove();
+
+            e.preventDefault();
+            return false;
+        });
+    });
+    </script>
+}

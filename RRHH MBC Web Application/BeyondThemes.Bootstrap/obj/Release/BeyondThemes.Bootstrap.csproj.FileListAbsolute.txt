@@ -1,0 +1,25 @@
+C:\Users\Sia\Desktop\Sources\BeyondAdmin\mvc\BeyondThemes.Bootstrap\bin\Release\BeyondThemes.Bootstrap.xml
+C:\Users\Sia\Desktop\Sources\BeyondAdmin\mvc\BeyondThemes.Bootstrap\bin\Release\BeyondThemes.Bootstrap.dll
+C:\Users\Sia\Desktop\Sources\BeyondAdmin\mvc\BeyondThemes.Bootstrap\bin\Release\BeyondThemes.Bootstrap.pdb
+C:\Users\Sia\Desktop\Sources\BeyondAdmin\mvc\BeyondThemes.Bootstrap\bin\Release\T4MVCExtensions.dll
+C:\Users\Sia\Desktop\Sources\BeyondAdmin\mvc\BeyondThemes.Bootstrap\obj\Release\BeyondThemes.Bootstrap.dll
+C:\Users\Sia\Desktop\Sources\BeyondAdmin\mvc\BeyondThemes.Bootstrap\obj\Release\BeyondThemes.Bootstrap.pdb
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\BeyondThemes.Bootstrap.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\BeyondThemes.Bootstrap.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\BeyondThemes.Bootstrap.pdb
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.Mvc.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.WebPages.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\T4MVCExtensions.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.Razor.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.WebPages.Razor.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\Microsoft.Web.Infrastructure.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.WebPages.Deployment.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.Mvc.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.WebPages.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.Razor.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.WebPages.Razor.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\Microsoft.Web.Infrastructure.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Release\System.Web.WebPages.Deployment.xml
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Release\BeyondThemes.Bootstrap.dll
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Release\BeyondThemes.Bootstrap.pdb
+C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Release\BeyondThemes.Bootstrap.csprojResolveAssemblyReference.cache

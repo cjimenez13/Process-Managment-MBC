@@ -1,0 +1,144 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Consultas";
+    ViewBag.Description = "Lista de consultas";
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <!-- Header -->
+            <div class="widget-header header-large">
+                <span class="widget-caption">Lista de consultas</span>
+                <div class="widget-buttons" style="margin-right:20px">
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_addScript">Nueva consulta</button>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <!-- Filter area -->
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-md-6">
+                                <!-- search bar -->
+                                <span class="input-icon">
+                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                    <i class="glyphicon glyphicon-search blue"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Table -->
+                        <div class="flip-scroll">
+                            <table class="table flip-content table-hover">
+                                <!-- column titles -->
+                                <thead class="flip-content bordered-primary">
+                                    <tr>
+                                        <th>Realizado por</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Descripción</th>
+                                        <th class="text-right">	&nbsp;	 &nbsp;Acción</th>
+                                        <th>	&nbsp;	 &nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    <tr>
+                                        <td>John Doe</td>
+                                        <td>11-7-2014</td>
+                                        <td>23:59</td>
+                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                        <td><a class="btn btn-sky" data-toggle="modal" data-target="#modal_seeScript"><i class="fa fa-eye"></i>	&nbsp;	&nbsp; Ver </a></td>
+                                        <td><a class="btn btn-sky"><i class="fa fa-play"></i>	&nbsp;	&nbsp; Ejecutar </a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alexander Pierce</td>
+                                        <td>11-7-2014</td>
+                                        <td>23:59</td>
+                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                        <td><button class="btn btn-sky"><i class="fa fa-eye"></i>	&nbsp;	&nbsp; Ver </button></td>
+                                        <td><button class="btn btn-sky"><i class="fa fa-play"></i>	&nbsp;	&nbsp; Ejecutar </button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal to add see script-->
+<div class="modal fade" id="modal_seeScript" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Consulta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form role="form">
+                            <div class="form-group">
+                                <textarea class="form-control"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal to add scripts-->
+<div class="modal fade" id="modal_addScript" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Nueva Consulta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="form-group">
+                                <h4>Seleccione la manera en que desea realizar la consulta:</h4>
+                                <label>
+                                    <input type="radio" name="r3" class="flat-red" checked>
+                                    Archivo
+                                </label>
+                                <label>
+                                    <input type="radio" name="r3" class="flat-red">
+                                    Texto
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputFile">Seleccione el archivo</label>
+                                <input type="file" id="exampleInputFile">
+                                <p class="help-block">Example block-level help text here.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputFile">Ingrese su consulta</label>
+                                <textarea class="form-control" placeholder=""></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Ejecutar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

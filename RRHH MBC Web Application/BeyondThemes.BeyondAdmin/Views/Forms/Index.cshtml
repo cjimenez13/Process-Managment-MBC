@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Encuestas";
+    ViewBag.Description = "Lista de encuestas";
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header header-large">
+                <span class="widget-caption">Lista de encuestas</span>
+                <div class="widget-buttons" style="margin-right:20px">
+                    <button class="btn btn-success btn-sm">Nueva encuesta</button>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <!-- Filter area -->
+                        <div class="row" style="margin-bottom:40px">
+                            <div class="col-md-6">
+                                <!-- search bar -->
+                                <span class="input-icon">
+                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                    <i class="glyphicon glyphicon-search blue"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Table -->
+                        <div class="flip-scroll">
+                            <table class="table table-bordered flip-content table-hover">
+                                <!-- column titles -->
+                                <thead class="flip-content bordered-primary">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Estado</th>
+                                        <th>Nombre</th>
+                                        <th># Participantes</th>
+                                        <th># Respuestas</th>
+                                        <th>Creado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    <tr onclick="location.href = '@(Url.Action("Form"))'">
+                                        <td>#1235222</td>
+                                        <td><span class="label label-success">Completado</span></td>
+                                        <td>Diseño camisetas</td>
+                                        <td>50</td>
+                                        <td>35</td>
+                                        <td>08/07/2016</td>
+                                    </tr>
+                                    <tr>
+                                        <td>#1235222</td>
+                                        <td><span class="label label-success">Completado</span></td>
+                                        <td>Diseño camisetas</td>
+                                        <td>50</td>
+                                        <td>35</td>
+                                        <td>08/07/2016</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

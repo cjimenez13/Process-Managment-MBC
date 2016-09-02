@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (var tabs = Html.Bootstrap().Begin(new Tabs("JustifiedTab").RadiusBordered()))
+        {
+            tabs.Tab("Seguridad", BootstrapColors.Danger);
+            tabs.Tab("Personalización", BootstrapColors.Success);
+
+            using (tabs.BeginPanel())
+            {
+                <div class="row">
+                    <div class="col-xs-12">
+                        @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Roles").HeaderBorder(BootstrapColors.Sky, Direction.Bottom)))
+                        {
+                            using (WidgetSectionPanel header = widget.BeginHeader())
+                            {
+                            }
+                            using (widget.BeginBody())
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="flip-scroll">
+                                            <table class="table flip-content table-hover">
+                                                <!-- column titles -->
+                                                <thead class="flip-content bordered-primary">
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th># Permisos</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Table data-->
+                                                    <tr>
+                                                        <td>John Doe</td>
+                                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                                        <td>25</td>
+                                                        <td><button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Alexander Pierce</td>
+                                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner</td>
+                                                        <td>20</td>
+                                                        <td><button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+            using (tabs.BeginPanel())
+            {
+                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>
+            }
+        }
+    </div>
+</div>

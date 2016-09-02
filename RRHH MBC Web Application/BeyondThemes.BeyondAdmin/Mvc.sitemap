@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Gestión de procesos" controller="Processes" action="Index" imageUrl="fa fa-suitcase" description="Lista de procesos">
+    <mvcSiteMapNode title="Plantillas" controller="Templates" action="Index" imageUrl="fa fa-file-o" description="Lista de plantillas"/>
+    <mvcSiteMapNode title="Categorías" controller="Categories" action="Index" imageUrl="fa fa-th-large" description="Lista de categorías">
+      <mvcSiteMapNode title="Categoría vacaciones" controller="Categories" action="Categorie" description=" " visibility="SiteMapPathHelper,!*"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Encuestas" controller="Forms" action="Index" imageUrl="fa fa-list" description="Lista de encuestas">
+      <mvcSiteMapNode title="Encuesta 1" controller="Forms" action="Form" description="Resumen resultados" visibility="SiteMapPathHelper,!*"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Consultas" controller="Scripts" action="Index" imageUrl="fa fa-code" description="Registro de consultas"/>
+    <mvcSiteMapNode title="Personas" controller="Users" action="Index" imageUrl="fa fa-user" description="Grupos y personas">
+      <mvcSiteMapNode title="Perfil" controller="Users" action="Profile" description="Pefil" visibility="SiteMapPathHelper,!*"/>
+      <mvcSiteMapNode title="Grupos" controller="Users" action="Group" description="Información del grupo" visibility="SiteMapPathHelper,!*"/>
+    </mvcSiteMapNode>
+  <mvcSiteMapNode title="Configuración" controller="Config" action="Index" imageUrl="fa fa-gears" description="Configuración"/>
+  </mvcSiteMapNode>
+</mvcSiteMap>

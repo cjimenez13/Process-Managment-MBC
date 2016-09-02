@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Plantillas";
+    ViewBag.Description = "Plantillas";
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header">
+                <span class="widget-caption">Lista de plantillas disponibles</span>
+                <div class="widget-buttons buttons-bordered">
+                    <button class="btn btn-success btn-sm">Nueva plantilla</button>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <!-- Filter area -->
+                        <div class="row" style="margin-bottom:40px">
+                            <div class="col-md-6">
+                                <!-- search bar -->
+                                <span class="input-icon">
+                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                    <i class="glyphicon glyphicon-search blue"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Table -->
+                        <div class="flip-scroll">
+                            <table class="table table-bordered table-striped table-condensed flip-content table-hover">
+                                <!-- column titles -->
+                                <thead class="flip-content bordered-palegreen">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Gestión </th>
+                                        <th>Categoria</th>
+                                        <th>Participantes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    <tr onclick="location.href = '@(Url.Action("Template"))'">
+                                        <td>#1234123</td>
+                                        <td>Vacaciones diego</td>
+                                        <td>Vacaciones</td>
+                                        <td style="width:25%">
+                                            <div class="col-md-2 col-xs-6" data-toggle="tooltip" data-placement="top" title="Estaban">
+                                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Nicolai-Larson.jpg">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
