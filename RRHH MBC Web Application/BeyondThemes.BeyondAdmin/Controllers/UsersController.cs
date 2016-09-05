@@ -26,37 +26,25 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return View();
         }
-        public ActionResult Profile(string id)
+        public new ActionResult Profile(string id)
         {
             string user = HttpUtility.UrlDecode(id);
             return View(new UserModel(user));
         }
-        /*
-        [ChildActionOnly]
-        public ActionResult _Register()
-        {
-            return PartialView();
-        }
-        */
 
         [HttpPost]
-        public ActionResult UploadPhoto()
+        public ActionResult UploadPhoto(string user)
         {
 
             if (Request.Files.Count > 0)
             {
                 try
                 {
-                    //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
-                        //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
-                        //string filename = Path.GetFileName(Request.Files[i].FileName);  
-
                         HttpPostedFileBase file = files[i];
                         string fname;
-
                         // Checking for Internet Explorer  
                         if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
                         {
@@ -67,16 +55,21 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                         {
                             fname = file.FileName;
                         }
-
                         string fileName = Path.GetFileName(fname);
                         string fileExtension = Path.GetExtension(fileName).ToLower();
                         int fileSize = file.ContentLength;
-                        if (fileExtension == ".jpg" || fileExtension == "png")
+                        if (fileExtension == ".jpg" || fileExtension == ".png")
                         {
                             Stream stream = file.InputStream;
                             BinaryReader binaryReader = new BinaryReader(stream);
                             byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
-
+                            FileDTO fileDTO = new FileDTO();
+                            fileDTO.fileData = bytes;
+                            fileDTO.user = user;
+                            if (userProvider.putPhoto(fileDTO).Result)
+                            {
+                                return Json("File Uploaded Successfully!");
+                            }
                         }
                         // Get the complete folder path and store the file inside it.  
                         //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
@@ -96,28 +89,35 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
 
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult _ProfileConfig(RegisterModel model)
+
+
+        [HttpPut]
+        public ActionResult _ProfileConfig(UpdateUserModel model)
         {
             if (ModelState.IsValid)
             {
+                string selectedCanton = Request.Form["canton_id"].ToString();
                 UserDTO userDTO = new UserDTO();
-                //userDTO.id =  model
+                userDTO.id = model.id;
                 userDTO.name = model.name;
                 userDTO.fLastName = model.fLastName;
                 userDTO.sLastName = model.sLastName;
                 userDTO.email = model.email;
                 userDTO.phoneNumber = model.phoneNumber.ToString();
                 userDTO.userName = model.userName;
-                userDTO.canton_id = model.canton;
-                if (userProvider.postUser(userDTO).Result)
+                userDTO.canton_id = selectedCanton;
+                userDTO.direction = model.direction;
+                userDTO.birthdate = model.birthdate;
+
+                if (userProvider.putUser(userDTO).Result)
                 {
                     return new HttpStatusCodeResult(200);
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult _Register(RegisterModel model)
@@ -125,7 +125,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             if (ModelState.IsValid)
             {
                 UserDTO userDTO = new UserDTO();
-                //userDTO.id =  model
+                userDTO.id = model.id;
                 userDTO.name = model.name;
                 userDTO.fLastName = model.fLastName;
                 userDTO.sLastName = model.sLastName;
@@ -133,6 +133,8 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 userDTO.phoneNumber = model.phoneNumber.ToString();
                 userDTO.userName = model.userName;
                 userDTO.canton_id = model.canton;
+                userDTO.direction = model.direction;
+                userDTO.birthdate = model.birthdate;
                 if (userProvider.postUser(userDTO).Result)
                 {
                     return new HttpStatusCodeResult(200);

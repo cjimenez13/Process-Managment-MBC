@@ -9,12 +9,13 @@ namespace DataTransferObjects
     public class FileDTO
     {
         public byte[] fileData { get; set; }
-        public string[] user { get; set; }
-        public string[] fileName { get; set; }
+        public string user { get; set; }
+        public string fileName { get; set; }
 
     }
     public class UserDTO
     {
+        public string user_id { get; set; }
         public string id { get; set; }
         public string name { get; set; }
         public string fLastName { get; set; }
@@ -28,6 +29,8 @@ namespace DataTransferObjects
         public string phoneNumber { get; set; }
         public string birthdate { get; set; }
         public string userName { get; set; }
+        public byte[] photoData { get; set; }
+        public string photoBase64 { get; set; }
     }
     public class ProvinceDTO
     {

@@ -57,6 +57,16 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [Route("Photo")]
+        [HttpPut]
+        public IHttpActionResult Photo(FileDTO fileDTO)
+        {
+            if (!UsersData.updatePhoto(fileDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
 
     }
 }

@@ -111,6 +111,7 @@ namespace Web_Service_API.DataAccess
                     userDTO.birthdate = rdr["birthdate"].ToString();
                     userDTO.userName = rdr["userName"].ToString();
                     userDTO.id = rdr["id"].ToString();
+                    userDTO.photoBase64 = Convert.ToBase64String((byte[])rdr["photoData"]); 
                 }
             };
             return userDTO;
@@ -148,6 +149,12 @@ namespace Web_Service_API.DataAccess
 
                 command.Parameters.Add("@id", SqlDbType.NVarChar);
                 command.Parameters["@id"].Value = pUserDTO.id;
+
+                command.Parameters.Add("@birthdate", SqlDbType.NVarChar);
+                command.Parameters["@birthdate"].Value = pUserDTO.birthdate;
+
+                command.Parameters.Add("@direction", SqlDbType.NVarChar);
+                command.Parameters["@direction"].Value = pUserDTO.direction;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
@@ -187,8 +194,17 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@canton_id", SqlDbType.TinyInt);
                 command.Parameters["@canton_id"].Value = pUserDTO.canton_id;
 
+                command.Parameters.Add("@user", SqlDbType.NVarChar);
+                command.Parameters["@user"].Value = pUserDTO.userName!=""? pUserDTO.userName : pUserDTO.email;
+
                 command.Parameters.Add("@id", SqlDbType.NVarChar);
                 command.Parameters["@id"].Value = pUserDTO.id;
+
+                command.Parameters.Add("@birthdate", SqlDbType.NVarChar);
+                command.Parameters["@birthdate"].Value = pUserDTO.birthdate;
+
+                command.Parameters.Add("@direction", SqlDbType.NVarChar);
+                command.Parameters["@direction"].Value = pUserDTO.direction;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
@@ -203,7 +219,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_user", connection);
+                SqlCommand command = new SqlCommand("sp_update_userPhoto", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@user", SqlDbType.NVarChar);

@@ -1,9 +1,9 @@
-﻿@model Model.RegisterModel
+﻿@model Model.UpdateUserModel
 
 <div class="form-title">
     Informacion personal
 </div>
-@using (Ajax.BeginForm("_ProfileConfig", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CompletedFormRegister" }))
+@using (Ajax.BeginForm("_ProfileConfig", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "CompletedFormRegister" }))
 {
     @Html.AntiForgeryToken()
     <div class="row">
@@ -23,12 +23,12 @@
                 @Html.TextBoxFor(m => m.sLastName, new { @class = "form-control", @placeholder = "" })
                 @Html.ValidationMessageFor(m => m.sLastName, "", new { @class = "text-danger" })
             </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.id)
                 @Html.TextBoxFor(m => m.id, new { @class = "form-control", @placeholder = "" })
                 @Html.ValidationMessageFor(m => m.id, "", new { @class = "text-danger" })
             </div>
-
         </div>
         <div class="col-sm-6">
             <div class="form-group">
@@ -65,12 +65,12 @@
         <div class="col-sm-6">
             <div class="form-group">
                 @Html.LabelFor(model => model.province)
-                @Html.DropDownListFor(m => m.province, new SelectList(Model._ProvincesSelect, "Value", "Text"), "-Selecione la provincia-", new { @class = "form-control", @id = "selectPronvices", @onchage = "Model.refreshCantones()" })
+                @Html.DropDownListFor(m => m.province_id, new SelectList(Model._ProvincesSelect, "Value", "Text"), new { @class = "form-control", @id = "province_id", @onchage = "Model.refreshCantones()" })
                 @Html.ValidationMessageFor(m => m.province, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.canton)
-                @Html.DropDownListFor(m => m.province, new SelectList(Model._CantonesSelect, "Value", "Text"), "-Selecione el canton-", new { @class = "form-control", @id = "selectCantones" })
+                @Html.DropDownListFor(m => m.canton_id, new SelectList(Model._CantonesSelect, "Value", "Text"), new { @class = "form-control", @id = "canton_id" })
                 @Html.ValidationMessageFor(m => m.canton, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -84,26 +84,27 @@
     </div>
     <div class="row">
         <div class="col-md-offset-11">
-            <button type="submit" class="btn btn-primary">Guardar </button>
+            @Html.Bootstrap().SubmitButton().Text("Guardar").Color(BootstrapColors.Primary)
         </div>
     </div>
 }
-
-
-
-
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="col-xs-6">
-                <div class="form-group">
-                    <label>Foto</label>
-                    <input type="file" name="file" id="FileUpload1" class="filestyle" required/>
-                </div>
-            </div>
-            <div class="col-xs-6">
-                <label></label>
-                <button class="btn btn-primary" id="btnUpload">Cambiar</button>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label>Foto</label>
+                <input type="file" name="file" id="FileUpload1" class="filestyle" required />
             </div>
         </div>
+        <div class="col-xs-6">
+            <label></label>
+            @{
+                String onclick = String.Format("uploadPhoto('{0}')", Model.userName);
+            }
+            
+            <button class="btn btn-primary" id="btnUpload" onclick="@onclick">Cambiar</button>
+        </div>
     </div>
+</div>
+
 

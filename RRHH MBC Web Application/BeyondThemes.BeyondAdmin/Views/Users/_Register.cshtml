@@ -3,7 +3,7 @@
 <div class="modal fade" id="modal_register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" id="divModalRegister">
-            @using (Ajax.BeginForm("_Register", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CompletedFormRegister", }))
+            @using (Ajax.BeginForm("_Register", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CompletedFormRegister" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
@@ -99,18 +99,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-@section PageScripts{
-    <!--Jquery Select2-->
-    <script src="~/assets/js/select2/select2.js"></script>
-    <!--Bootstrap Tags Input-->
-    <script src="~/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
-    <script>
-        //$("#selectPronvices").select2();
-        //$("#e1").select2();
-
-    </script>
-}

@@ -10,7 +10,7 @@
         <div class="profile-container">
             <div class="profile-header row">
                 <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                    <img src="~/assets/img/avatars/Javi-Jimenez.jpg" class="header-avatar avatar" />
+                    <img src=@Model.imageURL class="header-avatar avatar" />
                 </div>
                 <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
                     @{ 
@@ -60,9 +60,9 @@
                                                     <p>
                                                         Phone	: @Model.user.phoneNumber <br>
                                                         <!--Cell		: +1 9 876 5432 <br />-->
-                                                        Email		: @Model.user.email
-                                                        <br>
+                                                        Email		: @Model.user.email<br>
                                                         <!--Skype		: kim.ryder-->
+                                                        @Model.user.id<br>
                                                     </p>
                                                 </div>
                                             </div>
@@ -77,6 +77,7 @@
                                                         @Model.user.province_name<br>
                                                         @Model.user.canton_name<br>
                                                         @Model.user.direction<br>
+
                                                     </p>
                                                 </div>
                                             </div>
@@ -180,7 +181,7 @@
                             <div id="settings" class="tab-pane">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        @{Html.RenderPartial("/Views/Users/_ProfileConfig.cshtml", new Model.RegisterModel()); }
+                                        @{Html.RenderPartial("/Views/Users/_ProfileConfig.cshtml", new Model.UpdateUserModel(Model.user)); }
                                     </div>
                                 </div>
                             </div>
@@ -193,8 +194,6 @@
 </div>
 
 @section PageScripts{
-    <script src="~/assets/js/charts/flot/jquery.flot.js"></script>
-    <script src="~/assets/js/charts/flot/jquery.flot.resize.js"></script>
 <script>
         function CompletedFormRegister(data) {
             Notify('El usuario se ha registrado con exito', 'bottom-right', '5000', 'success', 'fa-edit', true);
@@ -202,10 +201,9 @@
 
 </script>
 <script>
-
-$(document).ready(function(){
-    $('#btnUpload').click(function () {
-
+    function uploadPhoto(userName) {
+        console.log("hola")
+        console.log(userName)
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
 
@@ -220,11 +218,8 @@ $(document).ready(function(){
                 fileData.append(files[i].name, files[i]);
             }
 
-            // Adding one more key to FormData object
-            fileData.append('username', 'Manas');
-
             $.ajax({
-                url: '/Users/UploadPhoto',
+                url: '/Users/UploadPhoto?user='+userName,
                 type: "POST",
                 contentType: false, // Not to set any content header
                 processData: false, // Not to process data
@@ -239,8 +234,30 @@ $(document).ready(function(){
         } else {
             alert("FormData is not supported.");
         }
-    });
-});
+    };
 </script>  
+<script>
+    // script to change the content on cantones select
+    $(document).ready(function () {
+        $('#province_id').change(function () {
+            console.log("ok");
+            var id = $("#province_id").val();
+            $.ajax({
+                url: '@Url.Action("getCantones", "Users")',
+                type: 'get',
+                data: { "pProvinceID": id },
+                success: function (json, textStatus) {
+                    console.log("ok")
+                    $("#canton_id").empty();
+                    json = json || {};
+                    for (var i = 0; i < json.length; i++) {
+                        $("#canton_id").append('<option value="' + json[i].id + '">' + json[i].name + '</option>');
+                    }
+                    $("#canton_id").prop("disabled", false);
+                }
+            });
+        });
+    });
+</script>
 }
 

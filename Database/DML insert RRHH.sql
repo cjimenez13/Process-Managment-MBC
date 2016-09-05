@@ -69,30 +69,20 @@ go
 -- Get specific user
 -- execute sp_get_User 'cjimenez13'
 -- drop procedure sp_get_user
+--execute sp_get_user 'cjimenez13@outlook.com'
 create procedure sp_get_user 
 @user nvarchar(50) as
 begin
-	if CHARINDEX('@',@user) > 0
-	begin
-		select u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
-		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password],
-		(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
-		(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
-		(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id
-		from Users u 
-		where u.isEnabled = 1 and u.email = @user;
-	end
-	else
 	begin 
-		select u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
+		select u.id_user, u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
 		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password],
 		(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
 		(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
-		(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id
+		(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
+		(select up.photoData from UsersPhotos up where up.[user_id] = u.id_user) as photoData
 		from Users u 
-		where u.isEnabled = 1 and u.userName = @user;
+		where u.isEnabled = 1 and (u.userName = @user or u.email = @user) ;
 	end
-	
 end
 go
 
@@ -141,7 +131,7 @@ go
 create procedure sp_update_user
 @user nvarchar(50), @userName nvarchar(50) = null, @name nvarchar(50), @fLastName nvarchar(50), @sLastName nvarchar(50) = null,
 @email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = 'tmp1234',
-@id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX)
+@id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX) = null
  as
 begin
 	if CHARINDEX('@',@user) > 0
@@ -156,7 +146,7 @@ begin
 					 canton_id = ISNULL(@canton_id,canton_id),
 					 [password] = ISNULL(@password,[password]),
 					 id = ISNULL(@id, id),
-					 birthdate = ISNULL(try_convert(DATE,@birthdate,103), birthdate),
+					 birthdate = ISNULL(try_convert(DATE,@birthdate,103), birthdate),22111111 42012
 					 direction = ISNULL(@direction, direction)
 		where email = @email
 		update UsersPhotos set photoData = ISNULL(@photo, photoData)
@@ -184,3 +174,37 @@ begin
 	end
 end
 go
+
+
+-- Update User photo
+create procedure sp_update_userPhoto
+@user nvarchar(50), @photo varbinary(MAX)
+ as
+begin
+	declare @id int;
+	set @id = (select [id_user] from Users where email = @user or userName = user);
+	update UsersPhotos set photoData = @photo where [user_id] = @id;
+end
+go
+-- create User photo
+create procedure sp_update_userPhoto
+@user nvarchar(50), @photoData varbinary(MAX)
+ as
+begin
+	declare @id int;
+	set @id = (select [id_user] from Users where email = @user or userName = @user);
+	update UsersPhotos set photoData = @photoData where [user_id] = @id;
+end
+go
+create procedure sp_insert_userPhoto
+@user nvarchar(50), @photoData varbinary(MAX)
+ as
+begin
+	declare @id int;
+	set @id = (select [id_user] from Users where email = @user or userName = @user);
+	insert into UsersPhotos([user_id],photoData) 
+	values (@id, @photoData);
+end
+go
+drop procedure sp_insert_userPhoto
+drop procedure sp_update_userPhoto
