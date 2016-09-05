@@ -16,37 +16,19 @@
 <div class="row" id="userList">
     @foreach (var user in Model.usersList)
     {
-        if (user.email != "")
-        {
-            <div class="col-lg-3 col-sm-4 col-xs-12 userBox">
-                <div class="databox databox-graded">
-                    <div class="databox-left no-padding">
-                        <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
-                    </div>
-                    <a href="@Url.Action("Profile/"+@HttpUtility.UrlPathEncode(user.email))">
-                        <div class="databox-right padding-top-20 bg-whitesmoke">
-                            <div class="databox-text darkgray" style="font-size:14px">@user.name</div>
-                            <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.email</div>
-                        </div>
-                    </a>
+        string defaultUser = user.email!= ""? user.email: user.userName;
+        <div class="col-lg-3 col-sm-4 col-xs-12 userBox">
+            <div class="databox databox-graded">
+                <div class="databox-left no-padding">
+                    <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
                 </div>
-            </div>
-        }
-        else
-        {
-            <div class="col-lg-3 col-sm-4 col-xs-12 userBox">
-                <div class="databox databox-graded">
-                    <div class="databox-left no-padding">
-                        <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
+                <a href="@Url.Action("Profile/"+@HttpUtility.UrlPathEncode(@defaultUser))">
+                    <div class="databox-right padding-top-20 bg-whitesmoke">
+                        <div class="databox-text darkgray" style="font-size:14px">@user.name</div>
+                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@defaultUser</div>
                     </div>
-                    <a href="@Url.Action("Profile/"+HttpUtility.UrlPathEncode(user.userName))">
-                        <div class="databox-right padding-top-20 bg-whitesmoke">
-                            <div class="databox-text darkgray" style="font-size:14px">@user.name</div>
-                            <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.userName</div>
-                        </div>
-                    </a>
-                </div>
+                </a>
             </div>
-        }
+        </div>
     }
 </div>

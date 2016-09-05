@@ -424,6 +424,8 @@
     <Content Include="Views\Users\_UsersList.cshtml" />
     <Content Include="Views\Users\_GroupsList.cshtml" />
     <Content Include="Views\Users\_ProfileConfig.cshtml" />
+    <Content Include="Views\Users\_ProfileFiles.cshtml" />
+    <Content Include="Views\Users\_AddUserFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

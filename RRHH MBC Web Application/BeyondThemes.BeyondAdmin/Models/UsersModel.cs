@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using DataTransferObjects;
 using BeyondThemes.BeyondAdmin.Providers;
@@ -11,6 +8,16 @@ using System.Web;
 
 namespace Model
 {
+    public class ListUserFilesModel
+    {
+        private UsersProvider userProvider = new UsersProvider();
+        public List<FileDTO> filesList = new List<FileDTO>();
+        public ListUserFilesModel(string pUser)
+        {
+            filesList = userProvider.getFiles(pUser).Result;
+        }
+
+    }
     public class ListUserModel
     {
         public List<UserDTO> usersList = new List<UserDTO>();
@@ -19,6 +26,22 @@ namespace Model
         public ListUserModel()
         {
             usersList = userProvider.getUsers().Result;
+        }
+    }
+    public class AddFileModel
+    {
+        private UsersProvider userProvider = new UsersProvider();
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
+        public string name;
+        [Display(Name = "Descripción")]
+        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string description;
+        public AddFileModel()
+        {
+            //usersList = userProvider.getUsers().Result;
         }
     }
 

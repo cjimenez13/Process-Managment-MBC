@@ -196,6 +196,7 @@ begin
 	update UsersPhotos set photoData = @photoData where [user_id] = @id;
 end
 go
+
 create procedure sp_insert_userPhoto
 @user nvarchar(50), @photoData varbinary(MAX)
  as
@@ -206,5 +207,29 @@ begin
 	values (@id, @photoData);
 end
 go
-drop procedure sp_insert_userPhoto
-drop procedure sp_update_userPhoto
+
+-- drop procedure sp_insert_userFile
+create procedure sp_insert_userFile
+@user nvarchar(50), @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(50)
+as
+begin
+	declare @id int;
+	set @id = (select [id_user] from Users where email = @user or userName = @user);
+	insert into UsersFiles([user_id],fileData, name, [description], createdDate, fileType) 
+	values (@id, @fileData, @name, @description,GETDATE(), @fileType);
+end
+go
+-- drop procedure sp_get_userFiles
+create procedure sp_get_userFiles
+@user nvarchar(50)
+as
+begin
+	declare @id int;
+	set @id = (select [id_user] from Users where email = @user or userName = @user);
+	select uf.name,uf.createdDate,uf.[description],uf.id_file,uf.fileType,uf.fileData from UsersFiles uf where uf.[user_id] = @id
+end
+
+select * from UsersFiles
+
+execute sp_get_userFiles 'cjimenez13@outlook.com'
+select * from UsersFiles uf 

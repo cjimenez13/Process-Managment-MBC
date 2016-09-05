@@ -111,10 +111,38 @@ namespace Web_Service_API.DataAccess
                     userDTO.birthdate = rdr["birthdate"].ToString();
                     userDTO.userName = rdr["userName"].ToString();
                     userDTO.id = rdr["id"].ToString();
-                    userDTO.photoBase64 = Convert.ToBase64String((byte[])rdr["photoData"]); 
+                    byte[] photo = (byte[])rdr["photoData"];
+                    //string photo = rdr["photoData"].ToString();
+                    userDTO.photoBase64 = Convert.ToBase64String(photo); 
                 }
             };
             return userDTO;
+        }
+        public static List<FileDTO> getUserFiles(string pUser)
+        {
+            List<FileDTO> fileDTOList = new List<FileDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_get_userFiles", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@user", SqlDbType.NVarChar);
+                command.Parameters["@user"].Value = pUser;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.name = rdr["name"].ToString();
+                    fileDTO.description = rdr["description"].ToString();
+                    fileDTO.createdDate = rdr["createdDate"].ToString();
+                    fileDTO.id_file = rdr["id_file"].ToString();
+                    fileDTO.fileType = rdr["fileType"].ToString();
+                    byte[] file = (byte[])rdr["fileData"];
+                    fileDTO.fileBase64 = Convert.ToBase64String(file);
+                    fileDTOList.Add(fileDTO);
+                }
+            };
+            return fileDTOList;
         }
 
 
@@ -165,6 +193,35 @@ namespace Web_Service_API.DataAccess
             };
             return false;
         }
+        public static bool postFile(FileDTO pFileDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_insert_userFile", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@user", SqlDbType.NVarChar);
+                command.Parameters["@user"].Value = pFileDTO.user;
+
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pFileDTO.name;
+
+                command.Parameters.Add("@description", SqlDbType.NVarChar);
+                command.Parameters["@description"].Value = pFileDTO.description;
+
+                command.Parameters.Add("@fileData", SqlDbType.VarBinary);
+                command.Parameters["@fileData"].Value = pFileDTO.fileData;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+
         //-------------------------------------------------- updates ---------------------------------------------------------
         public static bool updateUser(UserDTO pUserDTO)
         {

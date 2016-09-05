@@ -10,7 +10,12 @@ namespace DataTransferObjects
     {
         public byte[] fileData { get; set; }
         public string user { get; set; }
-        public string fileName { get; set; }
+        public string name { get; set; }
+        public string createdDate { get; set; }
+        public string fileBase64 { get; set; }
+        public string description { get; set; }
+        public string id_file { get; set; }
+        public string fileType { get; set; }
 
     }
     public class UserDTO

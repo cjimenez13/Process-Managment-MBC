@@ -68,5 +68,23 @@ namespace Web_Service_API.Controllers
             return Ok();
         }
 
+        [Route("Files")]
+        [HttpGet]
+        public List<FileDTO> Files(string user)
+        {
+            return UsersData.getUserFiles(user);
+        }
+
+        [Route("File")]
+        [HttpPost]
+        public IHttpActionResult File(FileDTO fileDTO)
+        {
+            if (!UsersData.postFile(fileDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
     }
 }

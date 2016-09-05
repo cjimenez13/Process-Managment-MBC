@@ -92,6 +92,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return cantones;
             }
         }
+        public async Task<List<FileDTO>> getFiles(string user)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<FileDTO> files = new List<FileDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/users/files/?user="+user).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    files = serializer.Deserialize<List<FileDTO>>(result);
+                }
+                return files;
+            }
+        }
         //-------------------------------------- Posts -----------------------------------------------
         public async Task<bool> postUser(UserDTO userDTO)
         {
@@ -109,15 +127,14 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
-
-        public async Task<bool> putPhoto(FileDTO fileDTO)
+        public async Task<bool> putFile(FileDTO fileDTO)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(fileDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PutAsync("api/Users/photo/", contentPost).Result;
+                HttpResponseMessage response = client.PostAsync("api/Users/file/", contentPost).Result;
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -136,6 +153,22 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(userDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/Users/", contentPost).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> putPhoto(FileDTO fileDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(fileDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/Users/photo/", contentPost).Result;
 
                 if (response.IsSuccessStatusCode)
                 {

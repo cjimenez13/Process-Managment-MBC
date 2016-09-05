@@ -87,53 +87,10 @@
                                 </div>
                             </div>
                             <div id="files" class="tab-pane">
-                                <div class="row" style="margin-bottom:15px">
-                                    <button class="btn btn-success" style="float:right; margin-right:5%" data-toggle="modal" data-target="#modal_addFile">Agregar archivo</button>
-                                </div>
-                                <div class="flip-scroll">
-                                    <table class="table flip-content table-hover">
-                                        <!-- column titles -->
-                                        <thead class="flip-content bordered-primary">
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Fecha</th>
-                                                <th>Descripcion</th>
-                                                <th>Descargar</th>
-                                                <th>Borrar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Table data-->
-                                            <tr>
-                                                <td>John Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Alexander Pierce</td>
-                                                <td>11-7-2014</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Bob Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mike Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @{Html.RenderPartial("/Views/Users/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName));}
+                                    </div>
                                 </div>
                             </div>
                             <div id="data" class="tab-pane">

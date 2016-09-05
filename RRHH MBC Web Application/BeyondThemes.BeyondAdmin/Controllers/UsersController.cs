@@ -33,9 +33,8 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadPhoto(string user)
+        public ActionResult UploadFile(string user)
         {
-
             if (Request.Files.Count > 0)
             {
                 try
@@ -45,7 +44,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     {
                         HttpPostedFileBase file = files[i];
                         string fname;
-                        // Checking for Internet Explorer  
                         if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
                         {
                             string[] testfiles = file.FileName.Split(new char[] { '\\' });
@@ -71,11 +69,9 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                                 return Json("File Uploaded Successfully!");
                             }
                         }
-                        // Get the complete folder path and store the file inside it.  
                         //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
                         //file.SaveAs(fname);
                     }
-                    // Returns message that successfully uploaded  
                     return Json("File Uploaded Successfully!");
                 }
                 catch (Exception ex)
@@ -87,9 +83,60 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             {
                 return Json("No files selected.");
             }
-
         }
 
+        [HttpPost]
+        public ActionResult UploadPhoto(string user)
+        {
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        HttpPostedFileBase file = files[i];
+                        string fname;
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                        }
+                        string fileName = Path.GetFileName(fname);
+                        string fileExtension = Path.GetExtension(fileName).ToLower();
+                        int fileSize = file.ContentLength;
+                        if (fileExtension == ".jpg" || fileExtension == ".png")
+                        {
+                            Stream stream = file.InputStream;
+                            BinaryReader binaryReader = new BinaryReader(stream);
+                            byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
+                            FileDTO fileDTO = new FileDTO();
+                            fileDTO.fileData = bytes;
+                            fileDTO.user = user;
+                            if (userProvider.putPhoto(fileDTO).Result)
+                            {
+                                return Json("File Uploaded Successfully!");
+                            }
+                        }
+                        //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
+                        //file.SaveAs(fname);
+                    }
+                    return Json("File Uploaded Successfully!");
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error occurred. Error details: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Json("No files selected.");
+            }
+        }
 
         [HttpPut]
         public ActionResult _ProfileConfig(UpdateUserModel model)
@@ -116,7 +163,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
