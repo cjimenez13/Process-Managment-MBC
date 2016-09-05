@@ -199,5 +199,27 @@ namespace Web_Service_API.DataAccess
             };
             return false;
         }
+        public static bool updatePhoto(FileDTO pFileDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_update_user", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@user", SqlDbType.NVarChar);
+                command.Parameters["@user"].Value = pFileDTO.user;
+
+                command.Parameters.Add("@photoData", SqlDbType.VarBinary);
+                command.Parameters["@photoData"].Value = pFileDTO.fileData;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
     }
 }

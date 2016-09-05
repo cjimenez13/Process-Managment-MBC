@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using DataTransferObjects;
 using BeyondThemes.BeyondAdmin.Providers;
 using System.Web.Mvc;
+using System.Web;
 
 namespace Model
 {
@@ -35,6 +36,10 @@ namespace Model
     public class UpdateUserModel : UserDTO
     {
 
+    }
+    public class ConfigProfileModel
+    {
+        public HttpPostedFile file { get; set; }
     }
     public class RegisterModel
     {
@@ -114,8 +119,7 @@ namespace Model
         [RegularExpression(@"[0-9]{9}",ErrorMessage = "La cédula debe contener 9 numeros")]
         public string id { get; set; }
 
-        [Display(Name = "Foto")]
-        public string photo { get; set; }
+
 
     }
 }

@@ -51,7 +51,7 @@ namespace Web_Service_API.Controllers
         [HttpPut]
         public IHttpActionResult Put(UserDTO userDTO)
         {
-            if (!UsersData.createUser(userDTO))
+            if (!UsersData.updateUser(userDTO))
             {
                 return BadRequest();
             }

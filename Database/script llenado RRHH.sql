@@ -28,6 +28,16 @@ execute sp_insert_EventTypeLog 'success';
 execute sp_insert_EventTypeLog 'error';
 execute sp_insert_EventTypeLog 'warning';
 
+
+--Provincias
+insert into Provinces (id_province, name) values (1,'San José')
+insert into Provinces (id_province, name) values (2,'Alajuela')
+insert into Provinces (id_province, name) values (3,'Cartago')
+insert into Provinces (id_province, name) values (4,'Heredia')
+insert into Provinces (id_province, name) values (5,'Guanacaste')
+insert into Provinces (id_province, name) values (6,'Puntarenas')
+insert into Provinces (id_province, name) values (7,'Limon')
+
 -- Cantones
 --DBCC CHECKIDENT (Cantones, RESEED, 0)
 insert into Cantones(name, province_id) values ('San José',1);
@@ -113,14 +123,6 @@ insert into Cantones(name, province_id) values ('Guácimo',7);
 
 
 
---Provincias
-insert into Provinces (id_province, name) values (1,'San José')
-insert into Provinces (id_province, name) values (2,'Alajuela')
-insert into Provinces (id_province, name) values (3,'Cartago')
-insert into Provinces (id_province, name) values (4,'Heredia')
-insert into Provinces (id_province, name) values (5,'Guanacaste')
-insert into Provinces (id_province, name) values (6,'Puntarenas')
-insert into Provinces (id_province, name) values (7,'Limon')
 
 
 -- Tipos de Notificaciones

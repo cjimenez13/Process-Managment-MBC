@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace DataTransferObjects
 {
+    public class FileDTO
+    {
+        public byte[] fileData { get; set; }
+        public string[] user { get; set; }
+        public string[] fileName { get; set; }
+
+    }
     public class UserDTO
     {
         public string id { get; set; }

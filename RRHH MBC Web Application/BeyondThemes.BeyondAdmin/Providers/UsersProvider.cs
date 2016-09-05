@@ -110,6 +110,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
             }
         }
 
+        public async Task<bool> postPhoto(UserDTO userDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(userDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/Users/photo/", contentPost).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         //---------------------------------- Puts ---------------------------------------------------
         public async Task<bool> putUser(UserDTO userDTO)
         {

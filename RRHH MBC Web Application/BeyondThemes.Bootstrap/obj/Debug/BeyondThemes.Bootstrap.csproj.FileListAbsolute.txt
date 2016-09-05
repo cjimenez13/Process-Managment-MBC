@@ -59,3 +59,20 @@ C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Ap
 C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Debug\BeyondThemes.Bootstrap.csprojResolveAssemblyReference.cache
 C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Debug\BeyondThemes.Bootstrap.dll
 C:\Users\christian.jimenez\Documents\Visual Studio 2015\Projects\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Debug\BeyondThemes.Bootstrap.pdb
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\BeyondThemes.Bootstrap.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\BeyondThemes.Bootstrap.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\BeyondThemes.Bootstrap.pdb
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\T4MVCExtensions.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.Razor.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.WebPages.Razor.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.WebPages.Deployment.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.Mvc.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.WebPages.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.Razor.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.WebPages.Razor.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\Microsoft.Web.Infrastructure.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Debug\BeyondThemes.Bootstrap.csprojResolveAssemblyReference.cache
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Debug\BeyondThemes.Bootstrap.dll
+C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.Bootstrap\obj\Debug\BeyondThemes.Bootstrap.pdb
