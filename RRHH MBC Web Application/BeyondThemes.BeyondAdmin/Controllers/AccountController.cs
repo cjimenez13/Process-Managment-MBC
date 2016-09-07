@@ -45,11 +45,17 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             string token;
             if ((token = await _AccountProvider.postToken(model.Email, model.Password)) != null){
-                HttpCookie myCookie = new HttpCookie("token");
-                DateTime now = DateTime.Now;
-                myCookie.Value = token;
-                myCookie.Expires = now.AddMinutes(30);
-                Response.Cookies.Add(myCookie);
+                DateTime expireTime = DateTime.Now.AddHours(2);
+
+                HttpCookie tokenCookie = new HttpCookie("token");
+                tokenCookie.Value = token;
+                tokenCookie.Expires = expireTime;
+                Response.Cookies.Add(tokenCookie);
+
+                HttpCookie userCookie = new HttpCookie("user");
+                userCookie.Value = model.Email;
+                userCookie.Expires = expireTime;
+                Response.Cookies.Add(userCookie);
 
                 FormsAuthentication.SetAuthCookie(model.Email, false);
                 return RedirectToAction("Index", "Processes");

@@ -1,0 +1,51 @@
+﻿<div class="row" style="margin-bottom:30px">
+    <!-- search bar -->
+    <div class="col-md-6">
+        <span class="input-icon">
+            <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+            <i class="glyphicon glyphicon-search blue"></i>
+        </span>
+    </div>
+    <div class="col-md-offset-5 col-md-1">
+        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_addGroup">Crear grupo</button>
+    </div>
+</div>
+<div class="col-xs-12">
+    <div class="row">
+        <div class="col-xs-4">
+            <a href="@Url.Action("Group")">
+                @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Grupo 1").Closeable("darkorange").Maximizable("blue").HeaderBorder(BootstrapColors.Sky, Direction.Bottom)))
+                {
+                    using (WidgetSectionPanel header = widget.BeginHeader())
+                    {
+                    }
+                    using (widget.BeginBody())
+                    {
+
+                        <p><strong>20 miembros...</strong></p>
+                        <div class="row" style="margin-top:15px">
+                            <div class="col-xs-2">
+                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
+                            </div>
+                            <div class="col-xs-2">
+                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
+                            </div>
+                            <div class="col-xs-2">
+                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
+                            </div>
+                            <div class="col-xs-2">
+                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
+                            </div>
+                            <div class="col-xs-2">
+                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
+                            </div>
+                            <div class="col-xs-1">
+                                <p>...</p>
+                            </div>
+                        </div>
+                    }
+                }
+            </a>
+        </div>
+    </div>
+</div>

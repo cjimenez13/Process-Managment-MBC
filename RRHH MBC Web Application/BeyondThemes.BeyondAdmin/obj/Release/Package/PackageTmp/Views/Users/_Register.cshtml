@@ -1,0 +1,101 @@
+﻿@model Model.RegisterModel
+
+<div class="modal fade" id="modal_register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="divModalRegister">
+            @using (Ajax.BeginForm("_Register", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CompletedFormRegister" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Registrar usuario</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-title">
+                        Informacion personal
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.name)
+                                @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fLastName)
+                                @Html.TextBoxFor(m => m.fLastName, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.fLastName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.sLastName)
+                                @Html.TextBoxFor(m => m.sLastName, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.sLastName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.id)
+                                @Html.TextBoxFor(m => m.id, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.id, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.email)
+                                @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.userName)
+                                @Html.TextBoxFor(m => m.userName, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.phoneNumber)
+                                @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.birthdate)
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    @Html.TextBoxFor(m => m.birthdate, new { @class = "form-control", @placeholder = "dd/mm/yyyy" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.birthdate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="wide">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.province)
+                                @Html.DropDownListFor(m => m.province, new SelectList(Model._ProvincesSelect, "Value", "Text"), "-Selecione la provincia-", new { @class = "form-control", @id = "selectPronvices", @onchage = "Model.refreshCantones()" })
+                                @Html.ValidationMessageFor(m => m.province, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.canton)
+                                @Html.DropDownListFor(m => m.province, new SelectList(Model._CantonesSelect, "Value", "Text"), "-Selecione el canton-", new { @class = "form-control", @id = "selectCantones" })
+                                @Html.ValidationMessageFor(m => m.canton, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.direction)
+                                @Html.TextAreaFor(m => m.direction, new { @class = "form-control", @placeholder = "Dirección...", @rows = "3" })
+                                @Html.ValidationMessageFor(m => m.direction, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    @Html.Bootstrap().SubmitButton().Text("Registrar").Color(BootstrapColors.Primary)
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -31,18 +31,19 @@ namespace Model
     public class AddFileModel
     {
         private UsersProvider userProvider = new UsersProvider();
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
-        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
-        public string name;
-        [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
-        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
-        public string description;
+
         public AddFileModel()
         {
             //usersList = userProvider.getUsers().Result;
         }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
+        public string name { get; set; }
+        [Display(Name = "Descripción")]
+        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string description { get; set; }
     }
 
     public class UserModel

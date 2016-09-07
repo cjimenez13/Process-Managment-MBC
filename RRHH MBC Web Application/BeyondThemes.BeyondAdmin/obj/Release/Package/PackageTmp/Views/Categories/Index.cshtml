@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Categories";
+    ViewBag.Description = "Lista de categorías";
+}
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget radius-bordered">
+            <div class="widget-header header-large">
+                <span class="widget-caption">Lista de categorías</span>
+                <div class="widget-buttons" style="margin-right:20px">
+                    <button class="btn btn-success btn-sm">Nueva categoría</button>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <!-- Filter area -->
+                        <div class="row" style="margin-bottom:40px">
+                            <div class="col-md-6">
+                                <!-- search bar -->
+                                <span class="input-icon">
+                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                    <i class="glyphicon glyphicon-search blue"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Table -->
+                        <div class="flip-scroll">
+                            <table class="table table-bordered flip-content table-hover">
+                                <!-- column titles -->
+                                <thead class="flip-content bordered-primary">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Creado por</th>
+                                        <th>Fecha</th>
+                                        <th>Descripcion</th>
+                                        <th>Habilitado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    <tr onclick="location.href = '@(Url.Action("Categorie"))'">
+                                        <td>Vacaciones</td>
+                                        <td>John Doe</td>
+                                        <td>11-7-2014</td>
+                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                        <td>
+                                            @Html.Bootstrap().CheckBox("form-field-checkbox").Text("").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
+                                        </td>
+                                    </tr>
+                                    <tr onclick="location.href = '@(Url.Action("Categorie"))'">
+                                        <td>Vacaciones</td>
+                                        <td>John Doe</td>
+                                        <td>11-7-2014</td>
+                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                        <td>
+                                            @Html.Bootstrap().CheckBox("form-field-checkbox").Text("").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

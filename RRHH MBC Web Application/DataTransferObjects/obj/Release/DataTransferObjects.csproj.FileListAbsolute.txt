@@ -1,0 +1,5 @@
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\bin\Release\DataTransferObjects.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\bin\Release\DataTransferObjects.pdb
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Release\DataTransferObjects.csprojResolveAssemblyReference.cache
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Release\DataTransferObjects.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Release\DataTransferObjects.pdb

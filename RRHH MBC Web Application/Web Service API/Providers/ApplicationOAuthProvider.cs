@@ -45,9 +45,9 @@ namespace Web_Service_API.Providers
                     while (rdr.Read())
                     {
                         System.Console.WriteLine(rdr["email"].ToString());
-                        System.Diagnostics.Debug.WriteLine(rdr["email"].ToString());
+                        string email = (rdr["email"].ToString());
 
-                        var tempUser = new ApplicationUser() { UserName = rdr["email"].ToString(), Email = rdr["email"].ToString() };
+                        var tempUser = new ApplicationUser() { UserName = email, Email = email };
                         await userManager.CreateAsync(tempUser, rdr["password"].ToString());
                     }
                 };

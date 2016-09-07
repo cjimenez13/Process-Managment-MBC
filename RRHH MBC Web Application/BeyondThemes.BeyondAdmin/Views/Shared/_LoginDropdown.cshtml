@@ -1,0 +1,56 @@
+﻿@model Model.AccountModel
+@{
+    var name = Model.userDTO.name + " " + Model.userDTO.fLastName + " " + Model.userDTO.sLastName;
+}
+<a class="login-area dropdown-toggle" data-toggle="dropdown">
+    <div class="avatar" title="View your public profile">
+        <img src="@Model.imageURL">
+    </div>
+    <section>
+        <h2><span class="profile"><span>@name</span></span></h2>
+    </section>
+</a>
+<!--Login Area Dropdown-->
+<ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+
+    <li class="username"><a>@name</a></li>
+    <li class="email"><a>@Model.user</a></li>
+    <!--Avatar Area-->
+    <li>
+        <div class="avatar-area">
+            <img src="@Model.imageURL" class="avatar">
+            <span class="caption">Cambiar foto</span>
+        </div>
+    </li>
+    <!--Avatar Area-->
+    <li class="edit">
+        <a href="/Users/Profile/@Model.user" class="pull-left">Perfil</a>
+        <a href="/Users/Profile/@Model.user#settings" class="pull-right">Configuración</a>
+    </li>
+    <!--Theme Selector Area-->
+    <!--
+    <li class="theme-area">
+        <ul class="colorpicker" id="skin-changer">
+            <li><a class="colorpick-btn" href="#" style="background-color:#5DB2FF;" rel="~/assets/css/skins/blue.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#2dc3e8;" rel="~/assets/css/skins/azure.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#03B3B2;" rel="~/assets/css/skins/teal.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#53a93f;" rel="~/assets/css/skins/green.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#FF8F32;" rel="~/assets/css/skins/orange.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#cc324b;" rel="~/assets/css/skins/pink.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#AC193D;" rel="~/assets/css/skins/darkred.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#8C0095;" rel="~/assets/css/skins/purple.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#0072C6;" rel="~/assets/css/skins/darkblue.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#585858;" rel="~/assets/css/skins/gray.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#474544;" rel="~/assets/css/skins/black.min.css"></a></li>
+            <li><a class="colorpick-btn" href="#" style="background-color:#001940;" rel="~/assets/css/skins/deepblue.min.css"></a></li>
+        </ul>
+    </li>
+        -->
+    <!--/Theme Selector Area-->
+    <li class="dropdown-footer">
+        <a href="/Account/Logout">
+            Cerrar Sesión
+        </a>
+    </li>
+</ul>
+<!--/Login Area Dropdown-->

@@ -1,0 +1,219 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Plantilla Solicitud Vacaciones";
+    ViewBag.Description = "Solicitud Vacaciones";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Plantilla Solicitud Vacaciones")))
+        {
+            using (WidgetSectionPanel header = widget.BeginHeader())
+            {
+            }
+            using (widget.BeginBody())
+            {
+                <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
+                    <div class="col-xs-12">
+                        <div class="col-md-4">
+                            <dl class="dl-horizontal">
+                                <dt>Creado por</dt>
+                                <dd>Jocsan Padilla</dd>
+                                <dt>Creado</dt>
+                                <dd>16.08.2014 12:15:57</dd>
+                                <dt>Actualizado</dt>
+                                <dd>16.08.2014 12:15:57</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget-main ">
+                            @using (var tabs = Html.Bootstrap().Begin(new Tabs("FlatTab").Flat()))
+                            {
+                                tabs.Tab("Etapas");
+                                tabs.Tab("Participantes");
+                                <!-- Etapas -->
+                                using (tabs.BeginPanel())
+                                {
+                                    <ul class="todo-list">
+                                        <li>
+                                            <!-- drag handle -->
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <!-- checkbox -->
+                                            <input type="checkbox" value="">
+                                            <!-- todo text -->
+                                            <span class="text">Design a nice theme</span>
+                                            <!-- Emphasis label -->
+                                            <!-- General tools such as edit or delete-->
+                                            <div class="tools" style="display:inline-block">
+                                                <a href="/Templates/Tasks">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <input type="checkbox" value="">
+                                            <span class="text">Make the theme responsive</span>
+                                            <div class="tools">
+                                                <i class="fa fa-eye"></i>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <input type="checkbox" value="">
+                                            <span class="text">Let theme shine like a star</span>
+                                            <div class="tools">
+                                                <i class="fa fa-eye"></i>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <input type="checkbox" value="">
+                                            <span class="text">Let theme shine like a star</span>
+                                            <div class="tools">
+                                                <i class="fa fa-eye"></i>
+                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-trash-o"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                }
+                                <!-- Participantes -->
+                                using (tabs.BeginPanel())
+                                {
+                                    <div class="row" style="margin-bottom:30px">
+                                        <!-- search bar -->
+                                        <div class="col-md-6">
+                                            <span class="input-icon">
+                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                                <i class="glyphicon glyphicon-search blue"></i>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-offset-4 col-md-2" style="">
+                                            <button class="btn btn-success btn-block">Agregar integrante</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p>Mostrando 10 integrantes</p>
+                                        </div>
+                                    </div>
+                                    <!-- Users box -->
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-4 col-xs-12">
+                                            <div class="databox databox-graded">
+                                                <div class="databox-left no-padding">
+                                                    <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
+                                                </div>
+                                                <a href="@Url.Action("Profile")">
+                                                    <div class="databox-right padding-top-20 bg-whitesmoke">
+                                                        <div class="databox-text darkgray" style="font-size:14px">JAVI JIMENEZ</div>
+                                                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>cjimenez13@outlook.com</div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+@section PageScripts{
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+    <script>
+    (function ($) {
+
+        'use strict';
+
+        $.fn.todolist = function (options) {
+            // Render options
+            var settings = $.extend({
+                //When the user checks the input
+                onCheck: function (ele) {
+                    return ele;
+                },
+                //When the user unchecks the input
+                onUncheck: function (ele) {
+                    return ele;
+                }
+            }, options);
+
+            return this.each(function () {
+
+                if (typeof $.fn.iCheck != 'undefined') {
+                    $('input', this).on('ifChecked', function () {
+                        var ele = $(this).parents("li").first();
+                        ele.toggleClass("done");
+                        settings.onCheck.call(ele);
+                    });
+
+                    $('input', this).on('ifUnchecked', function () {
+                        var ele = $(this).parents("li").first();
+                        ele.toggleClass("done");
+                        settings.onUncheck.call(ele);
+                    });
+                } else {
+                    $('input', this).on('change', function () {
+                        var ele = $(this).parents("li").first();
+                        ele.toggleClass("done");
+                        if ($('input', ele).is(":checked")) {
+                            settings.onCheck.call(ele);
+                        } else {
+                            settings.onUncheck.call(ele);
+                        }
+                    });
+                }
+            });
+        };
+    }(jQuery));
+        /* The todo list plugin */
+        $(".todo-list").todolist({
+            onCheck: function (ele) {
+                window.console.log("The element has been checked");
+                return ele;
+            },
+            onUncheck: function (ele) {
+                window.console.log("The element has been unchecked");
+                return ele;
+            }
+        });
+
+
+        //jQuery UI sortable for the todo list
+        $(".todo-list").sortable({
+            placeholder: "sort-highlight",
+            handle: ".handle",
+            forcePlaceholderSize: true,
+            zIndex: 999999
+        });
+    </script>
+}

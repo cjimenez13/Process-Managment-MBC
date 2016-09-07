@@ -1,0 +1,41 @@
+﻿@model Model.RolesListModel
+<div class="widget radius-bordered">
+    <div class="widget-header">
+        <span class="widget-caption">Roles</span>
+        <div class="widget-buttons buttons-bordered">
+            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_addRol">Nuevo rol</button>
+        </div>
+    </div>
+    <div class="widget-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="flip-scroll">
+                    <table class="table flip-content table-hover" id="rolesTable">
+                        <!-- column titles -->
+                        <thead class="flip-content bordered-primary">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th># Permisos</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var role in Model.rolesList)
+                            {
+                                String onclickDelete = String.Format("deleteRole('{0}')", role.id_role);
+                                <tr onclick="location.href = '@(Url.Action("Role","Config", new { id = role.id_role }))'">
+                                    <td>@role.name</td>
+                                    <td>@role.description</td>
+                                    <td>@role.permissions</td>
+                                    <td><button class="btn btn-danger btn-sm" onclick="@onclickDelete"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
