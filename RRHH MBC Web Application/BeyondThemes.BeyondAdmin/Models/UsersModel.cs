@@ -16,7 +16,6 @@ namespace Model
         {
             filesList = userProvider.getFiles(pUser).Result;
         }
-
     }
     public class ListUserModel
     {
@@ -45,6 +44,33 @@ namespace Model
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string description { get; set; }
     }
+    public class UserRolesModel
+    {
+        private UsersProvider userProvider = new UsersProvider();
+        private RoleProvider roleProvider = new RoleProvider();
+
+        public List<RoleDTO> rolesList = new List<RoleDTO>();
+        public List<RoleDTO> userRolesList = new List<RoleDTO>();
+        public SelectList _RolesSelect { get; set; }
+        public string user_id { get; set; }
+        public UserRolesModel(string pUser_id)
+        {
+            user_id = pUser_id;
+            userRolesList = userProvider.getUserRoles(pUser_id).Result;
+            rolesList = roleProvider.getRoles().Result;
+            List<SelectListItem> rolesSelectList = new List<SelectListItem>();
+            foreach (RoleDTO iRole in rolesList)
+            {
+                rolesSelectList.Add(new SelectListItem { Text = iRole.name, Value = iRole.id_role});
+                
+            }
+            _RolesSelect = new SelectList(rolesSelectList, "Value", "Text");
+        }
+
+        [Display(Name = "Rol")]
+        [Required(ErrorMessage = "Se debe completar el campo del rol")]
+        public string selectedRole { get; set; }
+    }
 
     public class UserModel
     {
@@ -59,6 +85,10 @@ namespace Model
             //string strBase64 = Convert.ToBase64String(user.photoData);
             imageURL = "data:Image/png;base64," + user.photoBase64;
         }
+    }
+    public class ConfigProfileModel
+    {
+        public HttpPostedFile file { get; set; }
     }
     public class UpdateUserModel
     {
@@ -98,7 +128,6 @@ namespace Model
         public bool refreshCantones(int pProvinceID)
         {
             _CantonesList = userProvider.getCantones(pProvinceID).Result;
-
             foreach (CantonDTO iCanton in _CantonesList)
             {
                 _CantonesSelect.Add(new SelectListItem { Text = iCanton.name, Value = iCanton.id.ToString() });
@@ -151,20 +180,13 @@ namespace Model
         //[StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
         public string userName { get; set; }
 
-
         [Display(Name = "Cédula")]
         [RegularExpression(@"[0-9]{9}", ErrorMessage = "La cédula debe contener 9 numeros")]
         public string id { get; set; }
-
-
         public string user_id { get; set; } 
 
+    }
 
-    }
-    public class ConfigProfileModel
-    {
-        public HttpPostedFile file { get; set; }
-    }
     public class RegisterModel
     {
         private UsersProvider userProvider = new UsersProvider();

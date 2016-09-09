@@ -11,7 +11,6 @@ namespace Model
 {
     public class AddRoleModel
     {
-
         public RolesListModel rolesListModel { get; set; }
         public AddRoleModel()
         {
@@ -26,6 +25,7 @@ namespace Model
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string description { get; set; }
     }
+
     public class RolesListModel
     {
         private RoleProvider roleProvider = new RoleProvider();
@@ -35,5 +35,33 @@ namespace Model
             rolesList = roleProvider.getRoles().Result;
         }
     }
-
+    public class RoleModel
+    {
+        private RoleProvider roleProvider = new RoleProvider();
+        public List<ModuleDTO> modulesList = new List<ModuleDTO>();
+        public string id_role;
+        public RoleModel(string pId_role)
+        {
+            id_role = pId_role;
+            modulesList = roleProvider.getModules().Result;
+        }
+    }
+    public class PermissionsModel
+    {
+        private RoleProvider roleProvider = new RoleProvider();
+        public List<PermissionDTO> permissionsList = new List<PermissionDTO>();
+        public PermissionsModel(string id_role, string id_module)
+        {
+            permissionsList = roleProvider.getRolePermissions(id_module, id_role).Result;
+        }
+    }
+    public class ElementsModel
+    {
+        private RoleProvider roleProvider = new RoleProvider();
+        public List<ElementDTO> elementsList = new List<ElementDTO>();
+        public ElementsModel(string id_rolePermission)
+        {
+            elementsList = roleProvider.getPermissionElements(id_rolePermission).Result;
+        }
+    }
 }

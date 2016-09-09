@@ -24,10 +24,10 @@
                             @foreach (var role in Model.rolesList)
                             {
                                 String onclickDelete = String.Format("deleteRole('{0}')", role.id_role);
-                                <tr onclick="location.href = '@(Url.Action("Role","Config", new { id = role.id_role }))'">
-                                    <td>@role.name</td>
-                                    <td>@role.description</td>
-                                    <td>@role.permissions</td>
+                                <tr>
+                                    <td onclick="location.href = '@(Url.Action("Role","Config", new { id = role.id_role }))'">@role.name</td>
+                                    <td onclick="location.href = '@(Url.Action("Role","Config", new { id = role.id_role }))'">@role.description</td>
+                                    <td onclick="location.href = '@(Url.Action("Role","Config", new { id = role.id_role }))'"> @role.permissions</td>
                                     <td><button class="btn btn-danger btn-sm" onclick="@onclickDelete"><i class="fa fa-trash"></i></button></td>
                                 </tr>
                             }

@@ -111,6 +111,7 @@ namespace Web_Service_API.DataAccess
                     userDTO.birthdate = rdr["birthdate"].ToString();
                     userDTO.userName = rdr["userName"].ToString();
                     userDTO.id = rdr["id"].ToString();
+                    userDTO.user_id = rdr["id_user"].ToString();
                     byte[] photo = (byte[])rdr["photoData"];
                     //string photo = rdr["photoData"].ToString();
                     userDTO.photoBase64 = Convert.ToBase64String(photo); 
@@ -144,7 +145,29 @@ namespace Web_Service_API.DataAccess
             };
             return fileDTOList;
         }
-
+        public static List<RoleDTO> getUserRoles(string pUser)
+        {
+            List<RoleDTO> roleDTOList = new List<RoleDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_get_userRoles", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@user_id", SqlDbType.NVarChar);
+                command.Parameters["@user_id"].Value = pUser;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    RoleDTO roleDTO = new RoleDTO();
+                    roleDTO.id_role = rdr["id_role"].ToString();
+                    roleDTO.name = rdr["name"].ToString();
+                    roleDTO.description = rdr["description"].ToString();
+                    roleDTO.user_id = rdr["user_id"].ToString();
+                    roleDTOList.Add(roleDTO);
+                }
+            };
+            return roleDTOList;
+        }
 
         //-------------------------------------------------- Creates -----------------------------------------------------------------
         public static bool createUser(UserDTO pUserDTO)
@@ -221,6 +244,28 @@ namespace Web_Service_API.DataAccess
             };
             return false;
         }
+        public static bool insertUserRoll(RoleDTO pRollDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_insert_userRole", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = pRollDTO.user_id;
+
+                command.Parameters.Add("@role_id", SqlDbType.Int);
+                command.Parameters["@role_id"].Value = pRollDTO.id_role;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
 
         //-------------------------------------------------- updates ---------------------------------------------------------
         public static bool updateUser(UserDTO pUserDTO)
@@ -288,6 +333,29 @@ namespace Web_Service_API.DataAccess
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
                 if (result != 0)
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        //------------------------------------------------ Deletes ----------------------------------------------------
+        public static bool deleteUserRole(string role_id, string user_id)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_delete_userRole", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@role_id", SqlDbType.Int);
+                command.Parameters["@role_id"].Value = role_id;
+
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = user_id;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
                 {
                     return true;
                 }

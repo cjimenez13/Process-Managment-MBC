@@ -1,126 +1,14 @@
-﻿@{
+﻿@model Model.RoleModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
 }
-
-
-
 <div class="row">
     <div class="col-xs-12">
         <h5 class="row-title"><i class="typcn typcn-folder themeprimary"></i>Modulos y permisos</h5>
     </div>
-    <div class="col-lg-6 col-sm-6 col-xs-6">
-        <div class="tabbable tabs-left">
-            <ul class="nav nav-tabs" id="myTab3">
-                <li class="active tab-sky">
-                    <a data-toggle="tab" href="#home3">
-                        Gestiones
-                    </a>
-                </li>
-
-                <li class="tab-red">
-                    <a data-toggle="tab" href="#profile3">
-                        Plantillas
-                    </a>
-                </li>
-
-                <li class="tab-orange">
-                    <a data-toggle="tab" href="#dropdown13">
-                        Categorias
-                    </a>
-                </li>
-                <li class="tab-orange">
-                    <a data-toggle="tab" href="#dropdown14">
-                        Usuarios
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div id="home3" class="tab-pane in active">
-                    <table class="table flip-content table-hover" id="rolesTable">
-                        <!-- column titles -->
-                        <thead class="flip-content bordered-primary">
-                            <tr>
-                                <th style="width:15%">Habilitado</th>
-                                <th >Permiso</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="checkbox" style="margin:0px">
-                                        <label style="margin-left:10px">
-                                            <input type="checkbox" class="colored-success" checked="checked">
-                                            <span class="text"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Editar usuario</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="checkbox" style="margin:0px">
-                                        <label style="margin-left:10px">
-                                            <input type="checkbox" class="colored-success" checked="checked">
-                                            <span class="text"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Editar usuario</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="checkbox" style="margin:0px">
-                                        <label style="margin-left:10px">
-                                            <input type="checkbox" class="colored-success" checked="checked">
-                                            <span class="text"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Editar usuario</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="checkbox" style="margin:0px">
-                                        <label style="margin-left:10px">
-                                            <input type="checkbox" class="colored-success" checked="checked">
-                                            <span class="text"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Editar usuario</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="checkbox" style="margin:0px">
-                                        <label style="margin-left:10px">
-                                            <input type="checkbox" class="colored-success" checked="checked">
-                                            <span class="text"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Editar usuario</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="profile3" class="tab-pane">
-                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin.</p>
-                </div>
-
-                <div id="dropdown13" class="tab-pane">
-                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade.</p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin.</p>
-                </div>
-                <div id="dropdown14" class="tab-pane">
-                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade.</p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin.</p>
-                </div>
-            </div>
-        </div>
+    <div class="col-lg-6 col-sm-6 col-xs-6" id="tabs-permissions" data-id="@Model.id_role">
+        <!--Modules and permissions-->
+        @{ Html.RenderPartial("/Views/Config/_RoleModules.cshtml", Model);}
         <div class="horizontal-space"></div>
     </div>
     <div class="col-lg-6 col-sm-6 col-xs-6">
@@ -139,58 +27,78 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="checkbox" style="margin:0px">
-                                    <label style="margin-left:10px">
-                                        <input type="checkbox" class="colored-success" checked="checked">
-                                        <span class="text"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>btnEditarUsuario</td>
-                            <td>Botón</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox" style="margin:0px">
-                                    <label style="margin-left:10px">
-                                        <input type="checkbox" class="colored-success" checked="checked">
-                                        <span class="text"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>btnEditarUsuario</td>
-                            <td>Botón</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox" style="margin:0px">
-                                    <label style="margin-left:10px">
-                                        <input type="checkbox" class="colored-success" checked="checked">
-                                        <span class="text"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>btnEditarUsuario</td>
-                            <td>Botón</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox" style="margin:0px">
-                                    <label style="margin-left:10px">
-                                        <input type="checkbox" class="colored-success" checked="checked">
-                                        <span class="text"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>btnEditarUsuario</td>
-                            <td>Botón</td>
-                        </tr>
-
+                        <!-- Permission slements which content depends of permission click-->
                     </tbody>
                 </table>
             </div><!--Widget Body-->
         </div><!--Widget-->
     </div>
 </div>
+@section PageScripts{
+    <script>
+        $(document).ready(function () {
+            //getElements();
+        });
+
+        function getPermissionElements(id_rolePermission) {
+            var bodyTable = $("tbody:last");
+            $.ajax({
+                url: "/Config/_PermissionElements/?id_rolePermission=" + id_rolePermission,
+                type: "GET",
+                //data: JSON.stringify({ 'Options': someData }),
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+                success: function (data) {
+                    bodyTable.empty();
+                    bodyTable.html(data);
+                },
+                error: function () {
+                    //Notify("Error, no se puede borrar el rol", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+        function elementChanged(role_permission_id, id_element, checkbox, name) {
+            var isChecked = checkbox.checked;
+            $.ajax({
+                url: "/Config/_UpdateRoleElement/",
+                type: "PUT",
+                dataType: "html",
+                data: "role_permission_id=" + role_permission_id + "&id_element=" + id_element + "&isEnabled=" + isChecked,
+                success: function (data) {
+                    if (isChecked) {
+                        Notify("El elemento '" + name + "' se ha habilitado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                        $(checkbox).closest("tr").addClass('success');
+                    } else {
+                        Notify("El elemento '" + name + "' se ha deshabilitado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                        $(checkbox).closest("tr").removeClass('success');
+                    }
+                },
+                error: function () {
+                    Notify("Error, no se puede editar el elemento", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+        function permissionChanged(id_role_permission, name, checkbox) {
+            var isChecked = checkbox.checked;
+            $.ajax({
+                url: "/Config/_UpdateRolePermission/",
+                type: "PUT",
+                dataType: "html",
+                data: "id_role_permission=" + id_role_permission+"&isEnabled="+ isChecked,
+                success: function (data) {
+                    if (isChecked) {
+                        Notify("El permiso '" + name + "' se ha habilitado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                        $(checkbox).closest("tr").addClass('success');
+                    } else {
+                        Notify("El permiso '" + name + "' se ha deshabilitado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                        $(checkbox).closest("tr").removeClass('success');
+                    }
+                },
+                error: function () {
+                    Notify("Error, no se puede editar el permiso", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+    </script>
+}

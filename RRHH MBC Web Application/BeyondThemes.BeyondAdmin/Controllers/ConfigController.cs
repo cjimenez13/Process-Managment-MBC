@@ -19,7 +19,19 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         [HttpGet]
         public ActionResult Role(string id)
         {
-            return View();
+            return View(new Model.RoleModel(id));
+        }
+
+
+        [HttpGet]
+        public ActionResult _RoleModules(string id_role)
+        {
+            return PartialView("/Views/Config/_RoleModules.cshtml", new RoleModel(id_role));
+        }
+        [HttpGet]
+        public ActionResult _PermissionElements(string id_rolePermission)
+        {
+            return PartialView("/Views/Config/_PermissionElements.cshtml", new ElementsModel(id_rolePermission));
         }
 
         [HttpPost]
@@ -51,6 +63,31 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             if (roleProvider.deleteRole(roleDTO).Result)
             {
                 return PartialView("/Views/Config/_Security.cshtml", new Model.RolesListModel());
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        public ActionResult _UpdateRolePermission(string id_role_permission, string isEnabled)
+        {
+            PermissionDTO permissionDTO = new PermissionDTO();
+            permissionDTO.id_role_permission = id_role_permission;
+            permissionDTO.isEnabled = isEnabled;
+            if (roleProvider.putRolePermission(permissionDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        public ActionResult _UpdateRoleElement(string role_permission_id, string id_element, string isEnabled)
+        {
+            ElementDTO elementDTO = new ElementDTO();
+            elementDTO.role_permission_id = role_permission_id;
+            elementDTO.id_element = id_element;
+            elementDTO.isEnabled = isEnabled;
+            if (roleProvider.putRoleElement(elementDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }

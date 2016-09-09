@@ -31,7 +31,6 @@
 
 <script>
     function UserAddedSuccess(content) {
-        console.log(content);
         Notify("El rol ha sido agregado", 'bottom-right', '5000', 'success', 'fa-edit', true);
         //$('#myTable > tbody:last-child').append('<tr><td>'+content.name+'</td><td>'+content.description+'</td><td>0</td><td><button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td></tr>');
         var securityTab = $('#securityPartial')
@@ -42,14 +41,12 @@
         Notify("Error, no se puede agregar el rol", 'bottom-right', '5000', 'danger', 'fa-edit', true);
     }
     function deleteRole(id_roll) {
-        console.log(id_roll)
-        console.log("hola")
+
         //e.preventDefault(); // <------------------ stop default behaviour of button
         var element = this;
         $.ajax({
             url: "/Config/_DeleteRole/?id_role="+id_roll,
             type: "DELETE",
-            //data: JSON.stringify({ 'Options': someData }),
             dataType: "html",
             traditional: true,
             contentType: false,

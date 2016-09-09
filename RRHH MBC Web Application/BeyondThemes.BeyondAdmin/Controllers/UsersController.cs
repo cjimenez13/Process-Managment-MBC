@@ -31,7 +31,14 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             string user = HttpUtility.UrlDecode(id);
             return View(new UserModel(user));
         }
-
+        public ActionResult getCantones(string pProvinceID)
+        {
+            int id;
+            Int32.TryParse(pProvinceID, out id);
+            List<CantonDTO> cantones;
+            cantones = userProvider.getCantones(id).Result;
+            return Json(cantones, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult UploadFile(string user)
         {
@@ -139,7 +146,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPut]
-        public ActionResult _ProfileConfig(UpdateUserModel model)
+        public ActionResult _ProfileConfigInfo(UpdateUserModel model)
         {
             if (ModelState.IsValid)
             {
@@ -188,14 +195,43 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
-        public ActionResult getCantones(string pProvinceID)
+
+        [HttpGet]
+        public ActionResult _ProfileConfigRoles(string user_id)
         {
-            int id;
-            Int32.TryParse(pProvinceID, out id);
-            List<CantonDTO> cantones;
-            cantones = userProvider.getCantones(id).Result;
-            return Json(cantones, JsonRequestBehavior.AllowGet);
+            return PartialView("/Views/Users/_ProfileConfigRoles.cshtml", new Model.UserRolesModel(user_id));
         }
+
+        [HttpPost]
+        public ActionResult _AddUserRole(string user_id, string selectedRole)
+        {
+            if (ModelState.IsValid)
+            {
+                RoleDTO roleDTO = new RoleDTO();
+                roleDTO.id_role = selectedRole;
+                roleDTO.user_id = user_id;
+                if (userProvider.postUserRole(roleDTO).Result)
+                {
+                    return _ProfileConfigRoles(user_id);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteUserRole(string user_id, string id_role)
+        {
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.id_role = id_role;
+            roleDTO.user_id = user_id;
+            if (userProvider.deleteUsersRole(roleDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+
+
 
     }
 }

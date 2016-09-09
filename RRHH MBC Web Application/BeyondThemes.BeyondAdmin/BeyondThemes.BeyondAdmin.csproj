@@ -195,12 +195,14 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GroupsModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\RolModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AccountProvider.cs" />
+    <Compile Include="Providers\GroupProvider.cs" />
     <Compile Include="Providers\RoleProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Startup.cs" />
@@ -360,6 +362,8 @@
     <Content Include="assets\js\jqueryval\jquery.validate.unobtrusive.min.js" />
     <Content Include="assets\js\knob\jquery.knob.js" />
     <Content Include="assets\js\nestable\jquery.nestable.min.js" />
+    <Content Include="assets\js\select2\select2.full.js" />
+    <Content Include="assets\js\select2\select2.full.min.js" />
     <Content Include="assets\js\select2\select2.js" />
     <Content Include="assets\js\select2\select2.min.js" />
     <Content Include="assets\js\skins.js" />
@@ -433,6 +437,12 @@
     <Content Include="Views\Config\_Security.cshtml" />
     <Content Include="Views\Config\_AddRole.cshtml" />
     <Content Include="Views\Config\Role.cshtml" />
+    <Content Include="Views\Config\_Permissions.cshtml" />
+    <Content Include="Views\Config\_RoleModules.cshtml" />
+    <Content Include="Views\Config\_PermissionElements.cshtml" />
+    <Content Include="Views\Users\_ProfileConfigInfo.cshtml" />
+    <Content Include="Views\Users\_ProfileConfigRoles.cshtml" />
+    <Content Include="Views\Users\_AddGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

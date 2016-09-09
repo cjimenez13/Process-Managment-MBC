@@ -1,0 +1,53 @@
+﻿@model Model.UserRolesModel
+<div class="row" style="margin-bottom:20px">
+    <div class="col-xs-12">
+        <div class="form-title">
+            <div class="row">
+                <!-- search bar -->
+                <div class="col-md-8">
+                    Lista de roles
+                </div>
+                <div class="col-md-4">
+                    <!-- Add roles-->
+                    @using (Ajax.BeginForm("_AddUserRole", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSuccessAddRole", OnFailure = "onFailureAddRole" }))
+                     {
+                        @Html.HiddenFor(m => m.user_id)
+                        <div class="form-group" style="margin:0px">
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(m => m.selectedRole, Model._RolesSelect, "Seleccione el rol", new { @class = "form-control", @style = "width:100%" })
+                                @Html.ValidationMessageFor(m => m.selectedRole, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-success btn-block" type="submit">Añadir rol</button>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <!--List of user roles -->
+    @foreach (var userRole in Model.userRolesList)
+    {
+        <div class="col-xs-4">
+            <div class="widget radius-bordered">
+                <div class="widget-header">
+                    <span class="widget-caption"><strong>@userRole.name</strong></span>
+                    <div class="widget-buttons">
+                        <a href="#" onclick="deleteUserRole('@userRole.user_id','@userRole.id_role','@userRole.name',this)">
+                            <i class="fa fa-times danger"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-body">
+                    <p>@userRole.description</p>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

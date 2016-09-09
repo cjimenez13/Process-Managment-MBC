@@ -110,6 +110,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return files;
             }
         }
+        public async Task<List<RoleDTO>> getUserRoles(string user_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<RoleDTO> userRoles = new List<RoleDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/users/roles/?user_id=" + user_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    userRoles = serializer.Deserialize<List<RoleDTO>>(result);
+                }
+                return userRoles;
+            }
+        }
         //-------------------------------------- Posts -----------------------------------------------
         public async Task<bool> postUser(UserDTO userDTO)
         {
@@ -127,6 +145,25 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+
+        public async Task<bool> postUserRole(RoleDTO roleDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(roleDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/Users/role/", contentPost).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        //---------------------------------- Puts ---------------------------------------------------
         public async Task<bool> putFile(FileDTO fileDTO)
         {
             using (var client = new HttpClient())
@@ -143,8 +180,6 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
-
-        //---------------------------------- Puts ---------------------------------------------------
         public async Task<bool> putUser(UserDTO userDTO)
         {
             using (var client = new HttpClient())
@@ -170,6 +205,20 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/Users/photo/", contentPost).Result;
 
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        //-------------------------------------- Deletes -----------------------------------------------
+        public async Task<bool> deleteUsersRole(RoleDTO roleDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/users/role/?user_id=" + roleDTO.user_id+ "&role_id="+roleDTO.id_role).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

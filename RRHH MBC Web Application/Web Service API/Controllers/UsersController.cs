@@ -85,6 +85,34 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [Route("roles")]
+        [HttpGet]
+        public List<RoleDTO> userRoles(string user_id)
+        {
+            return UsersData.getUserRoles(user_id);
+        }
+
+        [Route("role")]
+        [HttpPost]
+        public IHttpActionResult insertUserRole(RoleDTO pRoleDTO)
+        {
+            if (!UsersData.insertUserRoll(pRoleDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [Route("role")]
+        [HttpDelete]
+        public IHttpActionResult insertUserRole(string role_id, string user_id)
+        {
+            if (!UsersData.deleteUserRole(role_id, user_id))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
 
     }
 }
