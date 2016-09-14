@@ -1,31 +1,32 @@
 ﻿@{
+    ViewBag.Title = "Grupos y personas";
+    ViewBag.Description = "Grupos y personas";
     Layout = "~/Views/Shared/_Default.cshtml";
 }
 <div class="row">
     <div class="col-xs-12">
-        @using (var tabs = Html.Bootstrap().Begin(new Tabs("JustifiedTab").RadiusBordered()))
-        {
-            tabs.Tab("Grupos", BootstrapColors.Info);
-            tabs.Tab("Personas", BootstrapColors.Info);
-            <!-- Groups tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        @{Html.RenderPartial("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel()); }
-                    </div>
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab5">
+                <li class="active">
+                    <a data-toggle="tab" href="#groupsTab">
+                        Grupos
+                    </a>
+                </li>
+                <li class="tab-red">
+                    <a data-toggle="tab" href="#usersTab">
+                        Personas
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="groupsTab" class="tab-pane in active">
+                    @{Html.RenderPartial("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel()); }
                 </div>
-            }
-            <!-- Person tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        @{Html.RenderPartial("/Views/Users/_UsersList.cshtml", new Model.ListUserModel()); }
-                    </div>
+                <div id="usersTab" class="tab-pane">
+                    @{Html.RenderPartial("/Views/Users/_UsersList.cshtml", new Model.ListUserModel()); }
                 </div>
-            }
-        }
+            </div>
+        </div>
     </div>
 </div>
 <!-- Modal to add new group-->
@@ -38,8 +39,41 @@
 <script src="~/assets/js/select2/select2.js"></script>
 <script src="~/assets/js/toastr/toastr.js"></script>
 <script>
-    function CompletedFormRegister(data) {
+    function UserAddedSuccess(content) {
         Notify('El usuario se ha registrado con exito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $('#usersTab').html(content);
+    }
+    function UserAddedFailure(content) {
+        Notify('Error, no se puede registrar el usuario', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function GroupAddedSuccess(content) {
+        Notify("El grupo ha sido agregado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $('#groupsTab').html(content);
+    }
+    function UserAddedFailure(content) {
+        console.log(content);
+        Notify("Error, no se puede agregar el grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function deleteGroup(group_id, name, self) {
+        var toolbarLink = $(self);
+        var widget = toolbarLink.parents(".widget").eq(0).parent();
+        var disposeinterval = 300;
+        $.ajax({
+            url: "/Users/_DeleteGroup/?group_id=" + group_id,
+            type: "DELETE",
+            dataType: "html",
+            traditional: true,
+            contentType: false,
+            success: function (data) {
+                Notify("El grupo '" + name + "' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                widget.hide(disposeinterval, function () {
+                    widget.remove();
+                });
+            },
+            error: function () {
+                Notify("Error, no se puede borrar el grupo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
+        });
     }
 </script>
 <script>
@@ -73,30 +107,29 @@
 </script>
 <script>
     // script to filter the list of users 
-	(function ($) {
-	  jQuery.expr[':'].Contains = function(a,i,m){
-		  return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
-	  };
-	  function listFilter(list) {
-	      var input = $("#searchUsers");
-		$(input)
-		  .change( function () {
-			var filter = $(this).val();
-			if (filter) {
-			    $(list).find("a:not(:Contains(" + filter + "))").parent().parent().slideUp();
-			    $(list).find("a:Contains(" + filter + ")").parent().parent().slideDown();
-			} else {
-			    $(list).find(".userBox").slideDown();
-			}
-			return false;
-		  })
-		.keyup( function () {
-			    $(this).change();
-		});
-	  }
-	  $(function () {
-	      listFilter($("#userList"));
-	  });
-	}(jQuery));
+    function filterUsers(element) {
+        var value = $(element).val().toLowerCase();
+        $("#userList").children().each(function () {
+            if ($(this).text().toLowerCase().includes(value)) {
+                $(this).show(300);
+            }
+            else {
+                $(this).hide(300)
+            }
+        });
+    }
 </script> 
+<script>
+    function filterGroups(element) {
+        var value = $(element).val().toLowerCase();
+        $("#groupList .widget-caption").each(function () {
+            if ($(this).text().toLowerCase().includes(value)) {
+                $(this).parent().parent().parent().parent().show(300);
+            }
+            else {
+                $(this).parent().parent().parent().parent().hide(300)
+            }
+        });
+    }
+</script>
 }

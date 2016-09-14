@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
+
     public class ConfigController : Controller
     {
         RoleProvider roleProvider = new RoleProvider();

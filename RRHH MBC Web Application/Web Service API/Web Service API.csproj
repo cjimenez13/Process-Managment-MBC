@@ -215,7 +215,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataAccess\AccountData.cs" />
     <Compile Include="DataAccess\GroupsData.cs" />
     <Compile Include="DataAccess\RolesData.cs" />

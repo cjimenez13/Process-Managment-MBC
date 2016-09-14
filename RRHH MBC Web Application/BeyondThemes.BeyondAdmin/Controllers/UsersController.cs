@@ -1,30 +1,29 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
 using Model;
+using MvcSiteMapProvider;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
+
     public class UsersController : Controller
     {
         UsersProvider userProvider = new UsersProvider();
+        GroupProvider groupProvider = new GroupProvider();
+
         // GET: Users
         public ActionResult Index()
         {
             return View();
         }
-        public ActionResult Group()
+        public ActionResult Group(string id_group)
         {
-            return View();
+            return View(new Model.GroupModel(id_group));
         }
         public new ActionResult Profile(string id)
         {
@@ -90,6 +89,18 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             {
                 return Json("No files selected.");
             }
+        }
+
+        [HttpDelete]
+        public ActionResult _DeleteUserFile(string id_file)
+        {
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.id_file = id_file;
+            if (userProvider.deleteUserFile(fileDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
         }
 
         [HttpPost]
@@ -190,10 +201,16 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 userDTO.birthdate = model.birthdate;
                 if (userProvider.postUser(userDTO).Result)
                 {
-                    return new HttpStatusCodeResult(200);
+                    return _UsersList();
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [HttpGet]
+        public ActionResult _UsersList()
+        {
+            return PartialView("/Views/Users/_UsersList.cshtml", new Model.ListUserModel());
         }
 
         [HttpGet]
@@ -230,7 +247,54 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
 
+        [HttpGet]
+        public ActionResult _GroupList()
+        {
+            return PartialView("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel());
+        } 
 
+        [HttpPost]
+        public ActionResult _AddGroup(string name)
+        {
+            if (ModelState.IsValid)
+            {
+                GroupDTO groupDTO = new GroupDTO();
+                groupDTO.groupName = name;
+                if (groupProvider.postGroup(groupDTO).Result)
+                {
+                    return _GroupList();
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [HttpPut]
+        public ActionResult _EditGroup(string id_group, string name)
+        {
+            if (ModelState.IsValid)
+            {
+                GroupDTO groupDTO = new GroupDTO();
+                groupDTO.id_group = id_group;
+                groupDTO.groupName = name;
+                if (groupProvider.putGroup(groupDTO).Result)
+                {
+                    return Json(groupDTO);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [HttpDelete]
+        public ActionResult _DeleteGroup(string group_id)
+        {
+            GroupDTO groupDTO = new GroupDTO();
+            groupDTO.id_group = group_id;
+            if (groupProvider.deleteGroup(groupDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
 
 
     }

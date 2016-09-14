@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
+
     public class CategoriesController : Controller
     {
         // GET: Categories

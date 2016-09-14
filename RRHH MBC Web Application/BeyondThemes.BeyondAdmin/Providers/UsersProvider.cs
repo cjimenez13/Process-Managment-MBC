@@ -226,5 +226,18 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+        public async Task<bool> deleteUserFile(FileDTO fileDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/users/files/?id_file=" + fileDTO.id_file).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }

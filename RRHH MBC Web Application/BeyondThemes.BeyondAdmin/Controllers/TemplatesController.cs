@@ -8,6 +8,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 {
     public class TemplatesController : Controller
     {
+ 
         // GET: Templates
         public ActionResult Index()
         {

@@ -1,18 +1,24 @@
-﻿@{
+﻿@model Model.GroupModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
-    ViewBag.Title = "Grupos";
+    ViewBag.Title = "Grupo "+Model.groupDTO.groupName;
     ViewBag.Description = "Información del grupo";
 }
-
 <div class="row">
     <div class="col-xs-12">
         <div class="widget">
             <!--Widget Header-->
             <div class="widget-header bordered-top bordered-primary">
-                <span class="widget-caption">Grupo 1</span>
+                <span class="widget-caption" id="groupTitle">Grupo @Model.groupDTO.groupName</span>
                 <div class="widget-buttons">
-                    <button class="btn btn-sky btn-sm">Editar</button>
-                    <button class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button>
+                    <button class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_editGroup">
+                    <span class="visible-xs"><i class="fa fa-pencil"></i></span>
+                    <span class="hidden-xs">Editar</span>
+                    </button>
+                    <button class="btn btn-danger btn-sm" style="margin-left:10px">
+                        <span class="visible-xs"><i class="fa fa-trash"></i></span>
+                        <span class="hidden-xs">Eliminar</span>
+                    </button>
                 </div>
             </div>
             <!--Widget Body-->
@@ -22,36 +28,51 @@
                         <!-- Filter area -->
                         <div class="row" style="margin-bottom:30px">
                             <!-- search bar -->
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-8 col-xs-10">
                                 <span class="input-icon">
-                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterGroupUsers(this)">
                                     <i class="glyphicon glyphicon-search blue"></i>
                                 </span>
                             </div>
-                            <div class="col-md-offset-4 col-md-2" style="">
-                                <button class="btn btn-success btn-block">Agregar integrante</button>
+                            <div class="col-lg-offset-4 col-lg-2 col-md-4 col-xs-2">
+                                <button class="btn btn-success btn-block">
+                                    <span class="visible-xs"><i class="fa fa-plus"></i></span>
+                                    <span class="hidden-xs">Agregar integrante</span>
+                                </button>
                             </div>
                         </div>
+                        <!-- Members -->
                         <div class="row">
                             <div class="col-xs-12">
-                                <p>Mostrando 10 de 20</p>
+                                <p>Mostrando @Model.groupUsers.Count miembros</p>
                             </div>
                         </div>
                         <!-- Users box -->
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-4 col-xs-12">
-                                <div class="databox databox-graded">
-                                    <div class="databox-left no-padding">
-                                        <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
-                                    </div>
-                                    <a href="@Url.Action("Profile")">
-                                        <div class="databox-right padding-top-20 bg-whitesmoke">
-                                            <div class="databox-text darkgray" style="font-size:14px">JAVI JIMENEZ</div>
-                                            <div class="databox-text darkgray"><i class="fa fa-envelope"></i>cjimenez13@outlook.com</div>
+                        <div class="row" id="GroupUsersList">
+                            @foreach (var user in Model.groupUsers)
+                            {
+                                var name = user.name + " " + user.fLastName + " " + user.sLastName;
+                                <div class="col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="databox databox-graded" style="margin-bottom:10px">
+                                        <div class="databox-left no-padding">
+                                            <img src="data:Image/png;base64,@user.photoBase64" style="width:65px; height:65px;">
                                         </div>
-                                    </a>
+                                        <a href="@Url.Action("Profile")">
+                                            <div class="databox-right padding-top-20 bg-whitesmoke">
+                                                <div class="databox-text darkgray" style="font-size:14px">@name</div>
+                                                @if (user.email != "")
+                                                {
+                                                    <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.email</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.userName</div>
+                                                }
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>  
@@ -59,3 +80,31 @@
         </div>
     </div>
 </div>
+
+<!-- Modal to edit group -->
+@{ Html.RenderPartial("/Views/Users/_EditGroup.cshtml", new Model.EditGroup(Model.groupDTO.id_group, Model.groupDTO.groupName));}
+
+@section PageScripts{
+<script>
+    function GroupEditedSuccess(content) {
+        console.log(content)
+        Notify("El grupo ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $("#groupTitle").text(content.groupName)
+    }
+    function UserEditedFailure(content) {
+        console.log(content);
+        Notify("Error, no se puede editar el grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function filterGroupUsers(element){
+        var value = $(element).val().toLowerCase();
+        $("#GroupUsersList").children().each(function () {
+            if ($(this).text().toLowerCase().includes(value)) {
+                $(this).show(300);
+            }
+            else {
+                $(this).hide(300)
+            }
+        });
+    }
+</script>    
+}

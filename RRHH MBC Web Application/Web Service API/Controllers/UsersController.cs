@@ -75,6 +75,17 @@ namespace Web_Service_API.Controllers
             return UsersData.getUserFiles(user);
         }
 
+        [Route("Files")]
+        [HttpDelete]
+        public IHttpActionResult deleteFile(string id_file)
+        {
+            if (!UsersData.deleteFile(id_file))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
         [Route("File")]
         [HttpPost]
         public IHttpActionResult File(FileDTO fileDTO)

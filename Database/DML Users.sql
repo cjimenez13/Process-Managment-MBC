@@ -11,7 +11,8 @@ begin
 	u.direction, u.birthdate, u.[password],
 	(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
 	(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
-	(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id
+	(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
+	(select up.photoData from UsersPhotos up where u.id_user = up.[user_id] ) as photoData
 	from Users u 
 	where u.isEnabled = 1;
 end
@@ -162,13 +163,13 @@ go
 
 -- drop procedure sp_insert_userFile
 create procedure sp_insert_userFile
-@user nvarchar(50), @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(50)
+@user nvarchar(50), @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(50), @fileName nvarchar(80)
 as
 begin
 	declare @id int;
 	set @id = (select [id_user] from Users where email = @user or userName = @user);
-	insert into UsersFiles([user_id],fileData, name, [description], createdDate, fileType) 
-	values (@id, @fileData, @name, @description,GETDATE(), @fileType);
+	insert into UsersFiles([user_id],fileData, name, [description], createdDate, fileType, [fileName]) 
+	values (@id, @fileData, @name, @description,GETDATE(), @fileType, @fileName);
 end
 go
 -- drop procedure sp_get_userFiles
@@ -178,10 +179,14 @@ as
 begin
 	declare @id int;
 	set @id = (select [id_user] from Users where email = @user or userName = @user);
-	select uf.name,uf.createdDate,uf.[description],uf.id_file,uf.fileType,uf.fileData from UsersFiles uf where uf.[user_id] = @id
+	select uf.name,uf.createdDate,uf.[description],uf.id_file,uf.fileType, uf.[fileName], CONVERT(varbinary(max),uf.fileData) as fileData from UsersFiles uf where uf.[user_id] = @id
 end
+go
 
-select * from UsersFiles
-
-execute sp_get_userFiles 'cjimenez13@outlook.com'
-select * from UsersFiles uf 
+create procedure sp_delete_userFile
+@id_file nvarchar(50)
+as
+begin
+	delete from UsersFiles where id_file = @id_file;
+	select @@ROWCOUNT 
+end

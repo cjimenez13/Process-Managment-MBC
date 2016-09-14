@@ -1,17 +1,19 @@
 ﻿@model Model.RoleModel
 @{
+    ViewBag.Title = "Rol";
+    ViewBag.Description = "Rol";
     Layout = "~/Views/Shared/_Default.cshtml";
 }
 <div class="row">
     <div class="col-xs-12">
         <h5 class="row-title"><i class="typcn typcn-folder themeprimary"></i>Modulos y permisos</h5>
     </div>
-    <div class="col-lg-6 col-sm-6 col-xs-6" id="tabs-permissions" data-id="@Model.id_role">
+    <div class="col-lg-6 col-sm-6 col-xs-12" id="tabs-permissions" data-id="@Model.id_role" style="margin-bottom:15px">
         <!--Modules and permissions-->
         @{ Html.RenderPartial("/Views/Config/_RoleModules.cshtml", Model);}
         <div class="horizontal-space"></div>
     </div>
-    <div class="col-lg-6 col-sm-6 col-xs-6">
+    <div class="col-lg-6 col-sm-6 col-xs-12">
         <div class="widget">
             <div class="widget-header bordered-bottom bordered-sky">
                 <span class="widget-caption">Elementos</span>

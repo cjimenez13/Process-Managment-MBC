@@ -31,7 +31,7 @@ go
 create procedure sp_get_roles
 as
 begin
-	select r.id_role, r.name, r.[description], count(rp.role_id) as [permissions]
+	select r.id_role, r.name, r.[description], sum(case rp.isEnabled when 1 then 1 else 0 end) as [permissions]
 	from Roles r left outer join Roles_Permissions rp on r.id_role = rp.role_id
 	group by r.id_role, r.name, r.[description]
 end

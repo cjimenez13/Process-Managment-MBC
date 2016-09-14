@@ -21,16 +21,13 @@
             <!-- Table data-->
             @foreach (var file in Model.filesList)
             {
+                string imgURL = "data:" + file.fileType + ";base64," + file.fileBase64;
                 <tr>
-                    <td>@file.name</td>
-                    <td>@file.createdDate</td>
-                    <td>@file.description</td>
-                    @{ 
-                        string imgURL = "data:"+file.fileType+";base64," + file.fileBase64;
-                    }
-                    <td><img src=@file.fileBase64 class="header-avatar avatar" /></td>
-                    <td><button class="btn btn-sky" download="@imgURL"><i class="fa fa-download"></i></button></td>
-                    <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                    <td onclick="location.href = '@(imgURL)'">@file.name</td>
+                    <td onclick="location.href = '@(imgURL)'">@file.createdDate</td>
+                    <td onclick="location.href = '@(imgURL)'">@file.description</td>
+                    <td><button class="btn btn-sky" onclick="downloadFile('@file.fileBase64','@file.fileType', '@file.fileName')"><i class="fa fa-download"></i></button></td>
+                    <td><button class="btn btn-danger" onclick="deleteUserFile('@file.id_file','@file.name',this)" ><i class="fa fa-trash"></i></button></td>
                 </tr>
             }
         </tbody>

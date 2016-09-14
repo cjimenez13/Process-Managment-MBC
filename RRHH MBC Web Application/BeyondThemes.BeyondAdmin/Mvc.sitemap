@@ -11,11 +11,13 @@
     <mvcSiteMapNode title="Encuestas" controller="Forms" action="Index" imageUrl="fa fa-list" description="Lista de encuestas">
       <mvcSiteMapNode title="Encuesta 1" controller="Forms" action="Form" description="Resumen resultados" visibility="SiteMapPathHelper,!*"/>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Consultas" controller="Scripts" action="Index" imageUrl="fa fa-code" description="Registro de consultas"/>
+    <mvcSiteMapNode title="Consultas" url="/Scripts/Index" imageUrl="fa fa-code" description="Registro de consultas" route="Default"/>
     <mvcSiteMapNode title="Personas" controller="Users" action="Index" imageUrl="fa fa-user" description="Grupos y personas">
-      <mvcSiteMapNode title="Perfil" controller="Users" action="Profile" description="Pefil" visibility="SiteMapPathHelper,!*"/>
-      <mvcSiteMapNode title="Grupos" controller="Users" action="Group" description="Información del grupo" visibility="SiteMapPathHelper,!*"/>
+      <mvcSiteMapNode title="Perfil" controller="Users" action="Profile" description="Pefil" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"/>
+      <mvcSiteMapNode title="Grupos" controller="Users" action="Group" description="Información del grupo" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id_group"/>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Configuración" controller="Config" action="Index" imageUrl="fa fa-gears" description="Configuración"/>
+    <mvcSiteMapNode title="Configuración" controller="Config" action="Index" imageUrl="fa fa-gears" description="Configuración">
+      <mvcSiteMapNode title="Roles" controller="Config" action="Role" description="Configuración del rol" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"/>
+    </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>

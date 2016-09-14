@@ -8,10 +8,11 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 {
     public class ScriptsController : Controller
     {
+
         // GET: Script
         public ActionResult Index()
         {
-            return View();
+            return View("/Views/Scripts/Index.cshtml");
         }
     }
 }

@@ -4,22 +4,25 @@
         <div class="form-title">
             <div class="row">
                 <!-- search bar -->
-                <div class="col-md-8">
+                <div class="col-lg-8 col-md-4 col-sm-4" style="margin-bottom:10px">
                     Lista de roles
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-8 col-sm-8" >
                     <!-- Add roles-->
                     @using (Ajax.BeginForm("_AddUserRole", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSuccessAddRole", OnFailure = "onFailureAddRole" }))
                      {
                         @Html.HiddenFor(m => m.user_id)
                         <div class="form-group" style="margin:0px">
-                            <div class="col-md-9">
+                            <div class="col-md-9 col-sm-9 col-xs-9">
                                 @Html.DropDownListFor(m => m.selectedRole, Model._RolesSelect, "Seleccione el rol", new { @class = "form-control", @style = "width:100%" })
                                 @Html.ValidationMessageFor(m => m.selectedRole, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-success btn-block" type="submit">Añadir rol</button>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <button class="btn btn-success btn-block" type="submit">
+                                <span class="visible-xs"><i class="fa fa-plus"></i></span>
+                                <span class="hidden-xs">Añadir rol</span>
+                            </button>
                         </div>
                     }
                 </div>
@@ -33,7 +36,7 @@
     <!--List of user roles -->
     @foreach (var userRole in Model.userRolesList)
     {
-        <div class="col-xs-4">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" >
             <div class="widget radius-bordered">
                 <div class="widget-header">
                     <span class="widget-caption"><strong>@userRole.name</strong></span>

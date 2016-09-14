@@ -162,6 +162,9 @@
 
 @section PageScripts{
 <script>
+    function downloadFile(base64, fileType, fileName) {
+        download("data:"+fileType+";base64,"+base64, fileName, fileType);
+    }
     function CompletedFormRegister(data) {
         Notify('El usuario se ha registrado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
     }
@@ -192,6 +195,27 @@
             },
             error: function () {
                 Notify("Error, no se puede borrar el rol '"+name+"'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
+        });
+    }
+    function deleteUserFile(id_file, name, self) {
+        var btnColumn = $(self);
+        var row = btnColumn.parents("tr").eq(0).parent();
+        var disposeinterval = 300;
+        $.ajax({
+            url: "/Users/_DeleteUserFile/?id_file=" + id_file,
+            type: "DELETE",
+            dataType: "html",
+            traditional: true,
+            contentType: false,
+            success: function (data) {
+                Notify("El archivo '" + name + "' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                row.hide(disposeinterval, function () {
+                    row.remove();
+                });
+            },
+            error: function () {
+                Notify("Error, no se puede borrar el archivo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
             }
         });
     }

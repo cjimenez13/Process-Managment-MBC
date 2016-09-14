@@ -16,7 +16,7 @@ namespace DataTransferObjects
         public string description { get; set; }
         public string id_file { get; set; }
         public string fileType { get; set; }
-
+        public string fileName { get; set; }
     }
     public class UserDTO
     {

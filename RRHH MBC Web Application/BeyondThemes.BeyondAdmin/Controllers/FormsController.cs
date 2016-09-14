@@ -8,6 +8,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 {
     public class FormsController : Controller
     {
+        [Authorize]
         // GET: Forms
         public ActionResult Index()
         {

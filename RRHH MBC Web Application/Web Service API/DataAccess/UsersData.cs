@@ -80,6 +80,8 @@ namespace Web_Service_API.DataAccess
                     userDTO.birthdate = rdr["birthdate"].ToString();
                     userDTO.userName = rdr["userName"].ToString();
                     userDTO.id = rdr["id"].ToString();
+                    byte[] photo = (byte[])rdr["photoData"];
+                    userDTO.photoBase64 = Convert.ToBase64String(photo);
                     users.Add(userDTO);
                 }
             };
@@ -113,7 +115,6 @@ namespace Web_Service_API.DataAccess
                     userDTO.id = rdr["id"].ToString();
                     userDTO.user_id = rdr["id_user"].ToString();
                     byte[] photo = (byte[])rdr["photoData"];
-                    //string photo = rdr["photoData"].ToString();
                     userDTO.photoBase64 = Convert.ToBase64String(photo); 
                 }
             };
@@ -138,6 +139,7 @@ namespace Web_Service_API.DataAccess
                     fileDTO.createdDate = rdr["createdDate"].ToString();
                     fileDTO.id_file = rdr["id_file"].ToString();
                     fileDTO.fileType = rdr["fileType"].ToString();
+                    fileDTO.fileName = rdr["fileName"].ToString();
                     byte[] file = (byte[])rdr["fileData"];
                     fileDTO.fileBase64 = Convert.ToBase64String(file);
                     fileDTOList.Add(fileDTO);
@@ -352,6 +354,25 @@ namespace Web_Service_API.DataAccess
 
                 command.Parameters.Add("@user_id", SqlDbType.Int);
                 command.Parameters["@user_id"].Value = user_id;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool deleteFile(string id_file)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_delete_userFile", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_file", SqlDbType.Int);
+                command.Parameters["@id_file"].Value = id_file;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();
