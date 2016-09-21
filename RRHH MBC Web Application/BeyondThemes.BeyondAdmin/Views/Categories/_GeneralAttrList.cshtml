@@ -2,6 +2,9 @@
 
 @for (int iAttr = 0; iAttr != Model.generalAttributesModel.Count; iAttr++)
 {
+    using (Ajax.BeginForm("_EditGeneralAttribute", "Categories", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "GeneralAttributeEditSuccess", OnFailure = "GeneralAttributeEditFailure" }))
+    {
+        @Html.AntiForgeryToken()
     <tr>
         <td style="padding-left:10px;padding-right:50px">
             @Html.TextBoxFor(m => m.generalAttributesModel[iAttr].attribute, new { @class = "form-control", @placeholder = "", @style = "min-width:30rem" })
@@ -25,14 +28,15 @@
             </div>
         </td>
         <td style="width:10%">
-            <button class="btn btn-sky btn-sm" type="button" style="margin-right:20px">
+            <button class="btn btn-sky btn-sm" type="submit" style="margin-right:20px">
                 <span class="glyphicon glyphicon-floppy-saved"></span>
             </button>
-            <button class="btn btn-danger btn-sm btn-remove" type="button">
+            <a class="btn btn-danger btn-sm btn-remove">
                 <span class="glyphicon glyphicon-minus"></span>
-            </button>
+            </a>
         </td>
     </tr>
+    }
 }
 
 @*<tr>

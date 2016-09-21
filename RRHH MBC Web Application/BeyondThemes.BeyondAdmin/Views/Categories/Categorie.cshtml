@@ -137,7 +137,14 @@
             table.prepend(content);
         }
         function GeneralAttributeAddedFailure(content) {
-            Notify("Error, no se puede agreaar el atributo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            Notify("Error, no se puede agregar el atributo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- General Attrbute Edit
+        function GeneralAttributeEditSuccess(content) {
+            Notify("El atributo ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        }
+        function GeneralAttributeEditFailure(content) {
+            Notify("Error, no se puede editado el atributo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
         //-- Categorie Edited
         function CategorieEditedSuccess(categorieDTO) {

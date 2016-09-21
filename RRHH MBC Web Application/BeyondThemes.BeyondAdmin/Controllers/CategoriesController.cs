@@ -105,5 +105,78 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult _EditGeneralAttribute(Model.EditGeneralAttributeModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_type).Result;
+                Regex r = new Regex(attributesTypes.reg_expr);
+                GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
+                if (!r.IsMatch(pModel.value))
+                {
+                    generalAttributeDTO.name = pModel.attribute;
+                    generalAttributeDTO.value = pModel.value;
+                    generalAttributeDTO.type_id = pModel.id_type;
+                    generalAttributeDTO.user = Request.Cookies["user_id"].Value;
+                    generalAttributeDTO.createdBy = generalAttributeDTO.user;
+                    generalAttributeDTO.id_attribute = pModel.id_attribute;
+                    if (categorieProvider.putGeneralAttribute(generalAttributeDTO).Result)
+                    {
+                        return new HttpStatusCodeResult(200);
+                    }
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(404, "El campo valor es inválido");
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteGeneralAttribute(string id_attribute, string user)
+        {
+            GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
+            generalAttributeDTO.id_attribute = id_attribute;
+            generalAttributeDTO.user = user;
+            if (categorieProvider.deleteGeneralAttribute(generalAttributeDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        //------------------------------------------ Attributes List ----------------------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddAttributeList(Model.AddAttributeListModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_type).Result;
+                Regex r = new Regex(attributesTypes.reg_expr);
+                AttributeListDTO generalAttributeDTO = new AttributeListDTO();
+                if (!r.IsMatch(pModel.value))
+                {
+                    generalAttributeDTO.name = pModel.attribute;
+                    generalAttributeDTO.value = pModel.value;
+                    generalAttributeDTO.type_id = pModel.id_type;
+                    generalAttributeDTO.user = Request.Cookies["user_id"].Value;
+                    generalAttributeDTO.createdBy = generalAttributeDTO.user;
+                    generalAttributeDTO.attribute_id = pModel.attribute_id;
+                    if (categorieProvider.postAttributeList(generalAttributeDTO).Result)
+                    {
+                        return _GeneralAttrList(pModel.attribute_id);
+                    }
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(404, "El campo valor es inválido");
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error no se puede agregar el atributo");
+        }
     }
 }

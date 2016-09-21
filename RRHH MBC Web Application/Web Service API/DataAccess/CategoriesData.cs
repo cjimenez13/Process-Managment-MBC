@@ -161,6 +161,58 @@ namespace Web_Service_API.DataAccess
             };
             return generalAttributeDTO;
         }
+        public static List<AttributeListDTO> getAttributesList(string id_attribute)
+        {
+            List<AttributeListDTO> AttributesListDTO = new List<AttributeListDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_get_AttributesList", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_attribute", SqlDbType.Int);
+                command.Parameters["@id_attribute"].Value = id_attribute;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    AttributeListDTO attributeListDTO = new AttributeListDTO();
+                    attributeListDTO.id_attributeValue = rdr["id_attributeValue"].ToString();
+                    attributeListDTO.attribute_id = rdr["attribute_id"].ToString();
+                    attributeListDTO.name = rdr["name"].ToString();
+                    attributeListDTO.type_id = rdr["type"].ToString();
+                    attributeListDTO.value = rdr["value"].ToString();
+                    attributeListDTO.isEnabled = rdr["isEnabled"].ToString();
+                    attributeListDTO.createdBy = rdr["createdBy"].ToString();
+                    attributeListDTO.createdDate = rdr["createdDate"].ToString();
+                    AttributesListDTO.Add(attributeListDTO);
+                }
+            };
+            return AttributesListDTO;
+        }
+        public static AttributeListDTO getAttributeList(string id_attributeValue)
+        {
+            AttributeListDTO attributeListDTO = new AttributeListDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_get_AttributeList", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_attributeValue", SqlDbType.Int);
+                command.Parameters["@id_attributeValue"].Value = id_attributeValue;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    attributeListDTO.id_attributeValue = rdr["id_attributeValue"].ToString();
+                    attributeListDTO.attribute_id = rdr["attribute_id"].ToString();
+                    attributeListDTO.name = rdr["name"].ToString();
+                    attributeListDTO.type_id = rdr["type"].ToString();
+                    attributeListDTO.value = rdr["value"].ToString();
+                    attributeListDTO.isEnabled = rdr["isEnabled"].ToString();
+                    attributeListDTO.createdBy = rdr["createdBy"].ToString();
+                    attributeListDTO.createdDate = rdr["createdDate"].ToString();
+                }
+            };
+            return attributeListDTO;
+        }
 
         //--------------------------------------------- Inserts --------------------------------------------
         public static bool insertCategorie(CategorieDTO pCategorieDTO)
@@ -208,6 +260,35 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@createdBy"].Value = pGeneralAttributeDTO.createdBy;
                 command.Parameters.Add("@pUser", SqlDbType.Int);
                 command.Parameters["@pUser"].Value = pGeneralAttributeDTO.user;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
+        public static bool insertAttributeList(AttributeListDTO pAttributeListDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_insert_AttributeList", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@attribute_id", SqlDbType.Int);
+                command.Parameters["@attribute_id"].Value = pAttributeListDTO.attribute_id;
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pAttributeListDTO.name;
+                command.Parameters.Add("@type_id", SqlDbType.Int);
+                command.Parameters["@type_id"].Value = pAttributeListDTO.type_id;
+                command.Parameters.Add("@value", SqlDbType.NVarChar);
+                command.Parameters["@value"].Value = pAttributeListDTO.value;
+                command.Parameters.Add("@createdBy", SqlDbType.Int);
+                command.Parameters["@createdBy"].Value = pAttributeListDTO.createdBy;
+                command.Parameters.Add("@pUser", SqlDbType.Int);
+                command.Parameters["@pUser"].Value = pAttributeListDTO.user;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
@@ -274,6 +355,35 @@ namespace Web_Service_API.DataAccess
                 return false;
             };
         }
+        public static bool updateAttributeList(AttributeListDTO pAttributeListDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_update_AttributeList", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_attributeValue", SqlDbType.Int);
+                command.Parameters["@id_attributeValue"].Value = pAttributeListDTO.id_attributeValue;
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pAttributeListDTO.name;
+                command.Parameters.Add("@type_id", SqlDbType.Int);
+                command.Parameters["@type_id"].Value = pAttributeListDTO.type_id;
+                command.Parameters.Add("@value", SqlDbType.Bit);
+                command.Parameters["@value"].Value = pAttributeListDTO.value;
+                command.Parameters.Add("@isEnabled", SqlDbType.Bit);
+                command.Parameters["@isEnabled"].Value = pAttributeListDTO.isEnabled;
+                command.Parameters.Add("@pUser", SqlDbType.Int);
+                command.Parameters["@pUser"].Value = pAttributeListDTO.user;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
         //------------------------------------------------ Deletes ----------------------------------------------------
         public static bool deleteCategorie(string id_categorie)
         {
@@ -304,6 +414,27 @@ namespace Web_Service_API.DataAccess
 
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
                 command.Parameters["@id_attribute"].Value = id_attribute;
+                command.Parameters.Add("@pUser", SqlDbType.Int);
+                command.Parameters["@pUser"].Value = user;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool deleteAttributeList(string id_attributeValue, string user)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_delete_AttributeList", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_attributeValue", SqlDbType.Int);
+                command.Parameters["@id_attributeValue"].Value = id_attributeValue;
                 command.Parameters.Add("@pUser", SqlDbType.Int);
                 command.Parameters["@pUser"].Value = user;
 

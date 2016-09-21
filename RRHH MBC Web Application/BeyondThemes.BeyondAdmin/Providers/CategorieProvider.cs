@@ -124,6 +124,42 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return generalAttribute;
             }
         }
+        public async Task<List<AttributeListDTO>> getAttributesList(string id_attribute)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<AttributeListDTO> attributesList = new List<AttributeListDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/categories/attriutesList/?id_attribute=" + id_attribute).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    attributesList = serializer.Deserialize<List<AttributeListDTO>>(result);
+                }
+                return attributesList;
+            }
+        }
+        public async Task<AttributeListDTO> getAttributeList(string id_attributeValue)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                AttributeListDTO attributeList = new AttributeListDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/categories/attriutesList/?id_attributeValue=" + id_attributeValue).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    attributeList = serializer.Deserialize<AttributeListDTO>(result);
+                }
+                return attributeList;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
         public async Task<bool> postCategorie(CategorieDTO pCategorieDTO)
         {
@@ -148,6 +184,21 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(pGeneralAttribute);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/categories/generalAttr", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> postAttributeList(AttributeListDTO pAttributeList)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(pAttributeList);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/categories/attriutesList", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -186,6 +237,21 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+        public async Task<bool> putGeneralAttribute(AttributeListDTO pAttributeList)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(pAttributeList);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/categories/attriutesList", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         //-------------------------------------- Deletes -----------------------------------------------
         public async Task<bool> deleteCategorie(CategorieDTO pCategorieDTO)
         {
@@ -206,6 +272,19 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/categories/generalAttr/?id_attribute=" + pGeneralAttributeDTO.id_attribute+"&?user="+pGeneralAttributeDTO.user).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> deleteAttributeList(AttributeListDTO pAttributeList)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/categories/attriutesList/?id_attributeValue=" + pAttributeList.id_attributeValue + "&?user=" + pAttributeList.user).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

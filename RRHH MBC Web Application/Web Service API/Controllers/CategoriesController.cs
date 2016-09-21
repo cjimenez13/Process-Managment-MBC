@@ -113,5 +113,53 @@ namespace Web_Service_API.Controllers
             AttributeTypeDTO type = CategoriesData.getAttributeTypes(id_type);
             return type;
         }
+
+        [Route("attriutesList")]
+        [HttpGet]
+        public IEnumerable<AttributeListDTO> getAttributesList(string id_attribute)
+        {
+            List<AttributeListDTO> attributes = CategoriesData.getAttributesList(id_attribute);
+            return attributes;
+        }
+
+        [Route("attriutesList")]
+        [HttpGet]
+        public AttributeListDTO getAttributeList(string id_attributeValue)
+        {
+            AttributeListDTO attribute = CategoriesData.getAttributeList(id_attributeValue);
+            return attribute;
+        }
+
+        [Route("attriutesList")]
+        [HttpPost]
+        public IHttpActionResult postAttributeList(AttributeListDTO pAttributeList)
+        {
+            if (!CategoriesData.insertAttributeList(pAttributeList))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [Route("attriutesList")]
+        [HttpPut]
+        public IHttpActionResult putAtrributeList(AttributeListDTO pAttributeList)
+        {
+            if (!CategoriesData.updateAttributeList(pAttributeList))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [Route("attriutesList")]
+        [HttpDelete]
+        public IHttpActionResult DeleteAttributeList(string id_attributeValue, string user)
+        {
+            if (!CategoriesData.deleteAttributeList(id_attributeValue, user))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

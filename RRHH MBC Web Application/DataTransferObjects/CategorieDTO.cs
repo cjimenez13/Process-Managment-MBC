@@ -32,4 +32,16 @@
         public string createdDate { get; set; }
         public string user { get; set; }
     }
+    public class AttributeListDTO
+    {
+        public string id_attributeValue { get; set; }
+        public string attribute_id { get; set; }
+        public string name { get; set; }
+        public string type_id { get; set; }
+        public string value { get; set; }
+        public string isEnabled { get; set; }
+        public string createdBy { get; set; }
+        public string createdDate { get; set; }
+        public string user { get; set; }
+    }
 }
