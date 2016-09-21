@@ -271,7 +271,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                HttpResponseMessage response = client.DeleteAsync("api/categories/generalAttr/?id_attribute=" + pGeneralAttributeDTO.id_attribute+"&?user="+pGeneralAttributeDTO.user).Result;
+                HttpResponseMessage response = client.DeleteAsync("api/categories/generalAttr/?id_attribute=" + pGeneralAttributeDTO.id_attribute+"&user="+pGeneralAttributeDTO.user).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

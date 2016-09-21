@@ -143,6 +143,7 @@ go
 
 
 --------------------------------------------- Attribute Values -----------------------------------------------
+-- exec sp_get_AttributesList @id_attribute=43
 create procedure sp_get_AttributesList 
 @id_attribute int as
 begin 
@@ -159,15 +160,8 @@ begin
 end
 go
 
-create procedure sp_get_generalAttribute
-@id_attribute int as
-begin 
-	select ca.id_attribute, ca.categorie_id, ca.name, ca.value, ca.isEnabled, ca.createdBy, ca.createdDate 
-	from CategorieAttributes ca 
-	where ca.id_attribute = @id_attribute
-end
-go
 -- drop procedure sp_insert_generalAttribute
+-- exec sp_insert_AttributeList @attribute_id = 43, @name = 'Laptop', @type_id = 1, @value = '1234', @createdBy = 75, @pUser = 75
 create procedure sp_insert_AttributeList
 @attribute_id int, @name nvarchar(50), @type_id tinyint, @value nvarchar(100), @createdBy int, @pUser int as
 begin

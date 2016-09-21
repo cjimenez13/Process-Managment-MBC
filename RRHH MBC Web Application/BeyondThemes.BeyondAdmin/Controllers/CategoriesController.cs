@@ -27,6 +27,10 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return PartialView("/Views/Categories/_GeneralAttrList.cshtml", new Model.GeneralAttributesModel(categorie_id));
         }
+        public ActionResult _CategorieGeneralAtr(string categorie_id)
+        {
+            return PartialView("/Views/Categories/_CategorieGeneralAtr.cshtml", new Model.GeneralAttributesModel(categorie_id));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,48 +84,53 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult _AddGeneralAttribute(Model.AddGeneralAttributeModel pModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || (pModel.id_typeA == "4" && pModel.attributeA != null) )
             {
-                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_type).Result;
-                Regex r = new Regex(attributesTypes.reg_expr);
+                AttributeTypeDTO attributesType = categorieProvider.getAttributeType(pModel.id_typeA).Result;
+                Regex r = new Regex(attributesType.reg_expr);
                 GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
-                if (!r.IsMatch(pModel.value))
+                if (attributesType.reg_expr == "" || r.Match(pModel.valueA).Success)
                 {
-                    generalAttributeDTO.name = pModel.attribute;
-                    generalAttributeDTO.value = pModel.value;
-                    generalAttributeDTO.type_id = pModel.id_type;
+                    generalAttributeDTO.name = pModel.attributeA;
+                    generalAttributeDTO.value = pModel.valueA != null ? pModel.valueA : "";
+                    generalAttributeDTO.type_id = pModel.id_typeA;
                     generalAttributeDTO.user = Request.Cookies["user_id"].Value;
                     generalAttributeDTO.createdBy = generalAttributeDTO.user;
-                    generalAttributeDTO.categorie_id = pModel.categorie_id;
+                    generalAttributeDTO.categorie_id = pModel.categorie_idA;
                     if (categorieProvider.postGeneralAttribute(generalAttributeDTO).Result)
                     {
-                        return _GeneralAttrList(pModel.categorie_id);
+                        return _GeneralAttrList(pModel.categorie_idA);
+                        //return _CategorieGeneralAtr(pModel.categorie_id);
                     }
                 }
                 else
                 {
-                    return new HttpStatusCodeResult(404, "El campo valor debe es inválido");
+                    return new HttpStatusCodeResult(404, "Error, el campo valor es inválido");
                 }
             }
-            return new HttpStatusCodeResult(404, "Can't find that");
+            else
+            {
+                return new HttpStatusCodeResult(404, "Error, debe completar todos los campos");
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
         }
 
         [HttpPut]
         [ValidateAntiForgeryToken]
         public ActionResult _EditGeneralAttribute(Model.EditGeneralAttributeModel pModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || (pModel.id_type == "4" && pModel.attribute != null))
             {
-                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_type).Result;
-                Regex r = new Regex(attributesTypes.reg_expr);
+                AttributeTypeDTO attributesType = categorieProvider.getAttributeType(pModel.id_type).Result;
+                Regex r = new Regex("^"+attributesType.reg_expr+ "$");
                 GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
-                if (!r.IsMatch(pModel.value))
+                if (attributesType.reg_expr == "" || r.Match(pModel.value).Success)
                 {
                     generalAttributeDTO.name = pModel.attribute;
                     generalAttributeDTO.value = pModel.value;
                     generalAttributeDTO.type_id = pModel.id_type;
+                    generalAttributeDTO.isEnabled = pModel.isEnabled == "on" ? "true" : "false";
                     generalAttributeDTO.user = Request.Cookies["user_id"].Value;
-                    generalAttributeDTO.createdBy = generalAttributeDTO.user;
                     generalAttributeDTO.id_attribute = pModel.id_attribute;
                     if (categorieProvider.putGeneralAttribute(generalAttributeDTO).Result)
                     {
@@ -133,19 +142,30 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     return new HttpStatusCodeResult(404, "El campo valor es inválido");
                 }
             }
+            else
+            {
+                foreach (ModelState modelState in ViewData.ModelState.Values)
+                {
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                        string sError = error.ErrorMessage;
+                    }
+                }
+                return new HttpStatusCodeResult(404, "Error, debe completar todos los campos");
+            }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
         }
         [HttpDelete]
-        public ActionResult _DeleteGeneralAttribute(string id_attribute, string user)
+        public ActionResult _DeleteGeneralAttribute(string id_attribute)
         {
             GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
             generalAttributeDTO.id_attribute = id_attribute;
-            generalAttributeDTO.user = user;
+            generalAttributeDTO.user = Request.Cookies["user_id"].Value; ;
             if (categorieProvider.deleteGeneralAttribute(generalAttributeDTO).Result)
             {
                 return new HttpStatusCodeResult(200);
             }
-            return new HttpStatusCodeResult(404, "Can't find that");
+            return new HttpStatusCodeResult(404, "Error, el atributo no se puede eliminar");
         }
 
         //------------------------------------------ Attributes List ----------------------------------------------

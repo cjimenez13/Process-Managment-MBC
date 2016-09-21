@@ -95,10 +95,9 @@ namespace Web_Service_API.DataAccess
                 SqlDataReader rdr = command.ExecuteReader();
                 while (rdr.Read())
                 {
-                    AttributeTypeDTO attributeTypeDTO = new AttributeTypeDTO();
-                    attributeTypeDTO.id_type = rdr["id_type"].ToString();
-                    attributeTypeDTO.type = rdr["type"].ToString();
-                    attributeTypeDTO.reg_expr = rdr["reg_expr"].ToString();
+                    atributeTypeDTO.id_type = rdr["id_type"].ToString();
+                    atributeTypeDTO.type = rdr["type"].ToString();
+                    atributeTypeDTO.reg_expr = rdr["reg_expr"].ToString();
                 }
             };
             return atributeTypeDTO;
@@ -178,7 +177,7 @@ namespace Web_Service_API.DataAccess
                     attributeListDTO.id_attributeValue = rdr["id_attributeValue"].ToString();
                     attributeListDTO.attribute_id = rdr["attribute_id"].ToString();
                     attributeListDTO.name = rdr["name"].ToString();
-                    attributeListDTO.type_id = rdr["type"].ToString();
+                    attributeListDTO.type_id = rdr["type_id"].ToString();
                     attributeListDTO.value = rdr["value"].ToString();
                     attributeListDTO.isEnabled = rdr["isEnabled"].ToString();
                     attributeListDTO.createdBy = rdr["createdBy"].ToString();
@@ -339,7 +338,7 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@name"].Value = pGeneralAttributeDTO.name;
                 command.Parameters.Add("@type_id", SqlDbType.Int);
                 command.Parameters["@type_id"].Value = pGeneralAttributeDTO.type_id;
-                command.Parameters.Add("@value", SqlDbType.Bit);
+                command.Parameters.Add("@value", SqlDbType.NVarChar);
                 command.Parameters["@value"].Value = pGeneralAttributeDTO.value;
                 command.Parameters.Add("@isEnabled", SqlDbType.Bit);
                 command.Parameters["@isEnabled"].Value = pGeneralAttributeDTO.isEnabled;

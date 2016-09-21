@@ -1,0 +1,76 @@
+﻿@model Model.AttributesListModel
+@{ 
+    string idModal = "modal_Lists" + Model.attribute_idVA;
+}
+<div class="modal fade" id=@idModal tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Nueva Lista</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-scrollable">
+                            <table class="table table-hover" id="table-generalAttributes">
+                                <!-- column titles -->
+                                <thead class="">
+                                    <tr>
+                                        <th>Atributo</th>
+                                        <th>Tipo</th>
+                                        <th>Valor</th>
+                                        <th>Habilitado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    @{ Html.RenderPartial("/Views/Categories/_AttributeValuesList.cshtml", Model);}
+                                    <!--Spaces for add new row -->
+                                    <tr>
+                                        @using (Ajax.BeginForm("_AddGeneralAttribute", "Categories", new AjaxOptions { HttpMethod = "POST", OnSuccess = "GeneralAttributeAddedSuccess", OnFailure = "GeneralAttributeAddedFailure" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.HiddenFor(m => m.attribute_idVA)
+                                            <td style="padding-left:10px;padding-right:50px">
+                                                @Html.TextBoxFor(m => m.attributeVA, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem" })
+                                                @Html.ValidationMessageFor(m => m.attributeVA, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td style="width:15%;padding-right:50px">
+                                                @Html.DropDownListFor(m => m.id_typeVA, Model._TypeSelect, new { @class = "form-control", @style = "min-width:20rem", @onchange = "onGeneralAttrChange(this)" })
+                                            </td>
+                                            <td style="padding-left:10px;padding-right:30px">
+                                                @Html.TextBoxFor(m => m.valueVA, new { @class = "form-control", @placeholder = "", @style = "min-width:25rem" })
+                                                @Html.ValidationMessageFor(m => m.valueVA, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td style="padding-left:30px">
+                                                <div class="form-group">
+                                                    <div class="checkbox" style="margin:0px">
+                                                        <label style="margin-left:15px">
+                                                            @Html.CheckBoxFor(m => m.isEnabledVA, new { @checked = "checked", @class = "colored-success", @disabled = "true" })
+                                                            <span class="text"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="width:5%">
+                                                <button class="btn btn-success btn-sm" type="submit" style="margin-left:25px" data-toggle="tooltip" data-placement="top" title="Agregar">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Crear</button>
+            </div>
+        </div>
+    </div>
+</div>

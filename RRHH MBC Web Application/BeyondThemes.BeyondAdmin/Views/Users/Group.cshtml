@@ -113,7 +113,6 @@
         });
     }
     function deleteGroupUser(user_id, group_id, name, element) {
-        console.log(user_id);
         $.ajax({
             url: "/Users/_DeleteGroupUser/?group_id=" + group_id + "&user_id=" + user_id,
             type: "DELETE",
@@ -132,6 +131,5 @@
         });
     }
     $('#selected_userGroup_id').select2();
-    console.log($('#selected_userGroup_id').html())
 </script>    
 }

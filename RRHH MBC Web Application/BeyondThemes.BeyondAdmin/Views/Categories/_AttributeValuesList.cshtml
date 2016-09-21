@@ -1,0 +1,54 @@
+﻿@model Model.AttributesListModel
+
+@foreach (var attributeDTO in Model.attributeListDTO)
+{
+    string attribute = attributeDTO.name;
+    string value = attributeDTO.value;
+    string type_name = "";
+    foreach(var type in Model.attributeTypes)
+    {
+        if(attributeDTO.type_id == type.id_type)
+        {
+            type_name = type.type;
+            break;
+        }
+    }
+    string id_type = attributeDTO.type_id;
+    string id_attributeValue = attributeDTO.id_attributeValue;
+    string isChecked = attributeDTO.isEnabled == "True" ? "checked" : "";
+    <tr>
+        @using (Ajax.BeginForm("_EditAttributeList", "Categories", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "AttributeListEditSuccess", OnFailure = "AttributeListEditFailure" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => id_attributeValue)
+            @Html.HiddenFor(m => id_type)
+            <td style="padding-left:10px;padding-right:50px">
+                @Html.TextBoxFor(m => attribute, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem" })
+            </td>
+            <td style="width:15%;padding-right:50px">
+                <label>@Html.Raw(type_name)</label>
+            </td>
+            <td style="padding-left:10px;padding-right:30px">
+                @Html.TextBoxFor(m => value, new { @class = "form-control", @placeholder = "", @style = "min-width:25rem" })
+            </td>
+            <td style="padding-left:30px">
+                <div class="form-group">
+                    <div class="checkbox" style="margin:0px">
+                        <label style="margin-left:15px">
+                            <input type="checkbox" class="colored-success" @isChecked name="isEnabled" id="isEnabled">
+                            <span class="text"></span>
+                        </label>
+                    </div>
+                </div>
+            </td>
+            <td style="width:10%">
+                <button class="btn btn-sky btn-sm" style="margin-right:20px" data-toggle="tooltip" data-placement="top" title="Guardar">
+                    <span class="glyphicon glyphicon-floppy-saved"></span>
+                </button>
+                <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteGeneralAttribute('@id_attributeValue','@attribute',this)">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
+            </td>
+        }
+    </tr>
+}

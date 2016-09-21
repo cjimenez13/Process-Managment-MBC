@@ -458,6 +458,8 @@
     <Content Include="Views\Categories\_CategoriePersonalAtr.cshtml" />
     <Content Include="Views\Categories\_EditCategorie.cshtml" />
     <Content Include="Views\Categories\_GeneralAttrList.cshtml" />
+    <Content Include="Views\Categories\_AttributeValues.cshtml" />
+    <Content Include="Views\Categories\_AttributeValuesList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

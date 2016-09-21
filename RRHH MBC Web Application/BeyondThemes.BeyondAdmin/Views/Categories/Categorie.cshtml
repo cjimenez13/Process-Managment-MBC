@@ -53,70 +53,7 @@
 <!-- Modal to edit categorie -->
 @{ Html.RenderPartial("/Views/Categories/_EditCategorie.cshtml", new Model.EditCategorieModel(Model.categorie.id_categorie));}
 
-<!-- Modal to see lists-->
-<div class="modal fade" id="modal_Lists" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Nueva Lista</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form role="form">
-                            <div class="box-body table-responsive no-padding">
-                                <table class="table table-hover">
-                                    <tr>
-                                        <th>Atributo</th>
-                                        <th>Tipo</th>
-                                        <th>Valor</th>
-                                        <th>Habilitado</th>
-                                        <th>Accion</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="entry input-group">
-                                                <input class="form-control" name="fields[]" type="text" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <select class="form-control">
-                                                <option>Texto</option>
-                                                <option>Numero entero</option>
-                                                <option>Numero décimal</option>
-                                                <option>Fecha</option>
-                                                <option>Condición</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <div class="entry input-group">
-                                                <input class="form-control" name="fields[]" type="text" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm btn-add" type="button">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        </td>
-                                    </tr>
 
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Crear</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 @section PageScripts{
@@ -135,9 +72,11 @@
             var table = $('#table-generalAttributes > tbody');
             table.children().not(':last').remove()
             table.prepend(content);
+            //$("#generalAttributes-tab").html(content);
+
         }
         function GeneralAttributeAddedFailure(content) {
-            Notify("Error, no se puede agregar el atributo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
         //-- General Attrbute Edit
         function GeneralAttributeEditSuccess(content) {
@@ -164,29 +103,62 @@
         // General attributes type change
         function onGeneralAttrChange(self) {
             var selectedText = $(self).find("option:selected").text();
+            var valueColumn = $(self).parent().next();
             if (selectedText === "Lista") {
-                $(self).parent().next().html('<button class="btn btn-sky " data-toggle="modal" data-target="#modal_Lists">Ver lista</button>')
+                valueColumn.find("input").prop("disabled", true)
+                valueColumn.find("input").val(null)
             } else {
-                $(self).parent().next().html('<input class="form-control" type="text" />')
+                valueColumn.find("input").prop("disabled", false)
             }
         }
-        /*
-        $(function () {
-        $(document).on('click', '.btn-add', function (e) {
-            e.preventDefault();
-            var controlForm = $(this).parents('.table:first'),
-                currentEntry = $(this).parents('tr:first'),
-                newEntry = $(currentEntry.clone()).appendTo(controlForm);
-            controlForm.find('tr:not(:last) .btn-add')
-                .removeClass('btn-add').addClass('btn-remove')
-                .removeClass('btn-success').addClass('btn-danger')
-                .html('<span class="glyphicon glyphicon-minus"></span>');
-        }).on('click', '.btn-remove', function (e) {
-            $(this).parents('tr:first').remove();
 
-            e.preventDefault();
-            return false;
-        });
-    });*/
+        //-- Ajax to delete General attribtue
+        function deleteGeneralAttribute(attribute_id, name, element) {
+            $.ajax({
+                url: "/Categories/_DeleteGeneralAttribute/?id_attribute=" + attribute_id,
+                type: "DELETE",
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+                success: function (data) {
+                    Notify("El atributo '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    $(element).closest("tr").hide(300, function () {
+                        widget.remove();
+                    });
+                },
+                error: function () {
+                    Notify("Error, no se puede remover el atributo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+        function updateGeneralAttribute(event, element) {
+            event.preventDefault()
+            var form = $(element).closest("tr").children().first()
+            var token = "__RequestVerificationToken=" + $('input[name="__RequestVerificationToken"]').val() + "&";
+            var lengthFormData = form.serialize().length
+            formData = token + form.serialize().substring(token.length, lengthFormData)
+            console.log(form.serialize());
+            console.log(token);
+            $.ajax({
+                headers: {
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                url: "/Categories/_EditGeneralAttribute",
+                method:"PUT",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: formData + "&X-Requested-With=XMLHttpRequest&X-HTTP-Method-Override=PUT",
+                success: function (data) {
+                    Notify("El atributo '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    $(element).closest("tr").hide(300, function () {
+                        widget.remove();
+                    });
+                    return true;
+                },
+                error: function () {
+                    Notify("Error, no se puede remover el atributo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                    return false;
+                }
+            });
+        }
     </script>
 }
