@@ -1,6 +1,13 @@
 ﻿@model Model.GroupModel
 <div class="widget-body bordered-left bordered-blueberry">
-    <p style="text-align:left"><strong>@Model.groupUsers.Count miembros...</strong></p>
+    @if (Model.groupUsers.Count == 1)
+    {
+        @:<p style="text-align:left"><strong>@Model.groupUsers.Count miembro...</strong></p>
+    }
+    else
+    {
+        @:<p style="text-align:left"><strong>@Model.groupUsers.Count miembros...</strong></p>
+    }
     <div class="row" style="margin-top:15px">
         @foreach (var user in Model.groupUsers)
         {

@@ -8,7 +8,7 @@ go
 create procedure sp_get_Users as
 begin
 	select u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
-	u.direction, u.birthdate, u.[password],
+	u.direction, u.birthdate, u.[password], u.id_user , 
 	(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
 	(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
 	(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,

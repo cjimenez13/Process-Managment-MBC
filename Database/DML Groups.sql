@@ -17,7 +17,7 @@ create procedure sp_get_group
 begin
 	select g.id_group, g.groupName, g.createdDate, g.isEnabled
 	from Groups g 
-	where g.id_group = 1
+	where g.id_group = @group_id
 end
 go
 
@@ -61,8 +61,21 @@ go
 create procedure sp_insert_groupUser 
 @user_id int, @group_id int as
 begin
-	insert into Group_Users ([user_id], group_id)
-	values (@user_id, @group_id)
+	begin try
+		insert into Group_Users ([user_id], group_id)
+		values (@user_id, @group_id)
+	end try
+	begin catch end catch
 end
 go
+delete from Group_Users
+execute sp_insert_groupUser 76,3 
+select * from Group_Users
 
+create procedure sp_delete_groupUser
+@user_id int, @group_id int as
+begin
+	delete from Group_Users where [user_id] = @user_id and group_id = @group_id
+	select @@ROWCOUNT
+end
+go

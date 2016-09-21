@@ -1,11 +1,8 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Model
 {
@@ -58,5 +55,38 @@ namespace Model
 
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         public string id_group { get; set; }
+    }
+
+    public class AddGroupUser
+    {
+        private GroupProvider groupProvider = new GroupProvider();
+        private UsersProvider userProvider = new UsersProvider();
+        public List<UserDTO> userList = new List<UserDTO>();
+        public SelectList _UsersSelect { get; set; }
+        public AddGroupUser(string group_id, string groupName)
+        {
+            userList = userProvider.getUsers().Result;
+            List<SelectListItem> usersSelectList = new List<SelectListItem>();
+            foreach (UserDTO iUser in userList)
+            {
+                var name = iUser.name + " " + iUser.fLastName + " " + iUser.sLastName;
+                usersSelectList.Add(new SelectListItem { Text = name, Value = iUser.user_id });
+            }
+            _UsersSelect = new SelectList(usersSelectList, "Value", "Text");
+            name = groupName;
+            id_group = group_id;
+        }
+
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
+        public string name { get; set; }
+
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        public string id_group { get; set; }
+
+        [Display(Name = "Usuarios")]
+        [Required(ErrorMessage = "Se debe seleccionar al menos un usuario")]
+        public string selected_userGroup_id { get; set; }
     }
 }

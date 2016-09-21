@@ -1,0 +1,69 @@
+﻿@model Model.GeneralAttributesModel
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row" style="margin-bottom:20px">
+            <div class="col-md-11">
+                <h2>Datos relacionados solamente con la categoría</h2>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_Lists">Listas</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-scrollable">
+                    <table class="table table-hover" id="table-generalAttributes">
+                        <!-- column titles -->
+                        <thead class="">
+                            <tr>
+                                <th>Atributo</th>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                                <th>Habilitado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table data-->
+                            @{ Html.RenderPartial("/Views/Categories/_GeneralAttrList.cshtml", Model);}
+                            <!--Spaces for add new row -->
+                            <tr>
+                                @using (Ajax.BeginForm("_AddGeneralAttribute", "Categories", new AjaxOptions { HttpMethod = "POST", OnSuccess = "GeneralAttributeAddedSuccess", OnFailure = "GeneralAttributeAddedFailure" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(m => m.categorie_id)
+                                    <td style="padding-left:10px;padding-right:50px">
+                                        @Html.TextBoxFor(m => m.attribute, new { @class = "form-control", @placeholder = "", @style = "min-width:30rem" })
+                                        @Html.ValidationMessageFor(m => m.attribute, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td style="width:15%;padding-right:50px">
+                                        @Html.DropDownListFor(m => m.id_type, Model._TypeSelect, new { @class = "form-control", @style = "min-width:20rem", @onchange = "onGeneralAttrChange(this)" })
+                                    </td>
+                                    <td style="padding-left:10px;padding-right:30px">
+                                        @Html.TextBoxFor(m => m.value, new { @class = "form-control", @placeholder = "", @style = "min-width:40rem" })
+                                        @Html.ValidationMessageFor(m => m.value, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td style="padding-left:30px">
+                                        <div class="form-group">
+                                            <div class="checkbox" style="margin:0px">
+                                                <label style="margin-left:15px">
+                                                    @Html.CheckBoxFor(m => m.isEnabled, new { @checked = "checked", @class = "colored-success" })
+                                                    <span class="text"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width:5%">
+                                        <button class="btn btn-success btn-sm" type="submit" style="margin-left:25px">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

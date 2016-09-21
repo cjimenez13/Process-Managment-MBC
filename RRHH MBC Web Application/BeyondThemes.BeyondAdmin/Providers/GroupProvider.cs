@@ -37,7 +37,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                GroupDTO groups = new GroupDTO();
+                GroupDTO group = new GroupDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = client.GetAsync("api/groups/?id_group="+id_group).Result;
@@ -45,9 +45,9 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    groups = serializer.Deserialize<GroupDTO>(result);
+                    group = serializer.Deserialize<GroupDTO>(result);
                 }
-                return groups;
+                return group;
             }
         }
         public async Task<List<UserDTO>> getGroupMembers(string group_id)
@@ -84,12 +84,29 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(groupDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/groups/", contentPost).Result;
-
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
                 }
                 return false;
+            }
+        }
+        public async Task<List<GroupUserDTO>> postUsersGroups(List<GroupUserDTO> groupUserDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<GroupUserDTO> groupUsersDTOList = new List<GroupUserDTO>();
+                var userJson = new JavaScriptSerializer().Serialize(groupUserDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/groups/members", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    groupUsersDTOList = serializer.Deserialize<List<GroupUserDTO>>(result);
+                }
+                return groupUsersDTOList;
             }
         }
 
@@ -118,6 +135,19 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/groups/?id_group=" + groupDTO.id_group).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> deleteGroupUser(GroupUserDTO groupUserDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/groups/members/?id_group=" + groupUserDTO.id_group+"&id_user="+groupUserDTO.user_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

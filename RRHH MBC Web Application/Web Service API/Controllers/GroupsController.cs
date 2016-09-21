@@ -1,6 +1,5 @@
 ﻿using DataTransferObjects;
 using System.Collections.Generic;
-using System.Net;
 using System.Web.Http;
 using Web_Service_API.DataAccess;
 
@@ -59,6 +58,32 @@ namespace Web_Service_API.Controllers
         {
             List<UserDTO> users = GroupsData.getGroupUsers(group_id);
             return users;
+        }
+
+        [Route("members")]
+        [HttpPost]
+        public List<GroupUserDTO> postGroupUsers(List<GroupUserDTO> pGroupUserListDTO)
+        {
+            List<GroupUserDTO> insertedUsers = new List<GroupUserDTO>();
+            foreach (var groupUser in pGroupUserListDTO)
+            {
+                if (GroupsData.insertGroupUser(groupUser))
+                {
+                    insertedUsers.Add(groupUser);
+                }
+            }
+            return insertedUsers;
+        }
+
+        [Route("members")]
+        [HttpDelete]
+        public IHttpActionResult DeleteGroupUser(string id_group, string id_user)
+        {
+            if (!GroupsData.deleteGroupUser(id_group, id_user))
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
 
     }

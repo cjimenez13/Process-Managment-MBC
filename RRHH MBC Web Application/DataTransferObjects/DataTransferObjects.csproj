@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategorieDTO.cs" />
     <Compile Include="GroupsDTO.cs" />
     <Compile Include="RolesDTO.cs" />
     <Compile Include="UsersDTO.cs" />

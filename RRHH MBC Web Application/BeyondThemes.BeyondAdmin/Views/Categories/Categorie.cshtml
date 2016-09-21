@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Model.CategorieModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
     ViewBag.Title = "Categoria Vacaciones";
     ViewBag.Description = "Lista de categorías";
@@ -6,194 +7,51 @@
 
 <div class="row">
     <div class="col-xs-12">
-        @using (var tabs = Html.Bootstrap().Begin(new Tabs("JustifiedTab").RadiusBordered()))
-        {
-            tabs.Tab("Información General", BootstrapColors.Info);
-            tabs.Tab("Atributos Generales", BootstrapColors.Info);
-            tabs.Tab("Atributos Personales", BootstrapColors.Info);
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#info-tab">
+                        Información General
+                    </a>
+                </li>
 
+                <li class="tab-red">
+                    <a data-toggle="tab" href="#generalAttributes-tab">
+                        Atributos Generales
+                    </a>
+                </li>
+                <li class="tab-red">
+                    <a data-toggle="tab" href="#personalAttributes-tab">
+                        Atributos Personales
+                    </a>
+                </li>
+            </ul>
 
-            <!-- General information tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="row">
-                            <div class="col-md-11">
-                            </div>
-                            <div class="col-md-1">
-                                <button class="btn btn-danger">Eliminar</button>
-                            </div>
-                        </div>
-                        <div class="row" style=" margin-bottom:30px;margin-left:15px">
-                            <div class="col-xs-12">
-                                <h4><strong>Descripcion: </strong></h4>
-                                <p>
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                                    wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                    eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                                    assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                                    labore sustainable VHS.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().Caption("Gestiones relacionadas a la categoría").HeaderBorder(BootstrapColors.Sky, Direction.Bottom)))
-                                {
-                                    using (WidgetSectionPanel header = widget.BeginHeader())
-                                    {
-                                    }
-                                    using (widget.BeginBody())
-                                    {
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    }
-                                }
-                            </div>
+            <div class="tab-content">
+                <div id="info-tab" class="tab-pane in active">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @{Html.RenderPartial("/Views/Categories/_CategorieInfo.cshtml", Model);}
                         </div>
                     </div>
                 </div>
 
-            }
-            <!-- General atributes tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="row" style="margin-bottom:20px">
-                            <div class="col-md-11">
-                                <h2>Datos relacionados solamente con la categoría</h2>
-                            </div>
-                            <div class="col-md-1">
-                                <button class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_Lists">Listas</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="flip-scroll">
-                                    <table class="table flip-content table-hover">
-                                        <!-- column titles -->
-                                        <thead class="flip-content ">
-                                            <tr>
-                                                <th>Atributo</th>
-                                                <th>Tipo</th>
-                                                <th>Valor</th>
-                                                <th>Habilitado</th>
-                                                <th>Accion</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Table data-->
-                                            <tr>
-                                                <td>
-                                                    <div class="entry input-group">
-                                                        <input class="form-control" name="fields[]" type="text" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control">
-                                                        <option>Texto</option>
-                                                        <option>Numero entero</option>
-                                                        <option>Numero décimal</option>
-                                                        <option>Fecha</option>
-                                                        <option>Condición</option>
-                                                        <option>Lista</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <div class="entry input-group">
-                                                        <input class="form-control" name="fields[]" type="text" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-success btn-sm btn-add" type="button">
-                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <div id="generalAttributes-tab" class="tab-pane">
+                    @{Html.RenderPartial("/Views/Categories/_CategorieGeneralAtr.cshtml", new Model.GeneralAttributesModel(Model.categorie.id_categorie)); }
+                </div>
+                <div id="personalAttributes-tab" class="tab-pane">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @{Html.RenderPartial("/Views/Categories/_CategoriePersonalAtr.cshtml"); }
                         </div>
                     </div>
                 </div>
-            }
-            <!-- Personal atributes tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="row" style="margin-bottom:20px">
-                            <div class="col-md-11">
-                                <h2>Datos relacionados con la categoria y las personas</h2>
-                            </div>
-                            <div class="col-md-1">
-                                <button class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_Lists">Listas</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="flip-scroll">
-                                    <table class="table flip-content table-hover">
-                                        <!-- column titles -->
-                                        <thead class="flip-content ">
-                                            <tr>
-                                                <th>Atributo</th>
-                                                <th>Tipo</th>
-                                                <th>Valor</th>
-                                                <th>Habilitado</th>
-                                                <th>Accion</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Table data-->
-                                            <tr>
-                                                <td>
-                                                    <div class="entry input-group">
-                                                        <input class="form-control" name="fields[]" type="text" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control">
-                                                        <option>Texto</option>
-                                                        <option>Numero entero</option>
-                                                        <option>Numero décimal</option>
-                                                        <option>Fecha</option>
-                                                        <option>Condición</option>
-                                                        <option>Lista</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <div class="entry input-group">
-                                                        <input class="form-control" name="fields[]" type="text" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-success btn-sm btn-add" type="button">
-                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
+            </div>
+        </div>
     </div>
 </div>
+<!-- Modal to edit categorie -->
+@{ Html.RenderPartial("/Views/Categories/_EditCategorie.cshtml", new Model.EditCategorieModel(Model.categorie.id_categorie));}
 
 <!-- Modal to see lists-->
 <div class="modal fade" id="modal_Lists" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -261,19 +119,57 @@
 </div>
 
 
-
-
-
 @section PageScripts{
     <script>
-    $(function () {
+        //-- Categorie Deleted
+        function CategorieDeletedSuccess(content) {
+            Notify("La categoría ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            window.location.href = "/Categories";
+        }
+        function CategorieDeletedFailure(content) {
+            Notify("Error, no se puede borrar la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- General Attrbute Added
+        function GeneralAttributeAddedSuccess(content) {
+            Notify("El atributo ha sido agregado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            var table = $('#table-generalAttributes > tbody');
+            table.children().not(':last').remove()
+            table.prepend(content);
+        }
+        function GeneralAttributeAddedFailure(content) {
+            Notify("Error, no se puede agreaar el atributo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Categorie Edited
+        function CategorieEditedSuccess(categorieDTO) {
+            Notify("La categoría ha sido editada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $("#info-tab #CategorieTitle strong").text("Categoría "+categorieDTO.name)
+            $("#info-tab #CategorieDescription").text(categorieDTO.description)
+            if (categorieDTO.isEnabled === "True") {
+                $("#info-tab #isEnabled").text("Habilitado").removeClass("label-danger").addClass("label-success")
+            } else{ 
+                $("#info-tab #isEnabled").text("Deshabilitado").removeClass("label-success").addClass("label-danger")
+            }
+        }
+        function CategorieEditedFailure(content) {
+            Notify("Error, no se puede editar la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+
+        // General attributes type change
+        function onGeneralAttrChange(self) {
+            var selectedText = $(self).find("option:selected").text();
+            if (selectedText === "Lista") {
+                $(self).parent().next().html('<button class="btn btn-sky " data-toggle="modal" data-target="#modal_Lists">Ver lista</button>')
+            } else {
+                $(self).parent().next().html('<input class="form-control" type="text" />')
+            }
+        }
+        /*
+        $(function () {
         $(document).on('click', '.btn-add', function (e) {
             e.preventDefault();
-
             var controlForm = $(this).parents('.table:first'),
                 currentEntry = $(this).parents('tr:first'),
                 newEntry = $(currentEntry.clone()).appendTo(controlForm);
-
             controlForm.find('tr:not(:last) .btn-add')
                 .removeClass('btn-add').addClass('btn-remove')
                 .removeClass('btn-success').addClass('btn-danger')
@@ -284,6 +180,6 @@
             e.preventDefault();
             return false;
         });
-    });
+    });*/
     </script>
 }

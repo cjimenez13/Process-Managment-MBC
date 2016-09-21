@@ -1,0 +1,35 @@
+﻿namespace DataTransferObjects
+{
+    public class CategorieDTO
+    {
+        public string id_categorie { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public string createdBy_name { get; set; }
+        public string createdBy_id { get; set; }
+        public string createdDate { get; set; }
+        public string isEnabled { get; set; }
+    }
+
+    public class AttributeTypeDTO
+    {
+        public string id_type { get; set; }
+        public string type { get; set; }
+        public string reg_expr { get; set; }
+    }
+
+    public class GeneralAttributeDTO
+    {
+        public string id_attribute { get; set; }
+        public string categorie_id { get; set; }
+        public string name { get; set; }
+        public string type_id { get; set; }
+        public string type_name { get; set; }
+        public string reg_expr { get; set; }
+        public string value { get; set; }
+        public string isEnabled { get; set; }
+        public string createdBy { get; set; }
+        public string createdDate { get; set; }
+        public string user { get; set; }
+    }
+}

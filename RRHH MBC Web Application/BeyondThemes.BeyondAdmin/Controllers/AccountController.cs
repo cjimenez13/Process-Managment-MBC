@@ -57,6 +57,12 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 userCookie.Expires = expireTime;
                 Response.Cookies.Add(userCookie);
 
+                HttpCookie user_idCookie = new HttpCookie("user_id");
+                user_idCookie.Value = new UsersProvider().getUser(model.Email).Result.user_id;
+                user_idCookie.Expires = expireTime;
+                Response.Cookies.Add(user_idCookie);
+
+
                 FormsAuthentication.SetAuthCookie(model.Email, false);
                 return RedirectToAction("Index", "Processes");
             }

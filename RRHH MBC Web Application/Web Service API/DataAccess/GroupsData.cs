@@ -100,6 +100,35 @@ namespace Web_Service_API.DataAccess
                 return false;
             };
         }
+
+        public static bool insertGroupUser(GroupUserDTO pUserGroupDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_insert_groupUser", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = pUserGroupDTO.user_id;
+                command.Parameters.Add("@group_id", SqlDbType.Int);
+                command.Parameters["@group_id"].Value = pUserGroupDTO.id_group;
+
+                command.Connection.Open();
+                try
+                {
+                    int result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+                return false;
+            };
+        }
         //--------------------------------------------- Updates --------------------------------------------
         public static bool updateGroup(GroupDTO pGroupDTO)
         {
@@ -142,6 +171,29 @@ namespace Web_Service_API.DataAccess
             };
             return false;
         }
+        public static bool deleteGroupUser(string id_group, string id_user)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_delete_groupUser", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = id_user;
+
+                command.Parameters.Add("@group_id", SqlDbType.Int);
+                command.Parameters["@group_id"].Value = id_group;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+
 
     }
 }

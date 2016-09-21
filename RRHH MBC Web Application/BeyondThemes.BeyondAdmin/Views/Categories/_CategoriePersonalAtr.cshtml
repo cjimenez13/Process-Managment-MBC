@@ -1,0 +1,59 @@
+﻿<div class="row" style="margin-bottom:20px">
+    <div class="col-md-11">
+        <h2>Datos relacionados con la categoria y las personas</h2>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_Lists">Listas</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="flip-scroll">
+            <table class="table flip-content table-hover">
+                <!-- column titles -->
+                <thead class="flip-content ">
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Tipo</th>
+                        <th>Valor</th>
+                        <th>Habilitado</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data-->
+                    <tr>
+                        <td>
+                            <div class="entry input-group">
+                                <input class="form-control" name="fields[]" type="text" />
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-control">
+                                <option>Texto</option>
+                                <option>Numero entero</option>
+                                <option>Numero décimal</option>
+                                <option>Fecha</option>
+                                <option>Condición</option>
+                                <option>Lista</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="entry input-group">
+                                <input class="form-control" name="fields[]" type="text" />
+                            </div>
+                        </td>
+                        <td>
+                            @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-sm btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

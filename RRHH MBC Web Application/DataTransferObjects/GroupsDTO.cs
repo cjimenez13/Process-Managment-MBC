@@ -14,4 +14,9 @@ namespace DataTransferObjects
         public string isEnabled { get; set; }
         public string user_id { get; set; }
     }
+    public class GroupUserDTO
+    {
+        public string id_group { get; set; }
+        public string user_id { get; set; }
+    }
 }

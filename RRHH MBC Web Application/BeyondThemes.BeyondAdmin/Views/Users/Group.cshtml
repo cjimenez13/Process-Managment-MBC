@@ -1,7 +1,7 @@
 ﻿@model Model.GroupModel
 @{
     Layout = "~/Views/Shared/_Default.cshtml";
-    ViewBag.Title = "Grupo "+Model.groupDTO.groupName;
+    ViewBag.Title = "Grupo " + Model.groupDTO.groupName;
     ViewBag.Description = "Información del grupo";
 }
 <div class="row">
@@ -11,14 +11,20 @@
             <div class="widget-header bordered-top bordered-primary">
                 <span class="widget-caption" id="groupTitle">Grupo @Model.groupDTO.groupName</span>
                 <div class="widget-buttons">
-                    <button class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_editGroup">
+                    @using (Ajax.BeginForm("_DeleteGroupRedirect", "Users", new AjaxOptions { HttpMethod = "DELETE", OnSuccess = "GroupDeletedSuccess", OnFailure = "GroupDeletedFailure" }))
+                    {
+                        string id_group = Model.groupDTO.id_group;
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => id_group)
+                    <a class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_editGroup">
                     <span class="visible-xs"><i class="fa fa-pencil"></i></span>
                     <span class="hidden-xs">Editar</span>
-                    </button>
-                    <button class="btn btn-danger btn-sm" style="margin-left:10px">
+                    </a>
+                    <button class="btn btn-danger btn-sm" style="margin-left:10px"  type="submit" >
                         <span class="visible-xs"><i class="fa fa-trash"></i></span>
                         <span class="hidden-xs">Eliminar</span>
                     </button>
+                    }
                 </div>
             </div>
             <!--Widget Body-->
@@ -35,44 +41,16 @@
                                 </span>
                             </div>
                             <div class="col-lg-offset-4 col-lg-2 col-md-4 col-xs-2">
-                                <button class="btn btn-success btn-block">
+                                <button class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_addGroupUser">
                                     <span class="visible-xs"><i class="fa fa-plus"></i></span>
                                     <span class="hidden-xs">Agregar integrante</span>
                                 </button>
                             </div>
                         </div>
-                        <!-- Members -->
                         <div class="row">
-                            <div class="col-xs-12">
-                                <p>Mostrando @Model.groupUsers.Count miembros</p>
+                            <div class="col-xs-12" id="groupUsersListDiv">
+                                @{Html.RenderPartial("/Views/Users/_GroupUsersList.cshtml", Model); }
                             </div>
-                        </div>
-                        <!-- Users box -->
-                        <div class="row" id="GroupUsersList">
-                            @foreach (var user in Model.groupUsers)
-                            {
-                                var name = user.name + " " + user.fLastName + " " + user.sLastName;
-                                <div class="col-lg-3 col-sm-6 col-xs-12">
-                                    <div class="databox databox-graded" style="margin-bottom:10px">
-                                        <div class="databox-left no-padding">
-                                            <img src="data:Image/png;base64,@user.photoBase64" style="width:65px; height:65px;">
-                                        </div>
-                                        <a href="@Url.Action("Profile")">
-                                            <div class="databox-right padding-top-20 bg-whitesmoke">
-                                                <div class="databox-text darkgray" style="font-size:14px">@name</div>
-                                                @if (user.email != "")
-                                                {
-                                                    <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.email</div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.userName</div>
-                                                }
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            }
                         </div>
                     </div>
                 </div>  
@@ -83,17 +61,45 @@
 
 <!-- Modal to edit group -->
 @{ Html.RenderPartial("/Views/Users/_EditGroup.cshtml", new Model.EditGroup(Model.groupDTO.id_group, Model.groupDTO.groupName));}
+<!-- Modal to add group user -->
+@{ Html.RenderPartial("/Views/Users/_AddGroupUser.cshtml", new Model.AddGroupUser(Model.groupDTO.id_group, Model.groupDTO.groupName));}
 
 @section PageScripts{
+<script src="/assets/js/select2/select2.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
 <script>
+    function GroupUsersAddedSuccess(content) {
+        if (content.usersAdded.length = 1) {
+            Notify("Se ha agregado " + content.usersAdded.length + " usuario con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+        }
+        else {
+            Notify("Se han agregado " + content.usersAdded.length + " usuarios con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+        }
+        if (content.usersError.length == 1 ) {
+            Notify(content.usersError.length + " de los usuarios ya se encuentra en el grupo", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+        }
+        else if (content.usersError.length > 1) {
+            Notify(content.usersError.length + " de los usuarios ya se encuentran en el grupo", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+        }
+        $("#groupUsersListDiv").html(content.viewHtml)
+    }
+    function GroupUsersAddedFailure(content) {
+        Notify("Error, no se agregó ningun usuario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
     function GroupEditedSuccess(content) {
-        console.log(content)
         Notify("El grupo ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
         $("#groupTitle").text(content.groupName)
     }
     function UserEditedFailure(content) {
-        console.log(content);
         Notify("Error, no se puede editar el grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function GroupDeletedSuccess(content) {
+        Notify("El grupo ha sido borrado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        window.location.href = "/Users";
+    }
+    function GroupDeletedFailure(content) {
+        Notify("Error, no se puede borrar el grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
     }
     function filterGroupUsers(element){
         var value = $(element).val().toLowerCase();
@@ -106,5 +112,26 @@
             }
         });
     }
+    function deleteGroupUser(user_id, group_id, name, element) {
+        console.log(user_id);
+        $.ajax({
+            url: "/Users/_DeleteGroupUser/?group_id=" + group_id + "&user_id=" + user_id,
+            type: "DELETE",
+            dataType: "html",
+            traditional: true,
+            contentType: false,
+            success: function (data) {
+                Notify("El usuario '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                $(element).closest(".databox").parent().hide(300, function () {
+                    widget.remove();
+                });
+            },
+            error: function () {
+                Notify("Error, no se puede remover el usuario '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
+        });
+    }
+    $('#selected_userGroup_id').select2();
+    console.log($('#selected_userGroup_id').html())
 </script>    
 }

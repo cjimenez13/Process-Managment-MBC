@@ -19,11 +19,14 @@ deallocate cursor_insertObjectLog
 
 -- EventSourceLog
 -- delete from EventSourceLog
+DBCC CHECKIDENT (EventSourceLog, RESEED, 0)
 execute sp_insert_EventSourceLog 'insert';
 execute sp_insert_EventSourceLog 'update';
 execute sp_insert_EventSourceLog 'delete';
 
 --EventTypeLog
+-- delete from EventTypeLog
+DBCC CHECKIDENT (EventTypeLog, RESEED, 0)
 execute sp_insert_EventTypeLog 'success';
 execute sp_insert_EventTypeLog 'error';
 execute sp_insert_EventTypeLog 'warning';

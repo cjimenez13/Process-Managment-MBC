@@ -1,12 +1,13 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
 using Model;
-using MvcSiteMapProvider;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using BeyondThemes.BeyondAdmin.Tools;
+
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -21,9 +22,14 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return View();
         }
-        public ActionResult Group(string id_group)
+        public ActionResult Group(string id)
         {
-            return View(new Model.GroupModel(id_group));
+            GroupModel groupModel = new GroupModel(id);
+            if(groupModel.groupDTO.groupName != null)
+            {
+                return View(groupModel);
+            }
+            return View("/Views/Home/Error404.cshtml");
         }
         public new ActionResult Profile(string id)
         {
@@ -251,7 +257,12 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         public ActionResult _GroupList()
         {
             return PartialView("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel());
-        } 
+        }
+        [HttpGet]
+        public ActionResult _GroupUsersList(string id_group)
+        {
+            return PartialView("/Views/Users/_GroupsUsersList.cshtml", new Model.GroupModel(id_group));
+        }
 
         [HttpPost]
         public ActionResult _AddGroup(string name)
@@ -295,7 +306,73 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+        [HttpDelete]
+        public ActionResult _DeleteGroupRedirect(string id_group)
+        {
+            GroupDTO groupDTO = new GroupDTO();
+            groupDTO.id_group = id_group;
+            if (groupProvider.deleteGroup(groupDTO).Result)
+            {
+                return RedirectToAction("Index","Users");
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPost]
+        public ActionResult _AddGroupUsers(string id_group, List<string> selected_userGroup_id)
+        {
+            if (ModelState.IsValid)
+            {
+                //Getting data to post
+                List<GroupUserDTO> groupUserDTOList = new List<GroupUserDTO>();
+                foreach(var user_id in selected_userGroup_id)
+                {
+                    GroupUserDTO groupUserDTO = new GroupUserDTO();
+                    groupUserDTO.id_group = id_group;
+                    groupUserDTO.user_id = user_id;
+                    groupUserDTOList.Add(groupUserDTO);
+                }
+                //Post
+                List<GroupUserDTO> groupUsersAdded = new List<GroupUserDTO>();
+                List<GroupUserDTO> groupUserError = new List<GroupUserDTO>();
+                groupUsersAdded = groupProvider.postUsersGroups(groupUserDTOList).Result;
+                if (groupUsersAdded.Count != 0)
+                {
+                    //Compare and get not added users
+                    foreach (var user_id in selected_userGroup_id)
+                    {
+                        foreach (var user_added in groupUsersAdded)
+                        {
+                            if (user_id == user_added.user_id)
+                            {
+                                break;
+                            }
+                            GroupUserDTO groupUserErrorDTO = new GroupUserDTO();
+                            groupUserErrorDTO.id_group = id_group;
+                            groupUserErrorDTO.user_id = user_id;
+                            groupUserError.Add(groupUserErrorDTO);
+                        }
+                    }
+                    // creates a json to return result
+                    var result = new { usersAdded = groupUsersAdded, usersError = groupUserError, viewHtml = PartialView("/Views/Users/_GroupUsersList.cshtml", new Model.GroupModel(id_group)).RenderToString()};
+                    return Json(result);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Repeated users");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteGroupUser(string group_id, string user_id)
+        {
+            GroupUserDTO groupUserDTO = new GroupUserDTO();
+            groupUserDTO.id_group = group_id;
+            groupUserDTO.user_id = user_id;
+            if (groupProvider.deleteGroupUser(groupUserDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
 
 
     }
+    
 }
