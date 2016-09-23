@@ -3,7 +3,7 @@
 <div class="modal fade" id="modal_register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" id="divModalRegister">
-            @using (Ajax.BeginForm("_Register", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CompletedFormRegister" }))
+            @using (Ajax.BeginForm("_Register", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "UserAddedSuccess", OnFailure = "UserAddedFailure" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-header">

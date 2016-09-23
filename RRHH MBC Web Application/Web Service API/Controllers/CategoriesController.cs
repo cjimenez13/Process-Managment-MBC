@@ -99,6 +99,55 @@ namespace Web_Service_API.Controllers
             return Ok();
         }
 
+        [Route("personalAttr")]
+        [HttpGet]
+        public IEnumerable<PersonalAttributeDTO> getPersonalAttributes(string categorie_id)
+        {
+            List<PersonalAttributeDTO> attributes = CategoriesData.getPersonalAttributes(categorie_id);
+            return attributes;
+        }
+
+        [Route("personalAttr")]
+        [HttpGet]
+        public PersonalAttributeDTO getPersonalAttribute(string id_attribute)
+        {
+            PersonalAttributeDTO attribute = CategoriesData.getPersonalAttribute(id_attribute);
+            return attribute;
+        }
+
+        [Route("personalAttr")]
+        [HttpPost]
+        public IHttpActionResult postPersonalAttribute(PersonalAttributeDTO pPersonaAttributeDTO)
+        {
+            if (!CategoriesData.insertPersonalAttribute(pPersonaAttributeDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [Route("personalAttr")]
+        [HttpPut]
+        public IHttpActionResult putPersonalAtrribute(PersonalAttributeDTO pPersonaAttributeDTO)
+        {
+            if (!CategoriesData.updatePersonalAttribute(pPersonaAttributeDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [Route("personalAttr")]
+        [HttpDelete]
+        public IHttpActionResult DeletePersonalAttribute(string id_attribute, string userLog)
+        {
+            if (!CategoriesData.deletePersonalAttribute(id_attribute, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
         [Route("attrTypes")]
         [HttpGet]
         public IEnumerable<AttributeTypeDTO> getAttributeTypes()
@@ -114,7 +163,7 @@ namespace Web_Service_API.Controllers
             return type;
         }
 
-        [Route("attriutesList")]
+        [Route("attributesList")]
         [HttpGet]
         public IEnumerable<AttributeListDTO> getAttributesList(string id_attribute)
         {
@@ -122,7 +171,7 @@ namespace Web_Service_API.Controllers
             return attributes;
         }
 
-        [Route("attriutesList")]
+        [Route("attributesList")]
         [HttpGet]
         public AttributeListDTO getAttributeList(string id_attributeValue)
         {
@@ -130,7 +179,7 @@ namespace Web_Service_API.Controllers
             return attribute;
         }
 
-        [Route("attriutesList")]
+        [Route("attributesList")]
         [HttpPost]
         public IHttpActionResult postAttributeList(AttributeListDTO pAttributeList)
         {
@@ -140,7 +189,7 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
-        [Route("attriutesList")]
+        [Route("attributesList")]
         [HttpPut]
         public IHttpActionResult putAtrributeList(AttributeListDTO pAttributeList)
         {
@@ -151,7 +200,7 @@ namespace Web_Service_API.Controllers
             return Ok();
         }
 
-        [Route("attriutesList")]
+        [Route("attributesList")]
         [HttpDelete]
         public IHttpActionResult DeleteAttributeList(string id_attributeValue, string user)
         {

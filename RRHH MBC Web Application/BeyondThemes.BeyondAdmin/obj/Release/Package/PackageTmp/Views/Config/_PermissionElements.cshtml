@@ -1,0 +1,19 @@
+﻿@model Model.ElementsModel
+@foreach (var element in Model.elementsList)
+{
+    string isChecked = element.isEnabled == "True" ? "checked" : "";
+    string rowClass = element.isEnabled == "True" ? "success" : "";
+    <tr class="@rowClass">
+        <td>
+            <div class="checkbox" style="margin:0px">
+                <label style="margin-left:15px">
+                    <input type="checkbox" class="colored-success" @isChecked onchange="elementChanged(@element.role_permission_id, @element.id_element, this, '@element.name')">
+                    <span class="text"></span>
+                </label>
+            </div>
+        </td>
+        <td>@element.name</td>
+        <td>@element.type</td>
+    </tr>
+}
+

@@ -460,6 +460,7 @@
     <Content Include="Views\Categories\_GeneralAttrList.cshtml" />
     <Content Include="Views\Categories\_AttributeValues.cshtml" />
     <Content Include="Views\Categories\_AttributeValuesList.cshtml" />
+    <Content Include="Views\Categories\_PersonalAttrList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

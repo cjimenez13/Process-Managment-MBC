@@ -235,3 +235,6 @@ C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web 
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\Web Service API\obj\Debug\Web Service API.csprojResolveAssemblyReference.cache
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\Web Service API\obj\Debug\Web Service API.dll
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\Web Service API\obj\Debug\Web Service API.pdb
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\Web Service API\bin\System.Web.Cors.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\Web Service API\bin\System.Web.Http.Cors.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\Web Service API\bin\System.Web.Http.Cors.xml

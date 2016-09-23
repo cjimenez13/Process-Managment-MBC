@@ -24,13 +24,29 @@
         public string categorie_id { get; set; }
         public string name { get; set; }
         public string type_id { get; set; }
-        public string type_name { get; set; }
-        public string reg_expr { get; set; }
         public string value { get; set; }
         public string isEnabled { get; set; }
         public string createdBy { get; set; }
         public string createdDate { get; set; }
         public string user { get; set; }
+    }
+    public class PersonalAttributeDTO
+    {
+        public string id_attribute { get; set; }
+        public string categorie_id { get; set; }
+        public string name { get; set; }
+        public string type_id { get; set; }
+        public string value { get; set; }
+        public string isEnabled { get; set; }
+        public string createdBy { get; set; }
+        public string createdDate { get; set; }
+        public string userLog { get; set; }
+    }
+    public class PersonalAttributeDTOmin
+    {
+        public string attribute_id { get; set; }
+        public string value { get; set; }
+        public string user_id { get; set; }
     }
     public class AttributeListDTO
     {

@@ -1,51 +1,47 @@
-﻿<div class="row" style="margin-bottom:30px">
-    <!-- search bar -->
-    <div class="col-md-6">
-        <span class="input-icon">
-            <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
-            <i class="glyphicon glyphicon-search blue"></i>
-        </span>
-    </div>
-    <div class="col-md-offset-5 col-md-1">
-        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_addGroup">Crear grupo</button>
-    </div>
-</div>
-<div class="col-xs-12">
-    <div class="row">
-        <div class="col-xs-4">
-            <a href="@Url.Action("Group")">
-                @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Grupo 1").Closeable("darkorange").Maximizable("blue").HeaderBorder(BootstrapColors.Sky, Direction.Bottom)))
-                {
-                    using (WidgetSectionPanel header = widget.BeginHeader())
-                    {
-                    }
-                    using (widget.BeginBody())
-                    {
+﻿@model Model.GroupsListModel
 
-                        <p><strong>20 miembros...</strong></p>
-                        <div class="row" style="margin-top:15px">
-                            <div class="col-xs-2">
-                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
-                            </div>
-                            <div class="col-xs-2">
-                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
-                            </div>
-                            <div class="col-xs-2">
-                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
-                            </div>
-                            <div class="col-xs-2">
-                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
-                            </div>
-                            <div class="col-xs-2">
-                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Javi-Jimenez.jpg">
-                            </div>
-                            <div class="col-xs-1">
-                                <p>...</p>
-                            </div>
-                        </div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row" style="margin-bottom:30px">
+            <!-- search bar -->
+            <div class="col-lg-6 col-md-8 col-xs-10">
+                <span class="input-icon">
+                    <input type="text" class="form-control" id="groupSearch" placeholder="Buscar" onkeyup="filterGroups(this)">
+                    <i class="glyphicon glyphicon-search blue"></i>
+                </span>
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-md-4 col-xs-2">
+                <button class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_addGroup">
+                    <span class="visible-xs"><i class="fa fa-plus"></i></span>
+                    <span class="hidden-xs">Crear grupo</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="row" id="groupList">
+                @for (int iGroup = 0; iGroup != Model.groupsList.Count; iGroup++)
+                {
+                    if (iGroup % 3 == 0)
+                    {
+                        @:<div class="row"></div>
                     }
+                    <div class="col-xs-4" id="groupSearchBox">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-left bordered-blueberry">
+                                <a href="@Url.Action("Group","Users",new { id = Model.groupsList[iGroup].id_group })" style="text-align:left; float:left; color:#555555; margin-top:8px">
+                                    <span class="widget-caption"><strong>@Model.groupsList[iGroup].groupName</strong></span>
+                                </a>
+                                <div class="widget-buttons">
+                                    <a href="#" onclick="deleteGroup('@Model.groupsList[iGroup].id_group','@Model.groupsList[iGroup].groupName',this)">
+                                        <i class="fa fa-times danger"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            @{ Html.RenderPartial("/Views/Users/_GroupWidget.cshtml", new Model.GroupModel(Model.groupsList[iGroup].id_group));}
+                        </div>
+                    </div>
                 }
-            </a>
+            </div>
         </div>
     </div>
-</div>
+</div>    

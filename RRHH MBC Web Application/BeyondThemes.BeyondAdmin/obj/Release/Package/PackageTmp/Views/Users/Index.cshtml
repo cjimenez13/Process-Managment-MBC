@@ -1,112 +1,92 @@
 ﻿@{
+    ViewBag.Title = "Grupos y personas";
+    ViewBag.Description = "Grupos y personas";
     Layout = "~/Views/Shared/_Default.cshtml";
 }
 <div class="row">
     <div class="col-xs-12">
-        @using (var tabs = Html.Bootstrap().Begin(new Tabs("JustifiedTab").RadiusBordered()))
-        {
-            tabs.Tab("Grupos", BootstrapColors.Info);
-            tabs.Tab("Personas", BootstrapColors.Info);
-            <!-- Groups tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        @{Html.RenderPartial("/Views/Users/_GroupsList.cshtml"); }
-                    </div>
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab5">
+                <li class="active">
+                    <a data-toggle="tab" href="#groupsTab">
+                        Grupos
+                    </a>
+                </li>
+                <li class="tab-red">
+                    <a data-toggle="tab" href="#usersTab">
+                        Personas
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="groupsTab" class="tab-pane in active">
+                    @{Html.RenderPartial("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel()); }
                 </div>
-            }
-            <!-- Person tab-->
-            using (tabs.BeginPanel())
-            {
-                <div class="row">
-                    <div class="col-xs-12">
-                        @{Html.RenderPartial("/Views/Users/_UsersList.cshtml", new Model.ListUserModel()); }
-                    </div>
+                <div id="usersTab" class="tab-pane">
+                    @{Html.RenderPartial("/Views/Users/_UsersList.cshtml", new Model.ListUserModel()); }
                 </div>
-            }
-        }
-    </div>
-</div>
-
-<!-- Modal to add new group-->
-<div class="modal fade" id="modal_addGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Nueva Grupo</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Nombre del grupo</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label>Seleccione los miembros</label>
-                                <select id="e2" multiple="multiple" style="width: 100%;;">
-                                    <option value="AL" />Alabama
-                                    <option value="AK" />Alaska
-                                    <option value="AZ" />Arizona
-                                    <option value="AR" />Arkansas
-                                    <option value="CA" />California
-                                    <option value="CO" />Colorado
-                                    <option value="CT" />Connecticut
-                                    <option value="DE" />Delaware
-                                    <option value="FL" />Florida
-                                    <option value="GA" />Georgia
-                                    <option value="HI" />Hawaii
-                                    <option value="ID" />Idaho
-                                    <option value="IL" />Illinois
-                                    <option value="IN" />Indiana
-                                    <option value="IA" />Iowa
-                                </select>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Crear</button>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal to add new group-->
+@{ Html.RenderPartial("/Views/Users/_AddGroup.cshtml");}
 <!-- Modal register user -->
 @{Html.RenderPartial("/Views/Users/_Register.cshtml", new Model.RegisterModel()); }
-
-
-
-
-
-
 
 @section PageScripts{
 <!--Jquery Select2-->
 <script src="~/assets/js/select2/select2.js"></script>
 <script src="~/assets/js/toastr/toastr.js"></script>
-    <script>
-        function CompletedFormRegister(data) {
-            Notify('El usuario se ha registrado con exito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-        }
-    </script>
 <script>
-        //--Jquery Select2--
-        $("#e2").select2({
-            placeholder: "Select a State",
-            allowClear: true
+    function UserAddedSuccess(content) {
+        Notify('El usuario se ha registrado con exito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $('#usersTab').html(content);
+    }
+    function UserAddedFailure(content) {
+        Notify('Error, no se puede registrar el usuario', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function GroupAddedSuccess(content) {
+        Notify("El grupo ha sido agregado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $('#groupsTab').html(content);
+    }
+    function UserAddedFailure(content) {
+        console.log(content);
+        Notify("Error, no se puede agregar el grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function deleteGroup(group_id, name, self) {
+        var toolbarLink = $(self);
+        var widget = toolbarLink.parents(".widget").eq(0).parent();
+        var disposeinterval = 300;
+        $.ajax({
+            url: "/Users/_DeleteGroup/?group_id=" + group_id,
+            type: "DELETE",
+            dataType: "html",
+            traditional: true,
+            contentType: false,
+            success: function (data) {
+                Notify("El grupo '" + name + "' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                widget.hide(disposeinterval, function () {
+                    widget.remove();
+                });
+            },
+            error: function () {
+                Notify("Error, no se puede borrar el grupo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
         });
+    }
+</script>
+<script>
+    //--Jquery Select2--
+    $("#e2").select2({
+        placeholder: "Select a State",
+        allowClear: true
+    });
 </script>
 <script>
     // script to change the content on cantones select 
     $(document).ready(function () {
         $('#selectPronvices').change(function () {
-            console.log("ok");
             var id = $("#selectPronvices").val();
             $.ajax({
                 url: '@Url.Action("getCantones", "Users")',
@@ -127,46 +107,29 @@
 </script>
 <script>
     // script to filter the list of users 
-	(function ($) {
-	  jQuery.expr[':'].Contains = function(a,i,m){
-		  return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
-	  };
-
-	  function listFilter(list) {
-	      var input = $("#searchUsers");
-
-		$(input)
-		  .change( function () {
-			var filter = $(this).val();
-			if(filter) {
-			  $(list).find("a:not(:Contains(" + filter + "))").parent().parent().slideUp();
-			  $(list).find("a:Contains(" + filter + ")").parent().parent().slideDown();
-			} else {
-			  $(list).find(".userBox").slideDown();
-			}
-			return false;
-		  })
-		.keyup( function () {
-			$(this).change();
-		});
-	  }
-
-	  $(function () {
-	      listFilter($("#userList"));
-	  });
-	}(jQuery));
-    
-    /*
-    var $rows = $('#userList');
-    $('#search').keyup(function () {
-        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-        $rows.show().filter(function () {
-            var text = $(this).find().text().replace(/\s+/g, ' ').toLowerCase();
-            //return !~text.indexOf(val);
-            return $(this).find(":contains("+val+")")
-        }).hide();
-    });
-    */
+    function filterUsers(element) {
+        var value = $(element).val().toLowerCase();
+        $("#userList").children().each(function () {
+            if ($(this).text().toLowerCase().includes(value)) {
+                $(this).show(300);
+            }
+            else {
+                $(this).hide(300)
+            }
+        });
+    }
 </script> 
+<script>
+    function filterGroups(element) {
+        var value = $(element).val().toLowerCase();
+        $("#groupList .widget-caption").each(function () {
+            if ($(this).text().toLowerCase().includes(value)) {
+                $(this).parent().parent().parent().parent().show(300);
+            }
+            else {
+                $(this).parent().parent().parent().parent().hide(300)
+            }
+        });
+    }
+</script>
 }

@@ -122,8 +122,6 @@ namespace Web_Service_API.DataAccess
                     generalAttributeDTO.categorie_id = rdr["categorie_id"].ToString();
                     generalAttributeDTO.name = rdr["name"].ToString();
                     generalAttributeDTO.type_id = rdr["type"].ToString();
-                    generalAttributeDTO.type_name = rdr["type_name"].ToString();
-                    generalAttributeDTO.reg_expr = rdr["reg_expr"].ToString();
                     generalAttributeDTO.value = rdr["value"].ToString();
                     generalAttributeDTO.isEnabled = rdr["isEnabled"].ToString();
                     generalAttributeDTO.createdBy = rdr["createdBy"].ToString();
@@ -150,8 +148,6 @@ namespace Web_Service_API.DataAccess
                     generalAttributeDTO.categorie_id = rdr["categorie_id"].ToString();
                     generalAttributeDTO.name = rdr["name"].ToString();
                     generalAttributeDTO.type_id = rdr["type"].ToString();
-                    generalAttributeDTO.type_name = rdr["type_name"].ToString();
-                    generalAttributeDTO.reg_expr = rdr["reg_expr"].ToString();
                     generalAttributeDTO.value = rdr["value"].ToString();
                     generalAttributeDTO.isEnabled = rdr["isEnabled"].ToString();
                     generalAttributeDTO.createdBy = rdr["createdBy"].ToString();
@@ -159,6 +155,60 @@ namespace Web_Service_API.DataAccess
                 }
             };
             return generalAttributeDTO;
+        }
+        //-- Personal attributes
+
+        public static List<PersonalAttributeDTO> getPersonalAttributes(string categorie_id)
+        {
+            List<PersonalAttributeDTO> personalAttributesDTO = new List<PersonalAttributeDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_get_personalAttributes", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@categorie_id", SqlDbType.Int);
+                command.Parameters["@categorie_id"].Value = categorie_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
+                    personalAttributeDTO.id_attribute = rdr["id_attribute"].ToString();
+                    personalAttributeDTO.categorie_id = rdr["categorie_id"].ToString();
+                    personalAttributeDTO.name = rdr["name"].ToString();
+                    personalAttributeDTO.type_id = rdr["type"].ToString();
+                    personalAttributeDTO.value = rdr["value"].ToString();
+                    personalAttributeDTO.isEnabled = rdr["isEnabled"].ToString();
+                    personalAttributeDTO.createdBy = rdr["createdBy"].ToString();
+                    personalAttributeDTO.createdDate = rdr["createdDate"].ToString();
+                    personalAttributesDTO.Add(personalAttributeDTO);
+                }
+            };
+            return personalAttributesDTO;
+        }
+        public static PersonalAttributeDTO getPersonalAttribute(string id_attribute)
+        {
+            PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_get_personalAttribute", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_attribute", SqlDbType.Int);
+                command.Parameters["@id_attribute"].Value = id_attribute;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    personalAttributeDTO.id_attribute = rdr["id_attribute"].ToString();
+                    personalAttributeDTO.categorie_id = rdr["categorie_id"].ToString();
+                    personalAttributeDTO.name = rdr["name"].ToString();
+                    personalAttributeDTO.type_id = rdr["type"].ToString();
+                    personalAttributeDTO.value = rdr["value"].ToString();
+                    personalAttributeDTO.isEnabled = rdr["isEnabled"].ToString();
+                    personalAttributeDTO.createdBy = rdr["createdBy"].ToString();
+                    personalAttributeDTO.createdDate = rdr["createdDate"].ToString();
+                }
+            };
+            return personalAttributeDTO;
         }
         public static List<AttributeListDTO> getAttributesList(string id_attribute)
         {
@@ -269,6 +319,36 @@ namespace Web_Service_API.DataAccess
                 return false;
             };
         }
+
+        public static bool insertPersonalAttribute(PersonalAttributeDTO pGeneralAttributeDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_insert_personalAttribute", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@categorie_id", SqlDbType.Int);
+                command.Parameters["@categorie_id"].Value = pGeneralAttributeDTO.categorie_id;
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pGeneralAttributeDTO.name;
+                command.Parameters.Add("@type_id", SqlDbType.Int);
+                command.Parameters["@type_id"].Value = pGeneralAttributeDTO.type_id;
+                command.Parameters.Add("@value", SqlDbType.NVarChar);
+                command.Parameters["@value"].Value = pGeneralAttributeDTO.value;
+                command.Parameters.Add("@createdBy", SqlDbType.Int);
+                command.Parameters["@createdBy"].Value = pGeneralAttributeDTO.createdBy;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pGeneralAttributeDTO.userLog;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
         public static bool insertAttributeList(AttributeListDTO pAttributeListDTO)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
@@ -354,6 +434,35 @@ namespace Web_Service_API.DataAccess
                 return false;
             };
         }
+        public static bool updatePersonalAttribute(PersonalAttributeDTO pGeneralAttributeDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_update_personalAttribute", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_attribute", SqlDbType.Int);
+                command.Parameters["@id_attribute"].Value = pGeneralAttributeDTO.id_attribute;
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pGeneralAttributeDTO.name;
+                command.Parameters.Add("@type_id", SqlDbType.Int);
+                command.Parameters["@type_id"].Value = pGeneralAttributeDTO.type_id;
+                command.Parameters.Add("@value", SqlDbType.NVarChar);
+                command.Parameters["@value"].Value = pGeneralAttributeDTO.value;
+                command.Parameters.Add("@isEnabled", SqlDbType.Bit);
+                command.Parameters["@isEnabled"].Value = pGeneralAttributeDTO.isEnabled;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pGeneralAttributeDTO.userLog;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
         public static bool updateAttributeList(AttributeListDTO pAttributeListDTO)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
@@ -367,7 +476,7 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@name"].Value = pAttributeListDTO.name;
                 command.Parameters.Add("@type_id", SqlDbType.Int);
                 command.Parameters["@type_id"].Value = pAttributeListDTO.type_id;
-                command.Parameters.Add("@value", SqlDbType.Bit);
+                command.Parameters.Add("@value", SqlDbType.NVarChar);
                 command.Parameters["@value"].Value = pAttributeListDTO.value;
                 command.Parameters.Add("@isEnabled", SqlDbType.Bit);
                 command.Parameters["@isEnabled"].Value = pAttributeListDTO.isEnabled;
@@ -415,6 +524,27 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@id_attribute"].Value = id_attribute;
                 command.Parameters.Add("@pUser", SqlDbType.Int);
                 command.Parameters["@pUser"].Value = user;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool deletePersonalAttribute(string id_attribute, string userLog)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_delete_personalAttribute", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_attribute", SqlDbType.Int);
+                command.Parameters["@id_attribute"].Value = id_attribute;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = userLog;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();

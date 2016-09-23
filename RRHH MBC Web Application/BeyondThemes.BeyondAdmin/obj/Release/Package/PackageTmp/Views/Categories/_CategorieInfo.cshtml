@@ -1,0 +1,49 @@
+﻿@model Model.CategorieModel
+
+<div class="row" style="margin-bottom:15px">
+    <div class="col-md-10">
+        <h3 id="CategorieTitle"><strong>Categoría @Html.Raw(Model.categorie.name)  </strong>
+            @if (Model.categorie.isEnabled=="True")
+            {
+                @:<span class="label label-success" id="isEnabled" style="margin-left:15px; font-size:14px">Habilitado</span>
+            }
+            else
+            {
+                @:<span class="label label-danger" id="isEnabled" style="margin-left:15px; font-size:14px">Deshabilitado</span>
+            }
+        </h3>
+    </div>
+    @using (Ajax.BeginForm("_DeleteCategorieRedirect", "Categories", new AjaxOptions { HttpMethod = "DELETE", OnSuccess = "CategorieDeletedSuccess", OnFailure = "CategorieDeletedFailure" }))
+    {
+        string id_categorie = Model.categorie.id_categorie;
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => id_categorie)
+        <div class="col-md-1">
+            <a class="btn btn-sky btn-block" data-toggle="modal" data-target="#modal_editCategorie">Editar</a>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-danger btn-block">Eliminar</button>
+        </div>
+    }
+</div>
+<div class="row" style=" margin-bottom:30px;margin-left:15px">
+    <div class="col-xs-12">
+        <h4><strong>Descripción: </strong></h4>
+        <p id="CategorieDescription">
+            @Html.Raw(Model.categorie.description)
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <span class="widget-caption">Gestiones relacionadas a la categoría</span>
+            </div>
+            <div class="widget-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </div>
+</div>

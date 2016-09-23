@@ -141,7 +141,7 @@
                             <div id="settings" class="tab-pane">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        @{Html.RenderPartial("/Views/Users/_ProfileConfig.cshtml", new Model.UpdateUserModel(Model.user)); }
+                                        @{Html.RenderPartial("/Views/Users/_ProfileConfig.cshtml", Model); }
                                     </div>
                                 </div>
                             </div>
@@ -162,31 +162,102 @@
 
 @section PageScripts{
 <script>
-        function CompletedFormRegister(data) {
-            Notify('El usuario se ha registrado con exito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-        }
-
+    function downloadFile(base64, fileType, fileName) {
+        download("data:"+fileType+";base64,"+base64, fileName, fileType);
+    }
+    function CompletedFormRegister(data) {
+        Notify('El usuario se ha registrado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+    }
+    function onSuccessAddRole(data) {
+        Notify('El rol se ha añadido con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+        var rolesTab = $('#roles-tab');
+        rolesTab.empty();
+        rolesTab.html(data);
+    }
+    function onFailureAddRole(data) {
+        Notify('Error, no puede añadir el rol', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function deleteUserRole(user_id, id_role, name, self) {
+        var toolbarLink = $(self);
+        var widget = toolbarLink.parents(".widget").eq(0).parent();
+        var disposeinterval = 300;
+        $.ajax({
+            url: "/Users/_DeleteUserRole/?user_id=" + user_id + "&id_role=" + id_role,
+            type: "DELETE",
+            dataType: "html",
+            traditional: true,
+            contentType: false,
+            success: function (data) {
+                Notify("El rol '"+name+"' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                widget.hide(disposeinterval, function () {
+                    widget.remove();
+                });
+            },
+            error: function () {
+                Notify("Error, no se puede borrar el rol '"+name+"'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
+        });
+    }
+    function deleteUserFile(id_file, name, self) {
+        var btnColumn = $(self);
+        var row = btnColumn.parents("tr").eq(0).parent();
+        var disposeinterval = 300;
+        $.ajax({
+            url: "/Users/_DeleteUserFile/?id_file=" + id_file,
+            type: "DELETE",
+            dataType: "html",
+            traditional: true,
+            contentType: false,
+            success: function (data) {
+                Notify("El archivo '" + name + "' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                row.hide(disposeinterval, function () {
+                    row.remove();
+                });
+            },
+            error: function () {
+                Notify("Error, no se puede borrar el archivo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
+        });
+    }
 </script>
 <script>
     function uploadPhoto(userName) {
-        console.log("hola")
-        console.log(userName)
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
-
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files;
-
-            // Create FormData object
             var fileData = new FormData();
-
-            // Looping over all files and add it to FormData object
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
-
             $.ajax({
                 url: '/Users/UploadPhoto?user='+userName,
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported.");
+        }
+    };
+    function uploadUserFile(userName) {
+        // Checking whether FormData is available in browser
+        if (window.FormData !== undefined) {
+            var fileUpload = $("#FileUpload1").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                url: '/Users/UploadPhoto?user=' + userName,
                 type: "POST",
                 contentType: false, // Not to set any content header
                 processData: false, // Not to process data
@@ -225,6 +296,15 @@
             });
         });
     });
+</script>
+<!--Jquery Select2-->
+<script src="/assets/js/select2/select2.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
+
+<script>
+        //--Jquery Select2--
+    $("select#selectedRole").select2();
 </script>
 }
 

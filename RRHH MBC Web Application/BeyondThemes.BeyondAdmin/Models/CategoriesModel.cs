@@ -81,7 +81,6 @@ namespace Model
     {
         private CategorieProvider categorieProvider = new CategorieProvider();
         public List<GeneralAttributeDTO> generalAttributesDTO = new List<GeneralAttributeDTO>();
-        public List<GeneralAttributeModel> generalAttributesModel = new List<GeneralAttributeModel>();
         public List<AttributeTypeDTO> attributeTypes = new List<AttributeTypeDTO>();
         public SelectList _TypeSelect { get; set; }
         public GeneralAttributesModel(string categorie_id)
@@ -97,10 +96,6 @@ namespace Model
             _TypeSelect = new SelectList(_TypeSelectList, "Value", "Text");
             //-- Get attributes
             generalAttributesDTO = categorieProvider.getGeneralAttributes(categorie_id).Result;
-            foreach (var attributeDTO in generalAttributesDTO)
-            {
-                generalAttributesModel.Add(new GeneralAttributeModel(attributeDTO));
-            }
         }
         // values to add new general attribute
 
@@ -108,40 +103,14 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string attributeA { get; set; }
-
         [Display(Name = "Valor")]
         [Required(ErrorMessage = "Se debe completar el campo del valor")]
         [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
         public string valueA { get; set; } = "";
-
         public bool isEnabledA { get; set; } = true;
-
         public string id_typeA { get; set; }
-
         public string categorie_idA { get; set; }
 
-    }
-    public class GeneralAttributeModel
-    {
-        public GeneralAttributeDTO attributeDTO = new GeneralAttributeDTO();
-        public List<AttributeTypeDTO> attributeTypes = new List<AttributeTypeDTO>();
-        private CategorieProvider categorieProvider = new CategorieProvider();
-        public GeneralAttributeModel(GeneralAttributeDTO pAttributeDTO)
-        {
-            attributeDTO = pAttributeDTO;
-            attributeTypes = categorieProvider.getAttributeTypes().Result;
-            attribute = pAttributeDTO.name;
-            value = pAttributeDTO.value;
-            attribute_id = pAttributeDTO.id_attribute;
-            id_type = pAttributeDTO.type_id;
-            isEnabled = attributeDTO.isEnabled == "True" ? true: false;
-
-        }
-        public string attribute { get; set; }
-        public string value { get; set; }
-        public string attribute_id { get; set; }
-        public string id_type { get; set; }
-        public bool isEnabled { get; set; }
     }
     public class AddGeneralAttributeModel
     {
@@ -179,15 +148,20 @@ namespace Model
         public List<AttributeListDTO> attributeListDTO = new List<AttributeListDTO>();
         public List<AttributeTypeDTO> attributeTypes = new List<AttributeTypeDTO>();
         public SelectList _TypeSelect { get; set; }
-        public AttributesListModel(string attribute_id)
+        public string attribute_nameVA { get; set; }
+        public AttributesListModel(string attribute_id, string pAttribute_name)
         {
+            this.attribute_nameVA = pAttribute_name;
             this.attribute_idVA = attribute_id;
             //-- Generates types select 
             attributeTypes = categorieProvider.getAttributeTypes().Result;
             List<SelectListItem> _TypeSelectList = new List<SelectListItem>();
             foreach (AttributeTypeDTO iType in attributeTypes)
             {
-                _TypeSelectList.Add(new SelectListItem { Text = iType.type, Value = iType.id_type });
+                if (iType.type != "Lista")
+                {
+                    _TypeSelectList.Add(new SelectListItem { Text = iType.type, Value = iType.id_type });
+                }
             }
             _TypeSelect = new SelectList(_TypeSelectList, "Value", "Text");
             //-- Get attributes
@@ -202,25 +176,25 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo del valor")]
         [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
         public string valueVA { get; set; }
-        public bool isEnabledVA { get; set; }
+        public bool isEnabledVA { get; set; } = true;
         public string id_typeVA { get; set; }
         public string attribute_idVA { get; set; }
-
     }
     public class AddAttributeListModel
     {
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
-        public string attribute { get; set; }
+        public string attributeVA { get; set; }
 
         [Display(Name = "Valor")]
         [Required(ErrorMessage = "Se debe completar el campo del valor")]
         [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
-        public string value { get; set; }
-        public bool isEnabled { get; set; }
-        public string id_type { get; set; }
-        public string attribute_id { get; set; }
+        public string valueVA { get; set; }
+        public bool isEnabledVA { get; set; }
+        public string id_typeVA { get; set; }
+        public string attribute_idVA { get; set; }
+        public string attribute_nameVA { get; set; }
     }
     public class EditAttributeListModel
     {
@@ -233,9 +207,77 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo del valor")]
         [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
         public string value { get; set; }
-        public bool isEnabled { get; set; }
+        public string isEnabled { get; set; }
         public string id_type { get; set; }
         public string id_attributeValue { get; set; }
+    }
+
+    //---------------- Personal Attributes ------------------------
+    public class PersonalAttributesModel
+    {
+        private CategorieProvider categorieProvider = new CategorieProvider();
+        public List<PersonalAttributeDTO> attributeListDTO = new List<PersonalAttributeDTO>();
+        public List<AttributeTypeDTO> attributeTypes = new List<AttributeTypeDTO>();
+        public SelectList _TypeSelect { get; set; }
+        public PersonalAttributesModel(string categorie_id)
+        {
+            this.categorie_idPA = categorie_id;
+            //-- Generates types select 
+            attributeTypes = categorieProvider.getAttributeTypes().Result;
+            List<SelectListItem> _TypeSelectList = new List<SelectListItem>();
+            foreach (AttributeTypeDTO iType in attributeTypes)
+            {
+                if (iType.type != "Lista")
+                {
+                    _TypeSelectList.Add(new SelectListItem { Text = iType.type, Value = iType.id_type });
+                }
+            }
+            _TypeSelect = new SelectList(_TypeSelectList, "Value", "Text");
+            //-- Get attributes
+            attributeListDTO = categorieProvider.getPersonalAttributes(categorie_id).Result;
+        }
+
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string attributePA { get; set; }
+        [Display(Name = "Valor")]
+        [Required(ErrorMessage = "Se debe completar el campo del valor")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string valuePA { get; set; }
+        public bool isEnabledPA { get; set; } = true;
+        public string id_typePA { get; set; }
+        public string categorie_idPA { get; set; }
+    }
+    public class AddPersonalAttributeModel
+    {
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string attributePA { get; set; }
+
+        [Display(Name = "Valor")]
+        [Required(ErrorMessage = "Se debe completar el campo del valor")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string valuePA { get; set; }
+        public bool isEnabledPA { get; set; }
+        public string id_typePA { get; set; }
+        public string categorie_idPA { get; set; }
+    }
+    public class EditPersonalAttributeModel
+    {
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string attribute { get; set; }
+
+        [Display(Name = "Valor")]
+        [Required(ErrorMessage = "Se debe completar el campo del valor")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string value { get; set; }
+        public string isEnabled { get; set; }
+        public string id_type { get; set; }
+        public string id_attribute { get; set; }
     }
 
 }

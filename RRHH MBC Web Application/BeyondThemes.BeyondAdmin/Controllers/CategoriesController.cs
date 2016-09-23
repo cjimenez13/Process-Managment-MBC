@@ -31,7 +31,17 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return PartialView("/Views/Categories/_CategorieGeneralAtr.cshtml", new Model.GeneralAttributesModel(categorie_id));
         }
+        public ActionResult _AttributeValuesList(string attribute_id, string attribute_name)
+        {
+            return PartialView("/Views/Categories/_AttributeValuesList.cshtml", new Model.AttributesListModel(attribute_id, attribute_name));
+        }
+        public ActionResult _PersonalAttrList(string categorie_id)
+        {
+            return PartialView("/Views/Categories/_PersonalAttrList.cshtml", new Model.PersonalAttributesModel(categorie_id));
+        }
 
+
+        //---------------------------- Categories methods -------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult _AddCategorie(Model.AddCategorieModel pModel)
@@ -79,7 +89,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
-        
+        //---------------------------- General attributes methods -------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult _AddGeneralAttribute(Model.AddGeneralAttributeModel pModel)
@@ -122,7 +132,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             if (ModelState.IsValid || (pModel.id_type == "4" && pModel.attribute != null))
             {
                 AttributeTypeDTO attributesType = categorieProvider.getAttributeType(pModel.id_type).Result;
-                Regex r = new Regex("^"+attributesType.reg_expr+ "$");
+                Regex r = new Regex(attributesType.reg_expr);
                 GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
                 if (attributesType.reg_expr == "" || r.Match(pModel.value).Success)
                 {
@@ -175,20 +185,20 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_type).Result;
+                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_typeVA).Result;
                 Regex r = new Regex(attributesTypes.reg_expr);
-                AttributeListDTO generalAttributeDTO = new AttributeListDTO();
-                if (!r.IsMatch(pModel.value))
+                AttributeListDTO attributeListDTO = new AttributeListDTO();
+                if (attributesTypes.reg_expr == "" || r.Match(pModel.valueVA).Success)
                 {
-                    generalAttributeDTO.name = pModel.attribute;
-                    generalAttributeDTO.value = pModel.value;
-                    generalAttributeDTO.type_id = pModel.id_type;
-                    generalAttributeDTO.user = Request.Cookies["user_id"].Value;
-                    generalAttributeDTO.createdBy = generalAttributeDTO.user;
-                    generalAttributeDTO.attribute_id = pModel.attribute_id;
-                    if (categorieProvider.postAttributeList(generalAttributeDTO).Result)
+                    attributeListDTO.name = pModel.attributeVA;
+                    attributeListDTO.value = pModel.valueVA;
+                    attributeListDTO.type_id = pModel.id_typeVA;
+                    attributeListDTO.user = Request.Cookies["user_id"].Value;
+                    attributeListDTO.createdBy = attributeListDTO.user;
+                    attributeListDTO.attribute_id = pModel.attribute_idVA;
+                    if (categorieProvider.postAttributeList(attributeListDTO).Result)
                     {
-                        return _GeneralAttrList(pModel.attribute_id);
+                        return _AttributeValuesList(pModel.attribute_idVA, pModel.attribute_nameVA);
                     }
                 }
                 else
@@ -196,7 +206,128 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     return new HttpStatusCodeResult(404, "El campo valor es inválido");
                 }
             }
-            return new HttpStatusCodeResult(404, "Error no se puede agregar el atributo");
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
+        }
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult _EditGeneralAttributeList(Model.EditAttributeListModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AttributeTypeDTO attributesType = categorieProvider.getAttributeType(pModel.id_type).Result;
+                Regex r = new Regex(attributesType.reg_expr);
+                AttributeListDTO attributeListDTO = new AttributeListDTO();
+                if (attributesType.reg_expr == "" || r.Match(pModel.value).Success)
+                {
+                    attributeListDTO.name = pModel.attribute;
+                    attributeListDTO.value = pModel.value;
+                    attributeListDTO.type_id = pModel.id_type;
+                    attributeListDTO.isEnabled = pModel.isEnabled == "on" ? "true" : "false";
+                    attributeListDTO.user = Request.Cookies["user_id"].Value;
+                    attributeListDTO.id_attributeValue = pModel.id_attributeValue;
+                    if (categorieProvider.putAttributeList(attributeListDTO).Result)
+                    {
+                        return new HttpStatusCodeResult(200);
+                    }
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(404, "El campo valor es inválido");
+                }
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404, "Error, debe completar todos los campos");
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteGeneralAttributeList(string id_attributeValue)
+        {
+            AttributeListDTO attributeListDTO = new AttributeListDTO();
+            attributeListDTO.id_attributeValue = id_attributeValue;
+            attributeListDTO.user = Request.Cookies["user_id"].Value; ;
+            if (categorieProvider.deleteAttributeList(attributeListDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Error, el atributo no se puede eliminar");
+        }
+
+        //------------------------------------------ Personal Attributes ----------------------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddPersonalAttribute(Model.AddPersonalAttributeModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AttributeTypeDTO attributesTypes = categorieProvider.getAttributeType(pModel.id_typePA).Result;
+                Regex r = new Regex(attributesTypes.reg_expr);
+                PersonalAttributeDTO personaAttributeDTO = new PersonalAttributeDTO();
+                if (attributesTypes.reg_expr == "" || r.Match(pModel.valuePA).Success)
+                {
+                    personaAttributeDTO.name = pModel.attributePA;
+                    personaAttributeDTO.value = pModel.valuePA;
+                    personaAttributeDTO.type_id = pModel.id_typePA;
+                    personaAttributeDTO.userLog = Request.Cookies["user_id"].Value;
+                    personaAttributeDTO.createdBy = personaAttributeDTO.userLog;
+                    personaAttributeDTO.categorie_id = pModel.categorie_idPA;
+                    if (categorieProvider.postPersonalAttribute(personaAttributeDTO).Result)
+                    {
+                        return _PersonalAttrList(pModel.categorie_idPA);
+                    }
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(404, "El campo valor es inválido");
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
+        }
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult _EditPersonalAttribute(Model.EditPersonalAttributeModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AttributeTypeDTO attributesType = categorieProvider.getAttributeType(pModel.id_type).Result;
+                Regex r = new Regex(attributesType.reg_expr);
+                PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
+                if (attributesType.reg_expr == "" || r.Match(pModel.value).Success)
+                {
+                    personalAttributeDTO.name = pModel.attribute;
+                    personalAttributeDTO.value = pModel.value;
+                    personalAttributeDTO.type_id = pModel.id_type;
+                    personalAttributeDTO.isEnabled = pModel.isEnabled == "on" ? "true" : "false";
+                    personalAttributeDTO.userLog = Request.Cookies["user_id"].Value;
+                    personalAttributeDTO.id_attribute = pModel.id_attribute;
+                    if (categorieProvider.putPersonalAttribute(personalAttributeDTO).Result)
+                    {
+                        return new HttpStatusCodeResult(200);
+                    }
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(404, "El campo valor es inválido");
+                }
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404, "Error, debe completar todos los campos");
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el atributo");
+        }
+        [HttpDelete]
+        public ActionResult _DeletePersonalAttribute(string id_attribute)
+        {
+            PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
+            personalAttributeDTO.id_attribute = id_attribute;
+            personalAttributeDTO.userLog = Request.Cookies["user_id"].Value; ;
+            if (categorieProvider.deletePersonalAttribute(personalAttributeDTO).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Error, el atributo no se puede eliminar");
         }
     }
 }

@@ -3,72 +3,61 @@
     ViewBag.Title = "Categories";
     ViewBag.Description = "Lista de categorías";
 }
-
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget radius-bordered">
-            <div class="widget-header header-large">
+            <div class="widget-header">
                 <span class="widget-caption">Lista de categorías</span>
                 <div class="widget-buttons" style="margin-right:20px">
-                    <button class="btn btn-success btn-sm">Nueva categoría</button>
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_addCategorie">Nueva categoría</button>
                 </div>
             </div>
             <div class="widget-body">
                 <div class="row">
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" id="CategoriesList">
                         <!-- Filter area -->
+                        <!--
                         <div class="row" style="margin-bottom:40px">
                             <div class="col-md-6">
-                                <!-- search bar -->
+                                <!-- search bar 
                                 <span class="input-icon">
                                     <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
                                     <i class="glyphicon glyphicon-search blue"></i>
                                 </span>
                             </div>
                         </div>
+                        -->
                         <!-- Table -->
-                        <div class="flip-scroll">
-                            <table class="table table-bordered flip-content table-hover">
-                                <!-- column titles -->
-                                <thead class="flip-content bordered-primary">
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Creado por</th>
-                                        <th>Fecha</th>
-                                        <th>Descripcion</th>
-                                        <th>Habilitado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Table data-->
-                                    <tr onclick="location.href = '@(Url.Action("Categorie"))'">
-                                        <td>Vacaciones</td>
-                                        <td>John Doe</td>
-                                        <td>11-7-2014</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td>
-                                            @Html.Bootstrap().CheckBox("form-field-checkbox").Text("").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
-                                        </td>
-                                    </tr>
-                                    <tr onclick="location.href = '@(Url.Action("Categorie"))'">
-                                        <td>Vacaciones</td>
-                                        <td>John Doe</td>
-                                        <td>11-7-2014</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td>
-                                            @Html.Bootstrap().CheckBox("form-field-checkbox").Text("").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        @{ Html.RenderPartial("/Views/Categories/_CategoriesList.cshtml");}
                     </div>
                 </div>
-
-
-
             </div>
         </div>
     </div>
 </div>
 
+<!--Modal to add new categorie-->
+@{ Html.RenderPartial("/Views/Categories/_AddCategorie.cshtml", new Model.AddCategorieModel());}
+
+@section PageScripts{
+    <!-- scripts for dataTable -->
+    <link href="~/assets/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="~/assets/js/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/datatable/ZeroClipboard.js"></script>
+    <script src="~/assets/js/datatable/dataTables.tableTools.min.js"></script>
+    <script src="~/assets/js/datatable/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/datatable/datatables-init.js"></script>
+    <script>
+        InitiateCategorieDataTable.init();
+        console.log($('#categoriedatatable_filter input'));
+        function CategorieAddedSuccess(content) {
+            Notify("La categoría ha sido creada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $("#CategoriesList").html(content)
+            InitiateCategorieDataTable.init();
+        }
+        function CategorieAddedFailure(content) {
+            Notify("Error, no se puede crear la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+
+    </script>
+}

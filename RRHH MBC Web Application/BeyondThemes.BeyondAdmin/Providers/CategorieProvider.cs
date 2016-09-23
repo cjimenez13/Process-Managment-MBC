@@ -124,6 +124,42 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return generalAttribute;
             }
         }
+        public async Task<List<PersonalAttributeDTO>> getPersonalAttributes(string categorie_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<PersonalAttributeDTO> personalAttributesDTO = new List<PersonalAttributeDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/categories/personalAttr/?categorie_id=" + categorie_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    personalAttributesDTO = serializer.Deserialize<List<PersonalAttributeDTO>>(result);
+                }
+                return personalAttributesDTO;
+            }
+        }
+        public async Task<PersonalAttributeDTO> getPersonalAttribute(string id_attribute)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/categories/personalAttr/?id_attribute=" + id_attribute).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    personalAttributeDTO = serializer.Deserialize<PersonalAttributeDTO>(result);
+                }
+                return personalAttributeDTO;
+            }
+        }
         public async Task<List<AttributeListDTO>> getAttributesList(string id_attribute)
         {
             using (var client = new HttpClient())
@@ -132,7 +168,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<AttributeListDTO> attributesList = new List<AttributeListDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync("api/categories/attriutesList/?id_attribute=" + id_attribute).Result;
+                HttpResponseMessage response = client.GetAsync("api/categories/attributesList/?id_attribute=" + id_attribute).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -150,7 +186,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 AttributeListDTO attributeList = new AttributeListDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync("api/categories/attriutesList/?id_attributeValue=" + id_attributeValue).Result;
+                HttpResponseMessage response = client.GetAsync("api/categories/attributesList/?id_attributeValue=" + id_attributeValue).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -191,6 +227,21 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+        public async Task<bool> postPersonalAttribute(PersonalAttributeDTO pPersonalAttributeDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(pPersonalAttributeDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/categories/personalAttr", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<bool> postAttributeList(AttributeListDTO pAttributeList)
         {
             using (var client = new HttpClient())
@@ -198,7 +249,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pAttributeList);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PostAsync("api/categories/attriutesList", contentPost).Result;
+                HttpResponseMessage response = client.PostAsync("api/categories/attributesList", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -237,14 +288,29 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
-        public async Task<bool> putGeneralAttribute(AttributeListDTO pAttributeList)
+        public async Task<bool> putPersonalAttribute(PersonalAttributeDTO pPersonalAttributeDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(pPersonalAttributeDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/categories/personalAttr", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> putAttributeList(AttributeListDTO pAttributeList)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pAttributeList);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PutAsync("api/categories/attriutesList", contentPost).Result;
+                HttpResponseMessage response = client.PutAsync("api/categories/attributesList", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -279,12 +345,25 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+        public async Task<bool> deletePersonalAttribute(PersonalAttributeDTO pPersonalAttributeDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/categories/personalAttr/?id_attribute=" + pPersonalAttributeDTO.id_attribute + "&userLog=" + pPersonalAttributeDTO.userLog).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<bool> deleteAttributeList(AttributeListDTO pAttributeList)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                HttpResponseMessage response = client.DeleteAsync("api/categories/attriutesList/?id_attributeValue=" + pAttributeList.id_attributeValue + "&?user=" + pAttributeList.user).Result;
+                HttpResponseMessage response = client.DeleteAsync("api/categories/attributesList/?id_attributeValue=" + pAttributeList.id_attributeValue + "&user=" + pAttributeList.user).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

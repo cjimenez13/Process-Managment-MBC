@@ -4,7 +4,6 @@
     ViewBag.Title = "Categoria Vacaciones";
     ViewBag.Description = "Lista de categorías";
 }
-
 <div class="row">
     <div class="col-xs-12">
         <div class="tabbable">
@@ -14,7 +13,6 @@
                         Información General
                     </a>
                 </li>
-
                 <li class="tab-red">
                     <a data-toggle="tab" href="#generalAttributes-tab">
                         Atributos Generales
@@ -26,7 +24,6 @@
                     </a>
                 </li>
             </ul>
-
             <div class="tab-content">
                 <div id="info-tab" class="tab-pane in active">
                     <div class="row">
@@ -35,14 +32,14 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div id="generalAttributes-tab" class="tab-pane">
                     @{Html.RenderPartial("/Views/Categories/_CategorieGeneralAtr.cshtml", new Model.GeneralAttributesModel(Model.categorie.id_categorie)); }
                 </div>
                 <div id="personalAttributes-tab" class="tab-pane">
                     <div class="row">
                         <div class="col-xs-12">
-                            @{Html.RenderPartial("/Views/Categories/_CategoriePersonalAtr.cshtml"); }
+                            @{Html.RenderPartial("/Views/Categories/_CategoriePersonalAtr.cshtml", new Model.PersonalAttributesModel(Model.categorie.id_categorie)); }
                         </div>
                     </div>
                 </div>
@@ -53,12 +50,24 @@
 <!-- Modal to edit categorie -->
 @{ Html.RenderPartial("/Views/Categories/_EditCategorie.cshtml", new Model.EditCategorieModel(Model.categorie.id_categorie));}
 
-
-
-
 @section PageScripts{
     <script>
-        //-- Categorie Deleted
+        //-- Categorie
+        //-- Edited
+        function CategorieEditedSuccess(categorieDTO) {
+            Notify("La categoría ha sido editada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $("#info-tab #CategorieTitle strong").text("Categoría " + categorieDTO.name)
+            $("#info-tab #CategorieDescription").text(categorieDTO.description)
+            if (categorieDTO.isEnabled === "True") {
+                $("#info-tab #isEnabled").text("Habilitado").removeClass("label-danger").addClass("label-success")
+            } else {
+                $("#info-tab #isEnabled").text("Deshabilitado").removeClass("label-success").addClass("label-danger")
+            }
+        }
+        function CategorieEditedFailure(content) {
+            Notify("Error, no se puede editar la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Deleted
         function CategorieDeletedSuccess(content) {
             Notify("La categoría ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
             window.location.href = "/Categories";
@@ -66,7 +75,9 @@
         function CategorieDeletedFailure(content) {
             Notify("Error, no se puede borrar la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
-        //-- General Attrbute Added
+
+        //-- General Attribute 
+        //-- Added
         function GeneralAttributeAddedSuccess(content) {
             Notify("El atributo ha sido agregado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
             var table = $('#table-generalAttributes > tbody');
@@ -78,41 +89,14 @@
         function GeneralAttributeAddedFailure(content) {
             Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
-        //-- General Attrbute Edit
+        //-- Edit
         function GeneralAttributeEditSuccess(content) {
             Notify("El atributo ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
         }
         function GeneralAttributeEditFailure(content) {
-            Notify("Error, no se puede editado el atributo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
-        //-- Categorie Edited
-        function CategorieEditedSuccess(categorieDTO) {
-            Notify("La categoría ha sido editada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-            $("#info-tab #CategorieTitle strong").text("Categoría "+categorieDTO.name)
-            $("#info-tab #CategorieDescription").text(categorieDTO.description)
-            if (categorieDTO.isEnabled === "True") {
-                $("#info-tab #isEnabled").text("Habilitado").removeClass("label-danger").addClass("label-success")
-            } else{ 
-                $("#info-tab #isEnabled").text("Deshabilitado").removeClass("label-success").addClass("label-danger")
-            }
-        }
-        function CategorieEditedFailure(content) {
-            Notify("Error, no se puede editar la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-
-        // General attributes type change
-        function onGeneralAttrChange(self) {
-            var selectedText = $(self).find("option:selected").text();
-            var valueColumn = $(self).parent().next();
-            if (selectedText === "Lista") {
-                valueColumn.find("input").prop("disabled", true)
-                valueColumn.find("input").val(null)
-            } else {
-                valueColumn.find("input").prop("disabled", false)
-            }
-        }
-
-        //-- Ajax to delete General attribtue
+        //-- deleted ajax
         function deleteGeneralAttribute(attribute_id, name, element) {
             $.ajax({
                 url: "/Categories/_DeleteGeneralAttribute/?id_attribute=" + attribute_id,
@@ -131,6 +115,97 @@
                 }
             });
         }
+        // General attributes type change
+        function onGeneralAttrChange(self) {
+            var selectedText = $(self).find("option:selected").text();
+            var valueColumn = $(self).parent().next();
+            if (selectedText === "Lista") {
+                valueColumn.find("input").prop("disabled", true)
+                valueColumn.find("input").val(null)
+            } else {
+                valueColumn.find("input").prop("disabled", false)
+            }
+        }
+        //-- General Attribute List
+        //-- Added
+        function AttributeListAddedSuccess(content) {
+            Notify("El atributo ha sido agregado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            var table = $('#table-GeneralAttributesList > tbody');
+            table.children().not(':last').remove()
+            table.prepend(content);
+            //$("#generalAttributes-tab").html(content);
+        }
+        function AttributeListAddedFailure(content) {
+            Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Edited
+        function GeneralAttributeListEditSuccess(content) {
+            Notify("El atributo ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        }
+        function GeneralAttributeListEditFailure(content) {
+            Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Deleted ajax
+        function deleteGeneralAttributeList(id_attributeValue, name, element) {
+            $.ajax({
+                url: "/Categories/_DeleteGeneralAttributeList/?id_attributeValue=" + id_attributeValue,
+                type: "DELETE",
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+                success: function (data) {
+                    Notify("El atributo '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    $(element).closest("tr").hide(300, function () {
+                        widget.remove();
+                    });
+                },
+                error: function () {
+                    Notify("Error, no se puede remover el atributo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+
+        //-- Personal Attribute
+        //-- Added
+        function PersonalAttributeAddedSuccess(content) {
+            Notify("El atributo ha sido agregado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            var table = $('#table-PersonalAttributes > tbody');
+            table.children().not(':last').remove()
+            table.prepend(content);
+        }
+        function PersonalAttributeAddedFailure(content) {
+            Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Edited
+        function PersonalAttributeEditSuccess(content) {
+            Notify("El atributo ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        }
+        function PersonalAttributeEditFailure(content) {
+            Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Deleted ajax
+        function deletePersonalAttribute(id_attribute, name, element) {
+            $.ajax({
+                url: "/Categories/_DeletePersonalAttribute/?id_attribute=" + id_attribute,
+                type: "DELETE",
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+                success: function (data) {
+                    Notify("El atributo '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    $(element).closest("tr").hide(300, function () {
+                        widget.remove();
+                    });
+                },
+                error: function () {
+                    Notify("Error, no se puede remover el atributo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+
+
+        //-- Ajax to update general attribute 
+        /*
         function updateGeneralAttribute(event, element) {
             event.preventDefault()
             var form = $(element).closest("tr").children().first()
@@ -160,5 +235,8 @@
                 }
             });
         }
+        */
+
+
     </script>
 }
