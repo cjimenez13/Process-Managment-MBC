@@ -33,6 +33,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
                     users = serializer.Deserialize<List<UserDTO>>(result);
                 }
                 return users;
@@ -51,6 +52,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
                     user = serializer.Deserialize<UserDTO>(result);
                 }
                 return user;
@@ -105,6 +107,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
                     files = serializer.Deserialize<List<FileDTO>>(result);
                 }
                 return files;
@@ -169,7 +172,9 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                var userJson = new JavaScriptSerializer().Serialize(fileDTO);
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                var userJson = serializer.Serialize(fileDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/Users/file/", contentPost).Result;
 
@@ -201,7 +206,9 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                var userJson = new JavaScriptSerializer().Serialize(fileDTO);
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                var userJson = serializer.Serialize(fileDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/Users/photo/", contentPost).Result;
 

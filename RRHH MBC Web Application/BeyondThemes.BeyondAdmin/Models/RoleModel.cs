@@ -39,11 +39,13 @@ namespace Model
     {
         private RoleProvider roleProvider = new RoleProvider();
         public List<ModuleDTO> modulesList = new List<ModuleDTO>();
+        public RoleDTO role = new RoleDTO();
         public string id_role;
         public RoleModel(string pId_role)
         {
             id_role = pId_role;
             modulesList = roleProvider.getModules().Result;
+            role = roleProvider.getRole(pId_role).Result;
         }
     }
     public class PermissionsModel

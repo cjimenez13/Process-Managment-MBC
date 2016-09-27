@@ -37,7 +37,7 @@ namespace Web_Service_API.Providers
             {
                 using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
                 {
-                    SqlCommand command = new SqlCommand("sp_get_Users", connection);
+                    SqlCommand command = new SqlCommand("usp_get_Users", connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
 
                     command.Connection.Open();

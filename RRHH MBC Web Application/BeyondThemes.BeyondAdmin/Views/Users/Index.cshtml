@@ -55,9 +55,6 @@
         Notify("Error, no se puede agregar el grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
     }
     function deleteGroup(group_id, name, self) {
-        var toolbarLink = $(self);
-        var widget = toolbarLink.parents(".widget").eq(0).parent();
-        var disposeinterval = 300;
         $.ajax({
             url: "/Users/_DeleteGroup/?group_id=" + group_id,
             type: "DELETE",
@@ -66,7 +63,9 @@
             contentType: false,
             success: function (data) {
                 Notify("El grupo '" + name + "' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                widget.hide(disposeinterval, function () {
+                var toolbarLink = $(self);
+                var widget = toolbarLink.parents(".widget").eq(0).parent();
+                widget.hide(300, function () {
                     widget.remove();
                 });
             },
@@ -93,7 +92,6 @@
                 type: 'get',
                 data: { "pProvinceID": id },
                 success: function (json, textStatus) {
-                    console.log("ok")
                     $("#selectCantones").empty();
                     json = json || {};
                     for (var i = 0; i < json.length; i++) {
@@ -120,16 +118,90 @@
     }
 </script> 
 <script>
+
+    var Imtech = {};
+    Imtech.Pager = function () {
+        this.paragraphsPerPage = 3;
+        this.currentPage = 1;
+        this.pagingControlsContainer = '#pagingControls';
+        this.pagingContainerPath = '#groupList';
+        this.numPages = function () {
+            var numPages = 0;
+            if (this.paragraphs != null && this.paragraphsPerPage != null) {
+                numPages = Math.ceil(this.paragraphs.length / this.paragraphsPerPage);
+            }
+            return numPages;
+        };
+        this.showPage = function (page) {
+            this.currentPage = page;
+            var html = '';
+            var count = 0
+            //console.log(this.paragraphs)
+            this.paragraphs.slice((page - 1) * this.paragraphsPerPage,
+                ((page - 1) * this.paragraphsPerPage) + this.paragraphsPerPage).each(function () {
+                    //console.log("hola"+count )
+                    html += '<div class="groupWidget">' + $(this).html() + '</div>';
+                    count += 1;
+                    if (count % 3 == 0) {
+                        html += '<div class=row></div>'
+                    }
+                });
+            $(this.pagingContainerPath).html(html);
+            renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
+        }
+        var renderControls = function (container, currentPage, numPages) {
+            nextPage = currentPage + 1;
+            previousPage = currentPage - 1;
+            var pagingControls = '<ul class="pagination">';
+            if (currentPage == 1) {
+                pagingControls += '<li class="disabled"><a href="#">«</a></li>';
+            } else {
+                pagingControls += '<li><a href="#" onclick="pager.showPage(' + previousPage + '); return false;" >«</a></li>';
+            }
+            for (var i = 1; i <= numPages; i++) {
+                if (i != currentPage) {
+                    pagingControls += '<li><a href="#" onclick="pager.showPage(' + i + '); return false;">' + i + '</a></li>';
+                } else {
+                    pagingControls += '<li class="active"><a href="#">'+i+' <span class="sr-only">(current)</span></a></li>';
+                }
+            }
+            
+            if (currentPage == numPages) {
+                pagingControls += '<li class = disabled><a href="#">»</a></li></ul>';
+            } else {
+                pagingControls += '<li><a href="#" onclick="pager.showPage(' + nextPage + '); return false;" >»</a></li></ul>';
+            }
+            $(container).html(pagingControls);
+        }
+    }
+    var pager = new Imtech.Pager();
+    var groupContainers;
+    $(document).ready(function () {
+        groupContainers = $('#groupList').children();
+        pager.paragraphsPerPage = 5; // set amount elements per page
+        pager.pagingContainer = $('#groupList'); // set of main container
+        pager.paragraphs = $('.groupWidget', pager.pagingContainer); // set of required containers
+        pager.showPage(1);
+    });
     function filterGroups(element) {
         var value = $(element).val().toLowerCase();
-        $("#groupList .widget-caption").each(function () {
+        $(".widget-caption", groupContainers).each(function () {
+            var groupBox = $(this).closest("#groupSearchBox")
             if ($(this).text().toLowerCase().includes(value)) {
-                $(this).parent().parent().parent().parent().show(300);
+                groupBox.addClass('visible')
+                groupBox.show();
             }
             else {
-                $(this).parent().parent().parent().parent().hide(300)
+                groupBox.removeClass('visible')
+                groupBox.hide()
             }
         });
+        var pager = new Imtech.Pager();
+        pager.paragraphsPerPage = 5; // set amount elements per page
+        pager.pagingContainer = $('#groupList') // set of main container
+        pager.paragraphs = $('.visible', groupContainers).parent() // set of required containers
+            pager.showPage(1)
+        
     }
 </script>
 }

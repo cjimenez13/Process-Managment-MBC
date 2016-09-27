@@ -2,10 +2,8 @@ USE RRHH;
 go
 
 --------------------------- Users ------------------------------------
-
---Select users
---drop procedure sp_get_Users
-create procedure sp_get_Users as
+--drop procedure usp_get_Users
+create procedure usp_get_Users as
 begin
 	select u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
 	u.direction, u.birthdate, u.[password], u.id_user , 
@@ -17,12 +15,10 @@ begin
 	where u.isEnabled = 1;
 end
 go
-
--- Get specific user
 -- execute sp_get_User 'cjimenez13'
--- drop procedure sp_get_user
+-- drop procedure usp_get_user
 --execute sp_get_user 'cjimenez13@outlook.com'
-create procedure sp_get_user 
+create procedure usp_get_user 
 @user nvarchar(50) as
 begin
 	begin 
@@ -38,10 +34,8 @@ begin
 end
 go
 
-
---Insert users
---drop procedure sp_insert_User
-create procedure sp_insert_user
+--drop procedure usp_insert_user
+create procedure usp_insert_user
 @userName nvarchar(50) = null, @name nvarchar(50), @fLastName nvarchar(50), @sLastName nvarchar(50) = null,
 @email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = 'tmp1234',
 @id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null
@@ -53,16 +47,15 @@ begin
 end
 go
 
---Get Provinces
-create procedure sp_get_provinces as
+--drop procedure sp_get_provinces
+create procedure usp_get_provinces as
 begin
 	select id_province, name from Provinces;
 end
 go
 
---Get Cantones
-
-create procedure sp_get_cantones 
+--drop procedure usp_get_cantones
+create procedure usp_get_cantones 
 @province_id tinyint as
 begin
 	select c.id_canton, c.name, c.province_id, p.name as province_name from Cantones c inner join Provinces p on c.province_id = p.id_province
@@ -70,7 +63,8 @@ begin
 end
 go
 
-create procedure sp_insert_userImage
+-- drop procedure usp_insert_userImage
+create procedure usp_insert_userImage
 @user_id int, @image_data varbinary(max)
 as
 begin
@@ -79,37 +73,15 @@ begin
 end
 go
 
---Insert users
---drop procedure sp_update_User
-create procedure sp_update_user
+--drop procedure usp_update_user
+create procedure usp_update_user
 @user nvarchar(50), @userName nvarchar(50) = null, @name nvarchar(50), @fLastName nvarchar(50), @sLastName nvarchar(50) = null,
 @email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = 'tmp1234',
 @id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX) = null
  as
 begin
-	if CHARINDEX('@',@user) > 0
-	begin
+begin transaction 
 		declare @id_user int = (select id_user from Users where email = @email)
-		update Users set userName = isnull(@userName,userName),
-				     name = ISNULL(@name, name),
-					 fLastName = ISNULL(@fLastName, fLastName),
-					 sLastName = ISNULL(@sLastName, sLastName),
-					 email = ISNULL (@email, email),
-					 phoneNumber = ISNULL(@phoneNumber, phoneNumber),
-					 canton_id = ISNULL(@canton_id,canton_id),
-					 [password] = ISNULL(@password,[password]),
-					 id = ISNULL(@id, id),
-					 birthdate = ISNULL(try_convert(DATE,@birthdate,103), birthdate),22111111 42012
-					 direction = ISNULL(@direction, direction)
-		where email = @email
-		update UsersPhotos set photoData = ISNULL(@photo, photoData)
-		where [user_id] = @id_user 
-
-		
-	end
-	else
-	begin
-		declare @id_user_ int = (select id_user from Users where userName = @userName)
 		update Users set userName = isnull(@userName,userName),
 				     name = ISNULL(@name, name),
 					 fLastName = ISNULL(@fLastName, fLastName),
@@ -121,16 +93,16 @@ begin
 					 id = ISNULL(@id, id),
 					 birthdate = ISNULL(try_convert(DATE,@birthdate,103), birthdate),
 					 direction = ISNULL(@direction, direction)
-			where userName = @userName
+		where email = @email or userName = @userName
 		update UsersPhotos set photoData = ISNULL(@photo, photoData)
-		where [user_id] = @id_user_ 
-	end
+		where [user_id] = @id_user;
+commit transaction
 end
 go
 
 
--- Update User photo
-create procedure sp_update_userPhoto
+--drop procedure usp_update_userPhoto
+create procedure usp_update_userPhoto
 @user nvarchar(50), @photo varbinary(MAX)
  as
 begin
@@ -139,18 +111,9 @@ begin
 	update UsersPhotos set photoData = @photo where [user_id] = @id;
 end
 go
--- create User photo
-create procedure sp_update_userPhoto
-@user nvarchar(50), @photoData varbinary(MAX)
- as
-begin
-	declare @id int;
-	set @id = (select [id_user] from Users where email = @user or userName = @user);
-	update UsersPhotos set photoData = @photoData where [user_id] = @id;
-end
-go
 
-create procedure sp_insert_userPhoto
+--drop procedure usp_insert_userPhoto
+create procedure usp_insert_userPhoto
 @user nvarchar(50), @photoData varbinary(MAX)
  as
 begin
@@ -160,20 +123,17 @@ begin
 	values (@id, @photoData);
 end
 go
-
--- drop procedure sp_insert_userFile
-create procedure sp_insert_userFile
-@user nvarchar(50), @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(50), @fileName nvarchar(80)
+-- drop procedure usp_insert_userFile
+create procedure usp_insert_userFile
+@user_id nvarchar(50), @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(100), @fileName nvarchar(200)
 as
 begin
-	declare @id int;
-	set @id = (select [id_user] from Users where email = @user or userName = @user);
 	insert into UsersFiles([user_id],fileData, name, [description], createdDate, fileType, [fileName]) 
-	values (@id, @fileData, @name, @description,GETDATE(), @fileType, @fileName);
+	values (@user_id, @fileData, @name, @description,GETDATE(), @fileType, @fileName);
 end
 go
--- drop procedure sp_get_userFiles
-create procedure sp_get_userFiles
+-- drop procedure usp_get_userFiles
+create procedure usp_get_userFiles
 @user nvarchar(50)
 as
 begin
@@ -183,7 +143,8 @@ begin
 end
 go
 
-create procedure sp_delete_userFile
+-- drop procedure sp_delete_userFile
+create procedure usp_delete_userFile
 @id_file nvarchar(50)
 as
 begin

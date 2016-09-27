@@ -19,6 +19,10 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return View(new Model.CategorieModel(id));
         }
+        public ActionResult Attribute(string id)
+        {
+            return View();
+        }
         public ActionResult _CategoriesList()
         {
             return PartialView("/Views/Categories/_CategoriesList.cshtml", new Model.CategoriesListModel());

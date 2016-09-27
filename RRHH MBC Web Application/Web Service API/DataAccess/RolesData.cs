@@ -15,7 +15,7 @@ namespace Web_Service_API.DataAccess
             List<RoleDTO> roles = new List<RoleDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_roles", connection);
+                SqlCommand command = new SqlCommand("usp_get_roles", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Connection.Open();
@@ -33,12 +33,33 @@ namespace Web_Service_API.DataAccess
             return roles;
         }
 
+        public static RoleDTO getRole(string id_role)
+        {
+            RoleDTO role = new RoleDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_role", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_role", SqlDbType.Int);
+                command.Parameters["@id_role"].Value = id_role;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    role.id_role = rdr["id_role"].ToString();
+                    role.name = rdr["name"].ToString();
+                    role.description = rdr["description"].ToString();
+                }
+            };
+            return role;
+        }
+
         public static List<ModuleDTO> getModules()
         {
             List<ModuleDTO> modules = new List<ModuleDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_modules", connection);
+                SqlCommand command = new SqlCommand("usp_get_modules", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Connection.Open();
@@ -58,7 +79,7 @@ namespace Web_Service_API.DataAccess
             List<PermissionDTO> permissions = new List<PermissionDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_rolePermissions_byModule", connection);
+                SqlCommand command = new SqlCommand("usp_get_rolePermissions_byModule", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.Add("@role_id", SqlDbType.Int);
@@ -86,7 +107,7 @@ namespace Web_Service_API.DataAccess
             List<ElementDTO> modules = new List<ElementDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_Elements", connection);
+                SqlCommand command = new SqlCommand("usp_get_Elements", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@role_permission_id", SqlDbType.Int);
                 command.Parameters["@role_permission_id"].Value = id_rolePermission;
@@ -110,7 +131,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_role", connection);
+                SqlCommand command = new SqlCommand("usp_insert_role", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@name", SqlDbType.NVarChar);
@@ -139,7 +160,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_roleElement", connection);
+                SqlCommand command = new SqlCommand("usp_update_roleElement", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@element_id", SqlDbType.Int);
@@ -164,7 +185,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_rolePermission", connection);
+                SqlCommand command = new SqlCommand("usp_update_rolePermission", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_role_permission", SqlDbType.Int);
@@ -188,7 +209,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_role", connection);
+                SqlCommand command = new SqlCommand("usp_delete_role", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_role", SqlDbType.Int);

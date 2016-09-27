@@ -63,7 +63,6 @@
 @{ Html.RenderPartial("/Views/Users/_EditGroup.cshtml", new Model.EditGroup(Model.groupDTO.id_group, Model.groupDTO.groupName));}
 <!-- Modal to add group user -->
 @{ Html.RenderPartial("/Views/Users/_AddGroupUser.cshtml", new Model.AddGroupUser(Model.groupDTO.id_group, Model.groupDTO.groupName));}
-
 @section PageScripts{
 <script src="/assets/js/select2/select2.js"></script>
 <!--Bootstrap Tags Input-->

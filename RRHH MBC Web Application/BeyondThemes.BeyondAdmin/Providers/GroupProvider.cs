@@ -63,6 +63,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
                     groupUsers = serializer.Deserialize<List<UserDTO>>(result);
                 }
                 return groupUsers;

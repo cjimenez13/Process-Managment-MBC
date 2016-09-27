@@ -1,18 +1,14 @@
-execute sp_insert_group 'Recursos Humanos'
-execute sp_insert_groupUser 75, 1
-execute sp_insert_groupUser 76, 1
-select * from Groups
-select * from Users
-select * from Group_Users
 ------------------------------- Groups -------------------------------
-create procedure sp_get_groups as
+--drop procedure sp_get_groups
+create procedure usp_get_groups as
 begin
 	select g.id_group, g.groupName, g.createdDate, g.isEnabled
 	from Groups g 
 end
 go
 
-create procedure sp_get_group
+--drop procedure usp_get_group
+create procedure usp_get_group
 @group_id int as
 begin
 	select g.id_group, g.groupName, g.createdDate, g.isEnabled
@@ -21,7 +17,8 @@ begin
 end
 go
 
-create procedure sp_get_groupMembers
+--drop procedure sp_get_groupMembers
+create procedure usp_get_groupMembers
 @group_id int as
 begin
 	select g.id_group, u.name, u.id_user, u.fLastName, u.sLastName, u.email, u.[userName], (select photoData from UsersPhotos up where up.[user_id] = u.id_user) as photoData
@@ -30,7 +27,8 @@ begin
 end
 go
 
-create procedure sp_insert_group
+--drop procedure usp_insert_group
+create procedure usp_insert_group
 @groupName nvarchar(50)
 as
 begin
@@ -39,7 +37,8 @@ begin
 end
 go
 
-create procedure sp_update_group
+--drop procedure usp_update_group
+create procedure usp_update_group
 @id_group int, @groupName nvarchar(50)
 as
 begin 
@@ -48,7 +47,8 @@ begin
 end
 go
 
-create procedure sp_delete_group
+--drop procedure usp_delete_group
+create procedure usp_delete_group
 @id_group int
 as
 begin 
@@ -58,7 +58,8 @@ end
 go
 
 ----------------------- Users Groups ----------------------------
-create procedure sp_insert_groupUser 
+--drop procedure usp_insert_groupUser
+create procedure usp_insert_groupUser 
 @user_id int, @group_id int as
 begin
 	begin try
@@ -68,11 +69,9 @@ begin
 	begin catch end catch
 end
 go
-delete from Group_Users
-execute sp_insert_groupUser 76,3 
-select * from Group_Users
 
-create procedure sp_delete_groupUser
+--drop procedure usp_delete_groupUser
+create procedure usp_delete_groupUser
 @user_id int, @group_id int as
 begin
 	delete from Group_Users where [user_id] = @user_id and group_id = @group_id

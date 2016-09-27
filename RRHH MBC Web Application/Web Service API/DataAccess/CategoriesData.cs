@@ -18,7 +18,7 @@ namespace Web_Service_API.DataAccess
             List<CategorieDTO> categories = new List<CategorieDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_categories", connection);
+                SqlCommand command = new SqlCommand("usp_get_categories", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
@@ -42,7 +42,7 @@ namespace Web_Service_API.DataAccess
             CategorieDTO categorieDTO = new CategorieDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_categorie", connection);
+                SqlCommand command = new SqlCommand("usp_get_categorie", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_categorie", SqlDbType.Int);
                 command.Parameters["@id_categorie"].Value = id_categorie;
@@ -67,7 +67,7 @@ namespace Web_Service_API.DataAccess
             List<AttributeTypeDTO> atributeTypesDTO = new List<AttributeTypeDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_attributeTypes", connection);
+                SqlCommand command = new SqlCommand("usp_get_attributeTypes", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
@@ -87,7 +87,7 @@ namespace Web_Service_API.DataAccess
             AttributeTypeDTO atributeTypeDTO = new AttributeTypeDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_attributeType", connection);
+                SqlCommand command = new SqlCommand("usp_get_attributeType", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_type", SqlDbType.Int);
                 command.Parameters["@id_type"].Value = id_type;
@@ -109,7 +109,7 @@ namespace Web_Service_API.DataAccess
             List<GeneralAttributeDTO> generalAttributesDTO = new List<GeneralAttributeDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_generalAttributes", connection);
+                SqlCommand command = new SqlCommand("usp_get_generalAttributes", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@categorie_id", SqlDbType.Int);
                 command.Parameters["@categorie_id"].Value = categorie_id;
@@ -136,7 +136,7 @@ namespace Web_Service_API.DataAccess
             GeneralAttributeDTO generalAttributeDTO = new GeneralAttributeDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_generalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_get_generalAttribute", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
                 command.Parameters["@id_attribute"].Value = id_attribute;
@@ -163,7 +163,7 @@ namespace Web_Service_API.DataAccess
             List<PersonalAttributeDTO> personalAttributesDTO = new List<PersonalAttributeDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_personalAttributes", connection);
+                SqlCommand command = new SqlCommand("usp_get_personalAttributes", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@categorie_id", SqlDbType.Int);
                 command.Parameters["@categorie_id"].Value = categorie_id;
@@ -190,7 +190,7 @@ namespace Web_Service_API.DataAccess
             PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_personalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_get_personalAttribute", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
                 command.Parameters["@id_attribute"].Value = id_attribute;
@@ -215,7 +215,7 @@ namespace Web_Service_API.DataAccess
             List<AttributeListDTO> AttributesListDTO = new List<AttributeListDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_AttributesList", connection);
+                SqlCommand command = new SqlCommand("usp_get_AttributesList", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
                 command.Parameters["@id_attribute"].Value = id_attribute;
@@ -242,7 +242,7 @@ namespace Web_Service_API.DataAccess
             AttributeListDTO attributeListDTO = new AttributeListDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_AttributeList", connection);
+                SqlCommand command = new SqlCommand("usp_get_AttributeList", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_attributeValue", SqlDbType.Int);
                 command.Parameters["@id_attributeValue"].Value = id_attributeValue;
@@ -268,7 +268,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_categorie", connection);
+                SqlCommand command = new SqlCommand("usp_insert_categorie", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@name", SqlDbType.NVarChar);
@@ -294,7 +294,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_generalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_insert_generalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@categorie_id", SqlDbType.Int);
@@ -324,7 +324,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_personalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_insert_personalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@categorie_id", SqlDbType.Int);
@@ -353,7 +353,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_AttributeList", connection);
+                SqlCommand command = new SqlCommand("usp_insert_AttributeList", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@attribute_id", SqlDbType.Int);
@@ -383,7 +383,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_categorie", connection);
+                SqlCommand command = new SqlCommand("usp_update_categorie", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_categorie", SqlDbType.Int);
@@ -409,7 +409,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_generalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_update_generalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
@@ -438,7 +438,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_personalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_update_personalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
@@ -467,7 +467,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_AttributeList", connection);
+                SqlCommand command = new SqlCommand("usp_update_AttributeList", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_attributeValue", SqlDbType.Int);
@@ -497,7 +497,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_generalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_delete_generalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_categorie", SqlDbType.Int);
@@ -517,7 +517,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_generalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_delete_generalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
@@ -538,7 +538,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_personalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_delete_personalAttribute", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_attribute", SqlDbType.Int);
@@ -559,7 +559,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_AttributeList", connection);
+                SqlCommand command = new SqlCommand("usp_delete_AttributeList", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_attributeValue", SqlDbType.Int);

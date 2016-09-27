@@ -18,7 +18,7 @@ namespace Web_Service_API.DataAccess
             List<CantonDTO> provinces = new List<CantonDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_cantones", connection);
+                SqlCommand command = new SqlCommand("usp_get_cantones", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@province_id", SqlDbType.TinyInt);
                 command.Parameters["@province_id"].Value = pID;
@@ -42,7 +42,7 @@ namespace Web_Service_API.DataAccess
             List<ProvinceDTO> provinces = new List<ProvinceDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_provinces", connection);
+                SqlCommand command = new SqlCommand("usp_get_provinces", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
@@ -60,7 +60,7 @@ namespace Web_Service_API.DataAccess
             List<UserDTO> users = new List<UserDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_users", connection);
+                SqlCommand command = new SqlCommand("usp_get_users", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
@@ -93,7 +93,7 @@ namespace Web_Service_API.DataAccess
             UserDTO userDTO = new UserDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_user", connection);
+                SqlCommand command = new SqlCommand("usp_get_user", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add("@user", SqlDbType.NVarChar);
                 command.Parameters["@user"].Value = pUser;
@@ -126,7 +126,7 @@ namespace Web_Service_API.DataAccess
             List<FileDTO> fileDTOList = new List<FileDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_userFiles", connection);
+                SqlCommand command = new SqlCommand("usp_get_userFiles", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add("@user", SqlDbType.NVarChar);
                 command.Parameters["@user"].Value = pUser;
@@ -153,9 +153,9 @@ namespace Web_Service_API.DataAccess
             List<RoleDTO> roleDTOList = new List<RoleDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_userRoles", connection);
+                SqlCommand command = new SqlCommand("usp_get_userRoles", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add("@user_id", SqlDbType.NVarChar);
+                command.Parameters.Add("@user_id", SqlDbType.Int);
                 command.Parameters["@user_id"].Value = pUser;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
@@ -172,12 +172,37 @@ namespace Web_Service_API.DataAccess
             return roleDTOList;
         }
 
+        public static List<PersonalAttributeDTOmin> getUserAttributesbyCatgorie(string id_user, string id_categorie)
+        {
+            List<PersonalAttributeDTOmin> personaAttributeList = new List<PersonalAttributeDTOmin>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_userAttributes_byCategorie", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@id_user", SqlDbType.Int);
+                command.Parameters["@id_user"].Value = id_user;
+                command.Parameters.Add("@id_categorie", SqlDbType.Int);
+                command.Parameters["@id_categorie"].Value = id_categorie;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    PersonalAttributeDTOmin personalAttribute = new PersonalAttributeDTOmin();
+                    personalAttribute.attribute_id = rdr["id_attribute"].ToString();
+                    personalAttribute.user_id = rdr["id_user"].ToString();
+                    personalAttribute.value = rdr["value"].ToString();
+                    personaAttributeList.Add(personalAttribute);
+                }
+            };
+            return personaAttributeList;
+        }
+
         //-------------------------------------------------- Creates -----------------------------------------------------------------
         public static bool createUser(UserDTO pUserDTO)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_user", connection);
+                SqlCommand command = new SqlCommand("usp_insert_user", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@userName", SqlDbType.NVarChar);
@@ -223,11 +248,11 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_userFile", connection);
+                SqlCommand command = new SqlCommand("usp_insert_userFile", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@user", SqlDbType.NVarChar);
-                command.Parameters["@user"].Value = pFileDTO.user;
+                command.Parameters.Add("@user_id", SqlDbType.NVarChar);
+                command.Parameters["@user_id"].Value = pFileDTO.user;
 
                 command.Parameters.Add("@name", SqlDbType.NVarChar);
                 command.Parameters["@name"].Value = pFileDTO.name;
@@ -237,6 +262,12 @@ namespace Web_Service_API.DataAccess
 
                 command.Parameters.Add("@fileData", SqlDbType.VarBinary);
                 command.Parameters["@fileData"].Value = pFileDTO.fileData;
+
+                command.Parameters.Add("@fileType", SqlDbType.NVarChar);
+                command.Parameters["@fileType"].Value = pFileDTO.fileType;
+
+                command.Parameters.Add("@fileName", SqlDbType.NVarChar);
+                command.Parameters["@fileName"].Value = pFileDTO.fileName;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
@@ -251,7 +282,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_userRole", connection);
+                SqlCommand command = new SqlCommand("usp_insert_userRole", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@user_id", SqlDbType.Int);
@@ -275,7 +306,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_user", connection);
+                SqlCommand command = new SqlCommand("usp_update_user", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@userName", SqlDbType.NVarChar);
@@ -324,7 +355,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_userPhoto", connection);
+                SqlCommand command = new SqlCommand("usp_update_userPhoto", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@user", SqlDbType.NVarChar);
@@ -347,7 +378,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_userRole", connection);
+                SqlCommand command = new SqlCommand("usp_delete_userRole", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@role_id", SqlDbType.Int);
@@ -369,7 +400,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_userFile", connection);
+                SqlCommand command = new SqlCommand("usp_delete_userFile", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_file", SqlDbType.Int);

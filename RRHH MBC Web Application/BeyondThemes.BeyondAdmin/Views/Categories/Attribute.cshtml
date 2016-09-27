@@ -1,0 +1,119 @@
+﻿@{
+    Layout = "~/Views/Shared/_Default.cshtml";
+}
+
+
+<div class="tabbable">
+    <ul class="nav nav-tabs" id="myTab7">
+        <li class="active">
+            <a data-toggle="tab" href="#attributeGraphic-tab">
+                Gráfico
+            </a>
+        </li>
+        <li class="tab-red">
+            <a data-toggle="tab" href="#attributeTable-tab">
+                Tabla
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content radius-bordered">
+        <div id="attributeGraphic-tab" class="tab-pane in active">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <div class="form-group">
+                        <label for="reservation">Rango de días</label>
+                        <div class="controls">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span><input type="text" class="form-control" id="graphicDates" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top:20px">
+                    <div id="bar-chart" class="chart chart-lg"></div>
+                </div>
+            </div>
+        </div>
+        <div id="attributeTable-tab" class="tab-pane">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <div class="form-group">
+                        <label for="reservation">Rango de días</label>
+                        <div class="controls">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span><input type="text" class="form-control" id="tableDates" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="flip-scroll">
+                        <table class="table flip-content table-hover" id="rolesTable">
+                            <!-- column titles -->
+                            <thead class="flip-content bordered-primary">
+                                <tr>
+                                    <th>Gestion</th> <!-- Id gestion o 'manual' en otros casos-->
+                                    <th>Realizado por</th>
+                                    <th>Fecha</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section PageScripts{
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!--Beyond Scripts-->
+<script src="/assets/js/beyond.min.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.orderBars.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.tooltip.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.resize.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.selection.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.crosshair.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.stack.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.time.js"></script>
+<script src="/assets/js/charts/flot/jquery.flot.pie.js"></script>
+<script src="/assets/js/charts/flot/flot-init.js"></script>
+
+        <!--Bootstrap Date Picker-->
+<script src="/assets/js/datetime/bootstrap-datepicker.js"></script>
+<script src="/assets/js/datetime/moment.js"></script>
+<script src="/assets/js/datetime/daterangepicker.js"></script>
+<script>
+    $(window).bind("load", function () {
+
+        /*Sets Themed Colors Based on Themes*/
+        themeprimary = getThemeColorFromCss('themeprimary');
+        themesecondary = getThemeColorFromCss('themesecondary');
+        themethirdcolor = getThemeColorFromCss('themethirdcolor');
+        themefourthcolor = getThemeColorFromCss('themefourthcolor');
+        themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+        InitiateFlotBarChart.init();
+    });
+    $('#graphicDates').daterangepicker();
+    $('#tableDates').daterangepicker();
+</script>
+}

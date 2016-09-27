@@ -12,8 +12,10 @@ namespace Model
     {
         private UsersProvider userProvider = new UsersProvider();
         public List<FileDTO> filesList = new List<FileDTO>();
-        public ListUserFilesModel(string pUser)
+        public string user_id;
+        public ListUserFilesModel(string pUser,string user_id)
         {
+            this.user_id = user_id;
             filesList = userProvider.getFiles(pUser).Result;
         }
     }
@@ -31,9 +33,10 @@ namespace Model
     {
         private UsersProvider userProvider = new UsersProvider();
 
-        public AddFileModel()
+        public AddFileModel() { }
+        public AddFileModel(string user_id)
         {
-            //usersList = userProvider.getUsers().Result;
+            this.user_id = user_id;
         }
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
@@ -43,6 +46,7 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string description { get; set; }
+        public string user_id { get; set;}
     }
     public class UserRolesModel
     {
@@ -97,10 +101,12 @@ namespace Model
         List<ProvinceDTO> _ProvincesList = new List<ProvinceDTO>();
         public List<SelectListItem> _CantonesSelect { get; set; }
         List<CantonDTO> _CantonesList;
+        public UserDTO userDTO = new UserDTO();
         public UpdateUserModel() { }
         public UpdateUserModel(UserDTO userDTO)
         {
-            id = userDTO.id;
+            this.userDTO = userDTO;
+            cedula = userDTO.id;
             name = userDTO.name;
             fLastName = userDTO.fLastName;
             sLastName = userDTO.sLastName;
@@ -182,7 +188,7 @@ namespace Model
 
         [Display(Name = "Cédula")]
         [RegularExpression(@"[0-9]{9}", ErrorMessage = "La cédula debe contener 9 numeros")]
-        public string id { get; set; }
+        public string cedula { get; set; }
         public string user_id { get; set; } 
 
     }

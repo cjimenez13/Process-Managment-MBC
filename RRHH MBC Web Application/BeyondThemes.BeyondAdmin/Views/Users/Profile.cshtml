@@ -58,14 +58,25 @@
                                     <div class="col-md-12">
                                         <div class="col-md-6">
                                             <div class="profile-contacts">
+                                                <div class="profile-badge palegreen"><i class="fa fa-user palegreen"></i><span>General</span></div>
+                                                <div class="contact-info">
+                                                    <p>
+                                                        Cédula	: @Model.user.id<br>
+                                                        Usuario		: @Model.user.email<br>
+                                                        Fecha de nacimiento		: @Model.user.birthdate<br>
+                                                        
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="profile-contacts">
                                                 <div class="profile-badge orange"><i class="fa fa-phone orange"></i><span>Contacto</span></div>
                                                 <div class="contact-info">
                                                     <p>
-                                                        Phone	: @Model.user.phoneNumber <br>
-                                                        <!--Cell		: +1 9 876 5432 <br />-->
+                                                        Teléfono	: @Model.user.phoneNumber <br>
                                                         Email		: @Model.user.email<br>
-                                                        <!--Skype		: kim.ryder-->
-                                                        @Model.user.id<br>
+                                                        Telegram	: @Model.user.email<br>
                                                     </p>
                                                 </div>
                                             </div>
@@ -92,7 +103,7 @@
                             <div id="files" class="tab-pane">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        @{Html.RenderPartial("/Views/Users/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName));}
+                                        @{Html.RenderPartial("/Views/Users/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName, Model.user.user_id));}
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +211,7 @@
     }
     function deleteUserFile(id_file, name, self) {
         var btnColumn = $(self);
-        var row = btnColumn.parents("tr").eq(0).parent();
+        var row = btnColumn.parents("tr").eq(0)
         var disposeinterval = 300;
         $.ajax({
             url: "/Users/_DeleteUserFile/?id_file=" + id_file,
@@ -222,56 +233,65 @@
 </script>
 <script>
     function uploadPhoto(userName) {
-        // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
-            var fileUpload = $("#FileUpload1").get(0);
+            var fileUpload = $("#userPhotoUpload").get(0);
             var files = fileUpload.files;
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
-                console.log(files[i])
             }
             $.ajax({
                 url: '/Users/UploadPhoto?user='+userName,
                 type: "POST",
-                contentType: false, // Not to set any content header
-                processData: false, // Not to process data
+                contentType: false, 
+                processData: false, 
                 data: fileData,
                 success: function (result) {
-                    alert(result);
+                    Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    location.reload(true)
                 },
                 error: function (err) {
-                    alert(err.statusText);
+                    Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
                 }
             });
         } else {
-            alert("FormData is not supported.");
+            Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
     };
-    function uploadUserFile(userName) {
-        // Checking whether FormData is available in browser
+    function getFormData($form) {
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+        $.map(unindexed_array, function (n, i) {
+            indexed_array[n['name']] = n['value'];
+        });
+        return indexed_array;
+    }
+    function uploadUserFile(event,self) {
+        event.preventDefault()
+        var form = $(self).closest("form")
+        var formData = getFormData(form);
         if (window.FormData !== undefined) {
-            var fileUpload = $("#FileUpload1").get(0);
+            var fileUpload = $("#userFileUpload").get(0);
             var files = fileUpload.files;
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
             $.ajax({
-                url: '/Users/UploadPhoto?user=' + userName,
+                url: '/Users/UploadFile/?user_id='+formData.user_id+'&name='+formData.name+'&description='+formData.description,
                 type: "POST",
-                contentType: false, // Not to set any content header
-                processData: false, // Not to process data
+                contentType: false, 
+                processData: false, 
                 data: fileData,
                 success: function (result) {
-                    alert(result);
+                    Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
                 },
-                error: function (err) {
-                    alert(err.statusText);
+                error: function (result) {
+                    Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
                 }
             });
         } else {
-            alert("FormData is not supported.");
+            Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
     };
 </script>  
@@ -279,14 +299,12 @@
     // script to change the content on cantones select
     $(document).ready(function () {
         $('#province_id').change(function () {
-            console.log("ok");
             var id = $("#province_id").val();
             $.ajax({
                 url: '@Url.Action("getCantones", "Users")',
                 type: 'get',
                 data: { "pProvinceID": id },
                 success: function (json, textStatus) {
-                    console.log("ok")
                     $("#canton_id").empty();
                     json = json || {};
                     for (var i = 0; i < json.length; i++) {
@@ -306,6 +324,17 @@
 <script>
         //--Jquery Select2--
     $("select#selectedRole").select2();
+
+    // Javascript to enable link to tab
+    var url = document.location.toString();
+    if (url.match('#')) {
+        $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+    }
+
+    // Change hash for page-reload
+    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+        window.location.hash = e.target.hash;
+    })
 </script>
 }
 

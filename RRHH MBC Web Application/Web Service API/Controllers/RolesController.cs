@@ -12,15 +12,20 @@ namespace Web_Service_API.Controllers
     {
         // GET: Roles
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IEnumerable<RoleDTO> Get()
         {
             List<RoleDTO> roles = RolesData.getRoles();
             return roles;
         }
-        
+
+        [HttpGet]
+        public RoleDTO Get(string id_role)
+        {
+            RoleDTO role = RolesData.getRole(id_role);
+            return role;
+        }
+
         [HttpPost]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public RoleDTO Post(RoleDTO pRoleDTO)
         {
             RoleDTO roleDTO = new RoleDTO();
@@ -31,7 +36,6 @@ namespace Web_Service_API.Controllers
             return roleDTO;
         }
         [HttpDelete]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IHttpActionResult Delete(int id_role)
         {
             if (!RolesData.deleteRole(id_role.ToString()))
@@ -42,7 +46,6 @@ namespace Web_Service_API.Controllers
         }
         [Route("modules")]
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IEnumerable<ModuleDTO> modules()
         {
             List<ModuleDTO> modules = RolesData.getModules();
@@ -50,7 +53,6 @@ namespace Web_Service_API.Controllers
         }
         [Route("role/module_permissions")]
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IEnumerable<PermissionDTO> rolePermissionsbyModule(string id_rol, string id_module)
         {
             List<PermissionDTO> permissions = RolesData.getRolePermissions(id_rol,id_module);
@@ -59,7 +61,6 @@ namespace Web_Service_API.Controllers
 
         [Route("role/permission_elements")]
         [HttpGet]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IEnumerable<ElementDTO> permissionElementsbyRole(string id_rolePermission)
         {
             List<ElementDTO> elements = RolesData.getElements(id_rolePermission);
@@ -68,7 +69,6 @@ namespace Web_Service_API.Controllers
 
         [Route("role/element")]
         [HttpPut]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IHttpActionResult updateRoleElement(ElementDTO pElementDTO)
         {
             if (!RolesData.updateRoleElement(pElementDTO))
@@ -79,7 +79,6 @@ namespace Web_Service_API.Controllers
         }
         [Route("role/permission")]
         [HttpPut]
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public IHttpActionResult updateRoleElement(PermissionDTO pPermissionDTO)
         {
             if (!RolesData.updateRolePermission(pPermissionDTO))

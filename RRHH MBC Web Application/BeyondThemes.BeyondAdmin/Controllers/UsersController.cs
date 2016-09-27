@@ -45,7 +45,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return Json(cantones, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult UploadFile(string user)
+        public ActionResult UploadFile(AddFileModel model)
         {
             if (Request.Files.Count > 0)
             {
@@ -55,45 +55,35 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     for (int i = 0; i < files.Count; i++)
                     {
                         HttpPostedFileBase file = files[i];
-                        string fname;
-                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                        {
-                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                            fname = testfiles[testfiles.Length - 1];
-                        }
-                        else
-                        {
-                            fname = file.FileName;
-                        }
+                        string fname = file.FileName;
                         string fileName = Path.GetFileName(fname);
                         string fileExtension = Path.GetExtension(fileName).ToLower();
                         int fileSize = file.ContentLength;
-                        if (fileExtension == ".jpg" || fileExtension == ".png")
+                        Stream stream = file.InputStream;
+                        BinaryReader binaryReader = new BinaryReader(stream);
+                        byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
+                        FileDTO fileDTO = new FileDTO();
+                        fileDTO.fileData = bytes;
+                        fileDTO.user = model.user_id;
+                        fileDTO.name = model.name;
+                        fileDTO.description = model.description;
+                        fileDTO.fileName = fileName;
+                        fileDTO.fileType = file.ContentType;
+                        if (userProvider.putFile(fileDTO).Result)
                         {
-                            Stream stream = file.InputStream;
-                            BinaryReader binaryReader = new BinaryReader(stream);
-                            byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
-                            FileDTO fileDTO = new FileDTO();
-                            fileDTO.fileData = bytes;
-                            fileDTO.user = user;
-                            if (userProvider.putPhoto(fileDTO).Result)
-                            {
-                                return Json("File Uploaded Successfully!");
-                            }
+                            return new HttpStatusCodeResult(200, "El archivo se cargo con éxito");
                         }
-                        //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
-                        //file.SaveAs(fname);
                     }
-                    return Json("File Uploaded Successfully!");
+                    return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
                 }
                 catch (Exception ex)
                 {
-                    return Json("Error occurred. Error details: " + ex.Message);
+                    return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
                 }
             }
             else
             {
-                return Json("No files selected.");
+                return new HttpStatusCodeResult(404, "Error, No se selecciono ningun archivo");
             }
         }
 
@@ -143,22 +133,22 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                             fileDTO.user = user;
                             if (userProvider.putPhoto(fileDTO).Result)
                             {
-                                return Json("File Uploaded Successfully!");
+                                return new HttpStatusCodeResult(200, "El archivo se cargo con éxito");
                             }
                         }
                         //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
                         //file.SaveAs(fname);
                     }
-                    return Json("File Uploaded Successfully!");
+                    return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
                 }
                 catch (Exception ex)
                 {
-                    return Json("Error occurred. Error details: " + ex.Message);
+                    return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
                 }
             }
             else
             {
-                return Json("No files selected.");
+                return new HttpStatusCodeResult(404, "Error, No se selecciono ningun archivo");
             }
         }
 
@@ -169,7 +159,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             {
                 string selectedCanton = Request.Form["canton_id"].ToString();
                 UserDTO userDTO = new UserDTO();
-                userDTO.id = model.id;
+                userDTO.id = model.cedula;
                 userDTO.name = model.name;
                 userDTO.fLastName = model.fLastName;
                 userDTO.sLastName = model.sLastName;

@@ -47,6 +47,7 @@
         public string attribute_id { get; set; }
         public string value { get; set; }
         public string user_id { get; set; }
+        public string isEnabled { get; set; }
     }
     public class AttributeListDTO
     {

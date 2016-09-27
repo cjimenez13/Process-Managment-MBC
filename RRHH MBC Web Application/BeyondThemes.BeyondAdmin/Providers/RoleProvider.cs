@@ -34,6 +34,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return roles;
             }
         }
+        public async Task<RoleDTO> getRole(string id_role)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                RoleDTO role = new RoleDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/roles/?id_role="+id_role).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    role = serializer.Deserialize<RoleDTO>(result);
+                }
+                return role;
+            }
+        }
         public async Task<List<ModuleDTO>> getModules()
         {
             using (var client = new HttpClient())

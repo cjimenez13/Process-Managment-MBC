@@ -2,7 +2,8 @@ USE RRHH;
 go
 
 --------------- Roles -----------------
-create procedure sp_insert_role
+-- drop procedure usp_insert_role
+create procedure usp_insert_role
 @name nvarchar(30), @description nvarchar(50) = null as
 begin
 	insert into Roles(name,[description])
@@ -19,7 +20,8 @@ begin
 end
 go
 
-create procedure sp_delete_role
+-- drop procedure usp_delete_role
+create procedure usp_delete_role
 @id_role int
 as
 begin 
@@ -28,7 +30,8 @@ begin
 end
 go
 
-create procedure sp_get_roles
+-- drop procedure usp_get_roles
+create procedure usp_get_roles
 as
 begin
 	select r.id_role, r.name, r.[description], sum(case rp.isEnabled when 1 then 1 else 0 end) as [permissions]
@@ -37,14 +40,16 @@ begin
 end
 go
 
-create procedure sp_get_role
+-- drop procedure sp_get_role
+create procedure usp_get_role
 @id_role int as
 begin
 	select id_role, name, [description] from Roles  where id_role = @id_role
 end
 go
 
-create procedure sp_get_rolePermissions_byModule
+-- drop procedure usp_get_rolePermissions_byModule
+create procedure usp_get_rolePermissions_byModule
 @role_id int, @id_module int as
 begin
 	select per.id_permission, per.name, per.module_id, rp.isEnabled, rp.id_role_permission
@@ -53,15 +58,19 @@ begin
 end
 go
 
-create procedure sp_update_rolePermission
+-- drop procedure usp_update_rolePermission
+/*
+create procedure usp_update_rolePermission
 @role_id int, @permission_id int, @isEnabled bit as
 begin 
 	update Roles_Permissions set isEnabled = @isEnabled
 	where @role_id = role_id and @permission_id = permission_id
 end 
 go
+*/
 --------------------------------- Permissions -----------------------------------------
-create procedure sp_insert_permission
+-- drop procedure usp_insert_permission
+create procedure usp_insert_permission
 @id_permission int, @name nvarchar(50), @module_id tinyint 
 as
 begin
@@ -69,7 +78,9 @@ begin
 	values (@id_permission, @name, @module_id)
 end
 go
-create procedure sp_update_rolePermission
+
+-- drop procedure usp_update_rolePermission
+create procedure usp_update_rolePermission
 @id_role_permission int, @isEnabled bit as
 begin 
 	update Roles_Permissions set isEnabled = @isEnabled
@@ -78,7 +89,8 @@ end
 go
 
 --------------------------------- Modulos ------------------------------
-create procedure sp_insert_module
+-- drop procedure usp_insert_module
+create procedure usp_insert_module
 @id_module tinyint, @name nvarchar(50)
 as
 begin
@@ -87,14 +99,16 @@ begin
 end
 go
 
-create procedure sp_get_modules as
+-- drop procedure usp_get_modules
+create procedure usp_get_modules as
 begin
 	select id_module, name from Modules order by id_module
 end
 go 
 
 -------------------------------  Elementos ----------------------------------
-create procedure sp_insert_element
+-- drop procedure usp_insert_element
+create procedure usp_insert_element
 @name nvarchar(50), @type_id tinyint, @permission_id int
 as
 begin
@@ -103,7 +117,8 @@ begin
 end
 go
 
-create procedure sp_insert_typesElement
+-- drop procedure usp_insert_typesElement
+create procedure usp_insert_typesElement
 @id_elementType tinyint, @type nvarchar(50)
 as
 begin
@@ -112,7 +127,8 @@ begin
 end
 go
 
-create procedure sp_get_Elements
+-- drop procedure usp_get_Elements
+create procedure usp_get_Elements
 @role_permission_id int
 as
 begin
@@ -123,7 +139,8 @@ begin
 end
 go
 
-create procedure sp_update_roleElement
+-- drop procedure usp_update_roleElement
+create procedure usp_update_roleElement
 @element_id int, @role_permission_id int, @isEnabled bit as
 begin 
 	update Roles_Permissions_Elements set isEnabled = @isEnabled
@@ -132,7 +149,8 @@ end
 go
 
 ----------------- Users Roles ----------------------- 
-create procedure sp_get_userRoles
+-- drop procedure usp_get_userRoles
+create procedure usp_get_userRoles
 @user_id int
 as
 begin 
@@ -141,7 +159,8 @@ begin
 end
 go
 
-create procedure sp_insert_userRole
+-- drop procedure sp_insert_userRole
+create procedure usp_insert_userRole
 @user_id int, @role_id int as
 begin
 	insert into Users_Roles([user_id],role_id)
@@ -149,9 +168,9 @@ begin
 end
 go
 
-
-
-create procedure sp_get_userPermissions
+-- drop procedure usp_get_userPermissions
+/*
+create procedure usp_get_userPermissions
 @user_id int as
 begin 
 	select ur.role_id, ur.[user_id], rp.id_role_permission
@@ -159,8 +178,10 @@ begin
 	where ur.[user_id] = 59
 end
 go
+*/
 
-create procedure sp_get_userElements
+-- drop procedure usp_get_userElements
+create procedure usp_get_userElements
 @user_id int, @isEnabled int as
 begin 
 	select distinct rpe.element_id, e.name, (select type from ElementTypes et where et.id_elementType = e.[type_id]) as [type]
@@ -170,7 +191,3 @@ begin
 	where ur.[user_id] = 59 and rpe.isEnabled = 0
 end
 go
-
-select * from Users
-execute sp_insert_userRole 59, 127
-select * from Roles

@@ -1,6 +1,6 @@
 ﻿@model Model.CategorieModel
 
-<div class="row" style="margin-bottom:15px">
+<div class="row" style="margin-bottom:20px">
     <div class="col-md-10">
         <h3 id="CategorieTitle"><strong>Categoría @Html.Raw(Model.categorie.name)  </strong>
             @if (Model.categorie.isEnabled=="True")
@@ -26,24 +26,90 @@
         </div>
     }
 </div>
-<div class="row" style=" margin-bottom:30px;margin-left:15px">
+<div class="row" style="margin-left:15px">
     <div class="col-xs-12">
         <h4><strong>Descripción: </strong></h4>
         <p id="CategorieDescription">
             @Html.Raw(Model.categorie.description)
         </p>
     </div>
-</div>
-<div class="row">
     <div class="col-xs-12">
-        
-        <div class="widget">
-            <div class="widget-header bordered-bottom bordered-sky">
-                <span class="widget-caption">Gestiones relacionadas a la categoría</span>
+        <h4 style="margin-top:30px"><strong>Resumen: </strong></h4>
+        <div class="row" style="font-size:14px; margin-top:20px">
+            <div class="col-md-6" style="margin:0px">
+                <div class="dd dd-draghandle">
+                    <ol class="dd-list">
+                        @foreach (var attribute in Model.generalAttributes.GetRange(0, Model.generalAttributes.Count / 2))
+                        {
+                            if (attribute.value == "")
+                            {
+                            <li class="dd-item" data-id="13">
+                                <div class="dd2-content">
+                                <strong>@attribute.name:</strong>  @attribute.value
+                                </div>
+                                    @foreach (var attributeValue in Model.getValuesList(attribute.id_attribute))
+                                    {
+                                        <ol class="dd-list" style="">
+                                            <li class="dd-item dd2-item" data-id="16">
+                                                <div class="dd2-content"><strong>@attributeValue.name:</strong>  @attributeValue.value
+                                                    <a class="btn btn-primary btn-xs" style="float:right" href="@Url.Action("Attribute","Categories",new { id = attribute.id_attribute })">Ver detalles</a>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    }
+                            </li>
+                            }
+                            else
+                            {
+                                <li class="dd-item" data-id="13">
+                                    <div class="dd2-content">
+                                        <strong>@attribute.name:</strong>  @attribute.value
+                                        <a class="btn btn-primary btn-xs" style="float:right" href="@Url.Action("Attribute","Categories",new { id = attribute.id_attribute })">Ver detalles</a>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ol>
+                </div>
             </div>
-            <div class="widget-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <div class="col-md-offset-2 col-md-4" style="margin:0px">
+                <div class="dd dd-draghandle">
+                    <ol class="dd-list">
+                        @foreach (var attribute in Model.generalAttributes.GetRange(Model.generalAttributes.Count / 2, Model.generalAttributes.Count / 2))
+                        {
+                            if (attribute.value == "")
+                            {
+                                <li class="dd-item" data-id="13">
+                                    <div class="dd2-content">
+                                        <strong>@attribute.name:</strong>  @attribute.value
+                                    </div>
+                                    @foreach (var attributeValue in Model.getValuesList(attribute.id_attribute))
+                                    {
+                                        <ol class="dd-list" style="">
+                                            <li class="dd-item dd2-item" data-id="16">
+                                                <div class="dd2-content">
+                                                    <strong>@attributeValue.name:</strong>  @attributeValue.value
+                                                    <a class="btn btn-primary btn-xs" style="float:right" href="@Url.Action("Attribute","Categories",new { id = attribute.id_attribute })">Ver detalles</a>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="dd-item" data-id="13">
+                                    <div class="dd2-content">
+                                        <strong>@attribute.name:</strong>  @attribute.value
+                                        <a class="btn btn-primary btn-xs" style="float:right" href="@Url.Action("Attribute","Categories",new { id = attribute.id_attribute })">Ver detalles</a>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
 </div>
+

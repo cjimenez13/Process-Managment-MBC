@@ -14,7 +14,7 @@ namespace Web_Service_API.DataAccess
             List<GroupDTO> groups = new List<GroupDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_groups", connection);
+                SqlCommand command = new SqlCommand("usp_get_groups", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
@@ -35,7 +35,7 @@ namespace Web_Service_API.DataAccess
             GroupDTO group = new GroupDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_group", connection);
+                SqlCommand command = new SqlCommand("usp_get_group", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@group_id", SqlDbType.Int);
                 command.Parameters["@group_id"].Value = id_group;
@@ -56,7 +56,7 @@ namespace Web_Service_API.DataAccess
             List<UserDTO> groupUsers = new List<UserDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_get_groupMembers", connection);
+                SqlCommand command = new SqlCommand("usp_get_groupMembers", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@group_id", SqlDbType.Int);
                 command.Parameters["@group_id"].Value = group_id;
@@ -85,7 +85,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_group", connection);
+                SqlCommand command = new SqlCommand("usp_insert_group", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@groupName", SqlDbType.NVarChar);
@@ -105,7 +105,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_insert_groupUser", connection);
+                SqlCommand command = new SqlCommand("usp_insert_groupUser", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@user_id", SqlDbType.Int);
@@ -134,7 +134,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_update_group", connection);
+                SqlCommand command = new SqlCommand("usp_update_group", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_group", SqlDbType.Int);
@@ -156,7 +156,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_group", connection);
+                SqlCommand command = new SqlCommand("usp_delete_group", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_group", SqlDbType.Int);
@@ -175,7 +175,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("sp_delete_groupUser", connection);
+                SqlCommand command = new SqlCommand("usp_delete_groupUser", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@user_id", SqlDbType.Int);

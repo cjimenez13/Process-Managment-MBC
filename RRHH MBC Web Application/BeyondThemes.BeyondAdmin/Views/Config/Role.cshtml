@@ -1,23 +1,23 @@
 ﻿@model Model.RoleModel
 @{
-    ViewBag.Title = "Rol";
-    ViewBag.Description = "Rol";
+    ViewBag.Title = "Rol " + Model.role.name;
+    ViewBag.Description = "Rol "+ Model.role.name;
     Layout = "~/Views/Shared/_Default.cshtml";
 }
 <div class="row">
-    <div class="col-xs-12">
-        <h5 class="row-title"><i class="typcn typcn-folder themeprimary"></i>Modulos y permisos</h5>
-    </div>
     <div class="col-lg-6 col-sm-6 col-xs-12" id="tabs-permissions" data-id="@Model.id_role" style="margin-bottom:15px">
+        <h5 class="row-title"><i class="typcn typcn-folder themeprimary"></i>Modulos y permisos</h5>
         <!--Modules and permissions-->
         @{ Html.RenderPartial("/Views/Config/_RoleModules.cshtml", Model);}
         <div class="horizontal-space"></div>
     </div>
     <div class="col-lg-6 col-sm-6 col-xs-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <h5 class="row-title"><i class="typcn typcn-folder themeprimary"></i>Elementos</h5>
+            </div>
+        </div>
         <div class="widget">
-            <div class="widget-header bordered-bottom bordered-sky">
-                <span class="widget-caption">Elementos</span>
-            </div><!--Widget Header-->
             <div class="widget-body">
                 <table class="table flip-content table-hover" id="rolesTable">
                     <!-- column titles -->
@@ -29,25 +29,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Permission slements which content depends of permission click-->
+                        <!-- Permission elements which content depends of permission click-->
                     </tbody>
                 </table>
-            </div><!--Widget Body-->
-        </div><!--Widget-->
+            </div>
+        </div>
     </div>
 </div>
 @section PageScripts{
     <script>
-        $(document).ready(function () {
-            //getElements();
-        });
-
         function getPermissionElements(id_rolePermission) {
             var bodyTable = $("tbody:last");
             $.ajax({
                 url: "/Config/_PermissionElements/?id_rolePermission=" + id_rolePermission,
                 type: "GET",
-                //data: JSON.stringify({ 'Options': someData }),
                 dataType: "html",
                 traditional: true,
                 contentType: false,
@@ -56,7 +51,6 @@
                     bodyTable.html(data);
                 },
                 error: function () {
-                    //Notify("Error, no se puede borrar el rol", 'bottom-right', '5000', 'danger', 'fa-edit', true);
                 }
             });
         }

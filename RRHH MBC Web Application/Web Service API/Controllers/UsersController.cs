@@ -124,6 +124,12 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [Route("attributes")]
+        [HttpGet]
+        public List<PersonalAttributeDTOmin> userAttributes(string id_user, string id_categorie)
+        {
+            return UsersData.getUserAttributesbyCatgorie(id_user,id_categorie);
+        }
 
     }
 }

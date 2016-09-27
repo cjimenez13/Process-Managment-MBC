@@ -22,9 +22,15 @@ namespace Model
     {
         private CategorieProvider categorieProvider = new CategorieProvider();
         public CategorieDTO categorie = new CategorieDTO();
+        public List<GeneralAttributeDTO> generalAttributes = new List<GeneralAttributeDTO>();
         public CategorieModel(string id_categorie)
         {
             categorie = categorieProvider.getCategorie(id_categorie).Result;
+            generalAttributes = categorieProvider.getGeneralAttributes(id_categorie).Result;
+        }
+        public List<AttributeListDTO> getValuesList(string id_attribute)
+        {
+            return categorieProvider.getAttributesList(id_attribute).Result;
         }
     }
     public class AddCategorieModel
