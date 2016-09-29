@@ -1,25 +1,18 @@
 ﻿using DataTransferObjects;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Configuration;
 using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Providers
 {
-    class UsersProvider
+    class UsersProvider : AProvider
     {
-        private string _BaseAddress = WebConfigurationManager.AppSettings["WebApi"];
-        public UsersProvider()
-        {
-
-        }
+        public UsersProvider(){}
         //--------------------------- Gets --------------------------------------
-        //<Summary>Gets every enabled user available on the system
         public async Task<List<UserDTO>> getUsers()
         {
             using (var client = new HttpClient())
@@ -48,6 +41,25 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = client.GetAsync("api/users/?user="+pUser).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
+                    user = serializer.Deserialize<UserDTO>(result);
+                }
+                return user;
+            }
+        }
+        public async Task<UserDTO> getUserbyID(string user_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                UserDTO user = new UserDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/users/?user_id=" + user_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -131,6 +143,42 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return userRoles;
             }
         }
+        public async Task<List<PersonalAttributeDTOmin>> getUserAttributesbyCategorie(string user_id, string categorie_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<PersonalAttributeDTOmin> userAttributes = new List<PersonalAttributeDTOmin>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/users/attributes/?user_id=" + user_id+ "&categorie_id=" + categorie_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    userAttributes = serializer.Deserialize<List<PersonalAttributeDTOmin>>(result);
+                }
+                return userAttributes;
+            }
+        }
+        public async Task<List<CategorieDTO>> getUserCategories(string user_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<CategorieDTO> userCategories = new List<CategorieDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/users/attributes/categories/?user_id=" + user_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    userCategories = serializer.Deserialize<List<CategorieDTO>>(result);
+                }
+                return userCategories;
+            }
+        }
         //-------------------------------------- Posts -----------------------------------------------
         public async Task<bool> postUser(UserDTO userDTO)
         {
@@ -212,6 +260,21 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/Users/photo/", contentPost).Result;
 
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> putUserAttribute(PersonalAttributeDTOmin personalAttributeDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(personalAttributeDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/Users/attributes", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

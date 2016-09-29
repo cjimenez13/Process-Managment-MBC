@@ -7,7 +7,8 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
-
+using System.Text.RegularExpressions;
+using System.Net;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -16,6 +17,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
     {
         UsersProvider userProvider = new UsersProvider();
         GroupProvider groupProvider = new GroupProvider();
+        CategorieProvider categorieProvider = new CategorieProvider();
 
         // GET: Users
         public ActionResult Index()
@@ -36,6 +38,30 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             string user = HttpUtility.UrlDecode(id);
             return View(new UserModel(user));
         }
+
+        [HttpGet]
+        public ActionResult _UsersList()
+        {
+            return PartialView("/Views/Users/_UsersList.cshtml", new Model.ListUserModel());
+        }
+
+        [HttpGet]
+        public ActionResult _ProfileConfigRoles(string user_id)
+        {
+            return PartialView("/Views/Users/_Profile/_ProfileConfigRoles.cshtml", new Model.UserRolesModel(user_id));
+        }
+
+        [HttpGet]
+        public ActionResult _GroupList()
+        {
+            return PartialView("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel());
+        }
+        [HttpGet]
+        public ActionResult _GroupUsersList(string id_group)
+        {
+            return PartialView("/Views/Users/_GroupsUsersList.cshtml", new Model.GroupModel(id_group));
+        } 
+
         public ActionResult getCantones(string pProvinceID)
         {
             int id;
@@ -44,6 +70,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             cantones = userProvider.getCantones(id).Result;
             return Json(cantones, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public ActionResult UploadFile(AddFileModel model)
         {
@@ -203,18 +230,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
 
-        [HttpGet]
-        public ActionResult _UsersList()
-        {
-            return PartialView("/Views/Users/_UsersList.cshtml", new Model.ListUserModel());
-        }
-
-        [HttpGet]
-        public ActionResult _ProfileConfigRoles(string user_id)
-        {
-            return PartialView("/Views/Users/_ProfileConfigRoles.cshtml", new Model.UserRolesModel(user_id));
-        }
-
         [HttpPost]
         public ActionResult _AddUserRole(string user_id, string selectedRole)
         {
@@ -241,17 +256,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
-        }
-
-        [HttpGet]
-        public ActionResult _GroupList()
-        {
-            return PartialView("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel());
-        }
-        [HttpGet]
-        public ActionResult _GroupUsersList(string id_group)
-        {
-            return PartialView("/Views/Users/_GroupsUsersList.cshtml", new Model.GroupModel(id_group));
         }
 
         [HttpPost]
@@ -361,7 +365,35 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
-
+        [HttpPut]
+        public JsonResult _EditUserAttribute(Model.EditUserAttributeModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                AttributeTypeDTO attributesType = categorieProvider.getAttributeType(model.type_id).Result;
+                Regex r = new Regex(attributesType.reg_expr);
+                if (r.Match(model.value).Success)
+                {
+                    PersonalAttributeDTOmin userAttribute = new PersonalAttributeDTOmin();
+                    userAttribute.attribute_id = model.attribute_id;
+                    userAttribute.value = model.value;
+                    userAttribute.user_id = model.user_id;
+                    userAttribute.userLog = Request.Cookies["user_id"].Value;
+                    if (userProvider.putUserAttribute(userAttribute).Result)
+                    {
+                        Response.StatusCode = 200;
+                        return Json(model, JsonRequestBehavior.AllowGet);
+                        //return new HttpStatusCodeResult(200, "hola");
+                    }
+                }
+                Response.StatusCode = 400;
+                Response.StatusDescription = "El campo valor es incorrecto";
+                return Json(new { error = "El campo valor es incorrecto" }, JsonRequestBehavior.AllowGet);
+            }
+            Response.StatusCode = 400;
+            Response.StatusDescription = "Error, debe completar todos los campos";
+            return Json(new { error = "Error, debe completar todos los campos" }, JsonRequestBehavior.AllowGet);
+        }
 
     }
     

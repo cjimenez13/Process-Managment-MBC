@@ -366,8 +366,8 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@value"].Value = pAttributeListDTO.value;
                 command.Parameters.Add("@createdBy", SqlDbType.Int);
                 command.Parameters["@createdBy"].Value = pAttributeListDTO.createdBy;
-                command.Parameters.Add("@pUser", SqlDbType.Int);
-                command.Parameters["@pUser"].Value = pAttributeListDTO.user;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pAttributeListDTO.user;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();

@@ -3,14 +3,13 @@
     ViewBag.Title = "Plantillas";
     ViewBag.Description = "Plantillas";
 }
-
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="widget radius-bordered">
             <div class="widget-header">
                 <span class="widget-caption">Lista de plantillas disponibles</span>
                 <div class="widget-buttons buttons-bordered">
-                    <button class="btn btn-success btn-sm">Nueva plantilla</button>
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_addTemplate">Nueva plantilla</button>
                 </div>
             </div>
             <div class="widget-body">
@@ -21,7 +20,7 @@
                             <div class="col-md-6">
                                 <!-- search bar -->
                                 <span class="input-icon">
-                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterTemplates(this.value)">
                                     <i class="glyphicon glyphicon-search blue"></i>
                                 </span>
                             </div>
@@ -32,24 +31,14 @@
                                 <!-- column titles -->
                                 <thead class="flip-content bordered-palegreen">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Gestión </th>
+                                        <th>Plantilla</th>
                                         <th>Categoria</th>
                                         <th>Participantes</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table-templates">
                                     <!-- Table data-->
-                                    <tr onclick="location.href = '@(Url.Action("Template"))'">
-                                        <td>#1234123</td>
-                                        <td>Vacaciones diego</td>
-                                        <td>Vacaciones</td>
-                                        <td style="width:25%">
-                                            <div class="col-md-2 col-xs-6" data-toggle="tooltip" data-placement="top" title="Estaban">
-                                                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Nicolai-Larson.jpg">
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @{ Html.RenderPartial("/Views/Templates/_TemplatesList.cshtml", new Model.TemplatesListModel());}
                                 </tbody>
                             </table>
                         </div>
@@ -59,4 +48,40 @@
         </div>
     </div>
 </div>
+<!-- Modal to add template -->
+@{ Html.RenderPartial("/Views/Templates/_AddTemplate.cshtml", new Model.AddTemplateModel());}
 
+@section PageScripts{
+<script>
+    function TemplateAddedSuccess(content) {
+        Notify('La plantilla se ha creado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $('#table-templates').html(content);
+        $("[data-toggle='tooltip']").tooltip();
+    }
+    function TemplateAddedFailure(content) {
+        Notify('Error, no se puede crear la plantilla', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+
+    var templatesRows;
+    $(document).ready(function () {
+        templatesRows = $('#table-templates').children();
+        $("[data-toggle='tooltip']").tooltip();
+    });
+    function filterTemplates(pValue) {
+        templatesRows.find('td:first-child').each(function () {
+            var row = $(this).closest("tr")
+            if ($(this).text().toLowerCase().includes(pValue)) {
+                row.addClass('visible')
+                row.show(300);
+            }
+            else {
+                row.removeClass('visible')
+                row.hide(300)
+            }
+        });
+        //pager.paragraphs = $('.visible', groupContainers).parent() // set of required containers
+        //pager.showPage(1)
+        $("[data-toggle='tooltip']").tooltip();
+    }
+</script>
+}

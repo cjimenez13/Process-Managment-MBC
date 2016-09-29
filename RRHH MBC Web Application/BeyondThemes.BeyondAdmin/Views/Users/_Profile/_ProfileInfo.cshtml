@@ -1,0 +1,46 @@
+﻿@model Model.UserModel
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="profile-contacts">
+                <div class="profile-badge palegreen"><i class="fa fa-user palegreen"></i><span>General</span></div>
+                <div class="contact-info">
+                    <p>
+                        Cédula	: @Model.user.id<br>
+                        Usuario		: @Model.user.email<br>
+                        Fecha de nacimiento		: @Model.user.birthdate<br>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-contacts">
+                <div class="profile-badge orange"><i class="fa fa-phone orange"></i><span>Contacto</span></div>
+                <div class="contact-info">
+                    <p>
+                        Teléfono	: @Model.user.phoneNumber <br>
+                        Email		: @Model.user.email<br>
+                        Telegram	: @Model.user.email<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-contacts">
+                <div class="profile-badge azure">
+                    <i class="fa fa-map-marker azure"></i><span>Residencia</span>
+                </div>
+                <div class="contact-info">
+                    <p>
+                        @Model.user.province_name<br>
+                        @Model.user.canton_name<br>
+                        @Model.user.direction<br>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

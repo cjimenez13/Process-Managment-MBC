@@ -48,6 +48,9 @@
         public string value { get; set; }
         public string user_id { get; set; }
         public string isEnabled { get; set; }
+        public string type_id { get; set; }
+        public string name { get; set; }
+        public string userLog { get; set; }
     }
     public class AttributeListDTO
     {

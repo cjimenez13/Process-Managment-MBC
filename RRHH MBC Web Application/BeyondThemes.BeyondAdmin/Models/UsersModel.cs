@@ -8,6 +8,48 @@ using System.Web;
 
 namespace Model
 {
+    public class EditUserAttributeModel
+    {
+        [Display(Name = "Valor")]
+        [Required(ErrorMessage = "Se debe completar el campo del valor")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string value { get; set; }
+        [Required]
+        public string attribute_id { get; set; }
+        [Required]
+        public string user_id { get; set; }
+        [Required]
+        public string type_id { get; set; }
+    }
+
+    public class UserCategoriesModel
+    {
+        private UsersProvider userProvider = new UsersProvider();
+        public List<CategorieDTO> userCategories = new List<CategorieDTO>();
+        public string user_id;
+        public UserCategoriesModel(string user_id)
+        {
+            this.user_id = user_id;
+            userCategories = userProvider.getUserCategories(user_id).Result;
+        }
+    }
+    public class UserAttributesModel
+    {
+        private UsersProvider userProvider = new UsersProvider();
+        private CategorieProvider categorieProvider = new CategorieProvider();
+        public List<PersonalAttributeDTOmin> userAttributes = new List<PersonalAttributeDTOmin>();
+        public string user_id;
+        public AttributeTypeDTO type = new AttributeTypeDTO();
+        public UserAttributesModel(string user_id, string categorie_id)
+        {
+            this.user_id = user_id;
+            userAttributes = userProvider.getUserAttributesbyCategorie(user_id, categorie_id).Result;
+        }
+        public string getTypeName(string id_type)
+        {
+            return categorieProvider.getAttributeType(id_type).Result.type;
+        }
+    }
     public class ListUserFilesModel
     {
         private UsersProvider userProvider = new UsersProvider();
@@ -29,24 +71,18 @@ namespace Model
             usersList = userProvider.getUsers().Result;
         }
     }
-    public class AddFileModel
+    public class UserModel
     {
+        public UserDTO user;
         private UsersProvider userProvider = new UsersProvider();
-
-        public AddFileModel() { }
-        public AddFileModel(string user_id)
+        public string userName;
+        public string imageURL;
+        public UserModel(string pUser)
         {
-            this.user_id = user_id;
+            userName = pUser;
+            user = userProvider.getUser(pUser).Result;
+            imageURL = "data:Image/png;base64," + user.photoBase64;
         }
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
-        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
-        public string name { get; set; }
-        [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
-        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
-        public string description { get; set; }
-        public string user_id { get; set;}
     }
     public class UserRolesModel
     {
@@ -65,8 +101,8 @@ namespace Model
             List<SelectListItem> rolesSelectList = new List<SelectListItem>();
             foreach (RoleDTO iRole in rolesList)
             {
-                rolesSelectList.Add(new SelectListItem { Text = iRole.name, Value = iRole.id_role});
-                
+                rolesSelectList.Add(new SelectListItem { Text = iRole.name, Value = iRole.id_role });
+
             }
             _RolesSelect = new SelectList(rolesSelectList, "Value", "Text");
         }
@@ -75,20 +111,24 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo del rol")]
         public string selectedRole { get; set; }
     }
-
-    public class UserModel
+    public class AddFileModel
     {
-        public UserDTO user;
         private UsersProvider userProvider = new UsersProvider();
-        public string userName;
-        public string imageURL;
-        public UserModel(string pUser)
+
+        public AddFileModel() { }
+        public AddFileModel(string user_id)
         {
-            userName = pUser;
-            user = userProvider.getUser(pUser).Result;
-            //string strBase64 = Convert.ToBase64String(user.photoData);
-            imageURL = "data:Image/png;base64," + user.photoBase64;
+            this.user_id = user_id;
         }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
+        public string name { get; set; }
+        [Display(Name = "Descripción")]
+        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string description { get; set; }
+        public string user_id { get; set;}
     }
     public class ConfigProfileModel
     {

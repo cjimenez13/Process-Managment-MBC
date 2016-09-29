@@ -1,0 +1,46 @@
+﻿@model Model.UserAttributesModel
+
+
+@foreach (var attribute in Model.userAttributes)
+{
+    string id_form = "form-editUserAttribute" + attribute.attribute_id;
+    string type_name = Model.getTypeName(attribute.type_id);
+    string editButton_id = "btnEditUserAttribute" + attribute.attribute_id;
+    string saveButton_id = "btnSaveUserAttribute" + attribute.attribute_id;
+    string editValueInput_id = "editValueInput" + attribute.attribute_id;
+    string valueLabel_id = "valueLabel" + attribute.attribute_id;
+    //values to send
+    string attribute_id = attribute.attribute_id;
+    string value = attribute.value;
+    string type_id = attribute.type_id;
+    <tr>
+        @Html.HiddenFor(m => attribute_id, new { form = @id_form })
+        @Html.HiddenFor(m => m.user_id, new { form = @id_form })
+        @Html.HiddenFor(m => type_id, new { form = @id_form })
+        <td style="padding-left:10px;padding-right:50px">
+            @using (Ajax.BeginForm("_EditUserAttribute", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "UserAttributeEditSuccess", OnFailure = "UserAttributeEditFailure" }, new { id = @id_form }))
+            {
+                @Html.AntiForgeryToken()
+            }
+            <label>@Html.Raw(attribute.name)</label>
+        </td>
+        <td style="width:15%;padding-right:50px">
+            <label>@Html.Raw(type_name)</label>
+        </td>
+        <td style="padding-left:10px;padding-right:30px;width:45%">
+            <label id="@valueLabel_id">@Html.Raw(value)</label>
+            <!-- Hidden input -->
+            @Html.TextBoxFor(m => value, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem; display:none", @form = @id_form, @id=editValueInput_id })
+        </td>
+        <td style="width:10%">
+            <a class="btn btn-sky btn-sm" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editAttributeRow('@attribute_id',this)" id="@editButton_id">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <!-- Hidden save button -->
+            <button class="btn btn-sm btn-success" style="display:none" data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" form="@id_form" id="@saveButton_id">
+                <span class="glyphicon glyphicon-floppy-saved"></span>
+            </button>
+        </td>
+    </tr>
+}
+

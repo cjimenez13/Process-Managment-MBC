@@ -1,16 +1,7 @@
 ﻿@using System
 @using BeyondThemes.Bootstrap
 <!DOCTYPE html>
-<!--
-BeyondAdmin - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.6
-Version: 1.5.0
-Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB06R48S4
--->
-
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-<!-- Head -->
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
@@ -23,16 +14,14 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
 
     <!--Basic Styles-->
     @Styles.Render("~/css/bootstrap")
-    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
-
-
+    <!--<link id="bootstrap-rtl-link" href="" rel="stylesheet" />-->
     <!--Fonts-->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300"
           rel="stylesheet" type="text/css">
 
     <!--Beyond styles-->
     @Styles.Render("~/css/beyond")
-    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+    <!--<link id="skin-link" href="" rel="stylesheet" type="text/css" />-->
 
     <!--Skin Script: Place this script in head to load scripts for skins and rtl support-->
     @Scripts.Render("~/bundles/skin")
@@ -370,8 +359,6 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>  
     <script src="~/assets/js/toastr/toastr.js"></script>
     <script src="~/assets/js/file_input/bootstrap-filestyle.min.js"></script>
-    <script src="~/assets/js/download.js"></script>
-
     <!--Page Related Scripts-->
     @RenderSection("PageScripts", required: false)
 </body>

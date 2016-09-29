@@ -12,7 +12,7 @@ namespace BeyondThemes.BeyondAdmin
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.UseCdn = true;
-
+            BundleTable.EnableOptimizations = true;
             var nullBuilder = new NullBuilder();
             var styleTransformer = new StyleTransformer();
             var scriptTransformer = new ScriptTransformer();

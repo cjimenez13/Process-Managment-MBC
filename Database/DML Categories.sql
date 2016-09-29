@@ -164,10 +164,10 @@ begin
 end
 go
 
--- drop procedure sp_insert_AttributeList
+-- drop procedure usp_insert_AttributeList
 -- exec sp_insert_AttributeList @attribute_id = 43, @name = 'Laptop', @type_id = 1, @value = '1234', @createdBy = 75, @pUser = 75
 create procedure usp_insert_AttributeList
-@attribute_id bigint, @name nvarchar(50), @type_id tinyint, @value nvarchar(100), @createdBy int, @user int as
+@attribute_id bigint, @name nvarchar(50), @type_id tinyint, @value nvarchar(100), @createdBy int, @userLog int as
 begin
 begin transaction;
 	declare @table int, @event_log_id int, @id_attributeValue int
@@ -177,7 +177,7 @@ begin transaction;
 	set @id_attributeValue = (SCOPE_IDENTITY())
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'AttributeList')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted new attribute list', 
-	@objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @user;
+	@objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
 	exec usp_insert_Reference @attribute = 'attribute_id', @value = @attribute_id, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'name', @value = @name, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'type_id', @value = @type_id, @EventLog_id = @event_log_id
@@ -335,7 +335,7 @@ commit transaction;
 end
 go
 
---drop procedure sp_get_userAttributes_byCategorie
+--drop procedure usp_get_userAttributes_byCategorie
 create procedure usp_get_userAttributes_byCategorie
 @id_user int, @id_categorie int as
 begin 
@@ -343,20 +343,20 @@ begin
 	from CategorieAttributes ca inner join 
 	(select pa.attribute_id, pa.[user_id], pa.value from PersonalAttributes pa where pa.[user_id] = @id_user)pa
 	on pa.attribute_id = ca.id_attribute
-	where ca.categorie_id = @id_categorie
+	where ca.categorie_id = @id_categorie and ca.isEnabled = 1
 end
 go
-
---drop procedure sp_get_userCategories
+--drop procedure usp_get_userCategories
 create procedure usp_get_userCategories
 @id_user int as
 begin 
-	select ca.categorie_id, c.name, c.[description], c.isEnabled
+	select c.id_categorie, c.name, c.[description], c.isEnabled
 	from CategorieAttributes ca inner join 
 	(select pa.attribute_id, pa.[user_id], pa.value from PersonalAttributes pa where pa.[user_id] = 75)pa
 	on pa.attribute_id = ca.id_attribute
 	inner join Categories c on c.id_categorie = ca.categorie_id
-	group by ca.categorie_id, c.name, c.[description], c.isEnabled
+	where c.isEnabled = 1
+	group by c.id_categorie, c.name, c.[description], c.isEnabled
 end
 go
 

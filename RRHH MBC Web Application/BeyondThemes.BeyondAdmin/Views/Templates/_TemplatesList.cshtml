@@ -1,0 +1,15 @@
+﻿@model Model.TemplatesListModel
+
+@foreach (var template in Model.templatesDTO)
+{
+    <tr onclick="location.href = '@Url.Action("Template","Templates",new { id = template.id_processManagment})'">
+        <td>@Html.Raw(template.name)</td>
+        <td>@Html.Raw(template.categorie_name)</td>
+        <td style="width:25%">
+            <div class="col-md-2 col-xs-6" data-toggle="tooltip" data-placement="top" title="Estaban">
+                <img alt="image" class="img-circle  img-responsive" src="~/assets/img/avatars/Nicolai-Larson.jpg">
+            </div>
+        </td>
+    </tr>
+}
+

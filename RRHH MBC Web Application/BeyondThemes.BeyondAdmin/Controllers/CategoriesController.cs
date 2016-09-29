@@ -307,7 +307,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     personalAttributeDTO.id_attribute = pModel.id_attribute;
                     if (categorieProvider.putPersonalAttribute(personalAttributeDTO).Result)
                     {
-                        return new HttpStatusCodeResult(200);
+                        return new HttpStatusCodeResult(200,"El atributo se ha editado con éxito");
                     }
                 }
                 else

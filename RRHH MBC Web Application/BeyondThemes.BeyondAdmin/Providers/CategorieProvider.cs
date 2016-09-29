@@ -5,14 +5,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Configuration;
 using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Providers
 {
-    class CategorieProvider
+    class CategorieProvider : AProvider
     {
-        private string _BaseAddress = WebConfigurationManager.AppSettings["WebApi"];
         public async Task<List<CategorieDTO>> getCategories()
         {
             using (var client = new HttpClient())

@@ -6,7 +6,7 @@
             <!-- search bar -->
             <div class="col-lg-6 col-md-8 col-xs-10">
                 <span class="input-icon">
-                    <input type="text" class="form-control" id="groupSearch" placeholder="Buscar" onkeyup="filterGroups(this)">
+                    <input type="text" class="form-control" id="groupSearch" placeholder="Buscar" onkeyup="filterGroups(this.value)">
                     <i class="glyphicon glyphicon-search blue"></i>
                 </span>
             </div>
@@ -20,8 +20,9 @@
         <div class="row" id="groupList">
             @for (int iGroup = 0; iGroup != Model.groupsList.Count; iGroup++)
             {
+                string id_group = "groupBox" + iGroup.ToString();
                 <div class="groupWidget">
-                    <div class="col-md-4 col-xs-12 visible" id="groupSearchBox" style="display:block">
+                    <div class="col-md-4 col-xs-12 visible groupBox" id="@id_group" style="display:block">
                         <div class="widget radius-bordered">
                             <div class="widget-header bordered-left bordered-blueberry">
                                 <a href="@Url.Action("Group","Users",new { id = Model.groupsList[iGroup].id_group })" style="text-align:left; float:left; color:#555555; margin-top:8px">

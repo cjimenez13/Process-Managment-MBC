@@ -5,17 +5,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Configuration;
 using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Providers
 {
-    class RoleProvider
+    class RoleProvider:AProvider
     {
-        private string _BaseAddress = WebConfigurationManager.AppSettings["WebApi"];
-        public RoleProvider() { }
         //--------------------------- Gets --------------------------------------
-        //<Summary>Gets every enabled user available on the system
         public async Task<List<RoleDTO>> getRoles()
         {
             using (var client = new HttpClient())

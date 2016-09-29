@@ -121,6 +121,39 @@ namespace Web_Service_API.DataAccess
             };
             return userDTO;
         }
+        public static UserDTO getUserbyID(string user_id)
+        {
+            UserDTO userDTO = new UserDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_user_byID", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@user_id", SqlDbType.NVarChar);
+                command.Parameters["@user_id"].Value = user_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    userDTO.name = rdr["name"].ToString();
+                    userDTO.sLastName = rdr["sLastName"].ToString();
+                    userDTO.fLastName = rdr["fLastName"].ToString();
+                    userDTO.email = rdr["email"].ToString();
+                    userDTO.phoneNumber = rdr["phoneNumber"].ToString();
+                    userDTO.canton_id = rdr["canton_id"].ToString();
+                    userDTO.canton_name = rdr["canton_name"].ToString();
+                    userDTO.province_name = rdr["province_name"].ToString();
+                    userDTO.province_id = rdr["province_id"].ToString();
+                    userDTO.direction = rdr["direction"].ToString();
+                    userDTO.birthdate = rdr["birthdate"].ToString();
+                    userDTO.userName = rdr["userName"].ToString();
+                    userDTO.id = rdr["id"].ToString();
+                    userDTO.user_id = rdr["id_user"].ToString();
+                    byte[] photo = (byte[])rdr["photoData"];
+                    userDTO.photoBase64 = Convert.ToBase64String(photo);
+                }
+            };
+            return userDTO;
+        }
         public static List<FileDTO> getUserFiles(string pUser)
         {
             List<FileDTO> fileDTOList = new List<FileDTO>();
@@ -189,9 +222,33 @@ namespace Web_Service_API.DataAccess
                 {
                     PersonalAttributeDTOmin personalAttribute = new PersonalAttributeDTOmin();
                     personalAttribute.attribute_id = rdr["id_attribute"].ToString();
-                    personalAttribute.user_id = rdr["id_user"].ToString();
                     personalAttribute.value = rdr["value"].ToString();
+                    personalAttribute.type_id = rdr["type"].ToString();
+                    personalAttribute.name = rdr["name"].ToString();
                     personaAttributeList.Add(personalAttribute);
+                }
+            };
+            return personaAttributeList;
+        }
+        public static List<CategorieDTO> getUserCategories(string id_user)
+        {
+            List<CategorieDTO> personaAttributeList = new List<CategorieDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_userCategories", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@id_user", SqlDbType.Int);
+                command.Parameters["@id_user"].Value = id_user;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    CategorieDTO categorie = new CategorieDTO();
+                    categorie.id_categorie = rdr["id_categorie"].ToString();
+                    categorie.name = rdr["name"].ToString();
+                    categorie.description = rdr["description"].ToString();
+                    categorie.isEnabled = rdr["isEnabled"].ToString();
+                    personaAttributeList.Add(categorie);
                 }
             };
             return personaAttributeList;
@@ -363,6 +420,34 @@ namespace Web_Service_API.DataAccess
 
                 command.Parameters.Add("@photoData", SqlDbType.VarBinary);
                 command.Parameters["@photoData"].Value = pFileDTO.fileData;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool updateUserAttribute(PersonalAttributeDTOmin pUserAttribute)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_userAttribute", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_attribute", SqlDbType.Int);
+                command.Parameters["@id_attribute"].Value = pUserAttribute.attribute_id;
+
+                command.Parameters.Add("@value", SqlDbType.NVarChar);
+                command.Parameters["@value"].Value = pUserAttribute.value;
+
+                command.Parameters.Add("@id_user", SqlDbType.Int);
+                command.Parameters["@id_user"].Value = pUserAttribute.user_id;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pUserAttribute.userLog;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();

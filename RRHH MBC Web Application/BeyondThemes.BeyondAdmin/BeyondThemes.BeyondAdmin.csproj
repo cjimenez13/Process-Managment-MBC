@@ -199,13 +199,18 @@
     <Compile Include="Models\GroupsModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProcessManagmentModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
+    <Compile Include="Models\TemplatesModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AccountProvider.cs" />
+    <Compile Include="Providers\AProvider.cs" />
     <Compile Include="Providers\CategorieProvider.cs" />
     <Compile Include="Providers\GroupProvider.cs" />
+    <Compile Include="Providers\ProcessManagmentProvider.cs" />
     <Compile Include="Providers\RoleProvider.cs" />
+    <Compile Include="Providers\TemplatesProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tools\ViewExtensions.cs" />
@@ -390,7 +395,6 @@
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\RRHH.pubxml" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
-    <Content Include="assets\js\download.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -433,10 +437,10 @@
     <Content Include="Scripts\jquery-1.9.0.min.map" />
     <Content Include="Views\Users\_UsersList.cshtml" />
     <Content Include="Views\Users\_GroupsList.cshtml" />
-    <Content Include="Views\Users\_ProfileConfig.cshtml" />
-    <Content Include="Views\Users\_ProfileFiles.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileConfig.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileFiles.cshtml" />
     <Content Include="Views\Users\_AddUserFile.cshtml" />
-    <Content Include="Views\Users\_ProfileActivity.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileActivity.cshtml" />
     <Content Include="Views\Shared\_LoginDropdown.cshtml" />
     <Content Include="Views\Config\_Security.cshtml" />
     <Content Include="Views\Config\_AddRole.cshtml" />
@@ -444,8 +448,8 @@
     <Content Include="Views\Config\_Permissions.cshtml" />
     <Content Include="Views\Config\_RoleModules.cshtml" />
     <Content Include="Views\Config\_PermissionElements.cshtml" />
-    <Content Include="Views\Users\_ProfileConfigInfo.cshtml" />
-    <Content Include="Views\Users\_ProfileConfigRoles.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileConfigInfo.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileConfigRoles.cshtml" />
     <Content Include="Views\Users\_AddGroup.cshtml" />
     <Content Include="Views\Users\_GroupWidget.cshtml" />
     <Content Include="Views\Users\_EditGroup.cshtml" />
@@ -462,6 +466,13 @@
     <Content Include="Views\Categories\_AttributeValuesList.cshtml" />
     <Content Include="Views\Categories\_PersonalAttrList.cshtml" />
     <Content Include="Views\Categories\Attribute.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileCategories.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileInfo.cshtml" />
+    <Content Include="Views\Users\_Profile\_ProfileCategorieAttributes.cshtml" />
+    <Content Include="Views\Templates\_TemplatesList.cshtml" />
+    <Content Include="Views\Templates\_AddTemplate.cshtml" />
+    <Content Include="Views\Templates\_StagesList.cshtml" />
+    <Content Include="Views\Templates\_TemplateParticipantsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

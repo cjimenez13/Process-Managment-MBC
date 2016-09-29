@@ -33,6 +33,21 @@ begin
 	end
 end
 go
+create procedure usp_get_user_byID 
+@user_id nvarchar(50) as
+begin
+	begin 
+		select u.id_user, u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
+		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password],
+		(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
+		(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
+		(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
+		(select up.photoData from UsersPhotos up where up.[user_id] = u.id_user) as photoData
+		from Users u 
+		where u.isEnabled = 1 and (u.id_user = @user_id) ;
+	end
+end
+go
 
 --drop procedure usp_insert_user
 create procedure usp_insert_user

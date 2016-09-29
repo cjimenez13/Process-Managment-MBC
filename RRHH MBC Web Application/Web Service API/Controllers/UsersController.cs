@@ -48,6 +48,12 @@ namespace Web_Service_API.Controllers
             UserDTO userDTO = UsersData.getUser(user);
             return userDTO;
         }
+        [HttpGet]
+        public UserDTO GetbyId(string user_id)
+        {
+            UserDTO userDTO = UsersData.getUserbyID(user_id);
+            return userDTO;
+        }
         [HttpPut]
         public IHttpActionResult Put(UserDTO userDTO)
         {
@@ -126,9 +132,25 @@ namespace Web_Service_API.Controllers
         }
         [Route("attributes")]
         [HttpGet]
-        public List<PersonalAttributeDTOmin> userAttributes(string id_user, string id_categorie)
+        public List<PersonalAttributeDTOmin> userAttributes(string user_id, string categorie_id)
         {
-            return UsersData.getUserAttributesbyCatgorie(id_user,id_categorie);
+            return UsersData.getUserAttributesbyCatgorie(user_id, categorie_id);
+        }
+        [Route("attributes")]
+        [HttpPut]
+        public IHttpActionResult updateUserAttribute(PersonalAttributeDTOmin personalAttributeDTO)
+        {
+            if (!UsersData.updateUserAttribute(personalAttributeDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [Route("attributes/categories")]
+        [HttpGet]
+        public List<CategorieDTO> userCategories(string user_id)
+        {
+            return UsersData.getUserCategories(user_id);
         }
 
     }
