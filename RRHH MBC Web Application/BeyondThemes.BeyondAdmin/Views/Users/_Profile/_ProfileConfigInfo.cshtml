@@ -3,7 +3,7 @@
 <div class="form-title">
     Informacion personal
 </div>
-@using (Ajax.BeginForm("_ProfileConfigInfo", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "CompletedFormRegister" }))
+@using (Ajax.BeginForm("_ProfileConfigInfo", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "ConfigInfoSuccess", OnFailure = "ConfigInfoFailure" }))
 {
     @Html.AntiForgeryToken()
     <div class="row">

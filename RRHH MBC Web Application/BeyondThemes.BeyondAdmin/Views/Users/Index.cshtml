@@ -20,19 +20,19 @@
             </ul>
             <div class="tab-content">
                 <div id="groupsTab" class="tab-pane in active">
-                    @{Html.RenderPartial("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel()); }
+                    @{Html.RenderPartial("/Views/Users/_Index/_GroupsList.cshtml", new Model.GroupsListModel()); }
                 </div>
                 <div id="usersTab" class="tab-pane">
-                    @{Html.RenderPartial("/Views/Users/_UsersList.cshtml", new Model.ListUserModel()); }
+                    @{Html.RenderPartial("/Views/Users/_Index/_UsersList.cshtml", new Model.ListUserModel()); }
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Modal to add new group-->
-@{ Html.RenderPartial("/Views/Users/_AddGroup.cshtml");}
+@{ Html.RenderPartial("/Views/Users/_Index/_AddGroup.cshtml");}
 <!-- Modal register user -->
-@{Html.RenderPartial("/Views/Users/_Register.cshtml", new Model.RegisterModel()); }
+@{Html.RenderPartial("/Views/Users/_Index/_Register.cshtml", new Model.RegisterModel()); }
 
 @section PageScripts{
 <!--Jquery Select2-->

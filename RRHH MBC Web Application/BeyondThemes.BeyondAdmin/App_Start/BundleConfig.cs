@@ -46,7 +46,7 @@ namespace BeyondThemes.BeyondAdmin
                 "~/assets/css/demo.min.css",
                 "~/assets/css/font-awesome.min.css",
                 "~/assets/css/typicons.min.css",
-                "~/assets/css/weather-icons.min.css",
+         //       "~/assets/css/weather-icons.min.css",
                 "~/assets/css/animate.min.css");
             beyondStylesBundle.Builder = nullBuilder;
             beyondStylesBundle.Transforms.Add(styleTransformer);

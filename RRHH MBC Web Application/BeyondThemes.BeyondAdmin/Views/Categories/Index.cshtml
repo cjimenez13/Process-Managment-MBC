@@ -49,7 +49,6 @@
     <script src="~/assets/js/datatable/datatables-init.js"></script>
     <script>
         InitiateCategorieDataTable.init();
-        console.log($('#categoriedatatable_filter input'));
         function CategorieAddedSuccess(content) {
             Notify("La categoría ha sido creada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
             $("#CategoriesList").html(content)

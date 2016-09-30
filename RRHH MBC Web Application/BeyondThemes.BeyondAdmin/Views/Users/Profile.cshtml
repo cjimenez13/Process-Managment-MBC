@@ -90,6 +90,18 @@
     function CompletedFormRegister(data) {
         Notify('El usuario se ha registrado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
     }
+    function ConfigInfoSuccess(data) {
+        Notify('La ha información se ha guardado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+    }
+    function ConfigInfoFailure(data) {
+        Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function UserFileAddedSuccess(data) {
+        Notify('La ha información se ha guardado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+    }
+    function UserFileAddedFailure(data) {
+        Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
     function onSuccessAddRole(data) {
         Notify('El rol se ha añadido con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
         var rolesTab = $('#roles-tab');

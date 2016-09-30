@@ -46,7 +46,7 @@ namespace Web_Service_API.DataAccess
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_processManagment", SqlDbType.Int);
-                command.Parameters["@id_processManagment"].Value = pParticipantDTO.name;
+                command.Parameters["@id_processManagment"].Value = pParticipantDTO.processManagment_id;
                 command.Parameters.Add("@user_id", SqlDbType.NVarChar);
                 command.Parameters["@user_id"].Value = pParticipantDTO.user_id;
                 command.Parameters.Add("@userLog", SqlDbType.Int);

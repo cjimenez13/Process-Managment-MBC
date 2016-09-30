@@ -1,11 +1,7 @@
 ﻿using DataTransferObjects;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Configuration;
 
 namespace Web_Service_API.DataAccess
@@ -497,7 +493,7 @@ namespace Web_Service_API.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("usp_delete_generalAttribute", connection);
+                SqlCommand command = new SqlCommand("usp_delete_categorie", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@id_categorie", SqlDbType.Int);

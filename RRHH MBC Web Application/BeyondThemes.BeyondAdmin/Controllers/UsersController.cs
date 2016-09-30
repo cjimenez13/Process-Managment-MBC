@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
 using System.Text.RegularExpressions;
-using System.Net;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -42,7 +41,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         [HttpGet]
         public ActionResult _UsersList()
         {
-            return PartialView("/Views/Users/_UsersList.cshtml", new Model.ListUserModel());
+            return PartialView("/Views/Users/_Index/_UsersList.cshtml", new Model.ListUserModel());
         }
 
         [HttpGet]
@@ -54,12 +53,12 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         [HttpGet]
         public ActionResult _GroupList()
         {
-            return PartialView("/Views/Users/_GroupsList.cshtml", new Model.GroupsListModel());
+            return PartialView("/Views/Users/_Index/_GroupsList.cshtml", new Model.GroupsListModel());
         }
         [HttpGet]
         public ActionResult _GroupUsersList(string id_group)
         {
-            return PartialView("/Views/Users/_GroupsUsersList.cshtml", new Model.GroupModel(id_group));
+            return PartialView("/Views/Users/_Group/GroupsUsersList.cshtml", new Model.GroupModel(id_group));
         } 
 
         public ActionResult getCantones(string pProvinceID)
@@ -332,22 +331,25 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 if (groupUsersAdded.Count != 0)
                 {
                     //Compare and get not added users
-                    foreach (var user_id in selected_userGroup_id)
+                    foreach (var user_added in groupUsersAdded)
                     {
-                        foreach (var user_added in groupUsersAdded)
+                        bool isAdded = false;
+                        foreach (var user_id in selected_userGroup_id)
                         {
                             if (user_id == user_added.user_id)
                             {
+                                isAdded = true;
                                 break;
                             }
-                            GroupUserDTO groupUserErrorDTO = new GroupUserDTO();
-                            groupUserErrorDTO.id_group = id_group;
-                            groupUserErrorDTO.user_id = user_id;
-                            groupUserError.Add(groupUserErrorDTO);
+                        }
+                        if (!isAdded)
+                        {
+                            groupUserError.Add(user_added);
+                            groupUsersAdded.Remove(user_added);
                         }
                     }
                     // creates a json to return result
-                    var result = new { usersAdded = groupUsersAdded, usersError = groupUserError, viewHtml = PartialView("/Views/Users/_GroupUsersList.cshtml", new Model.GroupModel(id_group)).RenderToString()};
+                    var result = new { usersAdded = groupUsersAdded, usersError = groupUserError, viewHtml = PartialView("/Views/Users/_Group/_GroupUsersList.cshtml", new Model.GroupModel(id_group)).RenderToString()};
                     return Json(result);
                 }
             }

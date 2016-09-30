@@ -433,13 +433,13 @@
     <Content Include="Views\Templates\Template.cshtml" />
     <Content Include="Views\Templates\Tasks.cshtml" />
     <Content Include="Views\Categories\Categorie.cshtml" />
-    <Content Include="Views\Users\_Register.cshtml" />
+    <Content Include="Views\Users\_Index\_Register.cshtml" />
     <Content Include="Scripts\jquery-1.9.0.min.map" />
-    <Content Include="Views\Users\_UsersList.cshtml" />
-    <Content Include="Views\Users\_GroupsList.cshtml" />
+    <Content Include="Views\Users\_Index\_UsersList.cshtml" />
+    <Content Include="Views\Users\_Index\_GroupsList.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileConfig.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileFiles.cshtml" />
-    <Content Include="Views\Users\_AddUserFile.cshtml" />
+    <Content Include="Views\Users\_Profile\_AddUserFile.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileActivity.cshtml" />
     <Content Include="Views\Shared\_LoginDropdown.cshtml" />
     <Content Include="Views\Config\_Security.cshtml" />
@@ -450,11 +450,11 @@
     <Content Include="Views\Config\_PermissionElements.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileConfigInfo.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileConfigRoles.cshtml" />
-    <Content Include="Views\Users\_AddGroup.cshtml" />
-    <Content Include="Views\Users\_GroupWidget.cshtml" />
-    <Content Include="Views\Users\_EditGroup.cshtml" />
-    <Content Include="Views\Users\_AddGroupUser.cshtml" />
-    <Content Include="Views\Users\_GroupUsersList.cshtml" />
+    <Content Include="Views\Users\_Index\_AddGroup.cshtml" />
+    <Content Include="Views\Users\_Index\_GroupWidget.cshtml" />
+    <Content Include="Views\Users\_Group\_EditGroup.cshtml" />
+    <Content Include="Views\Users\_Group\_AddGroupUser.cshtml" />
+    <Content Include="Views\Users\_Group\_GroupUsersList.cshtml" />
     <Content Include="Views\Categories\_CategoriesList.cshtml" />
     <Content Include="Views\Categories\_AddCategorie.cshtml" />
     <Content Include="Views\Categories\_CategorieInfo.cshtml" />
@@ -473,6 +473,8 @@
     <Content Include="Views\Templates\_AddTemplate.cshtml" />
     <Content Include="Views\Templates\_StagesList.cshtml" />
     <Content Include="Views\Templates\_TemplateParticipantsList.cshtml" />
+    <Content Include="Views\Templates\_AddParticipantUser.cshtml" />
+    <Content Include="Views\Templates\_AddGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

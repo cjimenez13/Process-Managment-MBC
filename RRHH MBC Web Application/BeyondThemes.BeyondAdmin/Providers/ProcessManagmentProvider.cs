@@ -30,34 +30,40 @@ namespace BeyondThemes.BeyondAdmin.Providers
             }
         }
         //-------------------------------------- Posts --------------------------------------------------
-        public async Task<bool> postParticipant(ParticipantDTO pParticipantDTO)
+        public async Task<List<ParticipantDTO>> postParticipants(List<ParticipantDTO> pParticipantDTO)
         {
             using (var client = new HttpClient())
             {
+                List<ParticipantDTO> insertedParticipants = new List<ParticipantDTO>();
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pParticipantDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/processManagment/participants/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    insertedParticipants = serializer.Deserialize<List<ParticipantDTO>>(result);
                 }
-                return false;
+                return insertedParticipants;
             }
         }
-        public async Task<bool> postGroup(ParticipantDTO pParticipantDTO)
+        public async Task<List<ParticipantDTO>> postGroup(List<ParticipantDTO> pParticipantDTO)
         {
             using (var client = new HttpClient())
             {
+                List<ParticipantDTO> insertedParticipants = new List<ParticipantDTO>();
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pParticipantDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/processManagment/group/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    insertedParticipants = serializer.Deserialize<List<ParticipantDTO>>(result);
                 }
-                return false;
+                return insertedParticipants;
             }
         }
         //-------------------------------------- Deletes -----------------------------------------------

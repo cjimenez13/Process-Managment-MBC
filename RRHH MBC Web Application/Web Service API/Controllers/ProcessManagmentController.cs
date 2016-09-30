@@ -1,4 +1,5 @@
 ﻿using DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using Web_Service_API.DataAccess;
@@ -17,13 +18,23 @@ namespace Web_Service_API.Controllers
         }
         [HttpPost]
         [Route("participants")]
-        public IHttpActionResult postParticipant(ParticipantDTO templateDTO)
+        public List<ParticipantDTO> postParticipant(List<ParticipantDTO> participantsDTO)
         {
-            if (!ProcessManagmentData.insertParticipant(templateDTO))
+            List<ParticipantDTO> insertedParticipants = new List<ParticipantDTO>();
+            foreach (ParticipantDTO participant in participantsDTO)
             {
-                return BadRequest();
+                try
+                {
+                    if (ProcessManagmentData.insertParticipant(participant))
+                    {
+                        insertedParticipants.Add(participant);
+                    }
+                }catch(Exception e)
+                {
+                    //e.Message;
+                }
             }
-            return Ok();
+            return insertedParticipants;
         }
         [HttpPost]
         [Route("group")]

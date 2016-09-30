@@ -89,7 +89,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             categorieDTO.id_categorie = id_categorie;
             if (categorieProvider.deleteCategorie(categorieDTO).Result)
             {
-                return RedirectToAction("Index", "Categories");
+                return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }

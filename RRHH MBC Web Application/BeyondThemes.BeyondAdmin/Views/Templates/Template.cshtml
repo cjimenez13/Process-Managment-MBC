@@ -82,8 +82,13 @@
                                                 <i class="glyphicon glyphicon-search blue"></i>
                                             </span>
                                         </div>
-                                        <div class="col-md-offset-4 col-md-2" style="">
-                                            <button class="btn btn-success btn-block">Agregar integrante</button>
+                                        <div class="col-md-offset-3 col-md-3">
+                                            <div class="col-xs-6">
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">Agregar grupo</button>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">Agregar integrante</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -92,9 +97,8 @@
                                         </div>
                                     </div>
                                     <!-- Users box -->
-                                    <div class="row">
+                                    <div class="row" id="participantsListDiv">
                                         @{ Html.RenderPartial("/Views/Templates/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(Model.templateDTO.id_processManagment));}
-
                                     </div>
                                 }
                             }
@@ -105,16 +109,51 @@
         </div><!--Widget-->
     </div>
 </div>
+@{ Html.RenderPartial("/Views/Templates/_AddParticipantUser.cshtml", new Model.AddParticipantUserModel(Model.templateDTO.id_processManagment));}
+@{ Html.RenderPartial("/Views/Templates/_AddGroup.cshtml", new Model.AddGroupModel(Model.templateDTO.id_processManagment));}
 
 
 @section PageScripts{
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="/assets/js/select2/select2.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
     <script>
+        $('#selected_userParticipants_id').select2();
+        function ParticipantAddedSuccess(content) {
+            if (content.usersAdded == 1) {
+                Notify("Se ha agregado " + content.usersAdded.length + " usuario con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            else if (content.usersAdded > 1){
+                Notify("Se han agregado " + content.usersAdded.length + " usuarios con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            if (content.usersError == 1) {
+                Notify(content.usersError + " de los usuarios ya se encuentra como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+            }
+            else if (content.usersError.length > 1) {
+                Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+            }
+            $("#participantsListDiv").html(content.viewHtml)
+        }
+        function ParticipantAddedFailure(content) {
+            Notify("Error, no se agregó ningun usuario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+
+        function GroupAddedSuccess(content) {
+            if (content.usersAdded.length == 1) {
+                Notify("Se ha agregado " + content.usersAdded.length + " grupo con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            else if (content.usersAdded.length > 1) {
+                Notify("Se han agregado " + content.usersAdded.length + " grupos con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            $("#participantsListDiv").html(content.viewHtml)
+        }
+        function GroupAddedFailure(content) {
+            Notify("Error, no se agregó ningun grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+
     (function ($) {
-
         'use strict';
-
         $.fn.todolist = function (options) {
             // Render options
             var settings = $.extend({
