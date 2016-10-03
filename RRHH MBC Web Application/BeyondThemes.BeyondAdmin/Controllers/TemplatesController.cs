@@ -66,25 +66,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 List<ParticipantDTO> addedParticipants = processManagmentProvider.postParticipants(participants).Result;
                 int addedCount = addedParticipants.Count;
                 int errorCount = participants.Count - addedCount;
-
-                //List<ParticipantDTO> errorParticipants = new List<ParticipantDTO>();
-                //foreach (var user in participants)
-                //{
-                //    bool isAdded = false;
-                //    foreach (var iParticipant in addedParticipants)
-                //    {
-                //        if (user.user_id == iParticipant.user_id)
-                //        {
-                //            isAdded = true;
-                //            break;
-                //        }
-                //    }
-                //    if (!isAdded)
-                //    {
-                //        errorParticipants.Add(user);
-                //    }
-                //}
-
                 var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Templates/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(process_id)).RenderToString() };
                 return Json(result);
             }
@@ -105,7 +86,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     groupParticipantDTO.userLog = Request.Cookies["user_id"].Value;
                     groups.Add(groupParticipantDTO);
                 }
-                List<ParticipantDTO> addedParticipants = processManagmentProvider.postGroup(groups).Result;
+                List<ParticipantDTO> addedParticipants = processManagmentProvider.postGroups(groups).Result;
                 var result = new { usersAdded = addedParticipants, viewHtml = PartialView("/Views/Templates/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(process_id)).RenderToString() };
                 return Json(result);
             }

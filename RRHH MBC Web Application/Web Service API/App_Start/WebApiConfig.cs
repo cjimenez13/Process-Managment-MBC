@@ -21,7 +21,7 @@ namespace Web_Service_API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            config.EnableCors();
+           // config.EnableCors();
             config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
         }
     }

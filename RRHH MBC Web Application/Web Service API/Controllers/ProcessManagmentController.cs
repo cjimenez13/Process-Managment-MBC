@@ -37,14 +37,25 @@ namespace Web_Service_API.Controllers
             return insertedParticipants;
         }
         [HttpPost]
-        [Route("group")]
-        public IHttpActionResult postGroup(ParticipantDTO templateDTO)
+        [Route("groups")]
+        public List<ParticipantDTO> postGroup(List<ParticipantDTO> groupsDTO)
         {
-            if (!ProcessManagmentData.insertGroup(templateDTO))
+            List<ParticipantDTO> insertedGroups = new List<ParticipantDTO>();
+            foreach (ParticipantDTO participant in groupsDTO)
             {
-                return BadRequest();
+                try
+                {
+                    if (ProcessManagmentData.insertGroup(participant))
+                    {
+                        insertedGroups.Add(participant);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //e.Message;
+                }
             }
-            return Ok();
+            return insertedGroups;
         }
         [HttpDelete]
         [Route("participants")]

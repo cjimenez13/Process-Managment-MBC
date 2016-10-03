@@ -48,7 +48,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return insertedParticipants;
             }
         }
-        public async Task<List<ParticipantDTO>> postGroup(List<ParticipantDTO> pParticipantDTO)
+        public async Task<List<ParticipantDTO>> postGroups(List<ParticipantDTO> pParticipantDTO)
         {
             using (var client = new HttpClient())
             {
@@ -56,7 +56,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pParticipantDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PostAsync("api/processManagment/group/", contentPost).Result;
+                HttpResponseMessage response = client.PostAsync("api/processManagment/groups/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();

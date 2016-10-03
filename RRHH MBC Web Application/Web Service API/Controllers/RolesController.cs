@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
-using System.Web.Http.Cors;
+//using System.Web.Http.Cors;
 using Web_Service_API.DataAccess;
 
 namespace Web_Service_API.Controllers
