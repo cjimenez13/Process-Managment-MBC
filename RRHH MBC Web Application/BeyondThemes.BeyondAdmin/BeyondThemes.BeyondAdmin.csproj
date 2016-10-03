@@ -471,10 +471,11 @@
     <Content Include="Views\Users\_Profile\_ProfileCategorieAttributes.cshtml" />
     <Content Include="Views\Templates\_TemplatesList.cshtml" />
     <Content Include="Views\Templates\_AddTemplate.cshtml" />
-    <Content Include="Views\Templates\_StagesList.cshtml" />
-    <Content Include="Views\Templates\_TemplateParticipantsList.cshtml" />
-    <Content Include="Views\Templates\_AddParticipantUser.cshtml" />
-    <Content Include="Views\Templates\_AddGroup.cshtml" />
+    <Content Include="Views\Templates\_Template\_Stages\_StagesList.cshtml" />
+    <Content Include="Views\Templates\_Template\_Participants\_TemplateParticipantsList.cshtml" />
+    <Content Include="Views\Templates\_Template\_Participants\_AddParticipantUser.cshtml" />
+    <Content Include="Views\Templates\_Template\_Participants\_AddGroup.cshtml" />
+    <Content Include="Views\Templates\_Template\_EditTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

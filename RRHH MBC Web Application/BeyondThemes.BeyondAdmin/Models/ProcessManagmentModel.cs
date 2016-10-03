@@ -1,5 +1,6 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -65,5 +66,27 @@ namespace Model
         [Display(Name = "Grupos")]
         [Required(ErrorMessage = "Se debe seleccionar al menos un grupo")]
         public List<string> selected_groups_id { get; set; }
+    }
+    public class StagesListModel
+    {
+        private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
+        public List<StageDTO> stages = new List<StageDTO>();
+        public string id_process;
+        public StagesListModel(TemplateDTO templateDTO)
+        {
+            this.id_process = templateDTO.id_processManagment;
+            stages = processManagmentProvider.getStages(id_process).Result;
+            foreach (var stage in stages)
+            {
+                int stagePosition = Int32.Parse(stage.stagePosition);
+                if (stagePosition >= maxStagePosition)
+                {
+                    maxStagePosition = stagePosition + 1;
+                }
+            }
+        }
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        public string name { get; set; }
+        public int maxStagePosition { get; set; } = 1;
     }
 }

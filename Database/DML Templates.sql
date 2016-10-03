@@ -1,6 +1,5 @@
 exec usp_insert_template 'solicitud vacaciones', 17, 75
 exec usp_insert_template 'Aumeento vacaciones', 17, 75
-select * from ProcessManagment
 
 --drop procedure usp_get_templates
 create procedure usp_get_templates as
@@ -149,11 +148,13 @@ end
 go
 
 ----------------------------------------------- Stages ----------------------------------------
+-- drop procedure usp_get_process_stages
 create procedure usp_get_process_stages
 @id_processManagment bigint as
 begin 
 	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate 
 	from Stage s where  s.processManagment_id = @id_processManagment
+	order by s.stagePosition
 end
 go
 
@@ -165,6 +166,10 @@ begin
 end
 go
 
+--select * from ProcessManagment
+--exec usp_insert_stage 'Aceptar formulario', 1, 1, 75
+--select * from Stage
+delete from Stage
 create procedure usp_insert_stage
 @name nvarchar(100), @processManagment_id bigint, @stagePosition int, @userLog int as
 begin 

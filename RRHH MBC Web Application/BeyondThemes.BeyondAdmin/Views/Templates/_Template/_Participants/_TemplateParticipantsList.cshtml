@@ -1,4 +1,11 @@
 ﻿@model  Model.ParticipantsModel
+<div class="row">
+    <div class="col-xs-12">
+        <p id="txtShowingParticipants">Mostrando @Model.participants.Count participantes</p>
+    </div>
+</div>
+<!-- Users box -->
+<div class="row" id="ParticipantsList">
 @foreach (var user in Model.participants)
 {
     var name = user.name + " " + user.fLastName + " " + user.sLastName;
@@ -27,7 +34,7 @@
                     </div>
                     <div class="col-xs-2">
                         <div class="widget-buttons">
-                            <a onclick="deleteGroupUser('@user.user_id','@Model.id_process', '@name',this)" style="cursor:pointer">
+                            <a onclick="deleteParticipantUser('@user.user_id','@Model.id_process', '@name',this)" style="cursor:pointer">
                                 <i class="fa fa-times danger"></i>
                             </a>
                         </div>
@@ -37,4 +44,4 @@
         </div>
     </div>
 }
-
+</div>

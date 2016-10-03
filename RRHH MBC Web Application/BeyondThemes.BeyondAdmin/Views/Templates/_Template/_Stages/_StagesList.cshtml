@@ -1,0 +1,46 @@
+﻿@model Model.StagesListModel
+
+<ul class="todo-list">
+    @foreach (var stage in Model.stages)
+    {
+        <li>
+            <span class="handle">
+                <i class="fa fa-ellipsis-v"></i>
+                <i class="fa fa-ellipsis-v"></i>
+            </span>
+            <input type="checkbox" value="">
+            <span class="text">@Html.Raw(stage.name)</span>
+            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
+            <div class="tools" style="display:inline-block">
+                <a href="/Processes/Tasks">
+                    <i class="fa fa-eye"></i>
+                </a>
+                <a href="#">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#" onclick="deleteStage('@stage.id_stage', '@stage.name', this)">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </div>
+        </li>
+    }
+</ul>
+
+<div class="row">
+    @using (Ajax.BeginForm("_AddStage", "Templates", new AjaxOptions { HttpMethod = "POST", OnSuccess = "StageAddedSuccess", OnFailure = "StageAddedFailure" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id_process)
+        @Html.HiddenFor(model => model.maxStagePosition);
+        <div class="col-xs-12" style="margin-top:15px">
+            <div class="col-xs-10">
+                @Html.TextBoxFor(model => model.name, new { @class = "form-control", @placeholder = "Nombre de la etapa" })
+                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-xs-2">
+                <button class="btn btn-success" type="submit" style="float:right">Agregar etapa</button>
+            </div>
+        </div>
+    }
+</div>
+

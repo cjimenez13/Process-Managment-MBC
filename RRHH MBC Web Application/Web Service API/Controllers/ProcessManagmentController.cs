@@ -67,5 +67,43 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+
+        [HttpGet]
+        [Route("stages")]
+        public List<StageDTO> getStages(string id_process)
+        {
+            List<StageDTO> participants = ProcessManagmentData.getProcessStages(id_process);
+            return participants;
+        }
+        [HttpPost]
+        [Route("stages")]
+        public IHttpActionResult postStage(StageDTO pStage)
+        {
+            if (!ProcessManagmentData.insertStage(pStage))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpPut]
+        [Route("stages")]
+        public IHttpActionResult putStage(StageDTO pStage)
+        {
+            if (!ProcessManagmentData.updateStage(pStage))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpDelete]
+        [Route("stages")]
+        public IHttpActionResult deleteStage(string id_stage, string userLog)
+        {
+            if (!ProcessManagmentData.deleteStage(id_stage, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

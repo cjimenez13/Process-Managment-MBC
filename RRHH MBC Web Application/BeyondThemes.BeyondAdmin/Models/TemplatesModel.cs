@@ -51,6 +51,22 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo de la categoría")]
         public string categorie_id { get; set; }
     }
+
+    public class EditTemplateModel
+    {
+        public EditTemplateModel(TemplateDTO template)
+        {
+            name = template.name;
+            template_id = template.id_processManagment;
+        }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string name { get; set; }
+
+        [Required]
+        public string template_id { get; set; }
+    }
     public class ParticipantModel
     {
         private TemplatesProvider templateProvider = new TemplatesProvider();

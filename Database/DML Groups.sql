@@ -62,11 +62,10 @@ go
 create procedure usp_insert_groupUser 
 @user_id int, @group_id int as
 begin
-	begin try
+begin transaction 
 		insert into Group_Users ([user_id], group_id)
 		values (@user_id, @group_id)
-	end try
-	begin catch end catch
+commit transaction 
 end
 go
 

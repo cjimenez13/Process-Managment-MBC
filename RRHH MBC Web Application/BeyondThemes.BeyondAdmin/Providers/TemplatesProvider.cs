@@ -84,12 +84,12 @@ namespace BeyondThemes.BeyondAdmin.Providers
         }
 
         //-------------------------------------- Deletes -----------------------------------------------
-        public async Task<bool> deleteTemplate(string id_template)
+        public async Task<bool> deleteTemplate(string id_template, string userLog)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                HttpResponseMessage response = client.DeleteAsync("api/templates/?id_template=" + id_template).Result;
+                HttpResponseMessage response = client.DeleteAsync("api/templates/?id_template=" + id_template + "&userLog=" + userLog ).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

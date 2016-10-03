@@ -38,10 +38,7 @@
 <!--Jquery Select2-->
 <script src="~/assets/js/select2/select2.js"></script>
 <script src="~/assets/js/toastr/toastr.js"></script>
-<script>
 
-
-</script>
 <script>
     //--Jquery Select2--
     $("#e2").select2({
@@ -119,6 +116,7 @@
             } else {
                 pagingControls += '<li><a href="#" onclick="pager.showPage(' + previousPage + '); return false;" >«</a></li>';
             }
+            // show only 5 
             for (var i = 1; i <= numPages; i++) {
                 if (i != currentPage) {
                     pagingControls += '<li><a href="#" onclick="pager.showPage(' + i + '); return false;">' + i + '</a></li>';

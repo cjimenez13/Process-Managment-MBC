@@ -37,6 +37,31 @@ namespace Web_Service_API.DataAccess
             };
             return participants;
         }
+        public static List<StageDTO> getProcessStages(string id_process)
+        {
+            List<StageDTO> stagesDTO = new List<StageDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_process_stages", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_processManagment", SqlDbType.Int);
+                command.Parameters["@id_processManagment"].Value = id_process;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    StageDTO stage = new StageDTO();
+                    stage.id_stage = rdr["id_stage"].ToString();
+                    stage.name = rdr["name"].ToString();
+                    stage.processManagment_id = rdr["processManagment_id"].ToString();
+                    stage.stagePosition = rdr["stagePosition"].ToString();
+                    stage.createdBy = rdr["createdBy"].ToString();
+                    stage.createdDate = rdr["createdDate"].ToString();
+                    stagesDTO.Add(stage);
+                }
+            };
+            return stagesDTO;
+        }
         //--------------------------------------------- Inserts --------------------------------------------
         public static bool insertParticipant(ParticipantDTO pParticipantDTO)
         {
@@ -84,7 +109,59 @@ namespace Web_Service_API.DataAccess
                 return false;
             };
         }
+        public static bool insertStage(StageDTO pStage)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_insert_stage", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pStage.name;
+                command.Parameters.Add("@processManagment_id", SqlDbType.Int);
+                command.Parameters["@processManagment_id"].Value = pStage.processManagment_id;
+                command.Parameters.Add("@stagePosition", SqlDbType.Int);
+                command.Parameters["@stagePosition"].Value = pStage.stagePosition;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pStage.userLog;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
+        //--------------------------------------------- Updates --------------------------------------------
+        public static bool updateStage(StageDTO pStage)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_stage", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_stage", SqlDbType.Int);
+                command.Parameters["@id_stage"].Value = pStage.id_stage;
+                command.Parameters.Add("@name", SqlDbType.NVarChar);
+                command.Parameters["@name"].Value = pStage.name;
+                command.Parameters.Add("@stagePosition", SqlDbType.Int);
+                command.Parameters["@stagePosition"].Value = pStage.stagePosition;
+                command.Parameters.Add("@id_processManagment", SqlDbType.Int);
+                command.Parameters["@id_processManagment"].Value = pStage.processManagment_id;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pStage.userLog;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
         //------------------------------------------------ Deletes ----------------------------------------------------
         public static bool deleteParticipant(string id_template, string userLog, string user_id)
         {
@@ -97,6 +174,27 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@id_processManagment"].Value = id_template;
                 command.Parameters.Add("@user_id", SqlDbType.Int);
                 command.Parameters["@user_id"].Value = user_id;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool deleteStage(string id_stage, string userLog)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_delete_stage", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_stage", SqlDbType.Int);
+                command.Parameters["@id_stage"].Value = id_stage;
                 command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = userLog;
 
