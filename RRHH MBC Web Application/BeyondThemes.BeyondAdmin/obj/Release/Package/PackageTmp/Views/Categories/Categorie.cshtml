@@ -51,6 +51,18 @@
 @{ Html.RenderPartial("/Views/Categories/_EditCategorie.cshtml", new Model.EditCategorieModel(Model.categorie.id_categorie));}
 
 @section PageScripts{
+<script src="/assets/js/nestable/jquery.nestable.min.js"></script>
+<script type="text/javascript">
+        jQuery(function ($) {
+            $('.dd').nestable();
+            $('.dd-handle a').on('mousedown', function (e) {
+                e.stopPropagation();
+            });
+            $(document).ready(function () {
+                console.log($(".dd button:contains('Collapse')"))
+            });
+        });
+</script>
     <script>
         //-- Categorie
         //-- Edited
@@ -69,7 +81,7 @@
         }
         //-- Deleted
         function CategorieDeletedSuccess(content) {
-            Notify("La categoría ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            Notify("La categoría ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
             window.location.href = "/Categories";
         }
         function CategorieDeletedFailure(content) {

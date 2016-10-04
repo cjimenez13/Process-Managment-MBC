@@ -476,6 +476,7 @@
     <Content Include="Views\Templates\_Template\_Participants\_AddParticipantUser.cshtml" />
     <Content Include="Views\Templates\_Template\_Participants\_AddGroup.cshtml" />
     <Content Include="Views\Templates\_Template\_EditTemplate.cshtml" />
+    <Content Include="Views\Templates\_Template\_Stages\_EditStage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

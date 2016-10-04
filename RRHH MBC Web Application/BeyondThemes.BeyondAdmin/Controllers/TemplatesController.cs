@@ -106,7 +106,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 List<ParticipantDTO> addedParticipants = processManagmentProvider.postParticipants(participants).Result;
                 int addedCount = addedParticipants.Count;
                 int errorCount = participants.Count - addedCount;
-                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Templates/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(process_id)).RenderToString() };
+                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(process_id)).RenderToString() };
                 return Json(result);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
@@ -128,7 +128,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     groups.Add(groupParticipantDTO);
                 }
                 List<ParticipantDTO> addedParticipants = processManagmentProvider.postGroups(groups).Result;
-                var result = new { usersAdded = selected_groups_id.Count, viewHtml = PartialView("/Views/Templates/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(process_id)).RenderToString() };
+                var result = new { usersAdded = selected_groups_id.Count, viewHtml = PartialView("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(process_id)).RenderToString() };
                 return Json(result);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
@@ -144,7 +144,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPost]
-        [ValidateLogin]
+        [ValidateAntiForgeryToken]
         public ActionResult _AddStage(string name, string id_process, string maxStagePosition)
         {
             if (ModelState.IsValid)
@@ -162,26 +162,25 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPut]
-        [ValidateLogin]
-        public ActionResult _EditStage(string name, string id_stage, string maxStagePosition)
+        public ActionResult _EditStage(string name, string id_stage, string stagePosition)
         {
             if (ModelState.IsValid)
             {
                 StageDTO stageDTO = new StageDTO();
                 stageDTO.id_stage = id_stage;
                 stageDTO.name = name;
-                stageDTO.stagePosition = maxStagePosition;
+                stageDTO.stagePosition = stagePosition;
                 stageDTO.userLog = Request.Cookies["user_id"].Value;
-                if (processManagmentProvider.postStage(stageDTO).Result)
+                if (processManagmentProvider.putStage(stageDTO).Result)
                 {
-                    return new HttpStatusCodeResult(200);
+                    var result = new { name = name, id_stage = id_stage };
+                    return Json(result);
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
 
         [HttpDelete]
-        [ValidateLogin]
         public ActionResult _DeleteStage(string id_stage)
         {
             if (ModelState.IsValid)

@@ -190,7 +190,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 userDTO.fLastName = model.fLastName;
                 userDTO.sLastName = model.sLastName;
                 userDTO.email = model.email;
-                userDTO.phoneNumber = model.phoneNumber.ToString();
+                userDTO.phoneNumber = model.phoneNumber;
                 userDTO.userName = model.userName;
                 userDTO.canton_id = selectedCanton;
                 userDTO.direction = model.direction;
@@ -216,7 +216,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 userDTO.fLastName = model.fLastName;
                 userDTO.sLastName = model.sLastName;
                 userDTO.email = model.email;
-                userDTO.phoneNumber = model.phoneNumber.ToString();
+                userDTO.phoneNumber = model.phoneNumber;
                 userDTO.userName = model.userName;
                 userDTO.canton_id = model.canton;
                 userDTO.direction = model.direction;

@@ -1,28 +1,36 @@
-﻿@{
+﻿@model Model.TemplateModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
     ViewBag.Title = "Plantilla Solicitud Vacaciones";
     ViewBag.Description = "Solicitud Vacaciones";
+    string name = Model.userDTO.name + " " + Model.userDTO.fLastName + " " + Model.userDTO.sLastName;
+    string createdDate = Model.templateDTO.createdDate.Substring(0, 10);
 }
-
 <div class="row">
     <div class="col-xs-12">
-        @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Plantilla Solicitud Vacaciones")))
-        {
-            using (WidgetSectionPanel header = widget.BeginHeader())
+        <div class="widget radius-bordered">
+            @using (Ajax.BeginForm("_DeleteTemplate", "Templates", new AjaxOptions { HttpMethod = "DELETE", OnSuccess = "TemplateDeletedSuccess", OnFailure = "TemplateDeletedFailure" }))
             {
+            string id_template = Model.templateDTO.id_processManagment;
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => id_template)
+            <div class="widget-header">
+                <span class="widget-caption">Plantilla @Html.Raw(Model.templateDTO.name)</span>
+                <div class="widget-buttons">
+                    <button class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_EditTemplate" type="button">Editar</button>
+                </div>
+                <div class="widget-buttons">
+                    <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
+                </div>
+            </div><!--Widget Header-->
             }
-            using (widget.BeginBody())
-            {
+            <div class="widget-body">
                 <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
                     <div class="col-xs-12">
                         <div class="col-md-4">
                             <dl class="dl-horizontal">
-                                <dt>Creado por</dt>
-                                <dd>Jocsan Padilla</dd>
-                                <dt>Creado</dt>
-                                <dd>16.08.2014 12:15:57</dd>
-                                <dt>Actualizado</dt>
-                                <dd>16.08.2014 12:15:57</dd>
+                                <dt>Creado por</dt><dd>@Html.Raw(name)</dd>
+                                <dt>Creado</dt><dd>@Html.Raw(createdDate)</dd>
                             </dl>
                         </div>
                     </div>
@@ -37,67 +45,14 @@
                                 <!-- Etapas -->
                                 using (tabs.BeginPanel())
                                 {
-                                    <ul class="todo-list">
-                                        <li>
-                                            <!-- drag handle -->
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <!-- checkbox -->
-                                            <input type="checkbox" value="">
-                                            <!-- todo text -->
-                                            <span class="text">Design a nice theme</span>
-                                            <!-- Emphasis label -->
-                                            <!-- General tools such as edit or delete-->
-                                            <div class="tools" style="display:inline-block">
-                                                <a href="/Templates/Tasks">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Make the theme responsive</span>
-                                            <div class="tools">
-                                                <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Let theme shine like a star</span>
-                                            <div class="tools">
-                                                <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Let theme shine like a star</span>
-                                            <div class="tools">
-                                                <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <div class="row">
+                                        <div class="col-xs-12" style="margin-bottom:10px">
+                                            <h3>Etapas</h3>
+                                        </div>
+                                        <div class="col-xs-9" id="StagesListDiv">
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.templateDTO));}
+                                        </div>
+                                    </div>
                                 }
                                 <!-- Participantes -->
                                 using (tabs.BeginPanel())
@@ -106,33 +61,22 @@
                                         <!-- search bar -->
                                         <div class="col-md-6">
                                             <span class="input-icon">
-                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterParticipantsUsers(this)" >
                                                 <i class="glyphicon glyphicon-search blue"></i>
                                             </span>
                                         </div>
-                                        <div class="col-md-offset-4 col-md-2" style="">
-                                            <button class="btn btn-success btn-block">Agregar integrante</button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <p>Mostrando 10 integrantes</p>
-                                        </div>
-                                    </div>
-                                    <!-- Users box -->
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-4 col-xs-12">
-                                            <div class="databox databox-graded">
-                                                <div class="databox-left no-padding">
-                                                    <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
-                                                </div>
-                                                <a href="@Url.Action("Profile")">
-                                                    <div class="databox-right padding-top-20 bg-whitesmoke">
-                                                        <div class="databox-text darkgray" style="font-size:14px">JAVI JIMENEZ</div>
-                                                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>cjimenez13@outlook.com</div>
-                                                    </div>
-                                                </a>
+                                        <div class="col-lg-offset-3 col-lg-3 col-md-offset-2 col-md-4">
+                                            <div class="col-xs-6">
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addGroupParticipants">Agregar grupo</button>
                                             </div>
+                                            <div class="col-xs-6">
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">Agregar integrante</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12" id="participantsListDiv">
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(Model.templateDTO.id_processManagment));}
                                         </div>
                                     </div>
                                 }
@@ -140,20 +84,168 @@
                         </div>
                     </div>
                 </div>
-            }
-        }
+            </div><!--Widget Body-->
+        </div><!--Widget-->
     </div>
 </div>
+<!-- Modal to add a user -->
+@{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_AddParticipantUser.cshtml", new Model.AddParticipantUserModel(Model.templateDTO.id_processManagment));}
+<!-- Modal to add a group -->
+@{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_AddGroup.cshtml", new Model.AddGroupModel(Model.templateDTO.id_processManagment));}
+<!-- Modal to edit template name -->
+@{ Html.RenderPartial("/Views/Templates/_Template/_EditTemplate.cshtml", new Model.EditTemplateModel(Model.templateDTO));}
 
 
 @section PageScripts{
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="/assets/js/select2/select2.js"></script>
+<!--Bootstrap Tags Input-->
+<script src="/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
     <script>
+        $('#selected_userParticipants_id').select2();
+        $('#selected_groups_id').select2();
+        function filterParticipantsUsers(element) {
+            var value = $(element).val().toLowerCase();
+            var count = 0;
+            $("#ParticipantsList").children().each(function () {
+                if ($(this).text().toLowerCase().includes(value)) {
+                    $(this).show(300);
+                    count += 1;
+                }
+                else {
+                    $(this).hide(300)
+                }
+            });
+            if (count == 1) {
+                $('#txtShowingParticipants').text("Mostrando " + count + " participante")
+
+            } else {
+                $('#txtShowingParticipants').text("Mostrando " + count + " participantes")
+            }
+        }
+        // Participant added
+        function ParticipantAddedSuccess(content) {
+            if (content.usersAdded == 1) {
+                Notify("Se ha agregado " + content.usersAdded.length + " usuario con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            else if (content.usersAdded > 1){
+                Notify("Se han agregado " + content.usersAdded.length + " usuarios con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            if (content.usersError == 1) {
+                Notify(content.usersError + " de los usuarios ya se encuentra como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+            }
+            else if (content.usersError.length > 1) {
+                Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+            }
+            var participants = $('#txtShowingParticipants').text().split(' ')[1]
+            $('#txtShowingParticipants').text("Mostrando " + content.usersAdded + participants + " participantes")
+            $("#participantsListDiv").html(content.viewHtml)
+        }
+        function ParticipantAddedFailure(content) {
+            Notify("Error, no se agregó ningun usuario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+
+        // Template edited 
+        function TemplateEditedSuccess(content) {
+            Notify("Se ha editado la plantilla con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            $('.widget-caption').text("Plantilla "+content)
+        }
+        function TemplateEditedFailure(content) {
+            Notify("Error, no se edito la plantilla", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- Template deleted
+        function TemplateDeletedSuccess(content) {
+            Notify("La plantilla ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            window.location.href = "/Templates";
+        }
+        function TemplateDeletedFailure(content) {
+            Notify("Error, no se puede borrar la plantilla", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- stage added
+        function StageAddedSuccess(content) {
+            Notify("La etapa ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $('#StagesListDiv').html(content)
+            $(".todo-list").sortable({
+                placeholder: "sort-highlight",
+                handle: ".handle",
+                forcePlaceholderSize: true,
+                zIndex: 999999
+            });
+        }
+        function StageAddedFailure(content) {
+            Notify("Error, no se puede agregar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- stage name udated
+        function StageUpdatedSuccess(content) {
+            Notify("La etapa ha sido editad con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $('#stageName' + content.id_stage).text(content.name);
+            console.log($('#stageName' + content.id_stage))
+        }
+        function StageUpdatedFailure(content) {
+            Notify("Error, no se puede editar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        //-- stage deleted
+        function StageDeletedSuccess(content) {
+            Notify("La etapa ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        }
+        function StageDeletedFailure(content) {
+            Notify("Error, no se puede eliminar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        // group added 
+        function GroupAddedSuccess(content) {
+            if (content.usersAdded <= 1) {
+                Notify("Se ha agregado " + content.usersAdded.length + " grupo con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            else if (content.usersAdded > 1) {
+                Notify("Se han agregado " + content.usersAdded.length + " grupos con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+            }
+            $("#participantsListDiv").html(content.viewHtml)
+        }
+        function GroupAddedFailure(content) {
+            Notify("Error, no se agregó ningun grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        function deleteParticipantUser(user_id, process_id, name, element) {
+            $.ajax({
+                url: "/Templates/_DeleteParticipant/?user_id=" + user_id + "&process_id=" + process_id,
+                type: "DELETE",
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+                success: function (data) {
+                    Notify("El usuario '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    $(element).closest(".databox").parent().hide(300, function () {
+                        this.remove()
+                        var participants = $('#txtShowingParticipants').text().split(' ')[1];
+                        $('#txtShowingParticipants').text("Mostrando " + (participants -1) + " participantes")
+                    });
+                },
+                error: function () {
+                    Notify("Error, no se puede remover el usuario '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+        function deleteStage(id_stage, name, element) {
+            console.log('Hola');
+            $.ajax({
+                url: "/Templates/_DeleteStage/?id_stage=" + id_stage,
+                type: "DELETE",
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+                success: function (data) {
+                    Notify("La etapa '" + name + "' ha sido removida", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    $(element).closest("li").hide(300, function () {
+
+                    });
+                },
+                error: function () {
+                    Notify("Error, no se puede remover la etapa '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+                }
+            });
+        }
+
     (function ($) {
-
         'use strict';
-
         $.fn.todolist = function (options) {
             // Render options
             var settings = $.extend({
@@ -168,7 +260,6 @@
             }, options);
 
             return this.each(function () {
-
                 if (typeof $.fn.iCheck != 'undefined') {
                     $('input', this).on('ifChecked', function () {
                         var ele = $(this).parents("li").first();
@@ -207,13 +298,34 @@
             }
         });
 
-
         //jQuery UI sortable for the todo list
         $(".todo-list").sortable({
             placeholder: "sort-highlight",
             handle: ".handle",
             forcePlaceholderSize: true,
-            zIndex: 999999
+            zIndex: 999999,
+            update: function (event, ui) {
+                var newpos = ui.item.index();
+                var count = 0;
+                ui.item.parent().children().each(function () {
+                    var id = this.id
+                    var name = $(this).find('#stageName' + id).text();
+                    var newPos = count;
+                    $.ajax({
+                        url: "/Templates/_EditStage/?id_stage=" + id + '&stagePosition=' + newPos + '&name=' + name,
+                        type: "PUT",
+                        dataType: "html",
+                        traditional: true,
+                        contentType: false,
+                        success: function (data) {
+                        },
+                        error: function () {
+                        }
+                    });
+                    count += 1;
+                });
+
+            }
         });
     </script>
 }

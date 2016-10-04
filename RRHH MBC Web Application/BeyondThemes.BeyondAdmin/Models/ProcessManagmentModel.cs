@@ -87,6 +87,25 @@ namespace Model
         }
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         public string name { get; set; }
-        public int maxStagePosition { get; set; } = 1;
+        public int maxStagePosition { get; set; } = 0;
+    }
+    public class EditStageModel
+    {
+        public EditStageModel(StageDTO stage)
+        {
+            name = stage.name;
+            id_stage = stage.id_stage;
+            stagePosition = stage.stagePosition;
+        }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string name { get; set; }
+
+        [Required]
+        public string id_stage { get; set; }
+
+        [Required]
+        public string stagePosition { get; set; }
     }
 }

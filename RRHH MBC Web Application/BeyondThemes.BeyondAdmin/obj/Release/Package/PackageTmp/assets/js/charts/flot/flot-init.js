@@ -3,34 +3,16 @@
 var InitiateFlotBarChart = function () {
     return {
         init: function () {
-            var data2 = [{
-                color: themesecondary,
-                label: "Direct Visits",
-                data: [[3, 2], [4, 5], [5, 4], [6, 11], [7, 12], [8, 11], [9, 8], [10, 14], [11, 12], [12, 16], [13, 9],
-                [14, 10], [15, 14], [16, 15], [17, 9]],
-
-                lines: {
-                    show: true,
-                    fill: true,
-                    lineWidth: .1,
-                    fillColor: {
-                        colors: [{
-                            opacity: 0
-                        }, {
-                            opacity: 0.4
-                        }]
-                    }
-                },
-                points: {
-                    show: false
-                },
-                shadowSize: 0
-            },
+            var ticks = [
+             [0, "12/6/2014"], [1, "12/6/2014"], [2, "12/6/2014"], [3, "12/6/2014"], [4, "12/6/2014"], [5, "12/6/2014"]
+            ];
+            var data1 = [
                 {
                     color: themeprimary,
                     label: "Referral Visits",
                     data: [[3, 10], [4, 13], [5, 12], [6, 16], [7, 19], [8, 19], [9, 24], [10, 19], [11, 18], [12, 21], [13, 17],
-                    [14, 14], [15, 12], [16, 14], [17, 15]],
+                    [14, 14], [15, 12], [16, 14], [17, 15], [18, 10], [19, 13], [20, 12], [21, 16], [22, 19], [23, 19], [24, 24], [25, 19], [26, 18], [27, 21], [28, 17],
+                    [29, 14], [30, 12], [31, 14], [32, 15]],
                     bars: {
                         order: 1,
                         show: true,
@@ -45,41 +27,182 @@ var InitiateFlotBarChart = function () {
                             }]
                         }
                     }
-                },
+                }
+            ];
+            var data2 = [
                 {
-                    color: themethirdcolor,
-                    label: "Search Engines",
-                    data: [[3, 14], [4, 11], [5, 10], [6, 9], [7, 5], [8, 8], [9, 5], [10, 6], [11, 4], [12, 7], [13, 4],
-                    [14, 3], [15, 4], [16, 6], [17, 4]],
-                    lines: {
+                    color: themeprimary,
+                    label: "Gestion #123412",
+                    data: [// New delhi
+                        [4, 13]],
+                    bars: {
+                        order: 1,
                         show: true,
-                        fill: false,
+                        borderWidth: 0,
+                        barWidth: 0.4,
+                        lineWidth: .5,
                         fillColor: {
                             colors: [{
-                                opacity: 0.3
+                                opacity: 0.4
                             }, {
-                                opacity: 0
+                                opacity: 1
                             }]
                         }
                     },
-                    points: {
-                        show: true
-                    }
-                }
+                },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[3, 15],// New delhi
+                         ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[5, 8],// New delhi
+                     ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[6, 5],// New delhi
+                     ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[7, 15],// New delhi
+                     ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[8, 14],// New delhi
+                     ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[9, 20],// New delhi
+                     ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
+                 {
+                     color: themeprimary,
+                     label: "Valor",
+                     data: [[10, 12],// New delhi
+                     ],
+                     bars: {
+                         order: 1,
+                         show: true,
+                         borderWidth: 0,
+                         barWidth: 0.4,
+                         lineWidth: .5,
+                         fillColor: {
+                             colors: [{
+                                 opacity: 0.4
+                             }, {
+                                 opacity: 1
+                             }]
+                         }
+                     },
+                 },
             ];
             var options = {
                 legend: {
                     show: false
                 },
                 xaxis: {
-                    tickDecimals: 0,
-                    color: '#f3f3f3'
+                    ticks: ticks
                 },
                 yaxis: {
                     min: 0,
                     color: '#f3f3f3',
                     tickFormatter: function (val, axis) {
-                        return "";
+                        return val;
                     },
                 },
                 grid: {
@@ -93,7 +216,7 @@ var InitiateFlotBarChart = function () {
                 tooltip: true,
                 tooltipOpts: {
                     defaultTheme: false,
-                    content: " <b>%x May</b> , <b>%s</b> : <span>%y</span>",
+                    content: "<b>%s</b>, Valor : <span>%y</span>",
                 }
             };
             var placeholder = $("#bar-chart");

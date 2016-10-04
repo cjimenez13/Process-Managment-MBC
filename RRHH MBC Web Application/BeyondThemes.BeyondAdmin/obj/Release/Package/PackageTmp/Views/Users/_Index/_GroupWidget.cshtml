@@ -9,11 +9,11 @@
         @:<p style="text-align:left"><strong>@Model.groupUsers.Count miembros...</strong></p>
     }
     <div class="row" style="margin-top:15px">
-        @foreach (var user in Model.groupUsers)
+        @for (int iUser = 0; iUser < 5 && iUser != Model.groupUsers.Count; iUser++)
         {
-            var name = user.name + " " + user.fLastName + " " + user.sLastName;
+            var name = Model.groupUsers[iUser].name + " " + Model.groupUsers[iUser].fLastName + " " + Model.groupUsers[iUser].sLastName;
             <div class="col-xs-2" data-toggle="tooltip" data-placement="top" title="@name" >
-                <img alt="image"  class="img-circle img-responsive" src="data:Image/png;base64,@user.photoBase64">
+                <img alt="image"  class="img-circle img-responsive" src="data:Image/png;base64,@Model.groupUsers[iUser].photoBase64">
             </div>
         }
         @if (Model.groupUsers.Count > 5)

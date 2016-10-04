@@ -76,7 +76,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 12:49:36</publishTime>
     </File>
     <File Include="bin/DataTransferObjects.dll">
-      <publishTime>09/23/2016 15:45:16</publishTime>
+      <publishTime>09/30/2016 09:24:16</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>08/29/2016 08:08:45</publishTime>
@@ -208,7 +208,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/29/2016 08:07:04</publishTime>
     </File>
     <File Include="bin/Web Service API.dll">
-      <publishTime>09/23/2016 16:19:38</publishTime>
+      <publishTime>10/04/2016 13:33:46</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>08/22/2016 12:49:38</publishTime>
@@ -298,7 +298,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/29/2016 08:06:47</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/23/2016 16:33:25</publishTime>
+      <publishTime>10/04/2016 13:33:47</publishTime>
     </File>
   </ItemGroup>
 </Project>

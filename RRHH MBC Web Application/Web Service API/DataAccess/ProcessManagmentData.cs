@@ -148,8 +148,6 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@name"].Value = pStage.name;
                 command.Parameters.Add("@stagePosition", SqlDbType.Int);
                 command.Parameters["@stagePosition"].Value = pStage.stagePosition;
-                command.Parameters.Add("@id_processManagment", SqlDbType.Int);
-                command.Parameters["@id_processManagment"].Value = pStage.processManagment_id;
                 command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pStage.userLog;
 

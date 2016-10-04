@@ -9,7 +9,7 @@
         @:<p style="text-align:left"><strong>@Model.groupUsers.Count miembros...</strong></p>
     }
     <div class="row" style="margin-top:15px">
-        @for (int iUser = 0; iUser < 6 && iUser != Model.groupUsers.Count; iUser++)
+        @for (int iUser = 0; iUser < 5 && iUser != Model.groupUsers.Count; iUser++)
         {
             var name = Model.groupUsers[iUser].name + " " + Model.groupUsers[iUser].fLastName + " " + Model.groupUsers[iUser].sLastName;
             <div class="col-xs-2" data-toggle="tooltip" data-placement="top" title="@name" >

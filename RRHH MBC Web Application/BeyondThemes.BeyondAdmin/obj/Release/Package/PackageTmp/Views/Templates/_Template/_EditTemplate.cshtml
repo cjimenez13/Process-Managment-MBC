@@ -1,0 +1,33 @@
+﻿@model Model.EditTemplateModel
+
+<!-- Modal to edit template name-->
+<div class="modal fade" id="modal_EditTemplate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:10%;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("_EditTemplate", "Templates", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "TemplateEditedSuccess", OnFailure = "TemplateEditedFailure" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Editar plantilla</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @Html.HiddenFor(m => m.template_id)
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.name)
+                                @Html.TextBoxFor(model => model.name, new { @class = "form-control"})
+                                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

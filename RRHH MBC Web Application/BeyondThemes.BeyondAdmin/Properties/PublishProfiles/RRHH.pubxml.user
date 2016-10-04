@@ -46,7 +46,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 09:45:15</publishTime>
     </File>
     <File Include="assets/css/personalStyle.css">
-      <publishTime>08/23/2016 15:53:43</publishTime>
+      <publishTime>10/04/2016 09:19:49</publishTime>
     </File>
     <File Include="assets/css/skins/azure.min.css">
       <publishTime>08/22/2016 09:45:19</publishTime>
@@ -295,7 +295,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 09:45:35</publishTime>
     </File>
     <File Include="assets/js/charts/flot/flot-init.js">
-      <publishTime>08/22/2016 09:45:36</publishTime>
+      <publishTime>09/27/2016 10:16:33</publishTime>
     </File>
     <File Include="assets/js/charts/flot/jquery.flot.axislabels.js">
       <publishTime>08/22/2016 09:45:37</publishTime>
@@ -469,10 +469,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 09:45:34</publishTime>
     </File>
     <File Include="assets/js/file_input/bootstrap-filestyle.js">
-      <publishTime>02/09/2016 12:20:40</publishTime>
+      <publishTime>09/02/2016 12:20:40</publishTime>
     </File>
     <File Include="assets/js/file_input/bootstrap-filestyle.min.js">
-      <publishTime>02/09/2016 12:20:40</publishTime>
+      <publishTime>09/02/2016 12:20:40</publishTime>
     </File>
     <File Include="assets/js/fuelux/spinbox/fuelux.spinbox.js">
       <publishTime>08/22/2016 09:45:40</publishTime>
@@ -598,7 +598,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 09:45:35</publishTime>
     </File>
     <File Include="assets/js/toastr/toastr.js">
-      <publishTime>09/08/2016 13:21:05</publishTime>
+      <publishTime>08/09/2016 13:21:05</publishTime>
     </File>
     <File Include="assets/js/toastr/toastr.min.js">
       <publishTime>08/22/2016 09:45:34</publishTime>
@@ -625,7 +625,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 12:49:36</publishTime>
     </File>
     <File Include="bin/BeyondThemes.BeyondAdmin.dll">
-      <publishTime>09/23/2016 15:45:17</publishTime>
+      <publishTime>10/04/2016 13:33:09</publishTime>
     </File>
     <File Include="bin/BeyondThemes.Bootstrap.dll">
       <publishTime>08/23/2016 23:11:09</publishTime>
@@ -634,7 +634,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 12:49:36</publishTime>
     </File>
     <File Include="bin/DataTransferObjects.dll">
-      <publishTime>09/23/2016 15:45:16</publishTime>
+      <publishTime>09/30/2016 09:24:16</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>08/22/2016 12:49:38</publishTime>
@@ -730,7 +730,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Mvc.sitemap">
-      <publishTime>09/16/2016 11:59:22</publishTime>
+      <publishTime>09/29/2016 11:44:41</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>08/31/2016 11:41:33</publishTime>
@@ -801,17 +801,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>08/22/2016 09:45:07</publishTime>
     </File>
+    <File Include="Views/Categories/Attribute.cshtml">
+      <publishTime>09/27/2016 10:37:22</publishTime>
+    </File>
     <File Include="Views/Categories/Categorie.cshtml">
-      <publishTime>09/23/2016 10:08:14</publishTime>
+      <publishTime>09/30/2016 10:23:37</publishTime>
     </File>
     <File Include="Views/Categories/Index.cshtml">
-      <publishTime>09/16/2016 16:32:05</publishTime>
+      <publishTime>09/30/2016 09:20:54</publishTime>
     </File>
     <File Include="Views/Categories/_AddCategorie.cshtml">
       <publishTime>09/16/2016 14:38:51</publishTime>
     </File>
     <File Include="Views/Categories/_AttributeValues.cshtml">
-      <publishTime>09/22/2016 09:17:42</publishTime>
+      <publishTime>10/04/2016 08:28:54</publishTime>
     </File>
     <File Include="Views/Categories/_AttributeValuesList.cshtml">
       <publishTime>09/23/2016 11:55:20</publishTime>
@@ -820,7 +823,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/23/2016 11:47:05</publishTime>
     </File>
     <File Include="Views/Categories/_CategorieInfo.cshtml">
-      <publishTime>09/19/2016 09:27:50</publishTime>
+      <publishTime>09/27/2016 10:49:56</publishTime>
     </File>
     <File Include="Views/Categories/_CategoriePersonalAtr.cshtml">
       <publishTime>09/23/2016 11:03:30</publishTime>
@@ -835,28 +838,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/23/2016 11:48:35</publishTime>
     </File>
     <File Include="Views/Categories/_PersonalAttrList.cshtml">
-      <publishTime>09/23/2016 11:21:39</publishTime>
+      <publishTime>09/28/2016 10:13:33</publishTime>
     </File>
     <File Include="Views/Config/Index.cshtml">
       <publishTime>09/13/2016 09:04:30</publishTime>
     </File>
     <File Include="Views/Config/Role.cshtml">
-      <publishTime>09/13/2016 10:06:19</publishTime>
+      <publishTime>09/26/2016 13:51:19</publishTime>
     </File>
     <File Include="Views/Config/_AddRole.cshtml">
-      <publishTime>06/09/2016 17:04:18</publishTime>
+      <publishTime>09/06/2016 17:04:18</publishTime>
     </File>
     <File Include="Views/Config/_PermissionElements.cshtml">
-      <publishTime>09/08/2016 11:52:51</publishTime>
+      <publishTime>08/09/2016 11:52:51</publishTime>
     </File>
     <File Include="Views/Config/_Permissions.cshtml">
-      <publishTime>09/08/2016 11:50:42</publishTime>
+      <publishTime>08/09/2016 11:50:42</publishTime>
     </File>
     <File Include="Views/Config/_RoleModules.cshtml">
-      <publishTime>09/08/2016 08:42:10</publishTime>
+      <publishTime>08/09/2016 08:42:10</publishTime>
     </File>
     <File Include="Views/Config/_Security.cshtml">
-      <publishTime>09/08/2016 12:04:30</publishTime>
+      <publishTime>08/09/2016 12:04:30</publishTime>
     </File>
     <File Include="Views/Forms/Form.cshtml">
       <publishTime>08/23/2016 14:03:24</publishTime>
@@ -997,7 +1000,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/Processes/Process.cshtml">
-      <publishTime>09/13/2016 09:36:15</publishTime>
+      <publishTime>09/29/2016 14:35:23</publishTime>
     </File>
     <File Include="Views/Processes/Tasks.cshtml">
       <publishTime>09/13/2016 09:34:38</publishTime>
@@ -1036,7 +1039,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 09:45:10</publishTime>
     </File>
     <File Include="Views/Shared/_Default.cshtml">
-      <publishTime>09/13/2016 09:37:43</publishTime>
+      <publishTime>09/29/2016 17:15:20</publishTime>
     </File>
     <File Include="Views/Shared/_Empty.cshtml">
       <publishTime>08/22/2016 09:45:10</publishTime>
@@ -1048,22 +1051,46 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/22/2016 09:45:10</publishTime>
     </File>
     <File Include="Views/Templates/Index.cshtml">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/29/2016 11:39:58</publishTime>
     </File>
     <File Include="Views/Templates/Tasks.cshtml">
       <publishTime>08/24/2016 08:50:59</publishTime>
     </File>
     <File Include="Views/Templates/Template.cshtml">
-      <publishTime>08/24/2016 08:49:55</publishTime>
+      <publishTime>10/04/2016 10:32:01</publishTime>
+    </File>
+    <File Include="Views/Templates/_AddTemplate.cshtml">
+      <publishTime>09/29/2016 11:01:34</publishTime>
+    </File>
+    <File Include="Views/Templates/_Template/_EditTemplate.cshtml">
+      <publishTime>10/03/2016 10:35:46</publishTime>
+    </File>
+    <File Include="Views/Templates/_Template/_Participants/_AddGroup.cshtml">
+      <publishTime>10/03/2016 09:00:34</publishTime>
+    </File>
+    <File Include="Views/Templates/_Template/_Participants/_AddParticipantUser.cshtml">
+      <publishTime>09/30/2016 15:52:31</publishTime>
+    </File>
+    <File Include="Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml">
+      <publishTime>10/03/2016 09:04:55</publishTime>
+    </File>
+    <File Include="Views/Templates/_Template/_Stages/_EditStage.cshtml">
+      <publishTime>10/04/2016 09:56:34</publishTime>
+    </File>
+    <File Include="Views/Templates/_Template/_Stages/_StagesList.cshtml">
+      <publishTime>10/04/2016 11:19:57</publishTime>
+    </File>
+    <File Include="Views/Templates/_TemplatesList.cshtml">
+      <publishTime>10/04/2016 11:18:07</publishTime>
     </File>
     <File Include="Views/Users/Group.cshtml">
-      <publishTime>09/21/2016 10:53:02</publishTime>
+      <publishTime>10/03/2016 08:57:50</publishTime>
     </File>
     <File Include="Views/Users/Index.cshtml">
-      <publishTime>09/13/2016 09:05:07</publishTime>
+      <publishTime>10/03/2016 15:12:54</publishTime>
     </File>
     <File Include="Views/Users/Profile.cshtml">
-      <publishTime>09/23/2016 15:45:14</publishTime>
+      <publishTime>09/30/2016 11:27:34</publishTime>
     </File>
     <File Include="Views/Users/_AddGroup.cshtml">
       <publishTime>09/12/2016 14:34:58</publishTime>
@@ -1077,6 +1104,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Users/_EditGroup.cshtml">
       <publishTime>09/12/2016 14:36:39</publishTime>
     </File>
+    <File Include="Views/Users/_Group/_AddGroupUser.cshtml">
+      <publishTime>09/30/2016 11:38:18</publishTime>
+    </File>
+    <File Include="Views/Users/_Group/_EditGroup.cshtml">
+      <publishTime>09/12/2016 14:36:39</publishTime>
+    </File>
+    <File Include="Views/Users/_Group/_GroupUsersList.cshtml">
+      <publishTime>09/14/2016 16:31:28</publishTime>
+    </File>
     <File Include="Views/Users/_GroupsList.cshtml">
       <publishTime>09/14/2016 17:23:23</publishTime>
     </File>
@@ -1085,6 +1121,48 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Users/_GroupWidget.cshtml">
       <publishTime>09/14/2016 16:35:46</publishTime>
+    </File>
+    <File Include="Views/Users/_Index/_AddGroup.cshtml">
+      <publishTime>09/12/2016 14:34:58</publishTime>
+    </File>
+    <File Include="Views/Users/_Index/_GroupsList.cshtml">
+      <publishTime>09/30/2016 11:21:16</publishTime>
+    </File>
+    <File Include="Views/Users/_Index/_GroupWidget.cshtml">
+      <publishTime>10/04/2016 08:26:53</publishTime>
+    </File>
+    <File Include="Views/Users/_Index/_Register.cshtml">
+      <publishTime>09/12/2016 15:42:31</publishTime>
+    </File>
+    <File Include="Views/Users/_Index/_UsersList.cshtml">
+      <publishTime>09/13/2016 09:48:16</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_AddUserFile.cshtml">
+      <publishTime>09/30/2016 11:27:51</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileActivity.cshtml">
+      <publishTime>09/28/2016 08:43:50</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileCategorieAttributes.cshtml">
+      <publishTime>09/28/2016 12:01:56</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileCategories.cshtml">
+      <publishTime>09/28/2016 09:22:42</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileConfig.cshtml">
+      <publishTime>09/28/2016 08:49:18</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileConfigInfo.cshtml">
+      <publishTime>09/30/2016 08:34:09</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileConfigRoles.cshtml">
+      <publishTime>09/13/2016 10:00:55</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileFiles.cshtml">
+      <publishTime>09/30/2016 11:24:44</publishTime>
+    </File>
+    <File Include="Views/Users/_Profile/_ProfileInfo.cshtml">
+      <publishTime>09/28/2016 08:48:36</publishTime>
     </File>
     <File Include="Views/Users/_ProfileActivity.cshtml">
       <publishTime>05/09/2016 22:39:31</publishTime>
@@ -1108,13 +1186,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/13/2016 09:48:16</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>05/09/2016 10:03:53</publishTime>
+      <publishTime>09/05/2016 10:03:53</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>08/22/2016 09:45:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/23/2016 15:45:20</publishTime>
+      <publishTime>10/04/2016 13:33:12</publishTime>
     </File>
   </ItemGroup>
 </Project>

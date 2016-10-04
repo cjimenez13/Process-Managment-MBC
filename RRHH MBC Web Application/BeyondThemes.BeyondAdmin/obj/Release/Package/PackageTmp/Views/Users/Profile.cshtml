@@ -5,7 +5,6 @@
     ViewBag.Description = "Perfil " + name;
     Layout = "~/Views/Shared/_Default.cshtml";
 }
-
 <div class="row">
     <div class="col-md-12">
         <div class="profile-container">
@@ -19,138 +18,42 @@
                        @Model.user.userName <br /> @Model.user.email <br /> @Model.user.birthdate
                     </div>
                 </div>
-                <div class= "col-lg-2">
-                </div>
             </div>
             <div class="profile-body">
                 <div class="col-lg-12">
                     <div class="tabbable">
                         <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
                             <li class="active">
-                                <a data-toggle="tab" href="#personalInformation">
-                                    Información Personal
-                                </a>
+                                <a data-toggle="tab" href="#personalInformation">Información Personal</a>
                             </li>
                             <li class="tab-palegreen">
-                                <a data-toggle="tab" href="#files">
-                                    Archivos
-                                </a>
+                                <a data-toggle="tab" href="#files">Archivos</a>
                             </li>
                             <li class="tab-palegreen">
-                                <a data-toggle="tab" id="contacttab" href="#data">
-                                    Datos
-                                </a>
+                                <a data-toggle="tab" id="contacttab" href="#data">Datos</a>
                             </li>
                             <li class="tab-palegreen">
-                                <a data-toggle="tab" href="#activity">
-                                    Actividad
-                                </a>
+                                <a data-toggle="tab" href="#activity">Actividad</a>
                             </li>
                             <li class="tab-red">
-                                <a data-toggle="tab" href="#settings">
-                                    Configuración
-                                </a>
+                                <a data-toggle="tab" href="#settings">Configuración</a>
                             </li>
                         </ul>
                         <div class="tab-content tabs-flat">
                             <div id="personalInformation" class="tab-pane active">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="col-md-6">
-                                            <div class="profile-contacts">
-                                                <div class="profile-badge orange"><i class="fa fa-phone orange"></i><span>Contacto</span></div>
-                                                <div class="contact-info">
-                                                    <p>
-                                                        Phone	: @Model.user.phoneNumber <br>
-                                                        <!--Cell		: +1 9 876 5432 <br />-->
-                                                        Email		: @Model.user.email<br>
-                                                        <!--Skype		: kim.ryder-->
-                                                        @Model.user.id<br>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="profile-contacts">
-                                                <div class="profile-badge azure">
-                                                    <i class="fa fa-map-marker azure"></i><span>Residencia</span>
-                                                </div>
-                                                <div class="contact-info">
-                                                    <p>
-                                                        @Model.user.province_name<br>
-                                                        @Model.user.canton_name<br>
-                                                        @Model.user.direction<br>
-
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileInfo.cshtml", Model);}
                             </div>
                             <div id="files" class="tab-pane">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        @{Html.RenderPartial("/Views/Users/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName));}
-                                    </div>
-                                </div>
+                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName, Model.user.user_id));}
                             </div>
                             <div id="data" class="tab-pane">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="widget">
-                                            <div class="widget-header bordered-bottom bordered-blue">
-                                                <span class="widget-caption">Categorías</span>
-                                                <div class="widget-buttons">
-                                                    <a href="#" data-toggle="maximize">
-                                                        <i class="fa fa-expand blue"></i>
-                                                    </a>
-                                                    <a href="#" data-toggle="collapse">
-                                                        <i class="fa fa-minus warning"></i>
-                                                    </a>
-                                                    <a href="#" data-toggle="dispose">
-                                                        <i class="fa fa-times danger"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="widget-body no-padding">
-                                                <div class="widget-main ">
-                                                    @using (var a = Html.Bootstrap().Begin(new Accordion("Accordion1").ActivePanel(1)))
-                                                    {
-                                                        using (a.BeginPanel("Vacaciones"))
-                                                        {
-                                                            <span>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</span>
-                                                        }
-                                                        using (a.BeginPanel("Activos"))
-                                                        {
-                                                            <span>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</span>
-                                                        }
-                                                        using (a.BeginPanel("Constancias"))
-                                                        {
-                                                            <span>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</span>
-                                                        }
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @{ Html.RenderPartial("/Views/Users/_Profile/_ProfileCategories.cshtml", new Model.UserCategoriesModel(Model.user.user_id));}
                             </div>
                             <div id="settings" class="tab-pane">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        @{Html.RenderPartial("/Views/Users/_ProfileConfig.cshtml", Model); }
-                                    </div>
-                                </div>
+                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileConfig.cshtml", Model); }
                             </div>
                             <div id="activity" class="tab-pane">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        @{Html.RenderPartial("/Views/Users/_ProfileActivity.cshtml"); }
-                                    </div>
-                                </div>
+                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml"); }
                             </div>
                         </div>
                     </div>
@@ -162,11 +65,42 @@
 
 @section PageScripts{
 <script>
-    function downloadFile(base64, fileType, fileName) {
-        download("data:"+fileType+";base64,"+base64, fileName, fileType);
+    function editAttributeRow(id_attribute, self) {
+        $('#btnEditUserAttribute' + id_attribute).hide()
+        $('#valueLabel' + id_attribute).hide()
+        $('#btnSaveUserAttribute' + id_attribute).show()
+        $('#editValueInput' + id_attribute).show()
+    }
+    function UserAttributeEditFailure(content) {
+        Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }1
+    function UserAttributeEditSuccess(content) {
+        console.log(content);
+        
+        id_attribute = content.attribute_id
+        value = content.value
+        console.log(id_attribute)
+        Notify('El atributo ha sido editado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+        $('#btnEditUserAttribute' + id_attribute).show()
+        $('#valueLabel' + id_attribute).text(value)
+        $('#valueLabel' + id_attribute).show()
+        $('#btnSaveUserAttribute' + id_attribute).hide()
+        $('#editValueInput' + id_attribute).hide()
     }
     function CompletedFormRegister(data) {
         Notify('El usuario se ha registrado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+    }
+    function ConfigInfoSuccess(data) {
+        Notify('La ha información se ha guardado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+    }
+    function ConfigInfoFailure(data) {
+        Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    function UserFileAddedSuccess(data) {
+        Notify('La ha información se ha guardado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+    }
+    function UserFileAddedFailure(data) {
+        Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
     }
     function onSuccessAddRole(data) {
         Notify('El rol se ha añadido con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
@@ -200,7 +134,7 @@
     }
     function deleteUserFile(id_file, name, self) {
         var btnColumn = $(self);
-        var row = btnColumn.parents("tr").eq(0).parent();
+        var row = btnColumn.parents("tr").eq(0)
         var disposeinterval = 300;
         $.ajax({
             url: "/Users/_DeleteUserFile/?id_file=" + id_file,
@@ -222,9 +156,8 @@
 </script>
 <script>
     function uploadPhoto(userName) {
-        // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
-            var fileUpload = $("#FileUpload1").get(0);
+            var fileUpload = $("#userPhotoUpload").get(0);
             var files = fileUpload.files;
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
@@ -233,44 +166,55 @@
             $.ajax({
                 url: '/Users/UploadPhoto?user='+userName,
                 type: "POST",
-                contentType: false, // Not to set any content header
-                processData: false, // Not to process data
+                contentType: false, 
+                processData: false, 
                 data: fileData,
                 success: function (result) {
-                    alert(result);
+                    Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                    location.reload(true)
                 },
                 error: function (err) {
-                    alert(err.statusText);
+                    Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
                 }
             });
         } else {
-            alert("FormData is not supported.");
+            Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
     };
-    function uploadUserFile(userName) {
-        // Checking whether FormData is available in browser
+    function getFormData($form) {
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+        $.map(unindexed_array, function (n, i) {
+            indexed_array[n['name']] = n['value'];
+        });
+        return indexed_array;
+    }
+    function uploadUserFile(event,self) {
+        event.preventDefault()
+        var form = $(self).closest("form")
+        var formData = getFormData(form);
         if (window.FormData !== undefined) {
-            var fileUpload = $("#FileUpload1").get(0);
+            var fileUpload = $("#userFileUpload").get(0);
             var files = fileUpload.files;
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
             $.ajax({
-                url: '/Users/UploadPhoto?user=' + userName,
+                url: '/Users/UploadFile/?user_id='+formData.user_id+'&name='+formData.name+'&description='+formData.description,
                 type: "POST",
-                contentType: false, // Not to set any content header
-                processData: false, // Not to process data
+                contentType: false, 
+                processData: false, 
                 data: fileData,
                 success: function (result) {
-                    alert(result);
+                    Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
                 },
-                error: function (err) {
-                    alert(err.statusText);
+                error: function (result) {
+                    Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
                 }
             });
         } else {
-            alert("FormData is not supported.");
+            Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
     };
 </script>  
@@ -278,14 +222,12 @@
     // script to change the content on cantones select
     $(document).ready(function () {
         $('#province_id').change(function () {
-            console.log("ok");
             var id = $("#province_id").val();
             $.ajax({
                 url: '@Url.Action("getCantones", "Users")',
                 type: 'get',
                 data: { "pProvinceID": id },
                 success: function (json, textStatus) {
-                    console.log("ok")
                     $("#canton_id").empty();
                     json = json || {};
                     for (var i = 0; i < json.length; i++) {
@@ -305,6 +247,17 @@
 <script>
         //--Jquery Select2--
     $("select#selectedRole").select2();
+
+    // Javascript to enable link to tab
+    var url = document.location.toString();
+    if (url.match('#')) {
+        $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+    }
+
+    // Change hash for page-reload
+    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+        window.location.hash = e.target.hash;
+    })
 </script>
 }
 

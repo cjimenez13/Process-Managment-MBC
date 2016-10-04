@@ -26,6 +26,10 @@ namespace Model
         {
             templatesDTO = templateProvider.getTemplates().Result;
         }
+        public List<ParticipantDTO> getParticipants(string id_template)
+        {
+            return templateProvider.getParticipants(id_template).Result;
+        }
     }
     public class AddTemplateModel
     {
@@ -54,6 +58,7 @@ namespace Model
 
     public class EditTemplateModel
     {
+        public EditTemplateModel() { }
         public EditTemplateModel(TemplateDTO template)
         {
             name = template.name;
@@ -66,6 +71,7 @@ namespace Model
 
         [Required]
         public string template_id { get; set; }
+
     }
     public class ParticipantModel
     {
@@ -75,6 +81,7 @@ namespace Model
         {
             templatesDTO = templateProvider.getTemplates().Result;
         }
+        
     }
 
 }

@@ -1,0 +1,42 @@
+﻿@model Model.UserCategoriesModel
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel-group accordion" id="accordions">
+            @foreach (var categorie in Model.userCategories)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordions" href="#collapseOnes">
+                                @Html.Raw(categorie.name)
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOnes" class="panel-collapse collapse collapse">
+                        <div class="panel-body border-red">
+                            <div class="table-scrollable">
+                                <table class="table table-hover" id="table-userAttributes">
+                                    <!-- column titles -->
+                                    <thead class="">
+                                        <tr>
+                                            <th>Atributo</th>
+                                            <th>Tipo</th>
+                                            <th>Valor</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Table data-->
+                                        @{ Html.RenderPartial("/Views/Users/_Profile/_ProfileCategorieAttributes.cshtml", new Model.UserAttributesModel(Model.user_id, categorie.id_categorie));}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

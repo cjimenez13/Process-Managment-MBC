@@ -95,6 +95,7 @@
 <!-- Modal to edit template name -->
 @{ Html.RenderPartial("/Views/Templates/_Template/_EditTemplate.cshtml", new Model.EditTemplateModel(Model.templateDTO));}
 
+
 @section PageScripts{
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script src="/assets/js/select2/select2.js"></script>
@@ -136,6 +137,8 @@
             else if (content.usersError.length > 1) {
                 Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
             }
+            var participants = $('#txtShowingParticipants').text().split(' ')[1]
+            $('#txtShowingParticipants').text("Mostrando " + content.usersAdded + participants + " participantes")
             $("#participantsListDiv").html(content.viewHtml)
         }
         function ParticipantAddedFailure(content) {
@@ -172,6 +175,15 @@
         function StageAddedFailure(content) {
             Notify("Error, no se puede agregar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
+        //-- stage name udated
+        function StageUpdatedSuccess(content) {
+            Notify("La etapa ha sido editad con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $('#stageName' + content.id_stage).text(content.name);
+            console.log($('#stageName' + content.id_stage))
+        }
+        function StageUpdatedFailure(content) {
+            Notify("Error, no se puede editar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
         //-- stage deleted
         function StageDeletedSuccess(content) {
             Notify("La etapa ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
@@ -202,7 +214,9 @@
                 success: function (data) {
                     Notify("El usuario '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
                     $(element).closest(".databox").parent().hide(300, function () {
-
+                        this.remove()
+                        var participants = $('#txtShowingParticipants').text().split(' ')[1];
+                        $('#txtShowingParticipants').text("Mostrando " + (participants -1) + " participantes")
                     });
                 },
                 error: function () {
@@ -284,13 +298,34 @@
             }
         });
 
-
         //jQuery UI sortable for the todo list
         $(".todo-list").sortable({
             placeholder: "sort-highlight",
             handle: ".handle",
             forcePlaceholderSize: true,
-            zIndex: 999999
+            zIndex: 999999,
+            update: function (event, ui) {
+                var newpos = ui.item.index();
+                var count = 0;
+                ui.item.parent().children().each(function () {
+                    var id = this.id
+                    var name = $(this).find('#stageName' + id).text();
+                    var newPos = count;
+                    $.ajax({
+                        url: "/Templates/_EditStage/?id_stage=" + id + '&stagePosition=' + newPos + '&name=' + name,
+                        type: "PUT",
+                        dataType: "html",
+                        traditional: true,
+                        contentType: false,
+                        success: function (data) {
+                        },
+                        error: function () {
+                        }
+                    });
+                    count += 1;
+                });
+
+            }
         });
     </script>
 }
