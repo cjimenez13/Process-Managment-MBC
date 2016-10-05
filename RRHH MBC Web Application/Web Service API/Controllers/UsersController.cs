@@ -122,7 +122,7 @@ namespace Web_Service_API.Controllers
 
         [Route("role")]
         [HttpDelete]
-        public IHttpActionResult insertUserRole(string role_id, string user_id)
+        public IHttpActionResult deleteUserRole(string role_id, string user_id)
         {
             if (!UsersData.deleteUserRole(role_id, user_id))
             {

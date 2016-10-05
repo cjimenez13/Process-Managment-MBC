@@ -288,7 +288,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                HttpResponseMessage response = client.DeleteAsync("api/users/role/?user_id=" + roleDTO.user_id+ "&role_id="+roleDTO.id_role).Result;
+                HttpResponseMessage response = client.DeleteAsync("api/Users/role/?role_id=" + roleDTO.id_role+ "&user_id=" + roleDTO.user_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

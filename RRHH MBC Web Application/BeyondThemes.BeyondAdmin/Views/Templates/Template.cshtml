@@ -184,13 +184,7 @@
         function StageUpdatedFailure(content) {
             Notify("Error, no se puede editar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
         }
-        //-- stage deleted
-        function StageDeletedSuccess(content) {
-            Notify("La etapa ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-        }
-        function StageDeletedFailure(content) {
-            Notify("Error, no se puede eliminar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
+
         // group added 
         function GroupAddedSuccess(content) {
             if (content.usersAdded <= 1) {

@@ -72,7 +72,7 @@
     function filterUsers(element) {
         var value = $(element).val().toLowerCase();
         $("#userList").children().each(function () {
-            if ($(this).text().toLowerCase().includes(value)) {
+            if ($(this).text().toLowerCase().indexOf(value) !== -1) {
                 $(this).show(300);
             }
             else {
@@ -98,12 +98,15 @@
             var count = 0
             this.paragraphs.slice((page - 1) * this.paragraphsPerPage,
                 ((page - 1) * this.paragraphsPerPage) + this.paragraphsPerPage).each(function () {
+                    console.log($(this).html())
                     html += '<div>'+ $(this).html() +'</div>';
                     count += 1;
                     if (count % 3 == 0) {
                         html += '<div class=row></div>'
                     }
                 });
+            console.log("hola")
+            console.log(html)
             $(this.pagingContainerPath).html(html);
             renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
         }
@@ -124,7 +127,6 @@
                     pagingControls += '<li class="active"><a href="#">'+i+' <span class="sr-only">(current)</span></a></li>';
                 }
             }
-            
             if (currentPage == numPages) {
                 pagingControls += '<li class = disabled><a href="#">»</a></li></ul>';
             } else {

@@ -23,9 +23,9 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return View(new Model.TemplateModel(id));
         }
         [Authorize]
-        public ActionResult Tasks()
+        public ActionResult Tasks(string id)
         {
-            return View();
+            return View(new Model.TasksModel(id));
         }
         public ActionResult _TemplatesList()
         {

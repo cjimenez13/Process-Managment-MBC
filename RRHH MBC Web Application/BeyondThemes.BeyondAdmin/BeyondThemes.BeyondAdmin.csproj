@@ -188,6 +188,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProcessesController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
+    <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -199,9 +200,10 @@
     <Compile Include="Models\GroupsModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ProcessManagmentModel.cs" />
+    <Compile Include="Models\Processes\ProcessManagmentModel.cs" />
+    <Compile Include="Models\Processes\TasksModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
-    <Compile Include="Models\TemplatesModel.cs" />
+    <Compile Include="Models\Processes\TemplatesModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AccountProvider.cs" />
@@ -210,6 +212,7 @@
     <Compile Include="Providers\GroupProvider.cs" />
     <Compile Include="Providers\ProcessManagmentProvider.cs" />
     <Compile Include="Providers\RoleProvider.cs" />
+    <Compile Include="Providers\TaskProvider.cs" />
     <Compile Include="Providers\TemplatesProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Startup.cs" />
@@ -477,6 +480,11 @@
     <Content Include="Views\Templates\_Template\_Participants\_AddGroup.cshtml" />
     <Content Include="Views\Templates\_Template\_EditTemplate.cshtml" />
     <Content Include="Views\Templates\_Template\_Stages\_EditStage.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TasksList.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskInfo.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskForm.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskAdditionals.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_AddTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

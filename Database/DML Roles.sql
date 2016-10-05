@@ -168,6 +168,16 @@ begin
 end
 go
 
+
+create procedure usp_delete_userRole
+@role_id int, @user_id int as
+begin
+begin transaction 
+	delete from Users_Roles where role_id = @role_id and [user_id] = @user_id
+commit transaction
+end
+
+
 -- drop procedure usp_get_userPermissions
 /*
 create procedure usp_get_userPermissions
