@@ -3,6 +3,7 @@ using DataTransferObjects;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
+using System;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -23,7 +24,21 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             {
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.name = model.name;
-                taskDTO.type_id = model.categorie_id;
+                taskDTO.description = model.description;
+                string finishDate = "";
+                if (model.timeType == "Day")
+                {
+                    finishDate = DateTime.Now.AddDays(Int32.Parse(model.timeAmount)).ToString();
+                }
+                else if(model.timeType == "Date")
+                {
+                    finishDate = model.timeDate;
+                }
+                else if (model.timeType == "Hours")
+                {
+                    finishDate = DateTime.Now.AddDays(Int32.Parse(model.timeAmount)).ToString();
+                }
+                taskDTO.finishDate = finishDate;
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.postTask(taskDTO).Result)
                 {

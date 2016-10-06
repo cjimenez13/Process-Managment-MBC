@@ -348,6 +348,7 @@
     <Content Include="assets\js\editors\wysiwyg\prettify.js" />
     <Content Include="assets\js\file_input\bootstrap-filestyle.js" />
     <Content Include="assets\js\file_input\bootstrap-filestyle.min.js" />
+    <Content Include="assets\js\fuelux\spinbox\spinbox.js" />
     <Content Include="assets\js\fuelux\spinbox\fuelux.spinbox.js" />
     <Content Include="assets\js\fuelux\spinbox\fuelux.spinbox.min.js" />
     <Content Include="assets\js\fuelux\treeview\tree-custom.js" />
@@ -355,6 +356,7 @@
     <Content Include="assets\js\fuelux\treeview\treeview-init.js" />
     <Content Include="assets\js\fuelux\wizard\wizard-custom.js" />
     <Content Include="assets\js\fuelux\wizard\wizard-custom.min.js" />
+    <Content Include="assets\js\fuelux\wizard\wizard.js" />
     <Content Include="assets\js\fullcalendar\fullcalendar.js" />
     <Content Include="assets\js\fullcalendar\fullcalendar.min.js" />
     <Content Include="assets\js\fullcalendar\jquery-ui.custom.min.js" />
@@ -407,6 +409,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Tasks\_AddTask.js" />
+    <Content Include="Scripts\Tasks\_TaskList.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

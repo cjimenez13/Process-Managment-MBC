@@ -33,26 +33,53 @@ namespace Model
     {
         private TaskProvider taskProvider = new TaskProvider();
         public List<TaskTypeDTO> taskTypes = new List<TaskTypeDTO>();
-        public SelectList _CategoriesSelect { get; set; }
-        public AddTaskModel()
+        public SelectList _TaskTypesSelect { get; set; }
+        public AddTaskModel() { }
+        public AddTaskModel(string id_stage)
         {
-            //taskTypes = taskProvider.getCategories().Result;
+            taskTypes = taskProvider.getTaskTypes().Result;
+            this.id_stage = id_stage;
             List<SelectListItem> taskSelectList = new List<SelectListItem>();
             foreach (TaskTypeDTO iTask in taskTypes)
             {
                 taskSelectList.Add(new SelectListItem { Text = iTask.taskName, Value = iTask.id_taskType });
             }
-            _CategoriesSelect = new SelectList(taskSelectList, "Value", "Text");
+            _TaskTypesSelect = new SelectList(taskSelectList, "Value", "Text");
         }
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
-        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string name { get; set; }
 
-        [Display(Name = "Categoría")]
-        [Required(ErrorMessage = "Se debe completar el campo de la categoría")]
-        public string categorie_id { get; set; }
+        [Display(Name = "Descripción")]
+        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
+        [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
+        public string description { get; set; }
+
+        public string id_stage { get; set; }
+
+        [Display(Name = "Tipo")]
+        [Required(ErrorMessage = "Se debe completar el campo del tipo de categoría")]
+        public string selected_taskType { get; set; }
+
+        [Display(Name = "Cantidad")]
+        [Required(ErrorMessage = "Se debe completar el campo de cantidad/fecha")]
+        [StringLength(20, ErrorMessage = "La cantidad máxima de caracteres es 20")]
+        public string timeType { get; set; }
+
+
+        [Display(Name = "Tiempo")]
+        [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
+        public string timeAmount { get; set; }
+
+        [Display(Name = "Tiempo")]
+        [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
+        public string timeDate { get; set; }
+
+        [Display(Name = "Tiempo")]
+        [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
+        public string timeHour { get; set; }
     }
 
     public class EditTaskInfo

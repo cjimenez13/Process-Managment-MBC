@@ -241,13 +241,10 @@
     (function ($) {
         'use strict';
         $.fn.todolist = function (options) {
-            // Render options
             var settings = $.extend({
-                //When the user checks the input
                 onCheck: function (ele) {
                     return ele;
                 },
-                //When the user unchecks the input
                 onUncheck: function (ele) {
                     return ele;
                 }
@@ -260,7 +257,6 @@
                         ele.toggleClass("done");
                         settings.onCheck.call(ele);
                     });
-
                     $('input', this).on('ifUnchecked', function () {
                         var ele = $(this).parents("li").first();
                         ele.toggleClass("done");
@@ -281,6 +277,7 @@
         };
     }(jQuery));
         /* The todo list plugin */
+        /*
         $(".todo-list").todolist({
             onCheck: function (ele) {
                 window.console.log("The element has been checked");
@@ -291,7 +288,7 @@
                 return ele;
             }
         });
-
+        */
         //jQuery UI sortable for the todo list
         $(".todo-list").sortable({
             placeholder: "sort-highlight",
