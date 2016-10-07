@@ -19,32 +19,37 @@ namespace Model
             foreach (var task in tasks)
             {
                 int stagePosition = Int32.Parse(task.taskPosition);
-                if (stagePosition >= maxStagePosition)
+                if (stagePosition >= maxTaskPosition)
                 {
-                    maxStagePosition = stagePosition + 1;
+                    maxTaskPosition = stagePosition + 1;
                 }
             }
         }
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         public string name { get; set; }
-        public int maxStagePosition { get; set; } = 0;
+        public int maxTaskPosition { get; set; } = 0;
     }
     public class AddTaskModel
     {
         private TaskProvider taskProvider = new TaskProvider();
         public List<TaskTypeDTO> taskTypes = new List<TaskTypeDTO>();
         public SelectList _TaskTypesSelect { get; set; }
+        public string maxTaskPosition { get; set; }
         public AddTaskModel() { }
-        public AddTaskModel(string id_stage)
+        public AddTaskModel(string id_stage, int maxTaskPosition)
         {
             taskTypes = taskProvider.getTaskTypes().Result;
             this.id_stage = id_stage;
+            this.maxTaskPosition = maxTaskPosition.ToString();
             List<SelectListItem> taskSelectList = new List<SelectListItem>();
             foreach (TaskTypeDTO iTask in taskTypes)
             {
                 taskSelectList.Add(new SelectListItem { Text = iTask.taskName, Value = iTask.id_taskType });
             }
             _TaskTypesSelect = new SelectList(taskSelectList, "Value", "Text");
+            DateTime dt = DateTime.Parse(DateTime.Now.ToString());
+            timeHour = dt.ToString("H:mm:ss");
+            timeDatePicker = DateTime.Now.Date.ToString().Substring(0,10).Replace("/","-");
         }
 
         [Display(Name = "Nombre")]
@@ -64,22 +69,19 @@ namespace Model
         public string selected_taskType { get; set; }
 
         [Display(Name = "Cantidad")]
-        [Required(ErrorMessage = "Se debe completar el campo de cantidad/fecha")]
-        [StringLength(20, ErrorMessage = "La cantidad máxima de caracteres es 20")]
-        public string timeType { get; set; }
-
-
-        [Display(Name = "Tiempo")]
         [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
         public string timeAmount { get; set; }
 
-        [Display(Name = "Tiempo")]
+        [Display(Name = "Fecha")]
         [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
-        public string timeDate { get; set; }
+        public string timeDatePicker { get; set; } 
 
         [Display(Name = "Tiempo")]
+        [RegularExpression("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-9][0-9]$",ErrorMessage = "Formato inválido")]
         [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
         public string timeHour { get; set; }
+
+        public string timeSelected { get; set; }
     }
 
     public class EditTaskInfo

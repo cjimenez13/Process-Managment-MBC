@@ -156,7 +156,7 @@ namespace Web_Service_API.DataAccess
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@stage_id", SqlDbType.Int);
-                command.Parameters["@stage_id"].Value = pTask;
+                command.Parameters["@stage_id"].Value = pTask.stage_id;
 
                 command.Parameters.Add("@name", SqlDbType.NVarChar);
                 command.Parameters["@name"].Value = pTask.name;
@@ -167,8 +167,8 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@type_id", SqlDbType.Int);
                 command.Parameters["@type_id"].Value = pTask.type_id;
 
-                command.Parameters.Add("@finishDate", SqlDbType.NVarChar);
-                command.Parameters["@finishDate"].Value = pTask.finishDate;
+                command.Parameters.Add("@finishDate", SqlDbType.DateTime);
+                command.Parameters["@finishDate"].Value = DateTime.Parse(pTask.finishDate);
 
                 command.Parameters.Add("@taskPosition", SqlDbType.NVarChar);
                 command.Parameters["@taskPosition"].Value = pTask.taskPosition;

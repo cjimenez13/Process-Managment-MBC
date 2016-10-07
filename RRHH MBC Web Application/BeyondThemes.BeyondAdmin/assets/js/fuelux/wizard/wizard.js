@@ -339,7 +339,7 @@
             if (e.isDefaultPrevented()) {
                 return;
             }// respect preventDefault in case dev has attached validation to step and wants to stop propagation based on it.
-
+            
             if (this.currentStep < this.numSteps) {
                 this.currentStep += 1;
                 this.setState();

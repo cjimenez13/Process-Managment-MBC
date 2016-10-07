@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
 using System;
+using Newtonsoft.Json;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -16,7 +17,24 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(id_stage));
         }
-        [ValidateAntiForgeryToken]
+
+        public ActionResult _AddGeneralInfo(string id_stage)
+        {
+            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
+        }
+        public ActionResult _AddResponsables(string id_stage)
+        {
+            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddResponsables.cshtml");
+        }
+        public ActionResult _AddForm(string id_stage)
+        {
+            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddForm.cshtml");
+       } 
+        public ActionResult _AddAditionals(string id_stage)
+        {
+            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
+        }
+        
         [HttpPost]
         public ActionResult _AddTask(Model.AddTaskModel model)
         {
@@ -25,16 +43,19 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.name = model.name;
                 taskDTO.description = model.description;
+                taskDTO.stage_id = model.id_stage;
+                taskDTO.type_id = model.selected_taskType;
+                taskDTO.taskPosition = model.maxTaskPosition;
                 string finishDate = "";
-                if (model.timeType == "Day")
+                if (model.timeSelected == "days")
                 {
                     finishDate = DateTime.Now.AddDays(Int32.Parse(model.timeAmount)).ToString();
                 }
-                else if(model.timeType == "Date")
+                else if(model.timeSelected == "date")
                 {
-                    finishDate = model.timeDate;
+                    finishDate = model.timeDatePicker;
                 }
-                else if (model.timeType == "Hours")
+                else if (model.timeSelected == "hours")
                 {
                     finishDate = DateTime.Now.AddDays(Int32.Parse(model.timeAmount)).ToString();
                 }
@@ -74,6 +95,12 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 return RedirectToAction("Index", "Templates");
             }
             return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpGet]
+        public ActionResult _GetTaskTypes()
+        {
+            List<TaskTypeDTO> taskTypes = taskProvider.getTaskTypes().Result;
+            return Json(taskTypes, JsonRequestBehavior.AllowGet);
         }
     }
 }

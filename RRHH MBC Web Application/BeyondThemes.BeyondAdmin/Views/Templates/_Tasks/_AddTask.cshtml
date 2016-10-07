@@ -16,176 +16,36 @@
                         <div class="wizard" data-initialize="wizard" id="myWizard">
                             <div class="steps-container">
                                 <ul class="steps">
-                                    <li data-step="1" class="active" data-name="creation" >
-                                        <span class="step">1</span>
-                                        <span class="title">Creacion</span>
+                                    <li data-step="1" data-name="campaign" class="active">
+                                        <span class="badge">1</span>Creación
                                         <span class="chevron"></span>
                                     </li>
-                                    <li data-step="2" data-name="responsables" >
-                                        <span class="step">2</span>
-                                        <span class="title">Responsables</span>
+                                    <li data-step="2">
+                                        <span class="badge">2</span>Responsables
                                         <span class="chevron"></span>
                                     </li>
-                                    <li data-step="3" data-name="form" >
-                                        <span class="step">3</span>
-                                        <span class="title">Formulario</span>
+                                    <li data-step="3" data-name="template">
+                                        <span class="badge">3</span>Formulario
                                         <span class="chevron"></span>
                                     </li>
-                                    <li data-step="4" data-name="additionals" >
-                                        <span class="step">4</span>
-                                        <span class="title">Adicionales</span>
+                                    <li data-step="4" data-name="template">
+                                        <span class="badge">4</span>Adicionales
                                         <span class="chevron"></span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="step-content">
                                 <div class="step-pane active" data-step="1">
-                                    <h2>Información General</h2>
-                                    <div class="row" style="margin-top:40px;">
-                                        <div class="col-xs-12">
-                                            @using (Ajax.BeginForm("_AddTask", "Templates", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskAddedSuccess", OnFailure = "TaskAddedSuccess" }, new { @class = "form-horizontal", @id= "formGeneralInfo" }))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-2 control-label">Nombre:</label>
-                                                    <div class="col-sm-10">
-                                                        @Html.TextBoxFor(model => model.name, new { @class = "form-control", @placeholder = "Nombre de la tarea", @form = "formGeneralInfo" })
-                                                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-2 control-label">Descripción:</label>
-                                                    <div class="col-sm-10">
-                                                        @Html.TextAreaFor(model => model.description, new { @class = "form-control", @placeholder = "Descripción...", @form = "formGeneralInfo", @Rows="3" })
-                                                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-2 control-label" >Tipo:</label>
-                                                    <div class="col-sm-10">
-                                                        @Html.DropDownListFor(m => m.selected_taskType, Model._TaskTypesSelect, new { @class = "form-control", @style = "width:100%", @form = "formGeneralInfo" })
-                                                        @Html.ValidationMessageFor(model => model.selected_taskType, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-2 control-label">Tiempo:</label>
-                                                    <div class="col-sm-1">
-                                                        <select  onchange="timeChanged(this)" >
-                                                            <option selected="selected" value="hours">Horas</option>
-                                                            <option value="days">Dias</option>
-                                                            <option value="date">Fecha</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-xs-7">
-                                                        <div class="spinbox spinbox-right" id="timeAmount">
-                                                            <div class="spinbox-buttons	btn-group btn-group-vertical ">
-                                                                <button type="button" class="btn spinbox-up success">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                                <button type="button" class="btn spinbox-down danger">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button>
-                                                            </div>
-                                                            @Html.TextBoxFor(model => model.timeAmount, new { @class = "spinbox-input form-control", @form = "formGeneralInfo", })
-                                                            @*<input type="text" class="spinbox-input form-control">*@
-                                                            @Html.ValidationMessageFor(model => model.timeAmount, "", new { @class = "text-danger" })
-                                                        </div>
-                                                        <div style="display:none" id="timeDate">
-                                                            <div class="col-xs-6" >
-                                                                <div class="input-group" id="timeDate">
-                                                                    @Html.TextBoxFor(model => model.timeDate, new { @class = "form-control date-picker", @form = "formGeneralInfo", data_date_format = "dd-mm-yyyy" })
-                                                                    @*<input class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy">*@
-                                                                    <span class="input-group-addon">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </span>
-                                                                </div>
-                                                                @Html.ValidationMessageFor(model => model.timeDate, "", new { @class = "text-danger" })
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                @Html.TextBoxFor(model => model.timeHour, new { @class = "form-control", @form = "formGeneralInfo", data_mask = "99:99:99", @placeholder = "00:00:00" })
-                                                                @*<input type="text" data-mask="99:99:99" class="form-control" placeholder="00:00:00" id="timeHour">*@
-                                                                @Html.ValidationMessageFor(model => model.timeHour, "", new { @class = "text-danger" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
+                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddGeneralInfo.cshtml", Model);}
                                 </div>
                                 <div class="step-pane sample-pane" data-step="2">
-                                    <h2>Responsables</h2>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-
-                                        </div>
-                                    </div>
+                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddResponsables.cshtml");}
                                 </div>
                                 <div class="step-pane sample-pane" data-step="3">
-                                    <h2>Formulario</h2>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="flip-scroll">
-                                                <table class="table flip-content table-hover">
-                                                    <!-- column titles -->
-                                                    <thead class="flip-content ">
-                                                        <tr>
-                                                            <th>Atributo</th>
-                                                            <th>Tipo</th>
-                                                            <th>Valor</th>
-                                                            <th>Lista</th>
-                                                            <th>Habilitado</th>
-                                                            <th>Accion</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <!-- Table data-->
-                                                        <tr>
-                                                            <td>
-                                                                <div class="entry input-group">
-                                                                    <input class="form-control" name="fields[]" type="text" />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <select class="form-control">
-                                                                    <option>Texto</option>
-                                                                    <option>Numero entero</option>
-                                                                    <option>Numero décimal</option>
-                                                                    <option>Fecha</option>
-                                                                    <option>Condición</option>
-                                                                    <option>Lista</option>
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <div class="entry input-group">
-                                                                    <input class="form-control" name="fields[]" type="text" />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <select id="e1" style="width:100%;">
-                                                                    <option selected="selected">Solicitud</option>
-                                                                    <option>Visto Bueno</option>
-                                                                    <option>Tareas</option>
-                                                                    <option>Recordatorio</option>
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                @Html.Bootstrap().CheckBox("form-field-checkbox").IsChecked(true).HtmlAttributes(new { @class = "colored-success" })
-                                                            </td>
-                                                            <td>
-                                                                <button class="btn btn-success btn-sm btn-add" type="button">
-                                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddForm.cshtml");}
                                 </div>
                                 <div class="step-pane sample-pane" data-step="4">
-                                    <h2>Adicionales</h2>
+                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");}
                                 </div>
                             </div>
                             <div class="row">
@@ -193,7 +53,7 @@
                                     <div class="actions actions-footer" id="WiredWizard-actions" style="background-color:inherit">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-sm btn-prev"> <i class="fa fa-angle-left"></i>Anterior</button>
-                                            <button type="button" class="btn btn-default btn-sm btn-next" data-last="Terminar">Siguiente<i class="fa fa-angle-right"></i></button>
+                                            <button class="btn btn-default btn-sm btn-next" data-last="Terminar" onclick="return;">Siguiente<i class="fa fa-angle-right"></i></button>
                                         </div>
                                     </div>
                                 </div>

@@ -489,6 +489,10 @@
     <Content Include="Views\Templates\_Tasks\_TaskForm.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskAdditionals.cshtml" />
     <Content Include="Views\Templates\_Tasks\_AddTask.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_AddTask\_AddGeneralInfo.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_AddTask\_AddResponsables.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_AddTask\_AddForm.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_AddTask\_AddAditionals.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
