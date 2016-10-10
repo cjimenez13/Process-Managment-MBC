@@ -35,6 +35,8 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
         }
         
+
+        // -----------------------------------------------------------  Tasks ----------------------------------------------------------------
         [HttpPost]
         public ActionResult _AddTask(Model.AddTaskModel model)
         {
@@ -44,40 +46,46 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 taskDTO.name = model.name;
                 taskDTO.description = model.description;
                 taskDTO.stage_id = model.id_stage;
-                taskDTO.type_id = model.selected_taskType;
+                taskDTO.type_id = model.selected_taskType; 
                 taskDTO.taskPosition = model.maxTaskPosition;
-                string finishDate = "";
                 if (model.timeSelected == "days")
                 {
-                    finishDate = DateTime.Now.AddDays(Int32.Parse(model.timeAmount)).ToString();
+                    taskDTO.daysAvailable = model.timeAmount;
                 }
                 else if(model.timeSelected == "date")
                 {
-                    finishDate = model.timeDatePicker;
+                    taskDTO.finishDate = model.timeDatePicker.Substring(0,11) + model.timeHour;
                 }
                 else if (model.timeSelected == "hours")
                 {
-                    finishDate = DateTime.Now.AddDays(Int32.Parse(model.timeAmount)).ToString();
+                    taskDTO.hoursAvailable = model.timeAmount;
                 }
-                taskDTO.finishDate = finishDate;
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
-                if (taskProvider.postTask(taskDTO).Result)
+                string id_task;
+                if ((id_task = taskProvider.postTask(taskDTO).Result) != null)
                 {
-                    return _TaskList(taskDTO.stage_id);
+                    var result = new { id_task = id_task, viewHtml = PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(taskDTO.stage_id)).RenderToString() };
+                    return Json(result);
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
 
         [HttpPut]
-        [ValidateAntiForgeryToken]
-        public ActionResult _EditTemplate(string name, string id_task)
+        public ActionResult _EditTask(string id_task, string name = null, string taskPosition = null, string description = null, string taskState_id = null, string completedDate = null,
+            string finishDate = null, string beginDate = null )
         {
             if (ModelState.IsValid)
             {
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.name = name;
                 taskDTO.id_task = id_task;
+                taskDTO.taskPosition = taskPosition;
+                taskDTO.description = description;
+                taskDTO.taskState_id = taskState_id;
+                taskDTO.completedDate = completedDate;
+                taskDTO.finishDate = finishDate;
+                taskDTO.beginDate = beginDate;
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putTask(taskDTO).Result)
                 {
@@ -92,15 +100,79 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (taskProvider.deleteTask(id_task, Request.Cookies["user_id"].Value).Result)
             {
-                return RedirectToAction("Index", "Templates");
+                return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+
+        // -----------------------------------------------------------  Tasks types ----------------------------------------------------------------
         [HttpGet]
         public ActionResult _GetTaskTypes()
         {
             List<TaskTypeDTO> taskTypes = taskProvider.getTaskTypes().Result;
             return Json(taskTypes, JsonRequestBehavior.AllowGet);
+        }
+
+
+        // -----------------------------------------------------------  Tasks responsables ----------------------------------------------------------------
+        [HttpPost]
+        public ActionResult _AddTaskResponsableUser(string id_task, string id_user)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskResponsableDTO taskResponsable = new TaskResponsableDTO();
+                taskResponsable.user_id = id_user;
+                taskResponsable.task_id = id_task;
+                taskResponsable.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.postResponsableUser(taskResponsable).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPost]
+        public ActionResult _AddTaskResponsableGroup(string id_task, string group_id)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskResponsableDTO taskResponsable = new TaskResponsableDTO();
+                taskResponsable.user_id = group_id;
+                taskResponsable.task_id = id_task;
+                taskResponsable.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.postResponsableGroup(taskResponsable).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        public ActionResult _EditTaskResponsable(string id_task, string id_user, string isConfirmed)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskResponsableDTO taskResponsable = new TaskResponsableDTO();
+                taskResponsable.user_id = id_user;
+                taskResponsable.task_id = id_task;
+                taskResponsable.isConfirmed = isConfirmed;
+                taskResponsable.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putTaskResponsable(taskResponsable).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [HttpDelete]
+        public ActionResult _DeleteTask(string id_task, string user_id)
+        {
+            if (taskProvider.deleteTaskResponsable(id_task, user_id, Request.Cookies["user_id"].Value).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
         }
     }
 }

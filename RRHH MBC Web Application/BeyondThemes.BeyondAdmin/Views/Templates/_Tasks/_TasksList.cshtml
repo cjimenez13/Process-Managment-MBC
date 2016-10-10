@@ -4,23 +4,25 @@
     <ul class="todo-list">
         @foreach (var task in Model.tasks)
         {
-            <li>
-                <span class="handle">
-                    <i class="fa fa-ellipsis-v"></i>
-                    <i class="fa fa-ellipsis-v"></i>
-                </span>
-                <input type="checkbox" value="">
-                <span class="text">@Html.Raw(task.name)</span>
-                <div class="tools">
-                    <a href="#">
-                        <i class="fa fa-eye"></i>
-                    </a>
-                    <i class="fa fa-edit"></i>
-                    <a href="#" onclick="deleteTask('@task.id_task', '@task.name', this)">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                </div>
-            </li>
+            string id_taskName = "taskName" + task.id_task;
+        <li id="@task.id_task">
+            <span class="handle">
+                <i class="fa fa-ellipsis-v"></i>
+                <i class="fa fa-ellipsis-v"></i>
+            </span>
+            <input type="checkbox" value="">
+            <span class="text" id="@id_taskName">@Html.Raw(task.name)</span>
+            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
+            <div class="tools" style="display:inline-block">
+                <a href="#">
+                    <i class="fa fa-eye"></i>
+                </a>
+                <i class="fa fa-edit"></i>
+                <a href="#" onclick="deleteTask('@task.id_task', '@task.name', this)">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </div>
+        </li>
         }
     </ul>
 </div>

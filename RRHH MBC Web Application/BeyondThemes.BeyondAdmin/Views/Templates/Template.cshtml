@@ -101,222 +101,24 @@
 <script src="/assets/js/select2/select2.js"></script>
 <!--Bootstrap Tags Input-->
 <script src="/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
-    <script>
-        $('#selected_userParticipants_id').select2();
-        $('#selected_groups_id').select2();
-        function filterParticipantsUsers(element) {
-            var value = $(element).val().toLowerCase();
-            var count = 0;
-            $("#ParticipantsList").children().each(function () {
-                if ($(this).text().toLowerCase().includes(value)) {
-                    $(this).show(300);
-                    count += 1;
-                }
-                else {
-                    $(this).hide(300)
-                }
-            });
-            if (count == 1) {
-                $('#txtShowingParticipants').text("Mostrando " + count + " participante")
-
-            } else {
-                $('#txtShowingParticipants').text("Mostrando " + count + " participantes")
-            }
-        }
-        // Participant added
-        function ParticipantAddedSuccess(content) {
-            if (content.usersAdded == 1) {
-                Notify("Se ha agregado " + content.usersAdded.length + " usuario con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
-            }
-            else if (content.usersAdded > 1){
-                Notify("Se han agregado " + content.usersAdded.length + " usuarios con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
-            }
-            if (content.usersError == 1) {
-                Notify(content.usersError + " de los usuarios ya se encuentra como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
-            }
-            else if (content.usersError.length > 1) {
-                Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
-            }
-            var participants = $('#txtShowingParticipants').text().split(' ')[1]
-            $('#txtShowingParticipants').text("Mostrando " + content.usersAdded + participants + " participantes")
-            $("#participantsListDiv").html(content.viewHtml)
-        }
-        function ParticipantAddedFailure(content) {
-            Notify("Error, no se agregó ningun usuario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-
-        // Template edited 
-        function TemplateEditedSuccess(content) {
-            Notify("Se ha editado la plantilla con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
-            $('.widget-caption').text("Plantilla "+content)
-        }
-        function TemplateEditedFailure(content) {
-            Notify("Error, no se edito la plantilla", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-        //-- Template deleted
-        function TemplateDeletedSuccess(content) {
-            Notify("La plantilla ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-            window.location.href = "/Templates";
-        }
-        function TemplateDeletedFailure(content) {
-            Notify("Error, no se puede borrar la plantilla", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-        //-- stage added
-        function StageAddedSuccess(content) {
-            Notify("La etapa ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-            $('#StagesListDiv').html(content)
-            $(".todo-list").sortable({
-                placeholder: "sort-highlight",
-                handle: ".handle",
-                forcePlaceholderSize: true,
-                zIndex: 999999
-            });
-        }
-        function StageAddedFailure(content) {
-            Notify("Error, no se puede agregar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-        //-- stage name udated
-        function StageUpdatedSuccess(content) {
-            Notify("La etapa ha sido editad con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-            $('#stageName' + content.id_stage).text(content.name);
-            console.log($('#stageName' + content.id_stage))
-        }
-        function StageUpdatedFailure(content) {
-            Notify("Error, no se puede editar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-
-        // group added 
-        function GroupAddedSuccess(content) {
-            if (content.usersAdded <= 1) {
-                Notify("Se ha agregado " + content.usersAdded.length + " grupo con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
-            }
-            else if (content.usersAdded > 1) {
-                Notify("Se han agregado " + content.usersAdded.length + " grupos con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
-            }
-            $("#participantsListDiv").html(content.viewHtml)
-        }
-        function GroupAddedFailure(content) {
-            Notify("Error, no se agregó ningun grupo", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-        function deleteParticipantUser(user_id, process_id, name, element) {
-            $.ajax({
-                url: "/Templates/_DeleteParticipant/?user_id=" + user_id + "&process_id=" + process_id,
-                type: "DELETE",
-                dataType: "html",
-                traditional: true,
-                contentType: false,
-                success: function (data) {
-                    Notify("El usuario '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                    $(element).closest(".databox").parent().hide(300, function () {
-                        this.remove()
-                        var participants = $('#txtShowingParticipants').text().split(' ')[1];
-                        $('#txtShowingParticipants').text("Mostrando " + (participants -1) + " participantes")
-                    });
-                },
-                error: function () {
-                    Notify("Error, no se puede remover el usuario '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-                }
-            });
-        }
-        function deleteStage(id_stage, name, element) {
-            console.log('Hola');
-            $.ajax({
-                url: "/Templates/_DeleteStage/?id_stage=" + id_stage,
-                type: "DELETE",
-                dataType: "html",
-                traditional: true,
-                contentType: false,
-                success: function (data) {
-                    Notify("La etapa '" + name + "' ha sido removida", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                    $(element).closest("li").hide(300, function () {
-
-                    });
-                },
-                error: function () {
-                    Notify("Error, no se puede remover la etapa '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-                }
-            });
-        }
-
-    (function ($) {
-        'use strict';
-        $.fn.todolist = function (options) {
-            var settings = $.extend({
-                onCheck: function (ele) {
-                    return ele;
-                },
-                onUncheck: function (ele) {
-                    return ele;
-                }
-            }, options);
-
-            return this.each(function () {
-                if (typeof $.fn.iCheck != 'undefined') {
-                    $('input', this).on('ifChecked', function () {
-                        var ele = $(this).parents("li").first();
-                        ele.toggleClass("done");
-                        settings.onCheck.call(ele);
-                    });
-                    $('input', this).on('ifUnchecked', function () {
-                        var ele = $(this).parents("li").first();
-                        ele.toggleClass("done");
-                        settings.onUncheck.call(ele);
-                    });
-                } else {
-                    $('input', this).on('change', function () {
-                        var ele = $(this).parents("li").first();
-                        ele.toggleClass("done");
-                        if ($('input', ele).is(":checked")) {
-                            settings.onCheck.call(ele);
-                        } else {
-                            settings.onUncheck.call(ele);
-                        }
-                    });
-                }
-            });
-        };
-    }(jQuery));
-        /* The todo list plugin */
-        /*
-        $(".todo-list").todolist({
-            onCheck: function (ele) {
-                window.console.log("The element has been checked");
-                return ele;
-            },
-            onUncheck: function (ele) {
-                window.console.log("The element has been unchecked");
-                return ele;
-            }
-        });
-        */
-        //jQuery UI sortable for the todo list
-        $(".todo-list").sortable({
-            placeholder: "sort-highlight",
-            handle: ".handle",
-            forcePlaceholderSize: true,
-            zIndex: 999999,
-            update: function (event, ui) {
-                var newpos = ui.item.index();
-                var count = 0;
-                ui.item.parent().children().each(function () {
-                    var id = this.id
-                    var name = $(this).find('#stageName' + id).text();
-                    var newPos = count;
-                    $.ajax({
-                        url: "/Templates/_EditStage/?id_stage=" + id + '&stagePosition=' + newPos + '&name=' + name,
-                        type: "PUT",
-                        dataType: "html",
-                        traditional: true,
-                        contentType: false,
-                        success: function (data) {
-                        },
-                        error: function () {
-                        }
-                    });
-                    count += 1;
-                });
-
-            }
-        });
-    </script>
+<script>
+    // Template edited 
+    function TemplateEditedSuccess(content) {
+        Notify("Se ha editado la plantilla con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+        $('.widget-caption').text("Plantilla "+content)
+    }
+    function TemplateEditedFailure(content) {
+        Notify("Error, no se edito la plantilla", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+    //-- Template deleted
+    function TemplateDeletedSuccess(content) {
+        Notify("La plantilla ha sido eliminada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+        window.location.href = "/Templates";
+    }
+    function TemplateDeletedFailure(content) {
+        Notify("Error, no se puede borrar la plantilla", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    }
+</script>
+<script src="~/Scripts/Templates/Template/Participants.js"></script>
+<script src="~/Scripts/Templates/Template/Stages.js"></script>
 }

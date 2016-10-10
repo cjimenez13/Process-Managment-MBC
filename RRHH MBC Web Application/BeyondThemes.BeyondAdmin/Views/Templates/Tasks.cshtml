@@ -9,7 +9,7 @@
                 <span class="widget-caption">Tareas</span>
             </div>
             <div class="widget-body">
-                <div class="row">
+                <div class="row" id="taskListDiv">
                     @{ Html.RenderPartial("/Views/Templates/_Tasks/_TasksList.cshtml", Model);}
                 </div>
             </div>
@@ -55,8 +55,10 @@
 <script src="/assets/js/datetime/bootstrap-datepicker.js"></script>
 <script src="~/assets/js/fuelux/wizard/wizard.js"></script>
 <script src="~/assets/js/fuelux/spinbox/spinbox.js"></script>
-<script src="~/Scripts/Tasks/_AddTask.js"></script>
-<script src="~/Scripts/Tasks/_TaskList.js"></script>
+
+<script src="~/Scripts/Templates/Tasks/_AddTask.js"></script>
+<script src="~/Scripts/Templates/Tasks/_TaskList.js"></script>
+@*@Scripts.Render("~/bundles/templatesTask")*@
 <script src="~/assets/js/inputmask/jasny-bootstrap.min.js"></script>
 
 }

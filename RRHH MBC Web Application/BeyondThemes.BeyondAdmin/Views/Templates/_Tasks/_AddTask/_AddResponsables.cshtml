@@ -1,6 +1,63 @@
-﻿<h2>Responsables</h2>
-<div class="row">
+﻿@model Model.TaskResponsablesModel
+<h2>Responsables</h2>
+<div class="row" style="margin-top:30px">
+    <!-- search bar -->
+    <div class="col-md-6">
+        <span class="input-icon">
+            <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterParticipantsUsers(this)">
+            <i class="glyphicon glyphicon-search blue"></i>
+        </span>
+    </div>
+    <div class="col-lg-offset-3 col-lg-3 col-md-offset-2 col-md-4">
+        <div class="col-xs-6">
+            <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addGroupParticipants">Agregar grupo</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">Agregar integrante</button>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:20px;">
     <div class="col-xs-12">
-
+        <div class="row" id="ParticipantsList">
+            @foreach (var user in Model.responsables)
+            {
+                var name = user.name + " " + user.fLastName + " " + user.sLastName;
+                string defaultUser = user.email != "" ? user.email : user.userName;
+                <div class="col-lg-3 col-sm-6 col-xs-12">
+                    <div class="databox databox-graded" style="margin-bottom:10px">
+                        <div class="databox-left no-padding">
+                            <img src="data:Image/png;base64,@user.photoData" style="width:65px; height:65px;">
+                        </div>
+                        <div class="databox-right padding-top-0 bg-whitesmoke">
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
+                                        <div class="col-xs-12" style="margin:0px; padding:0px; padding-top:10px">
+                                            <div class="databox-text darkgray" style="font-size:14px">@name</div>
+                                            @if (user.email != "")
+                                            {
+                                                <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.email</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.userName</div>
+                                            }
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div class="widget-buttons">
+                                        <a onclick="deleteTaskResponsable('@user.user_id','@Model.id_task', '@name',this)" style="cursor:pointer">
+                                            <i class="fa fa-times danger"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

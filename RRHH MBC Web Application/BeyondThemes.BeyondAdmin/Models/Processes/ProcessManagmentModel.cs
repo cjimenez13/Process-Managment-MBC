@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Model
 {
+    //-------------------------------------- Participants ---------------------------------------------
     public class ParticipantsModel
     {
         private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
@@ -67,6 +68,8 @@ namespace Model
         [Required(ErrorMessage = "Se debe seleccionar al menos un grupo")]
         public List<string> selected_groups_id { get; set; }
     }
+
+    //-------------------------------------- Stages ---------------------------------------------
     public class StagesListModel
     {
         private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
@@ -108,4 +111,5 @@ namespace Model
         [Required]
         public string stagePosition { get; set; }
     }
+
 }

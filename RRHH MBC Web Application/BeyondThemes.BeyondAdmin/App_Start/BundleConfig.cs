@@ -108,6 +108,15 @@ namespace BeyondThemes.BeyondAdmin
             jQueryValBundle.Orderer = nullOrderer;
             bundles.Add(jQueryValBundle);
 
+            var templatesTasks = new Bundle("~/bundles/templatesTask");
+            templatesTasks.Include(
+                 "~/Scripts/Templates/Tasks/_AddTask.js",
+                 "~/Scripts/Templates/Tasks/_TaskList.js");
+            templatesTasks.Builder = nullBuilder;
+            templatesTasks.Transforms.Add(scriptTransformer);
+            templatesTasks.Orderer = nullOrderer;
+            bundles.Add(templatesTasks);
+
         }
     }
 }

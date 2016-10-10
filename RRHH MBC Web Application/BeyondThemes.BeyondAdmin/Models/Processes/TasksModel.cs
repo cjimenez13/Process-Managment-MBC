@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Model
 {
+    //-------------------------------------- Tasks ---------------------------------------------
     public class TasksModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -100,5 +101,17 @@ namespace Model
         [Required]
         public string id_task { get; set; }
 
+    }
+    //-------------------------------------- Responsables ---------------------------------------------
+    public class TaskResponsablesModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<TaskResponsableDTO> responsables = new List<TaskResponsableDTO>();
+        public string id_task;
+        public TaskResponsablesModel(string id_task)
+        {
+            this.id_task = id_task;
+            responsables = taskProvider.getTaskResponsables(id_task).Result;
+        }
     }
 }

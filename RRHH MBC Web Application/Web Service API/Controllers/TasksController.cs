@@ -21,13 +21,10 @@ namespace Web_Service_API.Controllers
             return task;
         }
         [HttpPost]
-        public IHttpActionResult Post(TaskDTO taskDTO)
+        public string Post(TaskDTO taskDTO)
         {
-            if (!TaskData.insertTask(taskDTO))
-            {
-                return BadRequest();
-            }
-            return Ok();
+            string result = TaskData.insertTask(taskDTO);
+            return result;
         }
 
         [HttpPut]
@@ -78,6 +75,57 @@ namespace Web_Service_API.Controllers
         {
             TaskStateDTO taskState = TaskData.getTaskState(id_taskState);
             return taskState;
+        }
+        [HttpGet]
+        [Route("responsables")]
+        public IEnumerable<TaskResponsableDTO> getTaskResponsables(string id_task)
+        {
+            List<TaskResponsableDTO> taskTypes = TaskData.getTaskResponsables(id_task);
+            return taskTypes;
+        }
+
+        [HttpPost]
+        [Route("responsables")]
+        public IHttpActionResult postTaskResponsablesUser(TaskResponsableDTO responsableDTO)
+        {
+            if (!TaskData.insertResponsableUser(responsableDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("responsables/group")]
+        public IHttpActionResult postTaskResponsablesGroup(TaskResponsableDTO responsableDTO)
+        {
+            if (!TaskData.insertResponsableGroup(responsableDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("responsables")]
+        public IHttpActionResult putTaskResponsable(TaskResponsableDTO responsableDTO)
+        {
+            if (!TaskData.updateResponsableTask(responsableDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("responsables")]
+        public IHttpActionResult deleteTaskResponsable(string id_task, string user_id, string userLog)
+        {
+            if (!TaskData.deleteResponsable(id_task, user_id, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
     }
 }

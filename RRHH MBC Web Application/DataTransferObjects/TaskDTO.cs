@@ -16,6 +16,8 @@ namespace DataTransferObjects
         public string taskPosition { get; set; }
         public string createdDate { get; set; }
         public string beginDate { get; set; }
+        public string daysAvailable { get; set; }
+        public string hoursAvailable { get; set; }
         public string userLog { get; set; }
     }
 
@@ -32,5 +34,18 @@ namespace DataTransferObjects
         public string id_taskState { get; set; }
         public string state_name { get; set; }
         public string state_color { get; set; }
+    }
+    public class TaskResponsableDTO
+    {
+        public string task_id { get; set; }
+        public string user_id { get; set; }
+        public string isConfirmed { get; set; }
+        public string name { get; set; }
+        public string sLastName { get; set; }
+        public string fLastName { get; set; }
+        public string userName { get; set; }
+        public string email { get; set; }
+        public string photoData { get; set; }
+        public string userLog { get; set; }
     }
 }

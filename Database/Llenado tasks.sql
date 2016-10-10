@@ -10,3 +10,12 @@ insert into TaskState (id_taskState, state_name, state_color) values (2,'Complet
 insert into TaskState (id_taskState, state_name, state_color) values (3,'Cancelado','#d73d32') --Danger
 insert into TaskState (id_taskState, state_name, state_color) values (3,'En espera','#d73d32') -- Warning
 insert into TaskState (id_taskState, state_name, state_color) values (3,'Atrasado','#fb6e52') -- Orange
+
+insert into QuestionType (id_questionType, name) values (0,'Respuesta corta')
+insert into QuestionType (id_questionType, name) values (1,'Parrafo')
+insert into QuestionType (id_questionType, name) values (2,'Número')
+insert into QuestionType (id_questionType, name) values (3,'Opción unica')
+insert into QuestionType (id_questionType, name) values (4,'Si / No')
+insert into QuestionType (id_questionType, name) values (5,'Archivo')
+insert into QuestionType (id_questionType, name) values (6,'Fecha')
+

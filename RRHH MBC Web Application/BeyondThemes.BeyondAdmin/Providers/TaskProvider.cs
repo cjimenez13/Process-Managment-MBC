@@ -118,16 +118,68 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return task;
             }
         }
-        //-------------------------------------- Posts --------------------------------------------------
-
-        public async Task<bool> postTask(TaskDTO taskDTO)
+        public async Task<List<TaskResponsableDTO>> getTaskResponsables(string id_task)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskResponsableDTO> responsables = new List<TaskResponsableDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/responsables?id_task=" + id_task).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    responsables = serializer.Deserialize<List<TaskResponsableDTO>>(result);
+                }
+                return responsables;
+            }
+        }
+        //-------------------------------------- Posts --------------------------------------------------
+
+        public async Task<string> postTask(TaskDTO taskDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                string id_task = null;
                 var userJson = new JavaScriptSerializer().Serialize(taskDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/tasks/", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    id_task = await response.Content.ReadAsStringAsync();
+                }
+                return id_task;
+            }
+        }
+
+        public async Task<bool> postResponsableUser(TaskResponsableDTO taskDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                string id_task = null;
+                var userJson = new JavaScriptSerializer().Serialize(taskDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/responsables", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> postResponsableGroup(TaskResponsableDTO taskDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                string id_task = null;
+                var userJson = new JavaScriptSerializer().Serialize(taskDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/responsables/group", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -153,6 +205,22 @@ namespace BeyondThemes.BeyondAdmin.Providers
             }
         }
 
+        public async Task<bool> putTaskResponsable(TaskResponsableDTO taskResponsable)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(taskResponsable);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/tasks/responsables", contentPost).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         //-------------------------------------- Deletes -----------------------------------------------
         public async Task<bool> deleteTask(string id_task, string userLog)
         {
@@ -160,6 +228,19 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/?id_task=" + id_task + "&userLog=" + userLog).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> deleteTaskResponsable(string id_task, string user_id, string userLog)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/responsables/?id_task=" + id_task + "&user_id="+ user_id+ "&userLog=" + userLog).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
