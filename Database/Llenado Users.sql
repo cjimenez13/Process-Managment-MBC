@@ -12,7 +12,7 @@ open cursor_insertObjectLog
 fetch next from cursor_insertObjectLog into @table_name
 while @@FETCH_STATUS = 0 
 begin 
-	execute sp_insert_ObjectLog @table_name
+	execute usp_insert_ObjectLog @table_name
 	fetch next from cursor_insertObjectLog into @table_name
 end
 close cursor_insertObjectLog

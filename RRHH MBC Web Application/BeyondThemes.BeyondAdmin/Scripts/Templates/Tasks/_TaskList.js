@@ -1,50 +1,44 @@
-﻿(function ($) {
-    'use strict';
-    $.fn.todolist = function (options) {
-        var settings = $.extend({
-            onCheck: function (ele) {
-                return ele;
-            },
-            onUncheck: function (ele) {
-                return ele;
-            }
-        }, options);
-        return this.each(function () {
-            if (typeof $.fn.iCheck != 'undefined') {
-                $('input', this).on('ifChecked', function () {
-                    var ele = $(this).parents("li").first();
-                    ele.toggleClass("done");
-                    settings.onCheck.call(ele);
-                });
+﻿
 
-                $('input', this).on('ifUnchecked', function () {
-                    var ele = $(this).parents("li").first();
-                    ele.toggleClass("done");
-                    settings.onUncheck.call(ele);
-                });
-            } else {
-                $('input', this).on('change', function () {
-                    var ele = $(this).parents("li").first();
-                    ele.toggleClass("done");
-                    if ($('input', ele).is(":checked")) {
-                        settings.onCheck.call(ele);
-                    } else {
-                        settings.onUncheck.call(ele);
-                    }
-                });
-            }
-        });
-    };
-}(jQuery));
-/* The todo list plugin */
-//jQu2ery UI sortable for the todo list
-$(".todo-list").sortable({
-    placeholder: "sort-highlight",
-    handle: ".handle",
-    forcePlaceholderSize: true,
-    zIndex: 999999
-});
-
+//-- loading animation 
+var $loading = $('#loadingDiv').hide();
+var $taskDiv = $('#taskDetailsAll')
+$(document)
+  .ajaxStart(function () {
+     
+  })
+  .ajaxStop(function () {
+     
+  });
+//-- load specific task
+function showTaskDetails(id_task) {
+    $.ajax({
+        url: "/Tasks/_TaskDetails/?id_task=" + id_task, type: "GET", dataType: "html",
+        beforeSend: function () {
+            $('#taskDetails').remove()
+            //$taskDiv.empty()
+            $loading.show();
+        },
+        complete: function(){
+            $loading.hide();
+        },
+        success: function (view) {
+            $taskDiv.html(view, 500)
+            $taskDiv.hide()
+            $taskDiv.fadeIn('slow')
+            $('#selected_userParticipants_id').select2()
+            $("#taskForm").sortable({
+                placeholder: "sort-highlight",
+                handle: ".handle",
+                forcePlaceholderSize: true,
+                zIndex: 999999
+            });
+        },
+        error: function () {
+        }
+    });
+    
+}
 //-- stage name udated
 function TaskUpdatedSuccess(content) {
     Notify("La tarea ha sido editad con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);

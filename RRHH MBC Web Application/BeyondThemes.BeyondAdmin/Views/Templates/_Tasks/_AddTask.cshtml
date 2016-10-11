@@ -39,13 +39,13 @@
                                     @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddGeneralInfo.cshtml", Model);}
                                 </div>
                                 <div class="step-pane sample-pane" data-step="2">
-                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddResponsables.cshtml");}
+                                    @*@{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel());}*@
                                 </div>
                                 <div class="step-pane sample-pane" data-step="3">
-                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddForm.cshtml");}
+                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskForm.cshtml");}
                                 </div>
                                 <div class="step-pane sample-pane" data-step="4">
-                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");}
+                                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");}
                                 </div>
                             </div>
                             <div class="row">

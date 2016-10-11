@@ -27,6 +27,7 @@ namespace Web_Service_API.DataAccess
                     task.name = rdr["name"].ToString();
                     task.description = rdr["description"].ToString();
                     task.type_id = rdr["type_id"].ToString();
+                    task.stage_id = rdr["stage_id"].ToString();
                     task.taskState_id = rdr["taskState_id"].ToString();
                     task.createdBy = rdr["createdBy"].ToString();
                     task.finishDate = rdr["finishDate"].ToString();
@@ -34,8 +35,8 @@ namespace Web_Service_API.DataAccess
                     task.finishDate = rdr["finishDate"].ToString();
                     task.createdDate = rdr["createdDate"].ToString();
                     task.beginDate = rdr["beginDate"].ToString();
-                    task.createdDate = rdr["daysAvailable"].ToString();
-                    task.createdDate = rdr["hoursAvailable"].ToString();
+                    task.daysAvailable = rdr["daysAvailable"].ToString();
+                    task.hoursAvailable = rdr["hoursAvailable"].ToString();
                     tasks.Add(task);
                 }
             };
@@ -58,14 +59,15 @@ namespace Web_Service_API.DataAccess
                     task.name = rdr["name"].ToString();
                     task.description = rdr["description"].ToString();
                     task.type_id = rdr["type_id"].ToString();
+                    task.stage_id = rdr["stage_id"].ToString();
                     task.taskState_id = rdr["taskState_id"].ToString();
                     task.createdBy = rdr["createdBy"].ToString();
                     task.finishDate = rdr["finishDate"].ToString();
                     task.taskPosition = rdr["taskPosition"].ToString();
                     task.finishDate = rdr["finishDate"].ToString();
                     task.createdDate = rdr["createdDate"].ToString();
-                    task.createdDate = rdr["daysAvailable"].ToString();
-                    task.createdDate = rdr["hoursAvailable"].ToString();
+                    task.daysAvailable = rdr["daysAvailable"].ToString();
+                    task.hoursAvailable = rdr["hoursAvailable"].ToString();
                 }
             };
             return task;
@@ -96,7 +98,7 @@ namespace Web_Service_API.DataAccess
             TaskTypeDTO taskType = new TaskTypeDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand("usp_get_taskTypes", connection);
+                SqlCommand command = new SqlCommand("usp_get_taskType", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_taskType", SqlDbType.Int);
                 command.Parameters["@id_taskType"].Value = id_taskType;
@@ -138,8 +140,8 @@ namespace Web_Service_API.DataAccess
             {
                 SqlCommand command = new SqlCommand("usp_get_taskState", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add("@id_taskType", SqlDbType.Int);
-                command.Parameters["@id_taskType"].Value = id_taskType;
+                command.Parameters.Add("@id_taskState", SqlDbType.Int);
+                command.Parameters["@id_taskState"].Value = id_taskType;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
                 while (rdr.Read())
@@ -178,6 +180,34 @@ namespace Web_Service_API.DataAccess
                 }
             };
             return taskResponsables;
+        }
+        public static List<ParticipantDTO> getTaskParticipants(string id_task)
+        {
+            List<ParticipantDTO> participants = new List<ParticipantDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_participantsTask", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_task", SqlDbType.Int);
+                command.Parameters["@id_task"].Value = id_task;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ParticipantDTO participant = new ParticipantDTO();
+                    participant.processManagment_id = rdr["processManagment_id"].ToString();
+                    participant.name = rdr["name"].ToString();
+                    participant.user_id = rdr["user_id"].ToString();
+                    participant.sLastName = rdr["sLastName"].ToString();
+                    participant.fLastName = rdr["fLastName"].ToString();
+                    participant.userName = rdr["userName"].ToString();
+                    participant.email = rdr["email"].ToString();
+                    byte[] photo = (byte[])rdr["photoData"];
+                    participant.photoData = Convert.ToBase64String(photo);
+                    participants.Add(participant);
+                }
+            };
+            return participants;
         }
         //--------------------------------------------- Inserts --------------------------------------------
         public static string insertTask(TaskDTO pTask)

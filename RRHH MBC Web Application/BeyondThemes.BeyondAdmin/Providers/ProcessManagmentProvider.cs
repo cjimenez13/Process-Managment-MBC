@@ -47,6 +47,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return stages;
             }
         }
+        public async Task<StageDTO> getStage(string id_stage)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                StageDTO stage = new StageDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/processManagment/stages/?id_stage=" + id_stage).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    stage = serializer.Deserialize<StageDTO>(result);
+                }
+                return stage;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
         public async Task<List<ParticipantDTO>> postParticipants(List<ParticipantDTO> pParticipantDTO)
         {

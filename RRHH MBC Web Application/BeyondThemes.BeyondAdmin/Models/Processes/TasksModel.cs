@@ -11,12 +11,13 @@ namespace Model
     public class TasksModel
     {
         private TaskProvider taskProvider = new TaskProvider();
+        private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         public List<TaskDTO> tasks = new List<TaskDTO>();
-        public string id_stage;
+        public StageDTO stage;
         public TasksModel(string id_stage)
         {
-            this.id_stage = id_stage;
-            tasks = taskProvider.getTasks(id_stage).Result;
+            this.stage = processManagmentProvider.getStage(id_stage).Result;
+            tasks = taskProvider.getTasks(stage.id_stage).Result;
             foreach (var task in tasks)
             {
                 int stagePosition = Int32.Parse(task.taskPosition);
@@ -103,15 +104,62 @@ namespace Model
 
     }
     //-------------------------------------- Responsables ---------------------------------------------
+    public class TaskDetailsModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        private UsersProvider userProvider = new UsersProvider();
+        public TaskDTO task;
+        public UserDTO createdBy;
+        public TaskStateDTO taskState;
+        public TaskTypeDTO taskType;
+        public TaskDetailsModel(string id_task)
+        {
+            task = taskProvider.getTask(id_task).Result;
+            createdBy = userProvider.getUserbyID(task.createdBy).Result;
+            taskState = taskProvider.getTaskState(task.taskState_id).Result;
+            taskType = taskProvider.getTaskType(task.type_id).Result;
+        }
+    }
     public class TaskResponsablesModel
     {
         private TaskProvider taskProvider = new TaskProvider();
+        private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         public List<TaskResponsableDTO> responsables = new List<TaskResponsableDTO>();
+        public List<ParticipantDTO> userList = new List<ParticipantDTO>();
+        public SelectList _ParticipantsSelect { get; set; }
         public string id_task;
-        public TaskResponsablesModel(string id_task)
+        public TaskResponsablesModel() { }
+        public TaskResponsablesModel(TaskDTO task)
         {
-            this.id_task = id_task;
+            this.id_task = task.id_task;
             responsables = taskProvider.getTaskResponsables(id_task).Result;
+            this.process_id = process_id;
+            userList = taskProvider.getTaskParticipants(task.id_task).Result;
+            List<SelectListItem> usersSelectList = new List<SelectListItem>();
+            foreach (ParticipantDTO iUser in userList)
+            {
+                var name = iUser.name + " " + iUser.fLastName + " " + iUser.sLastName;
+                usersSelectList.Add(new SelectListItem { Text = name, Value = iUser.user_id });
+            }
+            _ParticipantsSelect = new SelectList(usersSelectList, "Value", "Text");
         }
+        
+
+        [Required]
+        public string process_id { get; set; }
+        [Display(Name = "Usuarios")]
+        [Required(ErrorMessage = "Se debe seleccionar al menos un usuario")]
+        public List<string> selected_userParticipants_id { get; set; }
+    }
+    public class AddResponsableModel
+    {
+        public AddResponsableModel() { }
+
+        [Required]
+        public string process_id { get; set; }
+
+        [Display(Name = "Usuarios")]
+        [Required(ErrorMessage = "Se debe seleccionar al menos un usuario")]
+        public List<string> selected_userParticipants_id { get; set; }
     }
 }

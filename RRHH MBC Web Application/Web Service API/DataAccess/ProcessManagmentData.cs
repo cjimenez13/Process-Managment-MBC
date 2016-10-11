@@ -62,6 +62,29 @@ namespace Web_Service_API.DataAccess
             };
             return stagesDTO;
         }
+        public static StageDTO getProcessStage(string id_stage)
+        {
+            StageDTO stage = new StageDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_process_stage", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_stage", SqlDbType.Int);
+                command.Parameters["@id_stage"].Value = id_stage;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    stage.id_stage = rdr["id_stage"].ToString();
+                    stage.name = rdr["name"].ToString();
+                    stage.processManagment_id = rdr["processManagment_id"].ToString();
+                    stage.stagePosition = rdr["stagePosition"].ToString();
+                    stage.createdBy = rdr["createdBy"].ToString();
+                    stage.createdDate = rdr["createdDate"].ToString();
+                }
+            };
+            return stage;
+        }
         //--------------------------------------------- Inserts --------------------------------------------
         public static bool insertParticipant(ParticipantDTO pParticipantDTO)
         {

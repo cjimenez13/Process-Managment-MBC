@@ -1,0 +1,48 @@
+﻿@model Model.TaskDetailsModel
+@{ 
+    string createdByName = Model.createdBy.name + " " + Model.createdBy.fLastName + " " + Model.createdBy.sLastName;
+    string daysName = " días ";
+    string hoursName = " horas ";
+    if (Model.task.hoursAvailable == "1")
+    {
+        hoursName = " hora ";
+    }
+    if (Model.task.daysAvailable == "1")
+    {
+        daysName = " día ";
+    }
+    string duration = Model.task.daysAvailable + daysName + Model.task.hoursAvailable + hoursName;
+}
+
+<div class="widget radius-bordered">
+    <div class="widget-header  bordered-bottom bordered-sky">
+        <span class="widget-caption">Información General</span>
+        <div class="widget-buttons">
+            <a href="#" data-toggle="collapse">
+                <i class="fa fa-minus danger"></i>
+            </a>
+        </div>
+    </div>
+    <div class="widget-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>Nombre</dt><dd>@Html.Raw(Model.task.name)</dd>
+                            <dt>Agregado por </dt><dd>@Html.Raw(createdByName)</dd>
+                            <dt>Estado</dt><dd><span class="label" style="background-color:@Html.Raw(Model.taskState.state_color)">@Html.Raw(Model.taskState.state_name)</span></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>Tipo</dt><dd>@Html.Raw(Model.taskType.taskName)</dd>
+                            <dt>Duración</dt><dd>@Html.Raw(duration) </dd>
+                            <dt>Creado</dt><dd>@Html.Raw(Model.task.createdDate)</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

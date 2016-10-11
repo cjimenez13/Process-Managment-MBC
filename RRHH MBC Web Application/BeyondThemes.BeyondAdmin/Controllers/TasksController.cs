@@ -17,7 +17,10 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(id_stage));
         }
-
+        public ActionResult _TaskDetails(string id_task)
+        {
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails.cshtml", new Model.TaskDetailsModel(id_task));
+        }
         public ActionResult _AddGeneralInfo(string id_stage)
         {
             return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
@@ -116,18 +119,27 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 
         // -----------------------------------------------------------  Tasks responsables ----------------------------------------------------------------
         [HttpPost]
-        public ActionResult _AddTaskResponsableUser(string id_task, string id_user)
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddTaskResponsableUser(string id_task, List<string> selected_userParticipants_id)
         {
             if (ModelState.IsValid)
             {
-                TaskResponsableDTO taskResponsable = new TaskResponsableDTO();
-                taskResponsable.user_id = id_user;
-                taskResponsable.task_id = id_task;
-                taskResponsable.userLog = Request.Cookies["user_id"].Value;
-                if (taskProvider.postResponsableUser(taskResponsable).Result)
+                List<TaskResponsableDTO> responsables = new List<TaskResponsableDTO>();
+                foreach (var responsable_id in selected_userParticipants_id)
                 {
-                    return new HttpStatusCodeResult(200);
+                    TaskResponsableDTO taskResponsable = new TaskResponsableDTO();
+                    taskResponsable.user_id = responsable_id;
+                    taskResponsable.task_id = id_task;
+                    taskResponsable.userLog = Request.Cookies["user_id"].Value;
+                    responsables.Add(taskResponsable);
                 }
+                List<TaskResponsableDTO> adddedResponsables = taskProvider.postResponsableUser(responsables).Result;
+                int addedCount = adddedResponsables.Count;
+                int errorCount = responsables.Count - addedCount;
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.id_task = id_task;
+                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsablesList.cshtml", new Model.TaskResponsablesModel(taskDTO)).RenderToString() };
+                return Json(result);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
@@ -166,7 +178,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpDelete]
-        public ActionResult _DeleteTask(string id_task, string user_id)
+        public ActionResult _DeleteTaskResponsableUser(string id_task, string user_id)
         {
             if (taskProvider.deleteTaskResponsable(id_task, user_id, Request.Cookies["user_id"].Value).Result)
             {

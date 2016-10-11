@@ -18,8 +18,8 @@
                             @Html.HiddenFor(m => m.process_id)
                             <div class="form-group">
                                 @Html.LabelFor(model => model.selected_userParticipants_id)
-                                @Html.DropDownListFor(m => m.selected_userParticipants_id, Model._UsersSelect, new { @class = "form-control", @style = "width:100%", @multiple = "multiple" })
-                                @Html.ValidationMessageFor(m => m.selected_userParticipants_id, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.selected_userParticipants_id, Model._UsersSelect, new { @class = "form-control", @style = "width:100%", @multiple = "multiple" })
+                                @Html.ValidationMessageFor(model => model.selected_userParticipants_id, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>

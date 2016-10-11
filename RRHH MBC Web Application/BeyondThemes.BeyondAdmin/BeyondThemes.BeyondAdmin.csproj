@@ -409,6 +409,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Templates\Tasks\_TaskForm.js" />
+    <Content Include="Scripts\Templates\Tasks\_TaskResponsables.js" />
     <Content Include="Scripts\Templates\Tasks\_AddTask.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskList.js" />
     <Content Include="Scripts\Templates\Template\Participants.js" />
@@ -487,14 +489,16 @@
     <Content Include="Views\Templates\_Template\_EditTemplate.cshtml" />
     <Content Include="Views\Templates\_Template\_Stages\_EditStage.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TasksList.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskInfo.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskForm.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskAdditionals.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskInfo.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskForm.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskAdditionals.cshtml" />
     <Content Include="Views\Templates\_Tasks\_AddTask.cshtml" />
     <Content Include="Views\Templates\_Tasks\_AddTask\_AddGeneralInfo.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_AddTask\_AddResponsables.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_AddTask\_AddForm.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskResponsables.cshtml" />
     <Content Include="Views\Templates\_Tasks\_AddTask\_AddAditionals.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskResponsablesList.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChanges.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

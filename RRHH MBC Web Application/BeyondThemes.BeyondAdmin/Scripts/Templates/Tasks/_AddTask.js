@@ -22,7 +22,6 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
                     addTask(1, function (isAdded) {
                         canContinue = true
                         if (isAdded = true) {
-                            console.log("task added")
                             $('#myWizard').wizard('selectedItem', {
                                 step: toStep
                             });
@@ -61,7 +60,6 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
 
 //-- ajax to add task
 function addTask(step, callback) {
-    //var form = $('.step-content').find('form')
     var form = $('*[data-step="' + step + '"]').find('form');
     var token = "__RequestVerificationToken=" + $('input[name="__RequestVerificationToken"]').val() + "&";
     var lengthFormData = form.serialize().length
@@ -102,6 +100,8 @@ function resetWizard() {
         step: 1
     });
     $('.step-content').find('form')[0].reset()
+    $("#selected_taskType").prop("disabled", false);
+
 
 }
 
@@ -195,7 +195,7 @@ function addFormStep(){
         $('#myWizard').wizard('addSteps', lastIndex, [
        {
            badge: lastIndex,
-           label: 'Formularoi',
+           label: 'Formulario',
            pane: view
        }
         ]);

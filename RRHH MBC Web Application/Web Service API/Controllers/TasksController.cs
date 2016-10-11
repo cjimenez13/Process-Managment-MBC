@@ -1,4 +1,5 @@
 ﻿using DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using Web_Service_API.DataAccess;
@@ -77,6 +78,13 @@ namespace Web_Service_API.Controllers
             return taskState;
         }
         [HttpGet]
+        [Route("participants")]
+        public IEnumerable<ParticipantDTO> getTaskParticipants(string id_task)
+        {
+            List<ParticipantDTO> taskParticipants = TaskData.getTaskParticipants(id_task);
+            return taskParticipants;
+        }
+        [HttpGet]
         [Route("responsables")]
         public IEnumerable<TaskResponsableDTO> getTaskResponsables(string id_task)
         {
@@ -86,13 +94,24 @@ namespace Web_Service_API.Controllers
 
         [HttpPost]
         [Route("responsables")]
-        public IHttpActionResult postTaskResponsablesUser(TaskResponsableDTO responsableDTO)
+        public IEnumerable<TaskResponsableDTO> postTaskResponsablesUser(List<TaskResponsableDTO> responsableDTO)
         {
-            if (!TaskData.insertResponsableUser(responsableDTO))
+            List<TaskResponsableDTO> insertedParticipants = new List<TaskResponsableDTO>();
+            foreach (TaskResponsableDTO responsable in responsableDTO)
             {
-                return BadRequest();
+                try
+                {
+                    if (TaskData.insertResponsableUser(responsable))
+                    {
+                        insertedParticipants.Add(responsable);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //e.Message;
+                }
             }
-            return Ok();
+            return insertedParticipants;
         }
 
         [HttpPost]

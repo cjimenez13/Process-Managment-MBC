@@ -72,8 +72,15 @@ namespace Web_Service_API.Controllers
         [Route("stages")]
         public List<StageDTO> getStages(string id_process)
         {
-            List<StageDTO> participants = ProcessManagmentData.getProcessStages(id_process);
-            return participants;
+            List<StageDTO> stages = ProcessManagmentData.getProcessStages(id_process);
+            return stages;
+        }
+        [HttpGet]
+        [Route("stages")]
+        public StageDTO getStage(string id_stage)
+        {
+            StageDTO stage = ProcessManagmentData.getProcessStage(id_stage);
+            return stage;
         }
         [HttpPost]
         [Route("stages")]
