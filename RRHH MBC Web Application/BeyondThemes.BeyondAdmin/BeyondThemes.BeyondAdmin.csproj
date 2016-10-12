@@ -480,8 +480,8 @@
     <Content Include="Views\Users\_Profile\_ProfileCategories.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileInfo.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileCategorieAttributes.cshtml" />
-    <Content Include="Views\Templates\_TemplatesList.cshtml" />
-    <Content Include="Views\Templates\_AddTemplate.cshtml" />
+    <Content Include="Views\Templates\_Index\_TemplatesList.cshtml" />
+    <Content Include="Views\Templates\_Index\_AddTemplate.cshtml" />
     <Content Include="Views\Templates\_Template\_Stages\_StagesList.cshtml" />
     <Content Include="Views\Templates\_Template\_Participants\_TemplateParticipantsList.cshtml" />
     <Content Include="Views\Templates\_Template\_Participants\_AddParticipantUser.cshtml" />
@@ -499,6 +499,7 @@
     <Content Include="Views\Templates\_Tasks\_TaskDetails.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskResponsablesList.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChanges.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskQuestions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

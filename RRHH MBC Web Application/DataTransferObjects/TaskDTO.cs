@@ -48,4 +48,26 @@ namespace DataTransferObjects
         public string photoData { get; set; }
         public string userLog { get; set; }
     }
+    public class TaskQuestionDTO
+    {
+        public string id_taskQuestion { get; set; }
+        public string taskForm_id { get; set; }
+        public string question { get; set; }
+        public string response { get; set; }
+        public string generalAttributeList { get; set; }
+        public string questionType_id { get; set; }
+        public string userLog { get; set; }
+    }
+    public class QuestionTypeDTO
+    {
+        public string id_questionType { get; set; }
+        public string name { get; set; }
+    }
+    public class TaskFormDTO
+    {
+        public string id_taskForm { get; set; }
+        public string id_task { get; set; }
+        public string description { get; set; }
+        public string userLog { get; set; }
+    }
 }

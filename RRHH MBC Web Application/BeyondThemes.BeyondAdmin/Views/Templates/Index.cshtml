@@ -38,7 +38,7 @@
                                 </thead>
                                 <tbody id="table-templates">
                                     <!-- Table data-->
-                                    @{ Html.RenderPartial("/Views/Templates/_TemplatesList.cshtml", new Model.TemplatesListModel());}
+                                    @{ Html.RenderPartial("/Views/Templates/_Index/_TemplatesList.cshtml", new Model.TemplatesListModel());}
                                 </tbody>
                             </table>
                         </div>
@@ -49,7 +49,7 @@
     </div>
 </div>
 <!-- Modal to add template -->
-@{ Html.RenderPartial("/Views/Templates/_AddTemplate.cshtml", new Model.AddTemplateModel());}
+@{ Html.RenderPartial("/Views/Templates/_Index/_AddTemplate.cshtml", new Model.AddTemplateModel());}
 
 @section PageScripts{
 <script>

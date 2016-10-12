@@ -271,31 +271,58 @@ go
 create procedure usp_getTaskQuestions
 @taskForm_id bigint as
 begin
-	select fq.id_TaskQuestion, fq.taskForm_id, fq.question, fq.response, fq.generalAttributeList, fq.questionType_id
+	select fq.id_taskQuestion, fq.taskForm_id, fq.question, fq.response, fq.generalAttributeList, fq.questionType_id
 	from FormQuestions fq 
 	where fq.taskForm_id = @taskForm_id
 end
 go
+create procedure usp_getTaskQuestion
+@id_taskQuestion bigint as
+begin
+	select fq.id_TaskQuestion, fq.taskForm_id, fq.question, fq.response, fq.generalAttributeList, fq.questionType_id
+	from FormQuestions fq 
+	where fq.id_taskQuestion = @id_taskQuestion
+end
+go
+create procedure usp_get_questionTypes as
+begin 
+	select qt.id_questionType, qt.name from QuestionType qt 
+end
+go
+create procedure usp_get_availableAttributesbyTask
+@task_id int as 
+begin 
+	declare @stage_id int, @process_id int, @categorie_id int 
+	set @stage_id = (select t.stage_id from Task t where t.id_task = @task_id)
+	set @process_id = (select s.processManagment_id from Stage s where s.id_stage = @stage_id)
+	set @categorie_id = (select pm.categorie_id from ProcessManagment pm where pm.id_processManagment = @process_id)
+	
+	select ca.categorie_id, ca.id_attribute, ca.name, ca.[type], ca.isGeneral
+	from CategorieAttributes ca 
+	where ca.isEnabled = 1 and ca.categorie_id = @categorie_id;
+end
+go
+--drop procedure usp_insert_question
 create procedure usp_insert_question
-@id_taskForm bigint, @question nvarchar(250), @response varbinary(max), @generalAttributeList int, @questionType_id int, @userLog int as 
+@taskForm_id bigint, @question nvarchar(250), @generalAttributeList int = null, @questionType_id int, @userLog int as 
 begin 
 set transaction isolation level snapshot
 begin transaction
-	declare @event_log_id int, @table int
+	declare @event_log_id int, @table int, @id_taskQuestion int
 	insert into FormQuestions(taskForm_id,question, response, generalAttributeList, questionType_id)
-	values (@id_taskForm, @question, @response, @generalAttributeList, @questionType_id)
-
+	values (@taskForm_id, @question, null, @generalAttributeList, @questionType_id)
+	set @id_taskQuestion = (select @@IDENTITY)
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'FormQuestions')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted question', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
-	exec usp_insert_Reference @attribute = 'id_taskForm', @value = @id_taskForm, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'id_taskQuestion', @value = @id_taskQuestion, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'id_taskForm', @value = @taskForm_id, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'question', @value = @question, @EventLog_id = @event_log_id
-	if (DATALENGTH(@response) < 1000)
-	exec usp_insert_Reference @attribute = 'response', @value = @response, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'generalAttributeList', @value = @generalAttributeList, @EventLog_id = @event_log_id
-	exec usp_insert_Reference @attribute = 'questionType_id', @value = @generalAttributeList, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'id_questionType', @value = @generalAttributeList, @EventLog_id = @event_log_id
 commit transaction
 end
 go
+select * from FormQuestions
 create procedure usp_update_question
 @id_taskQuestion bigint, @question nvarchar(250), @response varbinary(max), @generalAttributeList int, @questionType_id int, @userLog int as 
 begin 
@@ -318,6 +345,23 @@ begin transaction
 commit transaction
 end
 go
+
+create procedure usp_delete_question
+@id_taskQuestion int, @userLog int as
+begin 
+set transaction isolation level snapshot
+begin transaction
+	declare @event_log_id int, @table int
+	delete from FormQuestions where id_taskQuestion = @id_taskQuestion
+
+	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'FormQuestions')
+	exec @event_log_id = usp_insert_EventLog @description = 'deleted question', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 3, @user = @userLog;
+	exec usp_insert_Reference @attribute = 'id_taskQuestion', @value = @id_taskQuestion, @EventLog_id = @event_log_id
+commit transaction
+end
+go
+
+------- //Question Changes
 create procedure usp_getQuestionChanges
 @id_taskQuestion bigint as 
 begin 
@@ -330,7 +374,7 @@ go
 create procedure usp_getTaskForm
 @id_task bigint as
 begin
-	select tf.id_taskForm, tf.descripton 
+	select tf.id_taskForm, tf.[description], tf.task_id
 	from TaskForm tf 
 	where tf.task_id = @id_task
 end
@@ -362,15 +406,11 @@ begin transaction
 
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'TaskForm')
 	exec @event_log_id = usp_insert_EventLog @description = 'updated form', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 2, @user = @userLog;
-	exec usp_insert_Reference @attribute = 'id_task', @value = @id_task, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'id_taskForm', @value = @id_taskForm, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'description', @value = @description, @EventLog_id = @event_log_id
 commit transaction
 end
 go
-
- 
-
-
 
 ------------------------------------- // Task Changes // ----------------------------------
 create procedure usp_getTaskChanges 

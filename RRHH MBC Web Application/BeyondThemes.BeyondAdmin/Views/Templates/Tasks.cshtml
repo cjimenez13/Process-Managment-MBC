@@ -28,35 +28,16 @@
 @{ Html.RenderPartial("/Views/Templates/_Tasks/_AddTask.cshtml", new Model.AddTaskModel(Model.stage.id_stage, Model.maxTaskPosition));}
 
 @section PageScripts{
-<script>
-    $(function () {
-        $(document).on('click', '.btn-add', function (e) {
-            e.preventDefault();
-            var controlForm = $(this).parents('.table:first'),
-                currentEntry = $(this).parents('tr:first'),
-                newEntry = $(currentEntry.clone()).appendTo(controlForm);
-            controlForm.find('tr:not(:last) .btn-add')
-                .removeClass('btn-add').addClass('btn-remove')
-                .removeClass('btn-success').addClass('btn-danger')
-                .html('<span class="glyphicon glyphicon-minus"></span>');
-        }).on('click', '.btn-remove', function (e) {
-            $(this).parents('tr:first').remove();
-            e.preventDefault();
-            return false;
-        });
-    });
-
-</script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script src="/assets/js/datetime/bootstrap-datepicker.js"></script>
 <script src="~/assets/js/fuelux/wizard/wizard.js"></script>
 <script src="~/assets/js/fuelux/spinbox/spinbox.js"></script>
 <script src="~/assets/js/select2/select2.js"></script>
 <script src="~/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
-
 <script src="~/Scripts/Templates/Tasks/_AddTask.js"></script>
 <script src="~/Scripts/Templates/Tasks/_TaskList.js"></script>
 <script src="~/Scripts/Templates/Tasks/_TaskResponsables.js"></script>
+<script src="~/Scripts/Templates/Tasks/_TaskForm.js"></script>
 @*@Scripts.Render("~/bundles/templatesTask")*@
 <script src="~/assets/js/inputmask/jasny-bootstrap.min.js"></script>
 

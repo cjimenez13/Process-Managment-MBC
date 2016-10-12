@@ -32,7 +32,13 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         public ActionResult _AddForm(string id_stage)
         {
             return PartialView("/Views/Templates/_Tasks/_AddTask/_AddForm.cshtml");
-       } 
+       }
+        public ActionResult _TaskQuestions(string id_task)
+        {
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskQuestions.cshtml", new Model.FormQuestionsModel(task));
+        }
         public ActionResult _AddAditionals(string id_stage)
         {
             return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
@@ -67,8 +73,29 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 string id_task;
                 if ((id_task = taskProvider.postTask(taskDTO).Result) != null)
                 {
-                    var result = new { id_task = id_task, viewHtml = PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(taskDTO.stage_id)).RenderToString() };
-                    return Json(result);
+                    id_task = id_task.Replace("\"","");
+                    bool isSuccess = false;
+                    TaskTypeDTO taskType =taskProvider.getTaskType(taskDTO.type_id).Result;
+                    if (taskType.formNeeded == "True")
+                    {
+                        TaskFormDTO taskForm = new TaskFormDTO();
+                        taskForm.id_task = id_task;
+                        taskForm.description = "";
+                        taskForm.userLog = taskDTO.userLog;
+                        if (taskProvider.postTaskForm(taskForm).Result)
+                        {
+                            isSuccess = true;
+                        }
+                    }
+                    else
+                    {
+                        isSuccess = true;
+                    }
+                    if (isSuccess)
+                    {
+                        var result = new { id_task = id_task, viewHtml = PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(taskDTO.stage_id)).RenderToString() };
+                        return Json(result);
+                    }
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
@@ -144,6 +171,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult _AddTaskResponsableGroup(string id_task, string group_id)
         {
             if (ModelState.IsValid)
@@ -186,5 +214,57 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+        // -----------------------------------------------------------  Tasks form ----------------------------------------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddTaskQuestion(Model.FormQuestionsModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskQuestionDTO taskQuestion = new TaskQuestionDTO();
+                taskQuestion.question = pModel.questionA;
+                taskQuestion.questionType_id = pModel.selected_questionType_idA;
+                taskQuestion.taskForm_id = pModel.id_taskFormA;
+                if (taskQuestion.questionType_id == "3")
+                {
+                    taskQuestion.generalAttributeList = pModel.selected_attribute_idA;
+                }
+                taskQuestion.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.postFormQuestion(taskQuestion).Result)
+                {
+                    return _TaskQuestions(pModel.id_taskA);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult _EditFormQuestion( string id_taskQuestion, string question, string questionType_id, string attribute_id)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskQuestionDTO taskQuestionDTO = new TaskQuestionDTO();
+                taskQuestionDTO.id_taskQuestion = id_taskQuestion;
+                taskQuestionDTO.question = question;
+                taskQuestionDTO.questionType_id = questionType_id;
+                taskQuestionDTO.generalAttributeList = attribute_id;
+                taskQuestionDTO.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putFormQuestion(taskQuestionDTO).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteFormQuestion(string id_formQuestion)
+        {
+            if (taskProvider.deleteFormQuestion(id_formQuestion, Request.Cookies["user_id"].Value).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
     }
 }

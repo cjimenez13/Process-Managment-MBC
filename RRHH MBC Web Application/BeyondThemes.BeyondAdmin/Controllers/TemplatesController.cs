@@ -29,7 +29,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
         public ActionResult _TemplatesList()
         {
-            return PartialView("/Views/Templates/_TemplatesList.cshtml", new Model.TemplatesListModel());
+            return PartialView("/Views/Templates/_Index/_TemplatesList.cshtml", new Model.TemplatesListModel());
         }
         public ActionResult _TemplateParticipantsList(string id_process)
         {

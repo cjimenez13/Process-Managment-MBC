@@ -28,8 +28,9 @@ function showTaskDetails(id_task) {
             $taskDiv.fadeIn('slow')
             $('#selected_userParticipants_id').select2()
             $("#taskForm").sortable({
+                items: "> tr:not(:last-child)",
                 placeholder: "sort-highlight",
-                handle: ".handle",
+                handle: ".handle-form",
                 forcePlaceholderSize: true,
                 zIndex: 999999
             });

@@ -146,5 +146,87 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [HttpGet]
+        [Route("attributes")]
+        public IEnumerable<AttributeDTO> getTaskAttributes(string id_task)
+        {
+            List<AttributeDTO> attributes = TaskData.getTaskAttributes(id_task);
+            return attributes;
+        }
+        [HttpGet]
+        [Route("questions/types")]
+        public IEnumerable<QuestionTypeDTO> getFormQuestionTypes()
+        {
+            List<QuestionTypeDTO> questionTypes = TaskData.getQuestionTypes();
+            return questionTypes;
+        }
+        [HttpGet]
+        [Route("questions")]
+        public IEnumerable<TaskQuestionDTO> getFormQuestions(string id_taskForm)
+        {
+            List<TaskQuestionDTO> questions = TaskData.getTaskQuestions(id_taskForm);
+            return questions;
+        }
+        [HttpPost]
+        [Route("questions")]
+        public IHttpActionResult postFormQuestion(TaskQuestionDTO pQuestion)
+        {
+            if (!TaskData.insertQuestion(pQuestion))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("questions")]
+        public IHttpActionResult putFormQuestion(TaskQuestionDTO pQuestionDTO)
+        {
+            if (!TaskData.updateQuestion(pQuestionDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("questions")]
+        public IHttpActionResult deleteFormQuestion(string id_taskQuestion,  string userLog)
+        {
+            if (!TaskData.deleteQuestion(id_taskQuestion, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpGet]
+        [Route("forms")]
+        public TaskFormDTO getTaskForm(string id_task)
+        {
+            TaskFormDTO taskForm = TaskData.getTaskForm(id_task);
+            return taskForm;
+        }
+
+        [HttpPost]
+        [Route("forms")]
+        public IHttpActionResult postTaskForm(TaskFormDTO pTaskForm)
+        {
+            if (!TaskData.insertForm(pTaskForm))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("forms")]
+        public IHttpActionResult putForm(TaskFormDTO pTaskForm)
+        {
+            if (!TaskData.updateForm(pTaskForm))
+            { 
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

@@ -41,13 +41,13 @@
                 <div id="responsables-tab" class="tab-pane in active">
                     @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(Model.task));}
                 </div>
-                        }
+            }
             @if (Model.taskType.formNeeded == "True")
             {
                 <div id="form-tab" class="tab-pane">
-                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskForm.cshtml");}
+                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(Model.task));}
                 </div>
-                        }
+            }
             <div id="data-tab" class="tab-pane">
                 @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChanges.cshtml");}
             </div>

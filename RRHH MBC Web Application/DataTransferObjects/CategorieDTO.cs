@@ -18,7 +18,8 @@
         public string reg_expr { get; set; }
     }
 
-    public class GeneralAttributeDTO
+
+    public class AttributeDTO
     {
         public string id_attribute { get; set; }
         public string categorie_id { get; set; }
@@ -28,19 +29,23 @@
         public string isEnabled { get; set; }
         public string createdBy { get; set; }
         public string createdDate { get; set; }
-        public string user { get; set; }
+        public string isGeneral { get; set; }
     }
-    public class PersonalAttributeDTO
+    public class GeneralAttributeDTO : AttributeDTO
     {
-        public string id_attribute { get; set; }
-        public string categorie_id { get; set; }
-        public string name { get; set; }
-        public string type_id { get; set; }
-        public string value { get; set; }
-        public string isEnabled { get; set; }
-        public string createdBy { get; set; }
-        public string createdDate { get; set; }
+        public string user { get; set; }
+        public GeneralAttributeDTO()
+        {
+            isGeneral = "True";
+        }
+    }
+    public class PersonalAttributeDTO : AttributeDTO
+    {
         public string userLog { get; set; }
+        public PersonalAttributeDTO()
+        {
+            isGeneral = "False";
+        }
     }
     public class PersonalAttributeDTOmin
     {

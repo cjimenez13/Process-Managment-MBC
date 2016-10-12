@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+
 namespace BeyondThemes.BeyondAdmin.Providers
 {
     class TaskProvider : AProvider
@@ -22,8 +23,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    tasks = serializer.Deserialize<List<TaskDTO>>(result);
+                    tasks = new JavaScriptSerializer().Deserialize<List<TaskDTO>>(result);
                 }
                 return tasks;
             }
@@ -40,8 +40,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    task = serializer.Deserialize<TaskDTO>(result);
+                    task = new JavaScriptSerializer().Deserialize<TaskDTO>(result);
                 }
                 return task;
             }
@@ -58,8 +57,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    tasks = serializer.Deserialize<List<TaskTypeDTO>>(result);
+                    tasks = new JavaScriptSerializer().Deserialize<List<TaskTypeDTO>>(result);
                 }
                 return tasks;
             }
@@ -76,8 +74,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    task = serializer.Deserialize<TaskTypeDTO>(result);
+                    task = new JavaScriptSerializer().Deserialize<TaskTypeDTO>(result);
                 }
                 return task;
             }
@@ -94,8 +91,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    taskParticipants = serializer.Deserialize<List<ParticipantDTO>>(result);
+                    taskParticipants = new JavaScriptSerializer().Deserialize<List<ParticipantDTO>>(result);
                 }
                 return taskParticipants;
             }
@@ -112,8 +108,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    tasks = serializer.Deserialize<List<TaskStateDTO>>(result);
+                    tasks = new JavaScriptSerializer().Deserialize<List<TaskStateDTO>>(result);
                 }
                 return tasks;
             }
@@ -130,8 +125,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    task = serializer.Deserialize<TaskStateDTO>(result);
+                    task = new JavaScriptSerializer().Deserialize<TaskStateDTO>(result);
                 }
                 return task;
             }
@@ -148,10 +142,77 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    responsables = serializer.Deserialize<List<TaskResponsableDTO>>(result);
+                    responsables = new JavaScriptSerializer().Deserialize<List<TaskResponsableDTO>>(result);
                 }
                 return responsables;
+            }
+        }
+        public async Task<List<TaskQuestionDTO>> getFormQuestions(string id_taskForm)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskQuestionDTO> questions = new List<TaskQuestionDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/questions?id_taskForm=" + id_taskForm).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    questions = new JavaScriptSerializer().Deserialize<List<TaskQuestionDTO>>(result);
+                }
+                return questions;
+            }
+        }
+        public async Task<TaskFormDTO> getTaskForm(string id_task)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                TaskFormDTO form = new TaskFormDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/forms?id_task=" + id_task).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    form = new JavaScriptSerializer().Deserialize<TaskFormDTO>(result);
+                }
+                return form;
+            }
+        }
+        public async Task<List<QuestionTypeDTO>> getQuestionTypes()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<QuestionTypeDTO> form = new List<QuestionTypeDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/questions/types").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    form = new JavaScriptSerializer().Deserialize<List<QuestionTypeDTO>>(result);
+                }
+                return form;
+            }
+        }
+        public async Task<List<AttributeDTO>> getTaskAttributes(string id_task)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<AttributeDTO> attributes = new List<AttributeDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/attributes?id_task="+ id_task).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    attributes = new JavaScriptSerializer().Deserialize<List<AttributeDTO>>(result);
+                }
+                return attributes;
             }
         }
         //-------------------------------------- Posts --------------------------------------------------
@@ -199,11 +260,29 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(taskDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/tasks/responsables/group", contentPost).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> postFormQuestion(TaskQuestionDTO questionDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(questionDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/questions", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> postTaskForm(TaskFormDTO formDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(formDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/forms", contentPost).Result;
+                return response.IsSuccessStatusCode;
             }
         }
         //-------------------------------------- Puts --------------------------------------------------
@@ -215,12 +294,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(taskDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/tasks/", contentPost).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
+                return response.IsSuccessStatusCode;
             }
         }
 
@@ -232,12 +306,29 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(taskResponsable);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/tasks/responsables", contentPost).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> putFormQuestion(TaskQuestionDTO taskFormQuestion)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(taskFormQuestion);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/tasks/questions", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> putTaskForm(TaskFormDTO taskFormDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(taskFormDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/tasks/forms", contentPost).Result;
+                return response.IsSuccessStatusCode;
             }
         }
         //-------------------------------------- Deletes -----------------------------------------------
@@ -247,11 +338,8 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/?id_task=" + id_task + "&userLog=" + userLog).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
+                return response.IsSuccessStatusCode;
+
             }
         }
         public async Task<bool> deleteTaskResponsable(string id_task, string user_id, string userLog)
@@ -260,11 +348,16 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/responsables/?id_task=" + id_task + "&user_id="+ user_id+ "&userLog=" + userLog).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> deleteFormQuestion(string id_taskQuestion, string userLog)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/questions/?id_taskQuestion=" + id_taskQuestion + "&userLog=" + userLog).Result;
+                return response.IsSuccessStatusCode;
             }
         }
     }

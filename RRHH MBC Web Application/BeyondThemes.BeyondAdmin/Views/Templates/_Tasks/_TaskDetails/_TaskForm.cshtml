@@ -1,15 +1,17 @@
-﻿<h2>Formulario</h2>
+﻿@model Model.FormQuestionsModel
+
+<h2>Formulario</h2>
 <div class="row" style="margin-top:10px;margin-bottom:10px">
     <div class="col-xs-12">
         <p>
-            Descripción:
+            Descripción: @Html.Raw(Model.taskForm.description)
         </p>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div class="flip-scroll">
-            <table class="table flip-content table-hover" >
+            <table class="table flip-content table-hover" id="table-questions">
                 <!-- column titles -->
                 <thead class="flip-content ">
                     <tr>
@@ -22,72 +24,29 @@
                 </thead>
                 <tbody id="taskForm">
                     <!-- Table data-->
+                    @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskQuestions.cshtml", Model);}
                     <tr>
-                        <td style="font-size:16px; width:3%">
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
+                        <td></td>
+                        <td style="width:50%">
+                            @using (Ajax.BeginForm("_AddTaskQuestion", "Task", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskQuestionAddedSuccess", OnFailure = "TaskQuestionAddedFailure" }, new { id = "form-addTaskQuestion" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.id_taskFormA, new {@form = "form-addTaskQuestion"})
+                                @Html.HiddenFor(m => m.id_taskA, new { @form = "form-addTaskQuestion" })
+                            }
+                            @Html.TextBoxFor(model => model.questionA, new { @class = "form-control", @type="text", @form= "form-addTaskQuestion" })
                         </td>
                         <td>
-                            <input class="form-control" type="text" />
+                            @Html.DropDownListFor(model => model.selected_questionType_idA, Model._QuestionTypesSelect, new { @class = "", @form= "form-addTaskQuestion", @onChange = "onQuestionTypeChanged(this)" })
+                            @Html.DropDownListFor(model => model.selected_attribute_idA, Model._AttributesSelect, new { @class = "", @form = "form-addTaskQuestion", @style="display:none"})
                         </td>
-                        <td>
-                            <select>
-                                <option>Texto</option>
-                                <option>Numero entero</option>
-                                <option>Numero décimal</option>
-                                <option>Fecha</option>
-                                <option>Condición</option>
-                                <option>Lista</option>
-                            </select>
-                            <!--
-                            <select id="e1">
-                                <option selected="selected">Solicitud</option>
-                                <option>Visto Bueno</option>
-                                <option>Tareas</option>
-                                <option>Recordatorio</option>
-                            </select>
-                                -->
-                        </td>
-                        <td>
-                            <button class="btn btn-sky btn-sm btn-add" type="button">
+                        <td style="width:5%" >
+                            <button class="btn btn-sky btn-sm" style="margin-right:10px"  type="button" data-toggle="tooltip" data-placement="top" title="Cambios en datos">
                                 <span class="fa fa-cog"></span>
                             </button>
                         </td>
-                        <td>
-                            <button class="btn btn-success btn-sm btn-add" type="button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-size:16px; width:3%">
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" />
-                        </td>
-                        <td>
-                            <select>
-                                <option>Texto</option>
-                                <option>Numero entero</option>
-                                <option>Numero décimal</option>
-                                <option>Fecha</option>
-                                <option>Condición</option>
-                                <option>Lista</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-sky btn-sm btn-add" type="button">
-                                <span class="fa fa-cog"></span>
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-success btn-sm btn-add" type="button">
+                        <td style="width:5%">
+                            <button class="btn btn-success btn-sm" style="margin-left:2rem"   type="submit"  data-toggle="tooltip" data-placement="top" title="Agregar" , form="form-addTaskQuestion">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </td>
@@ -97,3 +56,5 @@
         </div>
     </div>
 </div>
+
+                       

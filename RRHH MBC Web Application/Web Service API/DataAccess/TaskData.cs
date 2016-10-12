@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using System.Web.Configuration;
 
 namespace Web_Service_API.DataAccess
@@ -209,7 +210,110 @@ namespace Web_Service_API.DataAccess
             };
             return participants;
         }
-        //--------------------------------------------- Inserts --------------------------------------------
+        public static TaskFormDTO getTaskForm(string id_task)
+        {
+            TaskFormDTO taskForm = new TaskFormDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_getTaskForm", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_task", SqlDbType.Int);
+                command.Parameters["@id_task"].Value = id_task;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    taskForm.id_taskForm = rdr["id_taskForm"].ToString();
+                    taskForm.id_task = rdr["task_id"].ToString();
+                    taskForm.description = rdr["description"].ToString();
+                }
+            };
+            return taskForm;
+        }
+        public static List<TaskQuestionDTO> getTaskQuestions(string taskForm_id)
+        {
+            List<TaskQuestionDTO> taskQuestions = new List<TaskQuestionDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_getTaskQuestions", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@taskForm_id", SqlDbType.Int);
+                command.Parameters["@taskForm_id"].Value = taskForm_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    TaskQuestionDTO taskQuestion = new TaskQuestionDTO();
+                    taskQuestion.id_taskQuestion = rdr["id_TaskQuestion"].ToString();
+                    taskQuestion.taskForm_id = rdr["taskForm_id"].ToString();
+                    taskQuestion.question = rdr["question"].ToString();
+                    taskQuestion.generalAttributeList = rdr["generalAttributeList"].ToString();
+                    taskQuestion.questionType_id = rdr["questionType_id"].ToString();
+                    try
+                    {
+                        byte[] response = (byte[])rdr["response"];
+                        if (taskQuestion.questionType_id == "5")
+                        {
+                            taskQuestion.response = Convert.ToBase64String(response);
+                        }
+                        else
+                        {
+                            taskQuestion.response = Encoding.UTF8.GetString(response);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    taskQuestions.Add(taskQuestion);
+                }
+            };
+            return taskQuestions;
+        }
+        public static List<QuestionTypeDTO> getQuestionTypes()
+        {
+            List<QuestionTypeDTO> questionTypes = new List<QuestionTypeDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_questionTypes", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    QuestionTypeDTO questionType = new QuestionTypeDTO();
+                    questionType.id_questionType = rdr["id_questionType"].ToString();
+                    questionType.name = rdr["name"].ToString();
+                    questionTypes.Add(questionType);
+                }
+            };
+            return questionTypes;
+        }
+        public static List<AttributeDTO> getTaskAttributes(string task_id)
+        {
+            List<AttributeDTO> attributes = new List<AttributeDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_availableAttributesbyTask", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@task_id", SqlDbType.Int);
+                command.Parameters["@task_id"].Value = task_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    AttributeDTO attribute = new AttributeDTO();
+                    attribute.categorie_id = rdr["categorie_id"].ToString();
+                    attribute.type_id = rdr["type"].ToString();
+                    attribute.isGeneral = rdr["isGeneral"].ToString();
+                    attribute.id_attribute = rdr["id_attribute"].ToString();
+                    attribute.name = rdr["name"].ToString();
+                    attributes.Add(attribute);
+                }
+            };
+            return attributes;
+        }
+        //---------------------------------------------------------- Inserts -------------------------------------------------------------------
         public static string insertTask(TaskDTO pTask)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
@@ -233,13 +337,13 @@ namespace Web_Service_API.DataAccess
                     command.Parameters.Add("@finishDate", SqlDbType.DateTime);
                     command.Parameters["@finishDate"].Value = DateTime.Parse(pTask.finishDate); ;
                 }
-                command.Parameters.Add("@taskPosition", SqlDbType.NVarChar);
+                command.Parameters.Add("@taskPosition", SqlDbType.Int);
                 command.Parameters["@taskPosition"].Value = pTask.taskPosition;
 
-                command.Parameters.Add("@daysAvailable", SqlDbType.NVarChar);
+                command.Parameters.Add("@daysAvailable", SqlDbType.Int);
                 command.Parameters["@daysAvailable"].Value = pTask.daysAvailable;
 
-                command.Parameters.Add("@hoursAvailable", SqlDbType.NVarChar);
+                command.Parameters.Add("@hoursAvailable", SqlDbType.Int);
                 command.Parameters["@hoursAvailable"].Value = pTask.hoursAvailable;
 
                 command.Parameters.Add("@userLog", SqlDbType.Int);
@@ -264,10 +368,10 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@task_id", SqlDbType.Int);
                 command.Parameters["@task_id"].Value = pTaskResponsable.task_id;
 
-                command.Parameters.Add("@user_id", SqlDbType.NVarChar);
+                command.Parameters.Add("@user_id", SqlDbType.Int);
                 command.Parameters["@user_id"].Value = pTaskResponsable.user_id;
 
-                command.Parameters.Add("@userLog", SqlDbType.NVarChar);
+                command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pTaskResponsable.userLog;
 
                 command.Connection.Open();
@@ -289,11 +393,67 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@task_id", SqlDbType.Int);
                 command.Parameters["@task_id"].Value = pTaskResponsable.task_id;
 
-                command.Parameters.Add("@group_id", SqlDbType.NVarChar);
+                command.Parameters.Add("@group_id", SqlDbType.Int);
                 command.Parameters["@group_id"].Value = pTaskResponsable.user_id;
 
-                command.Parameters.Add("@userLog", SqlDbType.NVarChar);
+                command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pTaskResponsable.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool insertForm(TaskFormDTO pTaskForm)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_insert_form", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_task", SqlDbType.Int);
+                command.Parameters["@id_task"].Value = pTaskForm.id_task;
+
+                command.Parameters.Add("@description", SqlDbType.NVarChar);
+                command.Parameters["@description"].Value = pTaskForm.description;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pTaskForm.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool insertQuestion(TaskQuestionDTO pTaskQuestion)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_insert_question", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@taskForm_id", SqlDbType.Int);
+                command.Parameters["@taskForm_id"].Value = pTaskQuestion.taskForm_id;
+
+                command.Parameters.Add("@question", SqlDbType.NVarChar);
+                command.Parameters["@question"].Value = pTaskQuestion.question;
+
+                command.Parameters.Add("@generalAttributeList", SqlDbType.Int);
+                command.Parameters["@generalAttributeList"].Value = pTaskQuestion.generalAttributeList;
+
+                command.Parameters.Add("@questionType_id", SqlDbType.Int);
+                command.Parameters["@questionType_id"].Value = pTaskQuestion.questionType_id;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pTaskQuestion.userLog;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();
@@ -336,10 +496,10 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@taskPosition", SqlDbType.Int);
                 command.Parameters["@taskPosition"].Value = pTask.taskPosition;
 
-                command.Parameters.Add("@daysAvailable", SqlDbType.NVarChar);
+                command.Parameters.Add("@daysAvailable", SqlDbType.Int);
                 command.Parameters["@daysAvailable"].Value = pTask.daysAvailable;
 
-                command.Parameters.Add("@hoursAvailable", SqlDbType.NVarChar);
+                command.Parameters.Add("@hoursAvailable", SqlDbType.Int);
                 command.Parameters["@hoursAvailable"].Value = pTask.hoursAvailable;
 
                 command.Parameters.Add("@userLog", SqlDbType.Int);
@@ -364,14 +524,84 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@task_id", SqlDbType.Int);
                 command.Parameters["@task_id"].Value = pTaskResponsable.task_id;
 
-                command.Parameters.Add("@group_id", SqlDbType.NVarChar);
+                command.Parameters.Add("@group_id", SqlDbType.Int);
                 command.Parameters["@group_id"].Value = pTaskResponsable.user_id;
 
-                command.Parameters.Add("@isConfirmed", SqlDbType.NVarChar);
+                command.Parameters.Add("@isConfirmed", SqlDbType.Bit);
                 command.Parameters["@isConfirmed"].Value = pTaskResponsable.isConfirmed;
 
-                command.Parameters.Add("@userLog", SqlDbType.NVarChar);
+                command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pTaskResponsable.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool updateQuestion(TaskQuestionDTO pTaskQuestion)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_question", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_taskQuestion", SqlDbType.Int);
+                command.Parameters["@id_taskQuestion"].Value = pTaskQuestion.id_taskQuestion;
+                byte[] response = null;
+                if (pTaskQuestion != null)
+                {
+                    if (pTaskQuestion.questionType_id != "5")
+                    {
+                        response = Encoding.UTF8.GetBytes(pTaskQuestion.question);
+                    }
+                    else
+                    {
+
+                    }
+                }
+                command.Parameters.Add("@question", SqlDbType.NVarChar);
+                command.Parameters["@question"].Value = pTaskQuestion.question;
+
+                command.Parameters.Add("@response", SqlDbType.VarBinary);
+                command.Parameters["@response"].Value = response;
+
+                command.Parameters.Add("@generalAttributeList", SqlDbType.Int);
+                command.Parameters["@generalAttributeList"].Value = pTaskQuestion.generalAttributeList;
+
+                command.Parameters.Add("@questionType_id", SqlDbType.Int);
+                command.Parameters["@questionType_id"].Value = pTaskQuestion.questionType_id;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pTaskQuestion.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool updateForm(TaskFormDTO pTaskForm)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_form", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_taskForm", SqlDbType.Int);
+                command.Parameters["@id_taskForm"].Value = pTaskForm.id_taskForm;
+
+                command.Parameters.Add("@description", SqlDbType.NVarChar);
+                command.Parameters["@description"].Value = pTaskForm.description;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pTaskForm.userLog;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();
@@ -417,6 +647,27 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@userLog"].Value = userLog;
                 command.Parameters.Add("@user_id", SqlDbType.Int);
                 command.Parameters["@user_id"].Value = user_id;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool deleteQuestion(string id_taskQuestion, string userLog)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_delete_question", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_taskQuestion", SqlDbType.Int);
+                command.Parameters["@id_taskQuestion"].Value = id_taskQuestion;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = userLog;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();

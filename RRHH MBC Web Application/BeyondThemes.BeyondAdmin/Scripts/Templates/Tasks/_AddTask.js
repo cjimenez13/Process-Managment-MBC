@@ -165,7 +165,7 @@ function taskTypeChanged(sel) {
 }
 function refreshSteps(taskType_id) {
     $('#id_stage').val()
-    $('#myWizard').wizard('removeSteps', 2, 3);
+    $('#myWizard').wizard('removeSteps', 2, 4);
     var lastIndex;
     $.each(taskTypes, function (iTaskType, taskType) {
         if (taskType.id_taskType == taskType_id) {
@@ -173,6 +173,7 @@ function refreshSteps(taskType_id) {
                 addResponsablesStep();
             }
             if (taskType.formNeeded == "True") {
+                console.log("hola")
                 addFormStep();
             }
         }

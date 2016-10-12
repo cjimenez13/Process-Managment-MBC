@@ -103,7 +103,6 @@ namespace Model
         public string id_task { get; set; }
 
     }
-    //-------------------------------------- Responsables ---------------------------------------------
     public class TaskDetailsModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -120,6 +119,7 @@ namespace Model
             taskType = taskProvider.getTaskType(task.type_id).Result;
         }
     }
+    //-------------------------------------- Responsables ---------------------------------------------
     public class TaskResponsablesModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -143,23 +143,68 @@ namespace Model
             }
             _ParticipantsSelect = new SelectList(usersSelectList, "Value", "Text");
         }
-        
-
         [Required]
         public string process_id { get; set; }
         [Display(Name = "Usuarios")]
         [Required(ErrorMessage = "Se debe seleccionar al menos un usuario")]
         public List<string> selected_userParticipants_id { get; set; }
     }
-    public class AddResponsableModel
+
+    //-------------------------------------- Forms ---------------------------------------------
+    public class FormQuestionsModel
     {
-        public AddResponsableModel() { }
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<QuestionTypeDTO> questionsTypes = new List<QuestionTypeDTO>();
+        public List<AttributeDTO> attributes = new List<AttributeDTO>();
+        public TaskFormDTO taskForm = new TaskFormDTO();
+        public List<TaskQuestionDTO> formQuestions = new List<TaskQuestionDTO>();
+        public SelectList _QuestionTypesSelect { get; set; }
+        public SelectList _AttributesSelect { get; set; }
+        public TaskDTO taskDTO;
+        public FormQuestionsModel(){ }
+        public FormQuestionsModel(TaskDTO taskDTO)
+        {
 
-        [Required]
-        public string process_id { get; set; }
+            //-- Get questions
+            this.taskDTO = taskDTO;
+            taskForm = taskProvider.getTaskForm(this.taskDTO.id_task).Result;
+            if (taskForm.id_taskForm != null)
+            {
+                formQuestions = taskProvider.getFormQuestions(taskForm.id_taskForm).Result;
+            }
+            this.id_taskFormA = taskForm.id_taskForm;
+            this.id_taskA = taskDTO.id_task;
+            //-- Generates question types select 
+            questionsTypes = taskProvider.getQuestionTypes().Result;
+            List<SelectListItem> _TypeSelectList = new List<SelectListItem>();
+            foreach (QuestionTypeDTO iType in questionsTypes)
+            {
+                _TypeSelectList.Add(new SelectListItem { Text = iType.name, Value = iType.id_questionType });
+            }
+            _QuestionTypesSelect = new SelectList(_TypeSelectList, "Value", "Text");
+            //-- Generates attributes select 
+            List<SelectListItem> _AttributeListSelectList = new List<SelectListItem>();
+            //var groupGeneralAttributes = new SelectListGroup() { Name = "Atributos generales" };
+            //var groupPersonalAttributes = new SelectListGroup() { Name = "Atributos personales" };
+            attributes = taskProvider.getTaskAttributes(taskDTO.id_task).Result;
+            foreach (AttributeDTO iAttribute in attributes)
+            {
+                if(iAttribute.type_id == "4")
+                {
+                    _AttributeListSelectList.Add(new SelectListItem { Text = iAttribute.name, Value = iAttribute.id_attribute});
+                }
+            }
+            _AttributesSelect = new SelectList(_AttributeListSelectList, "Value", "Text");
+        }
 
-        [Display(Name = "Usuarios")]
-        [Required(ErrorMessage = "Se debe seleccionar al menos un usuario")]
-        public List<string> selected_userParticipants_id { get; set; }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string questionA { get; set; }
+        public string selected_questionType_idA { get; set; }
+        public string selected_attribute_idA { get; set; }
+        public string id_taskFormA { get; set; }
+        public string id_taskA { get; set; }
+
     }
 }
