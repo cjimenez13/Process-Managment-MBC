@@ -72,6 +72,17 @@ function deleteFormTask(id_formQuestion, element) {
         }
     });
 }
+
+//-- form edited
+function TaskFormEditedSuccess(taskFormDTO) {
+    Notify("El formulario se ha editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+    $('#formDescription').text("Descripción: "+taskFormDTO.description)
+    console.log("hola")
+}
+function TaskFormEditedFailure(error) {
+    console.log(error)
+    Notify(error.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
 function onQuestionTypeChanged(self) {
     var questionType = self.value;
     if (questionType == "3") {

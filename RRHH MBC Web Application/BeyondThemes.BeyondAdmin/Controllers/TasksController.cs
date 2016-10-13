@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
 using System;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -215,6 +216,13 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
         // -----------------------------------------------------------  Tasks form ----------------------------------------------------------------
+        [HttpGet]
+        public ActionResult _GetFormPDF()
+        {
+            byte[] file = PDFExporter.getPDF("");
+            return File(file, "application/pdf", "form.pdf");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult _AddTaskQuestion(Model.FormQuestionsModel pModel)
@@ -225,6 +233,8 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 taskQuestion.question = pModel.questionA;
                 taskQuestion.questionType_id = pModel.selected_questionType_idA;
                 taskQuestion.taskForm_id = pModel.id_taskFormA;
+                taskQuestion.questionPosition = pModel.maxQuestionPositionA.ToString();
+                taskQuestion.isRequired = pModel.isRequired == "on" ? "True": "False";
                 if (taskQuestion.questionType_id == "3")
                 {
                     taskQuestion.generalAttributeList = pModel.selected_attribute_idA;
@@ -238,8 +248,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
         [HttpPut]
-        [ValidateAntiForgeryToken]
-        public ActionResult _EditFormQuestion( string id_taskQuestion, string question, string questionType_id, string attribute_id)
+        public ActionResult _EditFormQuestion( string id_taskQuestion, string question = null, string questionType_id = null, string attribute_id = null, string questionPosition = null, string isRequired = null)
         {
             if (ModelState.IsValid)
             {
@@ -248,6 +257,8 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 taskQuestionDTO.question = question;
                 taskQuestionDTO.questionType_id = questionType_id;
                 taskQuestionDTO.generalAttributeList = attribute_id;
+                taskQuestionDTO.questionPosition = questionPosition;
+                taskQuestionDTO.isRequired = isRequired == "on" ? "True" : "False";
                 taskQuestionDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putFormQuestion(taskQuestionDTO).Result)
                 {
@@ -266,5 +277,41 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
 
+        [HttpPut]
+        public ActionResult _EditTaskForm(string id_taskForm, string description)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskFormDTO taskForm = new TaskFormDTO();
+                taskForm.id_taskForm = id_taskForm;
+                taskForm.description = description;
+                taskForm.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putTaskForm(taskForm).Result)
+                {
+                    return Json(taskForm);
+                }
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404, "El campo descripción es incorreccto");
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede editar el formulario");
+        }
+        // -----------------------------------------------------------  Tasks Data changes ----------------------------------------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddTaskChange(Model.TaskChangesModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskChangeDTO taskChange = new TaskChangeDTO();
+                taskChange.task_id = pModel.task_id;
+                taskChange.attribute_id = pModel.attribute_id;
+                taskChange.operation_id = pModel.operation_id;
+                taskChange.value = pModel.value.ToString();
+                taskChange.userLog = Request.Cookies["user_id"].Value;
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
     }
 }

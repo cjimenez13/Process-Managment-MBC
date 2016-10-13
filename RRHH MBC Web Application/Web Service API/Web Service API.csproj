@@ -232,7 +232,8 @@
     <Compile Include="DataAccess\GroupsData.cs" />
     <Compile Include="DataAccess\ProcessManagmentData.cs" />
     <Compile Include="DataAccess\RolesData.cs" />
-    <Compile Include="DataAccess\TaskData.cs" />
+    <Compile Include="DataAccess\TaskData\TaskChangesData.cs" />
+    <Compile Include="DataAccess\TaskData\TaskData.cs" />
     <Compile Include="DataAccess\TemplatesData.cs" />
     <Compile Include="DataAccess\UsersData.cs" />
     <Compile Include="Global.asax.cs">

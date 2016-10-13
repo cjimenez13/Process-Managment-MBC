@@ -24,7 +24,7 @@ namespace DataTransferObjects
     public class TaskTypeDTO
     {
         public string id_taskType { get; set; }
-        public string taskName{ get; set; }
+        public string taskName { get; set; }
         public string needConfirm { get; set; }
         public string formNeeded { get; set; }
     }
@@ -53,10 +53,11 @@ namespace DataTransferObjects
         public string id_taskQuestion { get; set; }
         public string taskForm_id { get; set; }
         public string question { get; set; }
-        public string response { get; set; }
+        public string isRequired { get; set; }
         public string generalAttributeList { get; set; }
         public string questionType_id { get; set; }
         public string userLog { get; set; }
+        public string questionPosition { get; set; }
     }
     public class QuestionTypeDTO
     {
@@ -69,5 +70,21 @@ namespace DataTransferObjects
         public string id_task { get; set; }
         public string description { get; set; }
         public string userLog { get; set; }
+    }
+    public class TaskChangeDTO
+    {
+        public string id_taskChange { get; set; }
+        public string task_id { get; set; }
+        public string attribute_id { get; set; }
+        public string operation_id { get; set; }
+        public string value { get; set; }
+        public string userLog { get; set; }
+    }
+    public class OperationTypeDTO
+    {
+        public string id_operationType { get; set; }
+        public string display_Name { get; set; }
+        public string operation { get; set; }
+        public string reg_expr { get; set; }
     }
 }

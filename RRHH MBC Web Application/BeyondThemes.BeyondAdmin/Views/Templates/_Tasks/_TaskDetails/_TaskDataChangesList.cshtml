@@ -1,0 +1,36 @@
+﻿@model Model.TaskChangesModel
+
+@foreach (var taskChange in Model.taskChanges)
+{
+<tr>
+    <td>
+        <select class="form-control">
+            <option>Texto</option>
+            <option>Numero entero</option>
+            <option>Numero décimal</option>
+            <option>Fecha</option>
+            <option>Condición</option>
+            <option>Lista</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option>Texto</option>
+            <option>Numero entero</option>
+            <option>Numero décimal</option>
+            <option>Fecha</option>
+            <option>Condición</option>
+            <option>Lista</option>
+        </select>
+    </td>
+    <td>
+        <input class="form-control" type="number" />
+    </td>
+    <td>
+        <button class="btn btn-success btn-sm btn-add" type="button">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </td>
+</tr>
+}
+

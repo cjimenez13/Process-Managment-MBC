@@ -151,6 +151,27 @@ namespace Model
     }
 
     //-------------------------------------- Forms ---------------------------------------------
+    public class EditTaskForm
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public TaskFormDTO taskFormDTO;
+        public EditTaskForm() { }
+        public EditTaskForm(TaskFormDTO taskForm)
+        {
+            this.taskFormDTO = taskForm;
+            this.description = taskFormDTO.description;
+            this.id_taskForm = taskFormDTO.id_taskForm;
+        }
+
+        [Display(Name = "Descripción")]
+        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
+        [StringLength(300, ErrorMessage = "La cantidad máxima de caracteres es 300")]
+        public string description { get; set; }
+
+        public string id_taskForm { get; set; }
+
+    }
+
     public class FormQuestionsModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -164,7 +185,6 @@ namespace Model
         public FormQuestionsModel(){ }
         public FormQuestionsModel(TaskDTO taskDTO)
         {
-
             //-- Get questions
             this.taskDTO = taskDTO;
             taskForm = taskProvider.getTaskForm(this.taskDTO.id_task).Result;
@@ -174,37 +194,108 @@ namespace Model
             }
             this.id_taskFormA = taskForm.id_taskForm;
             this.id_taskA = taskDTO.id_task;
-            //-- Generates question types select 
+            _QuestionTypesSelect = generateQuestionTypesSelect();
+            _AttributesSelect = generateAttributeTypesSelect();
+            //-- Max position
+            foreach (var question in formQuestions)
+            {
+                int questionPosition = Int32.Parse(question.questionPosition);
+                if (questionPosition >= maxQuestionPositionA)
+                {
+                    maxQuestionPositionA = questionPosition + 1;
+                }
+            }
+        }
+        private SelectList generateQuestionTypesSelect()
+        {
             questionsTypes = taskProvider.getQuestionTypes().Result;
             List<SelectListItem> _TypeSelectList = new List<SelectListItem>();
             foreach (QuestionTypeDTO iType in questionsTypes)
             {
                 _TypeSelectList.Add(new SelectListItem { Text = iType.name, Value = iType.id_questionType });
             }
-            _QuestionTypesSelect = new SelectList(_TypeSelectList, "Value", "Text");
-            //-- Generates attributes select 
+            return new SelectList(_TypeSelectList, "Value", "Text");
+        }
+        private SelectList generateAttributeTypesSelect()
+        {
             List<SelectListItem> _AttributeListSelectList = new List<SelectListItem>();
-            //var groupGeneralAttributes = new SelectListGroup() { Name = "Atributos generales" };
-            //var groupPersonalAttributes = new SelectListGroup() { Name = "Atributos personales" };
             attributes = taskProvider.getTaskAttributes(taskDTO.id_task).Result;
             foreach (AttributeDTO iAttribute in attributes)
             {
-                if(iAttribute.type_id == "4")
+                if (iAttribute.type_id == "4")
                 {
-                    _AttributeListSelectList.Add(new SelectListItem { Text = iAttribute.name, Value = iAttribute.id_attribute});
+                    _AttributeListSelectList.Add(new SelectListItem { Text = iAttribute.name, Value = iAttribute.id_attribute });
                 }
             }
-            _AttributesSelect = new SelectList(_AttributeListSelectList, "Value", "Text");
+            return new SelectList(_AttributeListSelectList, "Value", "Text");
         }
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
-        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        [StringLength(250, ErrorMessage = "La cantidad máxima de caracteres es 250")]
         public string questionA { get; set; }
         public string selected_questionType_idA { get; set; }
         public string selected_attribute_idA { get; set; }
         public string id_taskFormA { get; set; }
         public string id_taskA { get; set; }
+        public string isRequired { get; set; }
+        public int maxQuestionPositionA { get; set; } = 0;
+    }
+    public class TaskChangesModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<TaskChangeDTO> taskChanges;
+        public TaskDTO taskDTO;
+        public SelectList attributesList;
+        public SelectList operationTypesList;
+        public TaskChangesModel() { }
+        public TaskChangesModel(TaskDTO taskDTO)
+        {
+            this.taskDTO = taskDTO;
+            taskChanges = taskProvider.getTaskChanges(taskDTO.id_task).Result;
+            attributesList = generateAttributesList();
+            operationTypesList = generateOperationTypesList();
+
+        }
+        private SelectList generateAttributesList()
+        {
+            List<SelectListItem> _AttributeListSelectList = new List<SelectListItem>();
+            List<AttributeDTO> attributes = taskProvider.getTaskAttributes(taskDTO.id_task).Result;
+            //var groupGeneralAttributes = new SelectListGroup() { Name = "Atributos generales" };
+            //var groupPersonalAttributes = new SelectListGroup() { Name = "Atributos personales" };
+            foreach (AttributeDTO iAttribute in attributes)
+            {
+                if (iAttribute.type_id != "4" && iAttribute.isGeneral == "True")
+                {
+                    _AttributeListSelectList.Add(new SelectListItem { Text = iAttribute.name, Value = iAttribute.id_attribute });
+                }
+            }
+            return new SelectList(_AttributeListSelectList, "Value", "Text");
+        }
+        private SelectList generateOperationTypesList()
+        {
+            List<SelectListItem> _OperationTypesListSelectList = new List<SelectListItem>();
+            List<OperationTypeDTO> operationTypes = taskProvider.getOperationTypes().Result;
+            //var groupGeneralAttributes = new SelectListGroup() { Name = "Atributos generales" };
+            //var groupPersonalAttributes = new SelectListGroup() { Name = "Atributos personales" };
+            foreach (OperationTypeDTO iOperationType in operationTypes)
+            {
+                _OperationTypesListSelectList.Add(new SelectListItem { Text = iOperationType.display_Name, Value = iOperationType.id_operationType });
+            }
+            return new SelectList(_OperationTypesListSelectList, "Value", "Text");
+        }
+        [Required]
+        public string task_id { get; set; }
+        [Required]
+        public string attribute_id { get; set; }
+        [Required]
+        public string operation_id { get; set; }
+        [Required(ErrorMessage = "Se debe completar el campo del valor")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string value { get; set; }
+    }
+    public class AddTaskChangeModel
+    {
 
     }
 }

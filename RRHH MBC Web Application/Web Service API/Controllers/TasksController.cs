@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
-using Web_Service_API.DataAccess;
+using Web_Service_API.DataAccess.TaskData;
 
 namespace Web_Service_API.Controllers
 {
@@ -189,16 +189,7 @@ namespace Web_Service_API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("questions")]
-        public IHttpActionResult deleteFormQuestion(string id_taskQuestion,  string userLog)
-        {
-            if (!TaskData.deleteQuestion(id_taskQuestion, userLog))
-            {
-                return BadRequest();
-            }
-            return Ok();
-        }
+
         [HttpGet]
         [Route("forms")]
         public TaskFormDTO getTaskForm(string id_task)
@@ -227,6 +218,53 @@ namespace Web_Service_API.Controllers
                 return BadRequest();
             }
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("dataChanges")]
+        public TaskFormDTO getTaskChanges(string id_task)
+        {
+            TaskFormDTO taskForm = TaskData.getTaskForm(id_task);
+            return taskForm;
+        }
+
+        [HttpPost]
+        [Route("dataChanges")]
+        public IHttpActionResult postTaskChange(TaskChangeDTO pTaskChange)
+        {
+            if (!TaskChangesData.insertTaskChange(pTaskChange))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("dataChanges")]
+        public IHttpActionResult putTaskChange(TaskChangeDTO pTaskChange)
+        {
+            if (!TaskChangesData.updateTaskChange(pTaskChange))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpDelete]
+        [Route("dataChanges")]
+        public IHttpActionResult deleteTaskChange(string id_taskChange, string userLog)
+        {
+            if (!TaskChangesData.deleteTask(id_taskChange, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpGet]
+        [Route("operationTypes")]
+        public List<OperationTypeDTO> getOperationTypes()
+        {
+            List<OperationTypeDTO> taskForm = TaskChangesData.getOperationTypes();
+            return taskForm;
         }
     }
 }

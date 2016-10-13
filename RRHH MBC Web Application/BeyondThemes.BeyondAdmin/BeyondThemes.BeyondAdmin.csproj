@@ -26,6 +26,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -107,6 +109,10 @@
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Select.HtmlToPdf, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.2.3.0.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -216,6 +222,7 @@
     <Compile Include="Providers\TemplatesProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tools\PDFExporter.cs" />
     <Compile Include="Tools\ViewExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +376,7 @@
     <Content Include="assets\fonts\fontawesome-webfont.woff2" />
     <None Include="assets\js\jqueryval\jquery.validate-vsdoc.js" />
     <Content Include="assets\js\jquery.min.js" />
+    <Content Include="assets\js\jquery.ui.touch-punch.min.js" />
     <Content Include="assets\js\jqueryval\jquery.validate.js" />
     <Content Include="assets\js\jqueryval\jquery.validate.min.js" />
     <Content Include="assets\js\jqueryval\jquery.validate.unobtrusive.js" />
@@ -500,6 +508,8 @@
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskResponsablesList.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChanges.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskQuestions.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_EditForm.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChangesList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -650,6 +660,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

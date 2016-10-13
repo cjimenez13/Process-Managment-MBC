@@ -1,11 +1,13 @@
 ﻿@model Model.FormQuestionsModel
 @foreach (var iQuestion in Model.formQuestions)
 {
-    string id_form = "question" + iQuestion.id_taskQuestion;
+    string id_form = "questionForm" + iQuestion.id_taskQuestion;
+    string question_id = "question" + iQuestion.id_taskQuestion;
     string id_taskQuestion = iQuestion.id_taskQuestion;
     string question = iQuestion.question;
     string questionType_id = iQuestion.questionType_id;
     string attribute_id = iQuestion.generalAttributeList;
+    string isChecked = iQuestion.isRequired == "True" ? "checked" : "";
     SelectList _QuestionTypesSelect;
     List<SelectListItem> _TypeSelectList = new List<SelectListItem>();
     foreach (var iType in Model.questionsTypes)
@@ -24,7 +26,7 @@
         }
     }
     _AttributesSelect = new SelectList(_AttributeListSelectList, "Value", "Text", attribute_id);
-    <tr>
+    <tr id="@question_id">
         <td style="font-size:16px; width:3%">
             <span class="handle-form">
                 <i class="fa fa-ellipsis-v"></i>
@@ -41,7 +43,24 @@
         </td>
         <td>
             @Html.DropDownListFor(model => questionType_id, _QuestionTypesSelect, new { @class = "", @form=id_form, @onChange = "onQuestionTypeChanged(this)" })
-            @Html.DropDownListFor(model => attribute_id, _AttributesSelect, new { @class = "", @form = id_form, @style = "display:none" })
+            @if (questionType_id == "3")
+            {
+                @Html.DropDownListFor(model => attribute_id, _AttributesSelect, new { @class = "", @form = id_form})
+            }
+            else
+            {
+                @Html.DropDownListFor(model => attribute_id, _AttributesSelect, new { @class = "", @form = id_form, @style = "display:none" })
+            }
+        </td>
+        <td>
+            <div class="form-group">
+                <div class="checkbox" style="margin:0px">
+                    <label style="margin-left:15px">
+                        <input type="checkbox" @isChecked class="colored-success" name="isRequired" id="isRequired" form="@id_form">
+                        <span class="text"></span>
+                    </label>
+                </div>
+            </div>
         </td>
         <td>
             <button class="btn btn-sky btn-sm" type="button"><span class="fa fa-cog"></span></button>

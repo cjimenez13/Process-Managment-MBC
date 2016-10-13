@@ -32,7 +32,30 @@ function showTaskDetails(id_task) {
                 placeholder: "sort-highlight",
                 handle: ".handle-form",
                 forcePlaceholderSize: true,
-                zIndex: 999999
+                zIndex: 999999,
+                update: function (event, ui) {
+                    var newpos = ui.item.index();
+                    var count = 0;
+                    ui.item.parent().find("> tr:not(:last-child)").each(function () {
+                        var id = this.id.substring(8, this.id.lenght);
+                        console.log(id)
+                        //var name = $(this).find('#questionName' + id).text();
+                        var newPos = count;
+                        console.log("hola")
+                        $.ajax({
+                            url: "/Tasks/_EditFormQuestion/?id_taskQuestion=" + id + '&questionPosition=' + newPos,
+                            type: "PUT",
+                            dataType: "html",
+                            traditional: true,
+                            contentType: false,
+                            success: function (data) {
+                            },
+                            error: function () {
+                            }
+                        });
+                        count += 1;
+                    });
+                }
             });
         },
         error: function () {
@@ -92,6 +115,5 @@ $(".todo-list").sortable({
             });
             count += 1;
         });
-
     }
 });

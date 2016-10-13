@@ -1,11 +1,17 @@
 ﻿@model Model.FormQuestionsModel
 
-<h2>Formulario</h2>
-<div class="row" style="margin-top:10px;margin-bottom:10px">
+<h2>Formulario
+    <span data-toggle="modal" data-target="#modal_EditTaskForm">
+        <button class="btn btn-sky btn-sm" style="margin-left:10px" type="submit" data-toggle="tooltip" data-placement="top" title="Editar">
+            <span class="fa fa-pencil"></span>
+        </button>
+    </span>
+</h2>
+<div class="row" style="margin-top:30px;margin-bottom:10px">
     <div class="col-xs-12">
-        <p>
+        <h5 id="formDescription">
             Descripción: @Html.Raw(Model.taskForm.description)
-        </p>
+        </h5>
     </div>
 </div>
 <div class="row">
@@ -18,6 +24,7 @@
                         <th></th>
                         <th>Pregunta</th>
                         <th>Tipo</th>
+                        <th>Requerido</th>
                         <th>Datos</th>
                         <th>Acción</th>
                     </tr>
@@ -27,18 +34,29 @@
                     @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskQuestions.cshtml", Model);}
                     <tr>
                         <td></td>
-                        <td style="width:50%">
+                        <td style="width:45%">
                             @using (Ajax.BeginForm("_AddTaskQuestion", "Task", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskQuestionAddedSuccess", OnFailure = "TaskQuestionAddedFailure" }, new { id = "form-addTaskQuestion" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.HiddenFor(m => m.id_taskFormA, new {@form = "form-addTaskQuestion"})
                                 @Html.HiddenFor(m => m.id_taskA, new { @form = "form-addTaskQuestion" })
+                                @Html.HiddenFor(m => m.maxQuestionPositionA, new { @form = "form-addTaskQuestion" })
                             }
                             @Html.TextBoxFor(model => model.questionA, new { @class = "form-control", @type="text", @form= "form-addTaskQuestion" })
                         </td>
                         <td>
                             @Html.DropDownListFor(model => model.selected_questionType_idA, Model._QuestionTypesSelect, new { @class = "", @form= "form-addTaskQuestion", @onChange = "onQuestionTypeChanged(this)" })
                             @Html.DropDownListFor(model => model.selected_attribute_idA, Model._AttributesSelect, new { @class = "", @form = "form-addTaskQuestion", @style="display:none"})
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <div class="checkbox" style="margin:0px">
+                                    <label style="margin-left:15px">
+                                        <input type="checkbox" class="colored-success" name="isRequired" id="isRequired" form="form-addTaskQuestion">
+                                        <span class="text"></span>
+                                    </label>
+                                </div>
+                            </div>
                         </td>
                         <td style="width:5%" >
                             <button class="btn btn-sky btn-sm" style="margin-right:10px"  type="button" data-toggle="tooltip" data-placement="top" title="Cambios en datos">
@@ -56,5 +74,6 @@
         </div>
     </div>
 </div>
+@{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_EditForm.cshtml", new Model.EditTaskForm(Model.taskForm));}
 
                        

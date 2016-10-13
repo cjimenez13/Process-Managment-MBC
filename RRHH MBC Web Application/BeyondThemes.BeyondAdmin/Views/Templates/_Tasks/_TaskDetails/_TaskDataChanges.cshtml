@@ -1,4 +1,8 @@
-﻿<h2>Cambios a realizar</h2>
+﻿@model Model.TaskChangesModel
+@{ 
+    string idForm = "form-addTaskChange";
+}
+<h2>Cambios a realizar</h2>
 <div class="row">
     <div class="col-xs-12">
         <div class="flip-scroll">
@@ -14,62 +18,24 @@
                 </thead>
                 <tbody id="taskForm">
                     <!-- Table data-->
+                    @{Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", Model);}
                     <tr>
                         <td>
-                            <select class="form-control">
-                                <option>Texto</option>
-                                <option>Numero entero</option>
-                                <option>Numero décimal</option>
-                                <option>Fecha</option>
-                                <option>Condición</option>
-                                <option>Lista</option>
-                            </select>
+                            @using (Ajax.BeginForm("_AddTaskChange", "Tasks", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskQuestionAddedSuccess", OnFailure = "TaskQuestionAddedFailure" }, new { id = "form-addTaskQuestion", form=@idForm}))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.task_id, new { @form = idForm })
+                            }
+                            @Html.DropDownListFor(model => model.attribute_id, Model.attributesList, new { @class = "form-control", @form = idForm, @onChange = "onQuestionTypeChanged(this)" })
                         </td>
                         <td>
-                            <select>
-                                <option>Texto</option>
-                                <option>Numero entero</option>
-                                <option>Numero décimal</option>
-                                <option>Fecha</option>
-                                <option>Condición</option>
-                                <option>Lista</option>
-                            </select>
+                            @Html.DropDownListFor(model => model.attribute_id, Model.operationTypesList, new { @class = "", @form = idForm, @onChange = "onQuestionTypeChanged(this)" })
                         </td>
                         <td>
-                            <input class="form-control" type="number" />
+                            @Html.TextBoxFor(model => model.value, new { @class="form-control"})
                         </td>
                         <td>
-                            <button class="btn btn-success btn-sm btn-add" type="button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>Texto</option>
-                                <option>Numero entero</option>
-                                <option>Numero décimal</option>
-                                <option>Fecha</option>
-                                <option>Condición</option>
-                                <option>Lista</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select>
-                                <option>Texto</option>
-                                <option>Numero entero</option>
-                                <option>Numero décimal</option>
-                                <option>Fecha</option>
-                                <option>Condición</option>
-                                <option>Lista</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input class="form-control" type="number" />
-                        </td>
-                        <td>
-                            <button class="btn btn-success btn-sm btn-add" type="button">
+                            <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Agregar" , form=@idForm>
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </td>
