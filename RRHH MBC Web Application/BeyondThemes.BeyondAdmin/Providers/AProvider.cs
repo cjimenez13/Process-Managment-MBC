@@ -2,7 +2,7 @@
 
 namespace BeyondThemes.BeyondAdmin.Providers
 {
-    class AProvider
+    public class AProvider
     {
         protected string _BaseAddress = WebConfigurationManager.AppSettings["WebApi"];
     }

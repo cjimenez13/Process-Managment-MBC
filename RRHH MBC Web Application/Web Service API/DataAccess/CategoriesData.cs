@@ -249,7 +249,7 @@ namespace Web_Service_API.DataAccess
                     attributeListDTO.id_attributeValue = rdr["id_attributeValue"].ToString();
                     attributeListDTO.attribute_id = rdr["attribute_id"].ToString();
                     attributeListDTO.name = rdr["name"].ToString();
-                    attributeListDTO.type_id = rdr["type"].ToString();
+                    attributeListDTO.type_id = rdr["type_id"].ToString();
                     attributeListDTO.value = rdr["value"].ToString();
                     attributeListDTO.isEnabled = rdr["isEnabled"].ToString();
                     attributeListDTO.createdBy = rdr["createdBy"].ToString();

@@ -154,7 +154,6 @@ begin
 	from AttributeList at where at.attribute_id = @id_attribute;
 end
 go
-
 -- drop procedure usp_get_AttributeList
 create procedure usp_get_AttributeList 
 @id_attributeValue bigint as

@@ -244,48 +244,49 @@ namespace Model
     public class TaskChangesModel
     {
         private TaskProvider taskProvider = new TaskProvider();
+        public CategorieProvider categorieProvider = new CategorieProvider();
         public List<TaskChangeDTO> taskChanges;
         public TaskDTO taskDTO;
-        public SelectList attributesList;
         public SelectList operationTypesList;
+        public List<AttributeDTO> attributes;
+        public List<OperationTypeDTO> operationTypes;
         public TaskChangesModel() { }
         public TaskChangesModel(TaskDTO taskDTO)
         {
             this.taskDTO = taskDTO;
             taskChanges = taskProvider.getTaskChanges(taskDTO.id_task).Result;
-            attributesList = generateAttributesList();
+            this.task_idA = this.taskDTO.id_task;
+            attributes = taskProvider.getTaskAttributes(this.task_idA).Result;
+            operationTypes = taskProvider.getOperationTypes().Result;
             operationTypesList = generateOperationTypesList();
-
-        }
-        private SelectList generateAttributesList()
-        {
-            List<SelectListItem> _AttributeListSelectList = new List<SelectListItem>();
-            List<AttributeDTO> attributes = taskProvider.getTaskAttributes(taskDTO.id_task).Result;
-            //var groupGeneralAttributes = new SelectListGroup() { Name = "Atributos generales" };
-            //var groupPersonalAttributes = new SelectListGroup() { Name = "Atributos personales" };
-            foreach (AttributeDTO iAttribute in attributes)
-            {
-                if (iAttribute.type_id != "4" && iAttribute.isGeneral == "True")
-                {
-                    _AttributeListSelectList.Add(new SelectListItem { Text = iAttribute.name, Value = iAttribute.id_attribute });
-                }
-            }
-            return new SelectList(_AttributeListSelectList, "Value", "Text");
         }
         private SelectList generateOperationTypesList()
         {
             List<SelectListItem> _OperationTypesListSelectList = new List<SelectListItem>();
-            List<OperationTypeDTO> operationTypes = taskProvider.getOperationTypes().Result;
-            //var groupGeneralAttributes = new SelectListGroup() { Name = "Atributos generales" };
-            //var groupPersonalAttributes = new SelectListGroup() { Name = "Atributos personales" };
             foreach (OperationTypeDTO iOperationType in operationTypes)
             {
-                _OperationTypesListSelectList.Add(new SelectListItem { Text = iOperationType.display_Name, Value = iOperationType.id_operationType });
+                _OperationTypesListSelectList.Add(new SelectListItem { Text = iOperationType.displayName, Value = iOperationType.id_operationType });
             }
             return new SelectList(_OperationTypesListSelectList, "Value", "Text");
         }
+        public string id_taskChangeA { get; set; }
+        public string task_idA { get; set; }
         [Required]
-        public string task_id { get; set; }
+        public string attribute_idA { get; set; }
+        [Required]
+        public string operation_idA { get; set; }
+        [Required(ErrorMessage = "Se debe completar el campo del valor")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string valueA { get; set; }
+        public string attributeList_typeA { get; set; }
+        public string attribute_typeA { get; set; }
+    }
+    public class EditTaskChangeModel
+    {
+
+        public string attributeList_type { get; set; }
+        public string attribute_type { get; set; }
+        public string id_taskChange { get; set; }
         [Required]
         public string attribute_id { get; set; }
         [Required]
@@ -293,9 +294,5 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo del valor")]
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string value { get; set; }
-    }
-    public class AddTaskChangeModel
-    {
-
     }
 }

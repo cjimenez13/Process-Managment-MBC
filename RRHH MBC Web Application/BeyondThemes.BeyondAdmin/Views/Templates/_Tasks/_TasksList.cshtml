@@ -14,10 +14,10 @@
             <span class="text" id="@id_taskName">@Html.Raw(task.name)</span>
             <small class="label label-default"><i class="fa fa-clock-o"></i> @Html.Raw(task.daysAvailable) dias y @Html.Raw(task.hoursAvailable) horas</small>
             <div class="tools" style="display:inline-block">
-                <a href="#" onclick="showTaskDetails('@task.id_task')">
+                <a onclick="showTaskDetails('@task.id_task')">
                     <i class="fa fa-eye"></i>
                 </a>
-                <a href="#" onclick="deleteTask('@task.id_task', '@task.name', this)">
+                <a onclick="deleteTask('@task.id_task', '@task.name', this)">
                     <i class="fa fa-trash-o"></i>
                 </a>
             </div>

@@ -421,11 +421,14 @@ go
 
 ------------------------------------- // Task Changes // ----------------------------------
 -- drop procedure usp_get_TaskChanges
+select * from CategorieAttributes
 create procedure usp_get_TaskChanges 
 @id_task bigint as 
 begin 
-	select tc.id_taskChange, tc.task_id, tc.attribute_id, tc.operation_id, tc.value 
-	from TaskChanges tc 
+	select tc.id_taskChange, tc.task_id, tc.attribute_id, tc.operation_id, tc.value, tc.attributeList_id, 
+	(select ca.[type] from CategorieAttributes ca where ca.id_attribute = tc.attribute_id) as attribute_type,
+	(select al.[type_id] from AttributeList al where al.id_attributeValue = tc.attributeList_id) as attributeList_type
+	from TaskChanges tc
 	where tc.task_id = @id_task
 end
 go
@@ -439,13 +442,13 @@ go
 
 -- drop procedure usp_insert_taskChange
 create procedure usp_insert_taskChange
-@task_id bigint, @attribute_id bigint, @operation_id int, @value nvarchar(50), @userLog int as
+@task_id bigint, @attribute_id bigint = null, @attributeList_id bigint = null, @operation_id int, @value nvarchar(50), @userLog int as
 begin
 set transaction isolation level snapshot
 begin transaction
 	declare @event_log_id int, @table int, @id_taskChange bigint
-	insert into TaskChanges(task_id, attribute_id, operation_id, value)
-	values (@task_id, @attribute_id, @operation_id, @value)
+	insert into TaskChanges(task_id, attribute_id, operation_id, value, attributeList_id)
+	values (@task_id, @attribute_id, @operation_id, @value, @attributeList_id)
 	set @id_taskChange = (select @@IDENTITY)
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'TaskChanges')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted task change', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
@@ -460,19 +463,18 @@ go
 
 -- drop procedure usp_update_taskChange
 create procedure usp_update_taskChange
-@id_taskChange int, @task_id bigint, @attribute_id bigint, @operation_id int, @value nvarchar(50), @userLog int as
+@id_taskChange int, @attribute_id bigint = null, @attributeList_id bigint = null, @operation_id int, @value nvarchar(50), @userLog int as
 begin 
 set transaction isolation level snapshot
 begin transaction
 	declare @event_log_id int, @table int
-	update TaskChanges set task_id = ISNULL(@task_id, task_id),
-							attribute_id = ISNULL(@attribute_id, attribute_id),
+	update TaskChanges set	attribute_id = ISNULL(@attribute_id, attribute_id),
+							attributeList_id = ISNULL(@attributeList_id, attributeList_id),
 							operation_id = ISNULL(@operation_id, operation_id),
 							value = ISNULL(@value, value)
 	where id_taskChange = @id_taskChange
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'TaskChanges')
 	exec @event_log_id = usp_insert_EventLog @description = 'updated task change', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 2, @user = @userLog;
-	exec usp_insert_Reference @attribute = 'id_task', @value = @task_id, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'id_taskChange', @value = @id_taskChange, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'attribute_id', @value = @attribute_id, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'operation_id', @value = @operation_id, @EventLog_id = @event_log_id

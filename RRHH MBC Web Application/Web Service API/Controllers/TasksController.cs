@@ -222,10 +222,10 @@ namespace Web_Service_API.Controllers
 
         [HttpGet]
         [Route("dataChanges")]
-        public TaskFormDTO getTaskChanges(string id_task)
+        public List<TaskChangeDTO> getTaskChanges(string id_task)
         {
-            TaskFormDTO taskForm = TaskData.getTaskForm(id_task);
-            return taskForm;
+            List<TaskChangeDTO> taskChanges = TaskChangesData.getTaskChanges(id_task);
+            return taskChanges;
         }
 
         [HttpPost]

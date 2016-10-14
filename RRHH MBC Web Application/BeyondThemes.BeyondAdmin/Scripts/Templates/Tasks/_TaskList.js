@@ -1,6 +1,4 @@
-﻿
-
-//-- loading animation 
+﻿//-- loading animation 
 var $loading = $('#loadingDiv').hide();
 var $taskDiv = $('#taskDetailsAll')
 $(document)
@@ -16,7 +14,6 @@ function showTaskDetails(id_task) {
         url: "/Tasks/_TaskDetails/?id_task=" + id_task, type: "GET", dataType: "html",
         beforeSend: function () {
             $('#taskDetails').remove()
-            //$taskDiv.empty()
             $loading.show();
         },
         complete: function(){
@@ -38,8 +35,6 @@ function showTaskDetails(id_task) {
                     var count = 0;
                     ui.item.parent().find("> tr:not(:last-child)").each(function () {
                         var id = this.id.substring(8, this.id.lenght);
-                        console.log(id)
-                        //var name = $(this).find('#questionName' + id).text();
                         var newPos = count;
                         console.log("hola")
                         $.ajax({
@@ -65,7 +60,7 @@ function showTaskDetails(id_task) {
 }
 //-- stage name udated
 function TaskUpdatedSuccess(content) {
-    Notify("La tarea ha sido editad con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+    Notify("La tarea ha sido editada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
     //$('#stageName' + content.id_stage).text(content.name);
 }1
 function TaskUpdatedFailure(content) {

@@ -76,14 +76,17 @@ namespace DataTransferObjects
         public string id_taskChange { get; set; }
         public string task_id { get; set; }
         public string attribute_id { get; set; }
+        public string attributeList_id { get; set; }
         public string operation_id { get; set; }
         public string value { get; set; }
+        public string attributeList_type { get; set; }
+        public string attribute_type { get; set; }
         public string userLog { get; set; }
     }
     public class OperationTypeDTO
     {
         public string id_operationType { get; set; }
-        public string display_Name { get; set; }
+        public string displayName { get; set; }
         public string operation { get; set; }
         public string reg_expr { get; set; }
     }

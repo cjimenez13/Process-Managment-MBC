@@ -223,7 +223,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<TaskChangeDTO> changes = new List<TaskChangeDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync("api/tasks/changes?id_task=" + id_task).Result;
+                HttpResponseMessage response = client.GetAsync("api/tasks/dataChanges?id_task=" + id_task).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -325,7 +325,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(taskChamgeDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PostAsync("api/tasks/changes", contentPost).Result;
+                HttpResponseMessage response = client.PostAsync("api/tasks/dataChanges", contentPost).Result;
                 return response.IsSuccessStatusCode;
             }
         }
@@ -382,7 +382,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(taskChangeDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = client.PutAsync("api/tasks/changes", contentPost).Result;
+                HttpResponseMessage response = client.PutAsync("api/tasks/dataChanges", contentPost).Result;
                 return response.IsSuccessStatusCode;
             }
         }
@@ -421,7 +421,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                HttpResponseMessage response = client.DeleteAsync("api/tasks/changes/?id_taskChange=" + id_taskChange + "&userLog=" + userLog).Result;
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/dataChanges/?id_taskChange=" + id_taskChange + "&userLog=" + userLog).Result;
                 return response.IsSuccessStatusCode;
             }
         }

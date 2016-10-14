@@ -6,6 +6,7 @@ using BeyondThemes.BeyondAdmin.Tools;
 using System;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -26,23 +27,39 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
         }
-        public ActionResult _AddResponsables(string id_stage)
+        public ActionResult _AddResponsables(string id_task)
         {
-            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddResponsables.cshtml");
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(task));
         }
-        public ActionResult _AddForm(string id_stage)
+        public ActionResult _AddForm(string id_task)
         {
-            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddForm.cshtml");
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(task));
        }
+        public ActionResult _AddAditionals(string id_task)
+        {
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");
+        }
+        public ActionResult _AddTaskChanges(string id_task)
+        {
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(task));
+        }
         public ActionResult _TaskQuestions(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskQuestions.cshtml", new Model.FormQuestionsModel(task));
         }
-        public ActionResult _AddAditionals(string id_stage)
+        public ActionResult _TaskDataChangesList(string id_task)
         {
-            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", new Model.TaskChangesModel(task));
         }
         
 
@@ -304,12 +321,81 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
+                CategorieProvider categorieProvider = new CategorieProvider();
                 TaskChangeDTO taskChange = new TaskChangeDTO();
-                taskChange.task_id = pModel.task_id;
-                taskChange.attribute_id = pModel.attribute_id;
+                taskChange.task_id = pModel.task_idA;
+                AttributeTypeDTO typeDTO;
+                if (pModel.attribute_idA.Substring(0,1) == "l")
+                {
+                    taskChange.attributeList_id = pModel.attribute_idA.Substring(1);
+                    AttributeListDTO attributeListDTO = categorieProvider.getAttributeList(taskChange.attributeList_id).Result;
+                    typeDTO = categorieProvider.getAttributeType(attributeListDTO.type_id).Result;
+                }
+                else
+                {
+                    taskChange.attribute_id = pModel.attribute_idA.Substring(1);
+                    GeneralAttributeDTO generalAttributeDTO = categorieProvider.getGeneralAttribute(taskChange.attribute_id).Result;
+                    typeDTO = categorieProvider.getAttributeType(generalAttributeDTO.type_id).Result;
+                }
+                if (!(typeDTO.reg_expr == "" || new Regex(typeDTO.reg_expr).Match(pModel.valueA).Success))
+                {
+                    return new HttpStatusCodeResult(404, "Error, el campo valor debe ser de tipo: " + typeDTO.type);
+                }
+                taskChange.operation_id = pModel.operation_idA;
+                taskChange.value = pModel.valueA.ToString();
+                taskChange.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.postTaskChange(taskChange).Result)
+                {
+                    return _TaskDataChangesList(taskChange.task_id);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar el cambio de dato");
+        }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult _EditTaskChange(Model.EditTaskChangeModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                CategorieProvider categorieProvider = new CategorieProvider();
+                TaskChangeDTO taskChange = new TaskChangeDTO();
+                taskChange.id_taskChange = pModel.id_taskChange;
+                AttributeTypeDTO typeDTO;
+                if (pModel.attribute_id.Substring(0, 1) == "l")
+                {
+                    taskChange.attributeList_id = pModel.attribute_id.Substring(1);
+                    typeDTO = categorieProvider.getAttributeType(pModel.attributeList_type).Result;
+                }
+                else
+                {
+                    taskChange.attribute_id = pModel.attribute_id.Substring(1);
+                    typeDTO = categorieProvider.getAttributeType(pModel.attribute_type).Result;
+                }
+                if (!(typeDTO.reg_expr == "" || new Regex(typeDTO.reg_expr).Match(pModel.value).Success))
+                {
+                    return new HttpStatusCodeResult(404, "Error, el campo valor debe ser de tipo: "+typeDTO.type);
+                }
                 taskChange.operation_id = pModel.operation_id;
                 taskChange.value = pModel.value.ToString();
                 taskChange.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putTaskChange(taskChange).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede editar el cambio de dato");
+        }
+
+        [HttpDelete]
+        public ActionResult _DeleteTaskChange(string id_taskChange)
+        {
+            if (ModelState.IsValid)
+            {
+                if (taskProvider.deleteTaskChange(id_taskChange, Request.Cookies["user_id"].Value).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }

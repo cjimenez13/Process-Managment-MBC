@@ -3,6 +3,50 @@ var id_task = ""
 var timeDateText = "";
 var timeHourText = "";
 //-- When users click next
+
+//-- ajax to get taskTypes
+function getTaskTypes(callback) {
+    $.ajax({
+        url: "/Tasks/_GetTaskTypes/", type: "GET", dataType: "html",
+        success: function (data) {
+            if (callback) callback(data);
+        },
+    });
+}
+//--  
+function getStepFormHtml(callback) {
+    $.ajax({
+        url: "/Tasks/_AddForm/?id_task=" + id_task, type: "GET", dataType: "html",
+        success: function (data) {
+            if (callback) callback(data);
+        },
+    });
+}
+function getStepResponsablesHtml(callback) {
+    $.ajax({
+        url: "/Tasks/_AddResponsables/?id_task=" + id_task, type: "GET", dataType: "html",
+        success: function (data) {
+            if (callback) callback(data);
+        },
+    });
+}
+function getStepAdditionalsHtml(callback) {
+    $.ajax({
+        url: "/Tasks/_AddAditionals/?id_task=" + id_task, type: "GET", dataType: "html",
+        success: function (data) {
+            if (callback) callback(data);
+        },
+    });
+}
+function getStepChangesHtml(callback) {
+    $.ajax({
+        url: "/Tasks/_AddTaskChanges/?id_task=" + id_task, type: "GET", dataType: "html",
+        success: function (data) {
+            if (callback) callback(data);
+        },
+    });
+}
+
 $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
     var lastIndex = $('.badge').last().text()
     if (lastIndex == data.step) {
@@ -10,6 +54,7 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
     }
     evt.preventDefault()
     canContinue = false
+    console.log(data.step)
     if (data.direction === "next") {
         toStep = data.step + 1
         if (data.step == 1) {
@@ -30,19 +75,16 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
                 }
             }
         }
-        else if (data.step == 2) {
-            canContinue = true;
-            $('#myWizard').wizard('selectedItem', {
-                step: toStep
-            });
-        }
-        else if (data.step == 3) {
-            canContinue = true;
-            $('#myWizard').wizard('selectedItem', {
-                step: toStep
-            });
-        }
-        else if (data.step == 4) {
+        else{
+            console.log("hola")
+            var actualStepContent = $('.step-content').find('*[data-step="' + data.step + '"]').find('div')
+            console.log(actualStepContent.text())
+            if (actualStepContent.text() === "Formulario") {
+                getStepFormHtml(function (view) {
+                    console.log(view)
+                    actualStepContent.html(view)
+                })
+            }
             canContinue = true;
             $('#myWizard').wizard('selectedItem', {
                 step: toStep
@@ -140,24 +182,7 @@ function timeChanged(sel) {
         timeAmount.hide();
     }
 }
-//-- ajax to get taskTypes
-function getTaskTypes(callback) {
-    $.ajax({
-        url: "/Tasks/_GetTaskTypes/", type: "GET", dataType: "html",
-        success: function (data) {
-            if (callback) callback(data);
-        },
-    });
-}
-//--  
-function getStepFormHtml(callback) {
-    $.ajax({
-        url: "/Tasks/_AddForm/", type: "GET", dataType: "html",
-        success: function (data) {
-            if (callback) callback(data);
-        },
-    });
-}
+
 var taskTypes
 taskTypes = getTaskTypes()
 function taskTypeChanged(sel) {
@@ -173,11 +198,11 @@ function refreshSteps(taskType_id) {
                 addResponsablesStep();
             }
             if (taskType.formNeeded == "True") {
-                console.log("hola")
                 addFormStep();
             }
         }
     });
+    addChangesStep();
     addAditionalsStep();
 }
 function addAditionalsStep() {
@@ -186,21 +211,38 @@ function addAditionalsStep() {
     {
         badge: lastIndex,
         label: 'Adicionales',
-        pane: '<div>Content</div>'
+        pane: '<div>Adicionales</div>'
+    }
+    ]);
+}
+function addChangesStep() {
+    lastIndex = $('.badge').last().text() + 1
+    $('#myWizard').wizard('addSteps', lastIndex, [
+    {
+        badge: lastIndex,
+        label: 'Cambios',
+        pane: '<div>Cambios</div>'
     }
     ]);
 }
 function addFormStep(){
     lastIndex = $('.badge').last().text();
-    getStepFormHtml(function (view) {
-        $('#myWizard').wizard('addSteps', lastIndex, [
-       {
-           badge: lastIndex,
-           label: 'Formulario',
-           pane: view
-       }
-        ]);
-    })
+    //getStepFormHtml(function (view) {
+    //    $('#myWizard').wizard('addSteps', lastIndex, [
+    //   {
+    //       badge: lastIndex,
+    //       label: 'Formulario',
+    //       pane: view
+    //   }
+    //    ]);
+    //})
+    $('#myWizard').wizard('addSteps', lastIndex, [
+    {
+        badge: lastIndex,
+        label: 'Formulario',
+        pane: '<div>Formulario</div>'
+    }
+    ]);
    
 }
 function addResponsablesStep() {
@@ -209,7 +251,7 @@ function addResponsablesStep() {
         {
             badge: lastIndex,
             label: 'Responsables',
-            pane: '<div>Content</div>'
+            pane: '<div>Responsables</div>'
         }
     ]);
 }
