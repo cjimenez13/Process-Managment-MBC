@@ -6,9 +6,13 @@
         public string name { get; set; }
         public string createdDate { get; set; }
         public string createdBy { get; set; }
+        public string state_id { get; set; }
+        public string state_name { get; set; }
+        public string state_color { get; set; }
         public string categorie_id { get; set; }
+        public string categorie_name { get; set; }
         public string template_id { get; set; }
-        public string isCompleted { get; set; }
+        public string template_name { get; set; }
         public string completedPorcentage { get; set; }
         public string nextProcess { get; set; }
         public string previousProcess { get; set; }

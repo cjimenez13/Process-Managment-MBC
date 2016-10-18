@@ -75,9 +75,9 @@ namespace Model
         private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         public List<StageDTO> stages = new List<StageDTO>();
         public string id_process;
-        public StagesListModel(TemplateDTO templateDTO)
+        public StagesListModel(string id_processManagment)
         {
-            this.id_process = templateDTO.id_processManagment;
+            this.id_process = id_processManagment;
             stages = processManagmentProvider.getStages(id_process).Result;
             foreach (var stage in stages)
             {

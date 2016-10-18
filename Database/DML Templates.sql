@@ -10,6 +10,14 @@ begin
 end
 go 
 
+create procedure usp_get_templatesbyCategorie 
+@categorie_id int as 
+begin
+	select pm.id_ProcessManagment, pm.name 
+	from ProcessManagment pm 
+	where pm.isProcess = 0 and pm.categorie_id = @categorie_id
+end
+go
 --drop procedure usp_get_template
 create procedure usp_get_template 
 @id_template bigint as

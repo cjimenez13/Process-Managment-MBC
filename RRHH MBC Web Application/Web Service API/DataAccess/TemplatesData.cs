@@ -31,6 +31,27 @@ namespace Web_Service_API.DataAccess
             };
             return templates;
         }
+        public static List<TemplateDTO> getTemplatesbyCategorie(string categorie_id)
+        {
+            List<TemplateDTO> templates = new List<TemplateDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_templatesbyCategorie", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@categorie_id", SqlDbType.Int);
+                command.Parameters["@categorie_id"].Value = categorie_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    TemplateDTO template = new TemplateDTO();
+                    template.id_processManagment = rdr["id_processManagment"].ToString();
+                    template.name = rdr["name"].ToString();
+                    templates.Add(template);
+                }
+            };
+            return templates;
+        }
         public static TemplateDTO getTemplate(string id_template)
         {
             TemplateDTO template = new TemplateDTO();

@@ -48,6 +48,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return template;
             }
         }
+        public async Task<List<TemplateDTO>> getTemplatesByCategorie(string categorie_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TemplateDTO> templates = new List<TemplateDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/templates/?categorie_id="+ categorie_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    templates = serializer.Deserialize<List<TemplateDTO>>(result);
+                }
+                return templates;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
 
         public async Task<bool> postTemplate(TemplateDTO templateDTO)

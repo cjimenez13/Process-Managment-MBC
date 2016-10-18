@@ -522,3 +522,4 @@ C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Applicati
 C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Microsoft.QualityTools.Testing.Fakes.dll
 C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.HtmlToPdf.dll
 C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.HtmlToPdf.xml
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Microsoft.QualityTools.Testing.Fakes.dll

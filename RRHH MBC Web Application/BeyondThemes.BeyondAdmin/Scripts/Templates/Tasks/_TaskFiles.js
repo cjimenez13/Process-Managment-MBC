@@ -11,14 +11,14 @@ function uploadTaskFile(event, self) {
     var form = $(self).closest("form")
     var formData = getFormData(form);
     if (window.FormData !== undefined) {
-        var fileUpload = $("#userFileUpload").get(0);
+        var fileUpload = $("#taskFileUpload").get(0);
         var files = fileUpload.files;
         var fileData = new FormData();
         for (var i = 0; i < files.length; i++) {
             fileData.append(files[i].name, files[i]);
         }
         $.ajax({
-            url: '/Tasks/UploadTaskFile/?user_id=' + formData.task_id + '&name=' + formData.name + '&description=' + formData.description,
+            url: '/Tasks/UploadTaskFile/?id_task=' + formData.id_task + '&name=' + formData.name + '&description=' + formData.description,
             type: "POST",
             contentType: false,
             processData: false,

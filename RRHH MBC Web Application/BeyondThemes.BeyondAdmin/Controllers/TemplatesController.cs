@@ -37,9 +37,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
         public ActionResult _StagesList(string id_process)
         {
-            TemplateDTO template = new TemplateDTO();
-            template.id_processManagment = id_process;
-            return PartialView("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(template));
+            return PartialView("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(id_process));
         }
         [ValidateAntiForgeryToken]
         [HttpPost]

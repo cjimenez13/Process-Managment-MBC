@@ -402,7 +402,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
         [HttpPost]
-        public ActionResult UploadTaskFile(AddFileModel model)
+        public ActionResult UploadTaskFile(AddTaskFileModel model)
         {
             if (Request.Files.Count > 0)
             {
@@ -425,6 +425,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                         fileDTO.description = model.description;
                         fileDTO.fileName = fileName;
                         fileDTO.fileType = file.ContentType;
+                        fileDTO.task_id = model.id_task;
                         fileDTO.userLog = Request.Cookies["user_id"].Value;
                         if (taskProvider.postTaskFile(fileDTO).Result)
                         {
@@ -445,11 +446,9 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpDelete]
-        public ActionResult _DeleteTaskFile(string id_file)
+        public ActionResult _DeleteTaskFile(string id_taskFile)
         {
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.id_file = id_file;
-            if (taskProvider.deleteTaskFile(id_file, Request.Cookies["user_id"].Value).Result)
+            if (taskProvider.deleteTaskFile(id_taskFile, Request.Cookies["user_id"].Value).Result)
             {
                 return new HttpStatusCodeResult(200);
             }

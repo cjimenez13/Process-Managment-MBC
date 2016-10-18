@@ -277,9 +277,9 @@ namespace Web_Service_API.Controllers
 
         [HttpPost]
         [Route("files")]
-        public IHttpActionResult postTaskFile(TaskChangeDTO pTaskChange)
+        public IHttpActionResult postTaskFile(FileTaskDTO pTaskFile)
         {
-            if (!TaskChangesData.insertTaskChange(pTaskChange))
+            if (!TaskFilesData.postFile(pTaskFile))
             {
                 return BadRequest();
             }
@@ -290,7 +290,7 @@ namespace Web_Service_API.Controllers
         [Route("files")]
         public IHttpActionResult deleteTaskFile(string id_taskFile, string userLog)
         {
-            if (!TaskChangesData.deleteTask(id_taskFile, userLog))
+            if (!TaskFilesData.deleteFile(id_taskFile, userLog))
             {
                 return BadRequest();
             }

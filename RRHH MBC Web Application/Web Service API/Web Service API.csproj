@@ -222,6 +222,7 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProcessController.cs" />
     <Compile Include="Controllers\ProcessManagmentController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="DataAccess\AccountData.cs" />
     <Compile Include="DataAccess\CategoriesData.cs" />
     <Compile Include="DataAccess\GroupsData.cs" />
+    <Compile Include="DataAccess\ProcessData.cs" />
     <Compile Include="DataAccess\ProcessManagmentData.cs" />
     <Compile Include="DataAccess\RolesData.cs" />
     <Compile Include="DataAccess\TaskData\TaskChangesData.cs" />

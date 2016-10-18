@@ -1,6 +1,5 @@
--- drop procedure usp_insert_taskFile
--- drop procedure usp_get_userFiles
-create procedure usp_get_taksFiles
+-- drop procedure usp_get_taksFiles
+create procedure usp_get_taskFiles
 @id_task nvarchar(50)
 as
 begin
@@ -9,7 +8,7 @@ begin
 	where tf.task_id = @id_task
 end
 go
-
+-- drop procedure usp_insert_taskFile
 create procedure usp_insert_taskFile
 @id_task bigint, @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(100), @fileName nvarchar(200), @userLog int
 as
@@ -17,8 +16,8 @@ begin
 set transaction isolation level snapshot
 begin transaction
 	declare @event_log_id int, @table int, @id_taskFile bigint
-	insert into TaskFiles(task_id,fileData, name, [description], createdDate, fileType, [fileName]) 
-	values (@id_task, @fileData, @name, @description,GETDATE(), @fileType, @fileName);
+	insert into TaskFiles(task_id,fileData, name, [description], createdDate, fileType, [fileName], createdBy) 
+	values (@id_task, @fileData, @name, @description,GETDATE(), @fileType, @fileName, @userLog);
 	set @id_taskFile = (select @@IDENTITY)
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'TaskFiles')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted task file', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
@@ -44,7 +43,7 @@ begin transaction
 	exec usp_insert_Reference @attribute = 'id_taskFile', @value = @id_taskFile, @EventLog_id = @event_log_id
 commit transaction
 end
-
+go
 ------------------------------------- // Task Notifications // ----------------------------------
 -- drop procedure usp_get_taskNotifications
 create procedure usp_get_taskNotifications
@@ -151,6 +150,7 @@ begin
 	inner join Users u on part.[user_id] = u.id_user
 	where u.isEnabled = 1
 end
+go
 -- drop procedure usp_insert_TaskNotificationUser
 create procedure usp_insert_taskNotificationUser
 @id_notification int, @user_id int, @userLog int as 

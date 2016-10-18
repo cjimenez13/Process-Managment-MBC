@@ -20,6 +20,12 @@ namespace Web_Service_API.Controllers
             TemplateDTO template = TemplatesData.getTemplate(id_template);
             return template;
         }
+        [HttpGet]
+        public List<TemplateDTO> GetTemplatesByCategorie(string categorie_id)
+        {
+            List<TemplateDTO> templates = TemplatesData.getTemplatesbyCategorie(categorie_id);
+            return templates;
+        }
         [HttpPost]
         public IHttpActionResult Post(TemplateDTO templateDTO)
         {

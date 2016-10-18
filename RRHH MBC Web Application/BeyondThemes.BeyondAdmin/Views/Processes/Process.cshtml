@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Model.ProcessModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
     ViewBag.Title = "Gestion #12351512";
     ViewBag.Description = "Nombre de la gestion";
@@ -6,35 +7,25 @@
 
 <div class="row">
     <div class="col-xs-12">
-        @using (WidgetBuilder<dynamic> widget = Html.Bootstrap().Begin(new Widget().RadiusBordered().Caption("Gestion #23314123")))
-        {
-            using (WidgetSectionPanel header = widget.BeginHeader())
-            {
-            }
-            using (widget.BeginBody())
-            {
+        <div class="widget radius-bordered">
+            <div class="widget-header">
+                <span class="widget-caption">Gestión #@Html.Raw(Model.processDTO.id_processManagment)</span>
+            </div>
+            <div class="widget-body">
                 <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
                     <div class="col-xs-12">
                         <div class="col-md-4">
                             <dl class="dl-horizontal">
-                                <dt>Estado</dt>
-                                <dd><span class="label label-success">Activo</span></dd>
-                                <dt>Creado por</dt>
-                                <dd>Jocsan Padilla</dd>
-                                <dt># Gestión</dt>
-                                <dd> 11241132</dd>
+                                <dt>Estado</dt><dd><span class="label" style="background-color:@Model.processDTO.state_color">@Html.Raw(Model.processDTO.state_name)</span></dd>
+                                <dt>Creado por</dt><dd>Jocsan Padilla</dd>
+                                <dt># Gestión</dt><dd>#@Html.Raw(Model.processDTO.id_processManagment)</dd>
                             </dl>
                         </div>
                         <div class="col-md-4">
                             <dl class="dl-horizontal">
-                                <dt>Actualizado</dt>
-                                <dd>16.08.2014 12:15:57</dd>
-                                <dt>Creado</dt>
-                                <dd>16.08.2014 12:15:57</dd>
-                                <dt>Gestión anterior</dt>
-                                <dd><a>#123144512</a></dd>
-                                <dt>Siguiente gestión</dt>
-                                <dd><a>#123144512</a></dd>
+                                <dt>Creado</dt><dd>16.08.2014 12:15:57</dd>
+                                <dt>Gestión anterior</dt><dd><a>#123144512</a></dd>
+                                <dt>Siguiente gestión</dt><dd><a>#123144512</a></dd>
                             </dl>
                         </div>
                     </div>
@@ -65,66 +56,14 @@
                                 <!-- Etapas -->
                                 using (tabs.BeginPanel())
                                 {
-                                    <ul class="todo-list">
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Design a nice theme</span>
-                                            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
-                                            <div class="tools" style="display:inline-block">
-                                                <a href="/Processes/Tasks">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Make the theme responsive</span>
-                                            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
-                                            <div class="tools">
-                                                <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Let theme shine like a star</span>
-                                            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
-                                            <div class="tools">
-                                                <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span class="handle">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </span>
-                                            <input type="checkbox" value="">
-                                            <span class="text">Let theme shine like a star</span>
-                                            <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
-                                            <div class="tools">
-                                                <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit"></i>
-                                                <i class="fa fa-trash-o"></i>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <div class="row">
+                                        <div class="col-xs-12" style="margin-bottom:10px">
+                                            <h3>Etapas</h3>
+                                        </div>
+                                        <div class="col-xs-9" id="StagesListDiv">
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.processDTO.id_processManagment));}
+                                        </div>
+                                    </div>
                                 }
                                 <!-- Participantes -->
                                 using (tabs.BeginPanel())
@@ -133,33 +72,22 @@
                                         <!-- search bar -->
                                         <div class="col-md-6">
                                             <span class="input-icon">
-                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
+                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterParticipantsUsers(this)">
                                                 <i class="glyphicon glyphicon-search blue"></i>
                                             </span>
                                         </div>
-                                        <div class="col-md-offset-4 col-md-2" style="">
-                                            <button class="btn btn-success btn-block">Agregar integrante</button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <p>Mostrando 10 integrantes</p>
-                                        </div>
-                                    </div>
-                                    <!-- Users box -->
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-4 col-xs-12">
-                                            <div class="databox databox-graded">
-                                                <div class="databox-left no-padding">
-                                                    <img src="~/assets/img/avatars/Javi-Jimenez.jpg" style="width:65px; height:65px;">
-                                                </div>
-                                                <a href="@Url.Action("Profile")">
-                                                    <div class="databox-right padding-top-20 bg-whitesmoke">
-                                                        <div class="databox-text darkgray" style="font-size:14px">JAVI JIMENEZ</div>
-                                                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>cjimenez13@outlook.com</div>
-                                                    </div>
-                                                </a>
+                                        <div class="col-lg-offset-3 col-lg-3 col-md-offset-2 col-md-4">
+                                            <div class="col-xs-6">
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addGroupParticipants">Agregar grupo</button>
                                             </div>
+                                            <div class="col-xs-6">
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">Agregar integrante</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12" id="participantsListDiv">
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(Model.processDTO.id_processManagment));}
                                         </div>
                                     </div>
                                 }
@@ -329,16 +257,17 @@
                             }
                         </div>
                     </div>
-                </div>
-            }
-        }
+                </div>            
+            </div>
+        </div>
     </div>
 </div>
 
 
 @section PageScripts{
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-
+<script src="~/Scripts/Templates/Template/Participants.js"></script>
+<script src="~/Scripts/Templates/Template/Stages.js"></script>
 <script>
     (function ($) {
 

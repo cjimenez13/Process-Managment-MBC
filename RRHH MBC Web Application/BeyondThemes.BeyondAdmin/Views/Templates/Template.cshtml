@@ -50,7 +50,7 @@
                                             <h3>Etapas</h3>
                                         </div>
                                         <div class="col-xs-9" id="StagesListDiv">
-                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.templateDTO));}
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.templateDTO.id_processManagment));}
                                         </div>
                                     </div>
                                 }

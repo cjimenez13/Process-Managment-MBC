@@ -52,6 +52,7 @@ function showTaskDetails(id_task) {
                     });
                 }
             });
+            $(":file").filestyle();
         },
         error: function () {
         }

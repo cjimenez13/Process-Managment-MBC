@@ -39,15 +39,15 @@ namespace Web_Service_API.DataAccess.TaskData
         }
         //-------------------------------------------------- Creates -----------------------------------------------------------------
 
-        public static bool postFile(FileDTO pFileDTO)
+        public static bool postFile(FileTaskDTO pFileDTO)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
                 SqlCommand command = new SqlCommand("usp_insert_taskFile", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@user_id", SqlDbType.NVarChar);
-                command.Parameters["@user_id"].Value = pFileDTO.user;
+                command.Parameters.Add("@id_task", SqlDbType.BigInt);
+                command.Parameters["@id_task"].Value = pFileDTO.task_id;
 
                 command.Parameters.Add("@name", SqlDbType.NVarChar);
                 command.Parameters["@name"].Value = pFileDTO.name;
@@ -64,8 +64,8 @@ namespace Web_Service_API.DataAccess.TaskData
                 command.Parameters.Add("@fileName", SqlDbType.NVarChar);
                 command.Parameters["@fileName"].Value = pFileDTO.fileName;
 
-                command.Parameters.Add("@userLog", SqlDbType.NVarChar);
-                command.Parameters["@userLog"].Value = pFileDTO.fileName;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pFileDTO.userLog;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
@@ -77,7 +77,7 @@ namespace Web_Service_API.DataAccess.TaskData
             return false;
         }
         //------------------------------------------------ Deletes ----------------------------------------------------
-        public static bool deleteFile(string id_file)
+        public static bool deleteFile(string id_file, string userLog)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
@@ -88,7 +88,7 @@ namespace Web_Service_API.DataAccess.TaskData
                 command.Parameters["@id_taskFile"].Value = id_file;
 
                 command.Parameters.Add("@userLog", SqlDbType.Int);
-                command.Parameters["@userLog"].Value = id_file;
+                command.Parameters["@userLog"].Value = userLog;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();

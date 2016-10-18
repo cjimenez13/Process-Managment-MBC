@@ -351,7 +351,7 @@ create procedure usp_get_userCategories
 begin 
 	select c.id_categorie, c.name, c.[description], c.isEnabled
 	from CategorieAttributes ca inner join 
-	(select pa.attribute_id, pa.[user_id], pa.value from PersonalAttributes pa where pa.[user_id] = 75)pa
+	(select pa.attribute_id, pa.[user_id], pa.value from PersonalAttributes pa where pa.[user_id] = @id_user)pa
 	on pa.attribute_id = ca.id_attribute
 	inner join Categories c on c.id_categorie = ca.categorie_id
 	where c.isEnabled = 1

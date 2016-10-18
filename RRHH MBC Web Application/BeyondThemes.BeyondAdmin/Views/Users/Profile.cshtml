@@ -64,6 +64,7 @@
 </div>
 
 @section PageScripts{
+<script src="~/assets/js/file_input/bootstrap-filestyle.min.js"></script>
 <script>
     function editAttributeRow(id_attribute, self) {
         $('#btnEditUserAttribute' + id_attribute).hide()
@@ -75,11 +76,8 @@
         Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
     }1
     function UserAttributeEditSuccess(content) {
-        console.log(content);
-        
         id_attribute = content.attribute_id
         value = content.value
-        console.log(id_attribute)
         Notify('El atributo ha sido editado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
         $('#btnEditUserAttribute' + id_attribute).show()
         $('#valueLabel' + id_attribute).text(value)
