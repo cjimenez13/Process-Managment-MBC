@@ -26,3 +26,9 @@ insert into QuestionType (id_questionType, name) values (6,'Fecha')
 insert into OperationType (id_operationType, displayName, operation, reg_expr) values (0,'Aumentar', '+','^-?[\d]+([\.|\,][\d]*)?$')
 insert into OperationType (id_operationType, displayName, operation, reg_expr) values (1,'Disminuir', '-', '^-?[\d]+([\.|\,][\d]*)?$')
 insert into OperationType (id_operationType, displayName, operation, reg_expr) values (2,'Asignación', '=', '^[\s\S]*$')
+
+-- Tipos de notificaciones (no editar, solo agregar)
+insert into NotificationsTypes ([type_id], [type_name]) values (0, 'Interno')
+insert into NotificationsTypes ([type_id], [type_name]) values (1, 'Correo')
+insert into NotificationsTypes ([type_id], [type_name]) values (2, 'Telegram')
+

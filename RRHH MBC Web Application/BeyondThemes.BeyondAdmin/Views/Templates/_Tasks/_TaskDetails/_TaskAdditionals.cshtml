@@ -1,66 +1,7 @@
-﻿<div class="row">
+﻿@model Model.TaskDetailsModel
+<div class="row">
     <div class="col-xs-12">
-        <div class="row" style="margin-bottom:20px;">
-            <div class="col-xs-10">
-                <h2>Archivos</h2>
-            </div>
-            <div class="col-xs-2">
-                <button class="btn btn-sky btn-block">Agregar archivo</button>
-            </div>
-        </div>
-        <div class="row" style="margin-bottom:20px;">
-            <div class="col-xs-12">
-                <div class="row">
-                    <div class="col-xs-12" style="margin-bottom:20px;">
-                        <div class="flip-scroll">
-                            <table class="table flip-content table-hover">
-                                <!-- column titles -->
-                                <thead class="flip-content bordered-primary">
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Fecha</th>
-                                        <th>Descripcion</th>
-                                        <th>Descargar</th>
-                                        <th>Borrar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Table data-->
-                                    <tr>
-                                        <td>John Doe</td>
-                                        <td>11-7-2014</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alexander Pierce</td>
-                                        <td>11-7-2014</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bob Doe</td>
-                                        <td>11-7-2014</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mike Doe</td>
-                                        <td>11-7-2014</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td><button class="btn btn-sky"><i class="fa fa-download"></i></button></td>
-                                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskFiles.cshtml", new Model.TaskFilesModel(Model.task));}
     </div>
     <hr />
     <div class="col-xs-12">

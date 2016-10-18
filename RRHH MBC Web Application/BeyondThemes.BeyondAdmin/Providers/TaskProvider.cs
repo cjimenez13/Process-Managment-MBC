@@ -249,6 +249,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return operationTypes;
             }
         }
+
+        public async Task<List<FileTaskDTO>> getTaskFiles(string id_task)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<FileTaskDTO> operationTypes = new List<FileTaskDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/files?id_task="+id_task).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    operationTypes = new JavaScriptSerializer().Deserialize<List<FileTaskDTO>>(result);
+                }
+                return operationTypes;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
 
         public async Task<string> postTask(TaskDTO taskDTO)
@@ -326,6 +344,17 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(taskChamgeDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/tasks/dataChanges", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> postTaskFile(FileTaskDTO taskFileDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(taskFileDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/files", contentPost).Result;
                 return response.IsSuccessStatusCode;
             }
         }
@@ -422,6 +451,15 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/dataChanges/?id_taskChange=" + id_taskChange + "&userLog=" + userLog).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> deleteTaskFile(string id_taskFile, string userLog)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/files/?id_taskFile=" + id_taskFile + "&userLog=" + userLog).Result;
                 return response.IsSuccessStatusCode;
             }
         }

@@ -52,7 +52,7 @@
                 @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(Model.task));}
             </div>
             <div id="additionals-tab" class="tab-pane">
-                @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");}
+                @{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskAdditionals.cshtml", Model);}
             </div>
         </div>
     </div>

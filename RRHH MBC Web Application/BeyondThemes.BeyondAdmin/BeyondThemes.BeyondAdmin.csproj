@@ -97,6 +97,9 @@
     <Reference Include="Microsoft.Owin.Security.Twitter">
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="MvcSiteMapProvider">
       <HintPath>..\packages\MvcSiteMapProvider.MVC5.Core.4.6.13\lib\net45\MvcSiteMapProvider.dll</HintPath>
     </Reference>
@@ -418,6 +421,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskChanges.js" />
+    <Content Include="Scripts\Templates\Tasks\_TaskFiles.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskForm.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskResponsables.js" />
     <Content Include="Scripts\Templates\Tasks\_AddTask.js" />
@@ -511,6 +515,8 @@
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskQuestions.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_EditForm.cshtml" />
     <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChangesList.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskFiles.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_AddTaskFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

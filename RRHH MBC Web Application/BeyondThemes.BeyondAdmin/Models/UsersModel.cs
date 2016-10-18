@@ -113,8 +113,6 @@ namespace Model
     }
     public class AddFileModel
     {
-        private UsersProvider userProvider = new UsersProvider();
-
         public AddFileModel() { }
         public AddFileModel(string user_id)
         {

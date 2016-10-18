@@ -1,0 +1,52 @@
+﻿@model Model.TaskFilesModel
+
+<div class="row" style="margin-bottom:20px;">
+    <div class="col-xs-10">
+        <h2>Archivos</h2>
+    </div>
+    <div class="col-xs-2">
+        <button class="btn btn-success" style="float:right; margin-right:5%" data-toggle="modal" data-target="#modal_addTaskFile">Agregar archivo</button>
+    </div>
+</div>
+<div class="row" style="margin-bottom:20px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12" style="margin-bottom:20px;">
+                <!-- List of files -->
+                <div class="flip-scroll">
+                    <table class="table flip-content table-hover">
+                        <!-- column titles -->
+                        <thead class="flip-content bordered-primary">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th> Ver</th>
+                                <th>Descargar</th>
+                                <th>Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table data-->
+                            @foreach (var file in Model.files)
+                            {
+                                string imgURL = "data:" + file.fileType + ";base64," + file.fileBase64;
+                                <tr>
+                                    <td>@file.name</td>
+                                    <td>@file.createdDate.Substring(0, 10)</td>
+                                    <td>@file.description</td>
+                                    <td style="width:7%"><a class="btn btn-sky" href="@imgURL"><i class="fa fa-eye"></i></a></td>
+                                    <td style="width:7%"><a class="btn btn-sky" href="@imgURL" download="@file.fileName"><i class="fa fa-download"></i></a></td>
+                                    <td style="width:7%"><button class="btn btn-danger" onclick="deleteTaskFile('@file.id_taskFile','@file.name',this)"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+@{ Html.RenderPartial("/Views/Templates/_TaskDetails/_AddTaskFile.cshtml", new Model.AddTaskFileModel(Model.taskDTO.id_task))}
+
+

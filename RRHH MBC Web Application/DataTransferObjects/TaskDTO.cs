@@ -90,4 +90,48 @@ namespace DataTransferObjects
         public string operation { get; set; }
         public string reg_expr { get; set; }
     }
+    public class FileTaskDTO
+    {
+        public byte[] fileData { get; set; }
+        public string task_id { get; set; }
+        public string name { get; set; }
+        public string createdDate { get; set; }
+        public string fileBase64 { get; set; }
+        public string description { get; set; }
+        public string id_taskFile { get; set; }
+        public string fileType { get; set; }
+        public string fileName { get; set; }
+        public string userLog { get; set; }
+    }
+    public class TaskNotificationDTO
+    {
+        public string id_notification { get; set; }
+        public string task_id { get; set; }
+        public string message { get; set; }
+        public string isStarting { get; set; }
+        public string isTelegram { get; set; }
+        public string isIntern { get; set; }
+        public string isEmail { get; set; }
+        public string userLog { get; set; }
+    }
+    public class TaskNotificationTypeDTO
+    {
+        public string notification_id { get; set; }
+        public string type_id { get; set; }
+        public string isSended { get; set; }
+        public string type_name { get; set; }
+        public string userLog { get; set; }
+    }
+    public class TaskNotificationUserDTO
+    {
+        public string notification_id { get; set; }
+        public string user_id { get; set; }
+        public string name { get; set; }
+        public string sLastName { get; set; }
+        public string fLastName { get; set; }
+        public string userName { get; set; }
+        public string email { get; set; }
+        public string photoData { get; set; }
+        public string userLog { get; set; }
+    }
 }

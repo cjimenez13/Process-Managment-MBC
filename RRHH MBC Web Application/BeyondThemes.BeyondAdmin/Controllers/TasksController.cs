@@ -7,6 +7,8 @@ using System;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text.RegularExpressions;
+using Model;
+using System.Web;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -396,6 +398,60 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 {
                     return new HttpStatusCodeResult(200);
                 }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPost]
+        public ActionResult UploadTaskFile(AddFileModel model)
+        {
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        HttpPostedFileBase file = files[i];
+                        string fname = file.FileName;
+                        string fileName = Path.GetFileName(fname);
+                        string fileExtension = Path.GetExtension(fileName).ToLower();
+                        int fileSize = file.ContentLength;
+                        Stream stream = file.InputStream;
+                        BinaryReader binaryReader = new BinaryReader(stream);
+                        byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
+                        FileTaskDTO fileDTO = new FileTaskDTO();
+                        fileDTO.fileData = bytes;
+                        fileDTO.name = model.name;
+                        fileDTO.description = model.description;
+                        fileDTO.fileName = fileName;
+                        fileDTO.fileType = file.ContentType;
+                        fileDTO.userLog = Request.Cookies["user_id"].Value;
+                        if (taskProvider.postTaskFile(fileDTO).Result)
+                        {
+                            return new HttpStatusCodeResult(200, "El archivo se cargo con éxito");
+                        }
+                    }
+                    return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
+                }
+                catch (Exception ex)
+                {
+                    return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
+                }
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404, "Error, No se selecciono ningun archivo");
+            }
+        }
+
+        [HttpDelete]
+        public ActionResult _DeleteTaskFile(string id_file)
+        {
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.id_file = id_file;
+            if (taskProvider.deleteTaskFile(id_file, Request.Cookies["user_id"].Value).Result)
+            {
+                return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }

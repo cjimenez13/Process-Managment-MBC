@@ -241,6 +241,7 @@ namespace Model
         public string isRequired { get; set; }
         public int maxQuestionPositionA { get; set; } = 0;
     }
+    //-------------------------------------- Task Changes ---------------------------------------------
     public class TaskChangesModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -294,5 +295,34 @@ namespace Model
         [Required(ErrorMessage = "Se debe completar el campo del valor")]
         [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
         public string value { get; set; }
+    }
+    //-------------------------------------- Task Files ---------------------------------------------
+    public class TaskFilesModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<FileTaskDTO> files;
+        public TaskDTO taskDTO;
+        public TaskFilesModel(TaskDTO pTaskDTO)
+        {
+            taskDTO = pTaskDTO;
+            files = taskProvider.getTaskFiles(taskDTO.id_task).Result;
+        }
+    }
+    public class AddTaskFileModel
+    {
+        public AddTaskFileModel() { }
+        public AddTaskFileModel(string id_task)
+        {
+            this.id_task = id_task;
+        }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
+        public string name { get; set; }
+        [Display(Name = "Descripción")]
+        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string description { get; set; }
+        public string id_task { get; set; }
     }
 }

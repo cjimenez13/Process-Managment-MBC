@@ -245,27 +245,8 @@ commit transaction
 end
 go
 
-------------------------------------- // Task Notifications // ----------------------------------
-create procedure usp_getTaskNotifications
-@task_id bigint as
-begin
-	select n.id_Notification, n.[message] from Notifications n where n.task_id = @task_id
-end
-go
 
-create procedure usp_insertTaskNotification
-@task_id bigint, @message nvarchar(1000) as 
-begin 
-	insert into Notifications (message, task_id) values (@message, @task_id)
-end
-go
 
-create procedure usp_updateTaskNotification 
-@task_id bigint, @message nvarchar(1000) as 
-begin
-	insert into Notifications (message, task_id) values (@message, @task_id)
-end
-go
 ------------------------------------- // Task Form // ----------------------------------
 -------- //Questions
 -- drop procedure usp_getTaskQuestions
@@ -327,7 +308,6 @@ commit transaction
 end
 go
 --drop procedure usp_update_question
-select * from FormQuestions
 create procedure usp_update_question
 @id_taskQuestion bigint, @question nvarchar(250) =null, @generalAttributeList int = null, 
 @questionType_id int = null, @userLog int, @questionPosition int = null, @isRequired bit as 

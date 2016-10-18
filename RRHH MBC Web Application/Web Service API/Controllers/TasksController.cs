@@ -266,5 +266,35 @@ namespace Web_Service_API.Controllers
             List<OperationTypeDTO> taskForm = TaskChangesData.getOperationTypes();
             return taskForm;
         }
+
+        [HttpGet]
+        [Route("files")]
+        public List<FileTaskDTO> getTaskFiles(string id_task)
+        {
+            List<FileTaskDTO> taskFiles = TaskFilesData.getTaskFiles(id_task);
+            return taskFiles;
+        }
+
+        [HttpPost]
+        [Route("files")]
+        public IHttpActionResult postTaskFile(TaskChangeDTO pTaskChange)
+        {
+            if (!TaskChangesData.insertTaskChange(pTaskChange))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("files")]
+        public IHttpActionResult deleteTaskFile(string id_taskFile, string userLog)
+        {
+            if (!TaskChangesData.deleteTask(id_taskFile, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }
