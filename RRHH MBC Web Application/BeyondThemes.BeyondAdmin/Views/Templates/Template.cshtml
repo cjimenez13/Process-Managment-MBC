@@ -49,7 +49,7 @@
                                         <div class="col-xs-12" style="margin-bottom:10px">
                                             <h3>Etapas</h3>
                                         </div>
-                                        <div class="col-xs-9" id="StagesListDiv">
+                                        <div class="col-lg-9 col-md-9 col-xs-12" id="StagesListDiv">
                                             @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.templateDTO.id_processManagment));}
                                         </div>
                                     </div>
@@ -59,18 +59,24 @@
                                 {
                                     <div class="row" style="margin-bottom:30px">
                                         <!-- search bar -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-xs-8">
                                             <span class="input-icon">
-                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterParticipantsUsers(this)" >
+                                                <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterParticipantsUsers(this)">
                                                 <i class="glyphicon glyphicon-search blue"></i>
                                             </span>
                                         </div>
-                                        <div class="col-lg-offset-3 col-lg-3 col-md-offset-2 col-md-4">
+                                        <div class="col-lg-offset-3 col-lg-3 col-md-offset-2 col-md-4 col-xs-4">
                                             <div class="col-xs-6">
-                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addGroupParticipants">Agregar grupo</button>
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addGroupParticipants">
+                                                    <span class="visible-xs"><i class="fa fa-users"></i></span>
+                                                    <span class="hidden-xs">Agregar grupo</span>
+                                                </button>
                                             </div>
                                             <div class="col-xs-6">
-                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">Agregar integrante</button>
+                                                <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser">
+                                                    <span class="visible-xs"><i class="fa fa-user"></i></span>
+                                                    <span class="hidden-xs">Agregar integrante</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

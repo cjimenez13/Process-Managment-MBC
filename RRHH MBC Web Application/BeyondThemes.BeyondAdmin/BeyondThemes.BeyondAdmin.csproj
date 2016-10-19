@@ -431,6 +431,7 @@
     <Content Include="Scripts\Templates\Tasks\_TaskChanges.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskFiles.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskForm.js" />
+    <Content Include="Scripts\Templates\Tasks\_TaskInfo.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskResponsables.js" />
     <Content Include="Scripts\Templates\Tasks\_AddTask.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskList.js" />
@@ -532,6 +533,7 @@
     <Content Include="Views\Processes\_Index\_ProcessList.cshtml" />
     <Content Include="Views\Processes\_Index\_AddProcess.cshtml" />
     <Content Include="Views\Processes\_Process\_ProcessActivity.cshtml" />
+    <Content Include="Views\Templates\_Tasks\_TaskDetails\_EditTaskInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

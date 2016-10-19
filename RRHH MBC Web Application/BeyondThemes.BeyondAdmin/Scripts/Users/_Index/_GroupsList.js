@@ -83,7 +83,7 @@ function filterGroups(pValue) {
         var value = pValue
         $(".widget-caption", groupContainers).each(function () {
             var groupBox = $(this).closest(".groupBox")
-            if ($(this).text().toLowerCase().includes(value)) {
+            if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) != -1) {
                 groupBox.addClass('visible')
                 groupBox.show();
             }

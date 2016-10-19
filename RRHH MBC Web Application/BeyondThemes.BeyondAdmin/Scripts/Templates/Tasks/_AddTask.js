@@ -46,6 +46,33 @@ function getStepChangesHtml(callback) {
         },
     });
 }
+function updateStepPage() {
+    var currentStep = $('#myWizard').wizard('selectedItem');
+    nextStep = currentStep.step + 1
+    var actualStepContent = $('.step-content').find('*[data-step="' + nextStep + '"]').find('div')
+    if (actualStepContent.text() === "Formulario") {
+        getStepFormHtml(function (view) {
+            actualStepContent.html(view)
+        })
+    }
+    if (actualStepContent.text() === "Cambios") {
+        getStepChangesHtml(function (view) {
+            actualStepContent.html(view)
+        })
+    }
+    if (actualStepContent.text() === "Adicionales") {
+        getStepAdditionalsHtml(function (view) {
+            actualStepContent.html(view)
+        })
+    }
+    if (actualStepContent.text() === "Responsables") {
+        getStepResponsablesHtml(function (view) {
+            actualStepContent.html(view)
+            $('.step-content .select2 ').prop("multiple", "");
+            $('.select2').select2()
+        })
+    }
+}
 
 $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
     var lastIndex = $('.badge').last().text()
@@ -54,7 +81,6 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
     }
     evt.preventDefault()
     canContinue = false
-    console.log(data.step)
     if (data.direction === "next") {
         toStep = data.step + 1
         if (data.step == 1) {
@@ -62,11 +88,21 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
             var is_valid_form = form.valid();
             if (is_valid_form) {
                 if (id_task != "") {
-
+                    editTask(1, function (isAdded) {
+                        canContinue = true
+                        if (isAdded = true) {
+                            console.log("hola")
+                            updateStepPage();
+                            $('#myWizard').wizard('selectedItem', {
+                                step: toStep
+                            });
+                        }
+                    })
                 } else {
                     addTask(1, function (isAdded) {
                         canContinue = true
                         if (isAdded = true) {
+                            updateStepPage();
                             $('#myWizard').wizard('selectedItem', {
                                 step: toStep
                             });
@@ -75,16 +111,8 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
                 }
             }
         }
-        else{
-            console.log("hola")
-            var actualStepContent = $('.step-content').find('*[data-step="' + data.step + '"]').find('div')
-            console.log(actualStepContent.text())
-            if (actualStepContent.text() === "Formulario") {
-                getStepFormHtml(function (view) {
-                    console.log(view)
-                    actualStepContent.html(view)
-                })
-            }
+        else {
+            updateStepPage();
             canContinue = true;
             $('#myWizard').wizard('selectedItem', {
                 step: toStep
@@ -99,6 +127,11 @@ $('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
     }
 
 });
+$('#myWizard').on('actionclicked.fu.wizard', function (evt, data) {
+
+});
+
+
 
 //-- ajax to add task
 function addTask(step, callback) {
@@ -134,6 +167,37 @@ function addTask(step, callback) {
         }
     });
 }
+function editTask(step, callback) {
+    var form = $('*[data-step="' + step + '"]').find('form');
+    var token = "__RequestVerificationToken=" + $('input[name="__RequestVerificationToken"]').val() + "&";
+    var lengthFormData = form.serialize().length
+    var isTaskedAdded = false;
+    formData = token + form.serialize().substring(token.length, lengthFormData)
+    $.ajax({
+        headers: {
+            'X-HTTP-Method-Override': 'PUT'
+        },
+        url: "/Tasks/_EditTaskCreated",
+        method: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data: formData + "&X-Requested-With=XMLHttpRequest&X-HTTP-Method-Override=PUT"+"&id_task="+id_task,
+        success: function (data) {
+            $('#taskListDiv').html(data)
+            $(".todo-list").sortable({
+                placeholder: "sort-highlight",
+                handle: ".handle",
+                forcePlaceholderSize: true,
+                zIndex: 999999
+            });
+            isTaskedAdded = true;
+            if (callback) callback(isTaskedAdded);
+        },
+        error: function () {
+            isTaskedAdded = false;
+            if (callback) callback(isTaskedAdded);
+        }
+    });
+}
 
 //-- reset data on wizard and back to step 1
 function resetWizard() {
@@ -143,8 +207,9 @@ function resetWizard() {
     });
     $('.step-content').find('form')[0].reset()
     $("#selected_taskType").prop("disabled", false);
-
-
+     $('#daysAmount').val(0);
+     $('#hoursAmount').val(0);
+     refreshSteps(0);
 }
 
 //-- when users clicks finished on wizard
@@ -159,10 +224,13 @@ $('#modal_addTask').on('hidden.bs.modal', function () {
 
 //-- when type of time is changed
 function timeChanged(sel) {
-    var timeAmount = $('#timeAmountDiv');
+    var daysAmount = $('#daysAmountDiv');
+    var hourAmount = $('#hourAmountDiv');
+
     var timeDate = $('#timeDateDiv');
-    if (sel.value === "days" | sel.value==="hours") {
-        timeAmount.show();
+    if (sel.value === "time") {
+        daysAmount.show();
+        hourAmount.show();
         timeDate.hide();
         var actualTimeDate = timeDate.find('#timeDatePicker').val();
         var actualTimeHour = timeDate.find('#timeHour').val()
@@ -174,12 +242,13 @@ function timeChanged(sel) {
         }
     } else if (sel.value === "date") {
         timeDate.show();
+        daysAmount.hide();
+        hourAmount.hide();
         var actualTimeDate = timeDate.find('#timeDatePicker').val();
         if (timeDateText == "") {
             timeDateText = timeDate.find('#timeDatePicker').val();
             timeHourText = timeDate.find('#timeHour').val();
         }
-        timeAmount.hide();
     }
 }
 

@@ -1,5 +1,4 @@
 ﻿@model Model.StagesListModel
-
 <ul class="todo-list">
     @foreach (var stage in Model.stages)
     {
@@ -14,10 +13,10 @@
             <span id="@id_stageName" class="text">@Html.Raw(stage.name)</span>
             <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
             <div class="tools" style="display:inline-block">
-                <a href= "@Url.Action("Tasks","Templates",new { id = stage.id_stage})">
+                <a href="@Url.Action("Tasks","Templates",new { id = stage.id_stage})">
                     <i class="fa fa-eye"></i>
                 </a>
-                <a href="#"  data-toggle="modal" data-target="@id_editModal">
+                <a href="#" data-toggle="modal" data-target="@id_editModal">
                     <i class="fa fa-edit"></i>
                 </a>
                 <a href="#" onclick="deleteStage('@stage.id_stage', '@stage.name', this)">
@@ -29,7 +28,6 @@
         </li>
     }
 </ul>
-
 <div class="row">
     @using (Ajax.BeginForm("_AddStage", "Templates", new AjaxOptions { HttpMethod = "POST", OnSuccess = "StageAddedSuccess", OnFailure = "StageAddedFailure" }))
     {
@@ -47,4 +45,8 @@
         </div>
     }
 </div>
+
+
+
+
 

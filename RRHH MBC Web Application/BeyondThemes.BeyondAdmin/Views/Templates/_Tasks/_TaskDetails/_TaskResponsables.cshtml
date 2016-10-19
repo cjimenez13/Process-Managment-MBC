@@ -14,7 +14,7 @@
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.id_task)
         <div class="col-xs-11">
-            @Html.DropDownListFor(model => model.selected_userParticipants_id, Model._ParticipantsSelect, new { @class = "form-control", @style = "width:100%", @multiple = "multiple" })
+            @Html.DropDownListFor(model => model.selected_userParticipants_id, Model._ParticipantsSelect, new { @class = "form-control select2", @style = "width:100%", @multiple = "multiple" })
             @Html.ValidationMessageFor(model => model.selected_userParticipants_id, "", new { @class = "text-danger" })
         </div>
         <div class="col-xs-1">

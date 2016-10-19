@@ -141,7 +141,6 @@ end
 go
 
 
-
 ------------------------------------- // Task Targets // ----------------------------------
 -- drop procedure usp_get_taskTargets
 create procedure usp_get_taskTargets

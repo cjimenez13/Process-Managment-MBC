@@ -1,4 +1,6 @@
 ﻿//-- loading animation 
+
+var actualTask = "";
 var $loading = $('#loadingDiv').hide();
 var $taskDiv = $('#taskDetailsAll')
 $(document)
@@ -20,10 +22,12 @@ function showTaskDetails(id_task) {
             $loading.hide();
         },
         success: function (view) {
+            actualTask = id_task;
             $taskDiv.html(view, 500)
             $taskDiv.hide()
             $taskDiv.fadeIn('slow')
-            $('#selected_userParticipants_id').select2()
+            $('.select2').select2()
+            $('.spinbox').spinbox();
             $("#taskForm").sortable({
                 items: "> tr:not(:last-child)",
                 placeholder: "sort-highlight",
@@ -36,7 +40,6 @@ function showTaskDetails(id_task) {
                     ui.item.parent().find("> tr:not(:last-child)").each(function () {
                         var id = this.id.substring(8, this.id.lenght);
                         var newPos = count;
-                        console.log("hola")
                         $.ajax({
                             url: "/Tasks/_EditFormQuestion/?id_taskQuestion=" + id + '&questionPosition=' + newPos,
                             type: "PUT",
@@ -59,14 +62,7 @@ function showTaskDetails(id_task) {
     });
     
 }
-//-- stage name udated
-function TaskUpdatedSuccess(content) {
-    Notify("La tarea ha sido editada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-    //$('#stageName' + content.id_stage).text(content.name);
-}1
-function TaskUpdatedFailure(content) {
-    Notify("Error, no se puede editar la tarea", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-}
+
 
 function deleteTask(id_task, name, element) {
     $.ajax({
@@ -78,7 +74,11 @@ function deleteTask(id_task, name, element) {
         success: function (data) {
             Notify("La tarea '" + name + "' ha sido removida", 'bottom-right', '5000', 'success', 'fa-edit', true);
             $(element).closest("li").hide(300, function () {
+                $(this).remove()
             });
+            if (id_task == actualTask) {
+                $taskDiv.empty();
+            }
         },
         error: function () {
             Notify("Error, no se puede remover la tarea '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);

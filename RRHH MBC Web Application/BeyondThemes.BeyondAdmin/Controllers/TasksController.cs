@@ -76,18 +76,15 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 taskDTO.description = model.description;
                 taskDTO.stage_id = model.id_stage;
                 taskDTO.type_id = model.selected_taskType; 
-                taskDTO.taskPosition = model.maxTaskPosition;
-                if (model.timeSelected == "days")
+                taskDTO.taskPosition = model.taskPosition;
+                if (model.timeSelected == "time")
                 {
-                    taskDTO.daysAvailable = model.timeAmount;
+                    taskDTO.daysAvailable = model.daysAmount;
+                    taskDTO.hoursAvailable = model.hoursAmount;
                 }
                 else if(model.timeSelected == "date")
                 {
                     taskDTO.finishDate = model.timeDatePicker.Substring(0,11) + model.timeHour;
-                }
-                else if (model.timeSelected == "hours")
-                {
-                    taskDTO.hoursAvailable = model.timeAmount;
                 }
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 string id_task;
@@ -122,24 +119,56 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPut]
-        public ActionResult _EditTask(string id_task, string name = null, string taskPosition = null, string description = null, string taskState_id = null, string completedDate = null,
-            string finishDate = null, string beginDate = null )
+        public ActionResult _EditTaskCreated(Model.EditTaskCreeated model)
         {
             if (ModelState.IsValid)
             {
                 TaskDTO taskDTO = new TaskDTO();
-                taskDTO.name = name;
-                taskDTO.id_task = id_task;
-                taskDTO.taskPosition = taskPosition;
-                taskDTO.description = description;
-                taskDTO.taskState_id = taskState_id;
-                taskDTO.completedDate = completedDate;
-                taskDTO.finishDate = finishDate;
-                taskDTO.beginDate = beginDate;
+                taskDTO.name = model.name;
+                taskDTO.description = model.description;
+                taskDTO.stage_id = model.id_stage;
+                taskDTO.taskPosition = model.taskPosition;
+                taskDTO.id_task = model.id_task;
+                if (model.timeSelected == "time")
+                {
+                    taskDTO.daysAvailable = model.daysAmount;
+                    taskDTO.hoursAvailable = model.hoursAmount;
+                }
+                else if (model.timeSelected == "date")
+                {
+                    taskDTO.finishDate = model.timeDatePicker.Substring(0, 11) + model.timeHour;
+                }
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putTask(taskDTO).Result)
                 {
-                    return Content(name);
+                    return PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(taskDTO.stage_id));
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [HttpPut]
+        public ActionResult _EditTask(Model.EditTaskInfo model)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.name = model.nameE;
+                taskDTO.description = model.descriptionE;
+                taskDTO.id_task = model.id_taskE;
+                if (model.timeSelectedE == "time")
+                {
+                    taskDTO.daysAvailable = model.daysAvailableE;
+                    taskDTO.hoursAvailable = model.hoursAvailableE;
+                }
+                else if (model.timeSelectedE == "date")
+                {
+                    taskDTO.finishDate = model.finishTimeE.Substring(0, 11) + model.finishDateE;
+                }
+                taskDTO.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putTask(taskDTO).Result)
+                {
+                    return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskInfo.cshtml", new Model.TaskDetailsModel(taskDTO.id_task));
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");

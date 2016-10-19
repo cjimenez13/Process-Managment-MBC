@@ -5,63 +5,65 @@
     ViewBag.Description = "Perfil " + name;
     Layout = "~/Views/Shared/_Default.cshtml";
 }
-<div class="row">
-    <div class="col-md-12">
+
         <div class="profile-container">
-            <div class="profile-header row">
-                <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                    <img src=@Model.imageURL class="header-avatar avatar" />
-                </div>
-                <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
-                    <div class="header-fullname">@name</div>
-                    <div class="header-information">
-                       @Model.user.userName <br /> @Model.user.email <br /> @Model.user.birthdate
+            <div class="profile-header" style="margin-left:0px; margin-right:0px">
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                        <img src=@Model.imageURL class="header-avatar avatar" />
+                    </div>
+                    <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
+                        <div class="header-fullname">@name</div>
+                        <div class="header-information">
+                            @Model.user.userName <br /> @Model.user.email <br /> @Model.user.birthdate
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="profile-body">
-                <div class="col-lg-12">
-                    <div class="tabbable">
-                        <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
-                            <li class="active">
-                                <a data-toggle="tab" href="#personalInformation">Información Personal</a>
-                            </li>
-                            <li class="tab-palegreen">
-                                <a data-toggle="tab" href="#files">Archivos</a>
-                            </li>
-                            <li class="tab-palegreen">
-                                <a data-toggle="tab" id="contacttab" href="#data">Datos</a>
-                            </li>
-                            <li class="tab-palegreen">
-                                <a data-toggle="tab" href="#activity">Actividad</a>
-                            </li>
-                            <li class="tab-red">
-                                <a data-toggle="tab" href="#settings">Configuración</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content tabs-flat">
-                            <div id="personalInformation" class="tab-pane active">
-                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileInfo.cshtml", Model);}
-                            </div>
-                            <div id="files" class="tab-pane">
-                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName, Model.user.user_id));}
-                            </div>
-                            <div id="data" class="tab-pane">
-                                @{ Html.RenderPartial("/Views/Users/_Profile/_ProfileCategories.cshtml", new Model.UserCategoriesModel(Model.user.user_id));}
-                            </div>
-                            <div id="settings" class="tab-pane">
-                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileConfig.cshtml", Model); }
-                            </div>
-                            <div id="activity" class="tab-pane">
-                                @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml"); }
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#personalInformation">Información Personal</a>
+                                </li>
+                                <li class="tab-palegreen">
+                                    <a data-toggle="tab" href="#files">Archivos</a>
+                                </li>
+                                <li class="tab-palegreen">
+                                    <a data-toggle="tab" id="contacttab" href="#data">Datos</a>
+                                </li>
+                                <li class="tab-palegreen">
+                                    <a data-toggle="tab" href="#activity">Actividad</a>
+                                </li>
+                                <li class="tab-red">
+                                    <a data-toggle="tab" href="#settings">Configuración</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content tabs-flat">
+                                <div id="personalInformation" class="tab-pane active">
+                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileInfo.cshtml", Model);}
+                                </div>
+                                <div id="files" class="tab-pane">
+                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName, Model.user.user_id));}
+                                </div>
+                                <div id="data" class="tab-pane">
+                                    @{ Html.RenderPartial("/Views/Users/_Profile/_ProfileCategories.cshtml", new Model.UserCategoriesModel(Model.user.user_id));}
+                                </div>
+                                <div id="settings" class="tab-pane">
+                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileConfig.cshtml", Model); }
+                                </div>
+                                <div id="activity" class="tab-pane">
+                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml"); }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
 
 @section PageScripts{
 <script src="~/assets/js/file_input/bootstrap-filestyle.min.js"></script>
