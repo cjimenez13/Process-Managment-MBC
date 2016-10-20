@@ -3,7 +3,7 @@
 create procedure usp_get_categories as
 begin 
 	select c.id_categorie, c.name, c.[description], c.createdBy_name, c.createdBy_id, c.createdDate, c.isEnabled 
-	from Categories c
+	from Categories c order by c.name
 end
 go
 

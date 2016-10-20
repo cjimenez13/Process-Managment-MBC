@@ -11,9 +11,6 @@
     <mvcSiteMapNode title="Categorías" controller="Categories" action="Index" imageUrl="fa fa-th-large" description="Lista de categorías">
       <mvcSiteMapNode title="Categoría vacaciones" controller="Categories" action="Categorie" description=" " visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"/>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Encuestas" controller="Forms" action="Index" imageUrl="fa fa-list" description="Lista de encuestas">
-      <mvcSiteMapNode title="Encuesta 1" controller="Forms" action="Form" description="Resumen resultados" visibility="SiteMapPathHelper,!*"/>
-    </mvcSiteMapNode>
     <mvcSiteMapNode title="Consultas" url="/Scripts/Index" imageUrl="fa fa-code" description="Registro de consultas" route="Default"/>
     <mvcSiteMapNode title="Personas" controller="Users" action="Index" imageUrl="fa fa-user" description="Grupos y personas">
       <mvcSiteMapNode title="Perfil" controller="Users" action="Profile" description="Pefil" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"/>

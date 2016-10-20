@@ -1,5 +1,7 @@
-﻿$('#selected_userParticipants_id').select2();
-$('#selected_groups_id').select2();
+﻿$(document).ready(function () {
+    $('#selected_userParticipants_id').select2();
+    $('#selected_groups_id').select2();
+})
 
 // Participant added
 function ParticipantAddedSuccess(content) {
