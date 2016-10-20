@@ -61,7 +61,7 @@
                                             <h3>Etapas</h3>
                                         </div>
                                         <div class="col-lg-9 col-md-9 col-xs-12" id="StagesListDiv">
-                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.templateDTO.id_processManagment));}
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(Model.processDTO.id_processManagment));}
                                         </div>
                                     </div>                                }
                                 <!-- Participantes -->
@@ -92,172 +92,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12" id="participantsListDiv">
-                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(Model.templateDTO.id_processManagment));}
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(Model.processDTO.id_processManagment));}
                                         </div>
                                     </div>
                                 }
                                 <!-- Actividad -->
                                 using (tabs.BeginPanel())
                                 {
-                                    <ul class="timeline animated fadeInDown">
-                                        <li>
-                                            <div class="timeline-datetime">
-                                                <span class="timeline-time">
-                                                    8:19
-                                                </span><span class="timeline-date">Hoy</span>
-                                            </div>
-                                            <div class="timeline-badge blue">
-                                                <i class="fa fa-suitcase"></i>
-                                            </div>
-                                            <div class="timeline-panel bordered-top-3 bordered-azure">
-                                                <div class="timeline-header bordered-bottom bordered-blue">
-                                                    <span class="timeline-title">
-                                                        La gestion #12351521 inició
-                                                    </span>
-                                                    <p class="timeline-datetime">
-                                                        <small class="text-muted">
-                                                            <i class="glyphicon glyphicon-time">
-                                                            </i>
-                                                            <span class="timeline-date">Hoy</span>
-                                                            -
-                                                            <span class="timeline-time">8:19</span>
-                                                        </small>
-                                                    </p>
-                                                </div>
-                                                <div class="timeline-body">
-                                                    <p>La gestión (nombre de la gestión) ha sido creada por Diego Padilla</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-datetime">
-                                                <span class="timeline-time">
-                                                    7:00
-                                                </span><span class="timeline-date">Yesterday</span>
-                                            </div>
-                                            <div class="timeline-badge danger">
-                                                <i class="fa fa-exclamation font-120"></i>
-                                            </div>
-                                            <div class="timeline-panel">
-                                                <div class="timeline-header bordered-bottom bordered-blue">
-                                                    <span class="timeline-title danger">
-                                                        Etapa 1
-                                                    </span>
-                                                    <p class="timeline-datetime">
-                                                        <small class="text-muted">
-                                                            <i class="glyphicon glyphicon-time">
-                                                            </i>
-                                                            <span class="timeline-date">Yesterday</span>
-                                                            -
-                                                            <span class="timeline-time">7:00</span>
-                                                        </small>
-                                                    </p>
-                                                </div>
-                                                <div class="timeline-body">
-                                                    <p>
-                                                        La etapa 1 ha iniciado, se encuentran 5 tareas pendiente por realizar en esta etapa.<br />
-                                                        La gestión lleva 40% completado
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-inverted">
-                                            <div class="timeline-datetime">
-                                                <span class="timeline-time">
-                                                    6:08
-                                                </span><span class="timeline-date">Ayer</span>
-                                            </div>
-                                            <div class="timeline-badge sky">
-                                                <img src="~/assets/img/avatars/Sergey-Azovskiy.jpg" class="badge-picture" />
-                                            </div>
-                                            <div class="timeline-panel">
-                                                <div class="timeline-header bordered-bottom bordered-blue">
-                                                    <span class="timeline-title">
-                                                        La tarea <a href="">nombre de la tarea</a> ha sido completada por <a href="/Users/Profile">Sergey Azovskiy</a>
-                                                    </span>
-                                                    <p class="timeline-datetime">
-                                                        <small class="text-muted">
-                                                            <i class="glyphicon glyphicon-time">
-                                                            </i>
-                                                            <span class="timeline-date">Ayer</span>
-                                                            -
-                                                            <span class="timeline-time">6:08</span>
-                                                        </small>
-                                                    </p>
-                                                </div>
-                                                <div class="timeline-body">
-                                                    <p>
-                                                        Descripcion: <br>
-                                                        Tipo:
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-datetime">
-                                                <span class="timeline-time">
-                                                    7:00
-                                                </span><span class="timeline-date">Yesterday</span>
-                                            </div>
-                                            <div class="timeline-badge danger">
-                                                <i class="fa fa-exclamation font-120"></i>
-                                            </div>
-                                            <div class="timeline-panel">
-                                                <div class="timeline-header bordered-bottom bordered-blue">
-                                                    <span class="timeline-title danger">
-                                                        Etapa 2
-                                                    </span>
-                                                    <p class="timeline-datetime">
-                                                        <small class="text-muted">
-                                                            <i class="glyphicon glyphicon-time">
-                                                            </i>
-                                                            <span class="timeline-date">Yesterday</span>
-                                                            -
-                                                            <span class="timeline-time">7:00</span>
-                                                        </small>
-                                                    </p>
-                                                </div>
-                                                <div class="timeline-body">
-                                                    <p>
-                                                        La etapa 1 ha iniciado, se encuentran 5 tareas pendiente por realizar en esta etapa.<br />
-                                                        La gestión lleva 40% completado
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-inverted">
-                                            <div class="timeline-datetime">
-                                                <span class="timeline-time">
-                                                    6:08
-                                                </span><span class="timeline-date">Ayer</span>
-                                            </div>
-                                            <div class="timeline-badge sky">
-                                                <img src="~/assets/img/avatars/Sergey-Azovskiy.jpg" class="badge-picture" />
-                                            </div>
-                                            <div class="timeline-panel">
-                                                <div class="timeline-header bordered-bottom bordered-blue">
-                                                    <span class="timeline-title">
-                                                        La tarea <a href="">nombre de la tarea</a> ha sido completada por <a href="/Users/Profile">Sergey Azovskiy</a>
-                                                    </span>
-                                                    <p class="timeline-datetime">
-                                                        <small class="text-muted">
-                                                            <i class="glyphicon glyphicon-time">
-                                                            </i>
-                                                            <span class="timeline-date">Ayer</span>
-                                                            -
-                                                            <span class="timeline-time">6:08</span>
-                                                        </small>
-                                                    </p>
-                                                </div>
-                                                <div class="timeline-body">
-                                                    <p>
-                                                        Descripcion: <br>
-                                                        Tipo:
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    Html.RenderPartial("/Views/Processes/_Process/_ProcessActivity.cshtml", Model);
                                 }
                             }
                         </div>

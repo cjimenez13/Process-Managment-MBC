@@ -81,30 +81,30 @@ go
 create procedure usp_get_process_stages
 @id_processManagment bigint as
 begin 
-	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate 
+	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted
 	from Stage s where  s.processManagment_id = @id_processManagment
 	order by s.stagePosition
 end
 go
 
+-- drop procedure usp_get_process_stage
 create procedure usp_get_process_stage 
 @id_stage bigint as
 begin 
-	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate 
+	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted
 	from Stage s where  s.id_stage = @id_stage
 end
 go
 
---select * from ProcessManagment
 --exec usp_insert_stage 'Aceptar formulario', 1, 1, 75
---select * from Stage
+-- drop procedure usp_insert_stage
 create procedure usp_insert_stage
 @name nvarchar(100), @processManagment_id bigint, @stagePosition int, @userLog int as
 begin 
 begin transaction 
 	declare @id_stage int, @event_log_id int, @table int
-	insert into Stage (name, processManagment_id, stagePosition, createdBy, createdDate)
-	values (@name, @processManagment_id, @stagePosition, @userLog, GETDATE())
+	insert into Stage (name, processManagment_id, stagePosition, createdBy, createdDate, isCompleted)
+	values (@name, @processManagment_id, @stagePosition, @userLog, GETDATE(), 0)
 	set @id_stage = (SCOPE_IDENTITY())
 
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Stage')
@@ -118,13 +118,15 @@ commit transaction
 end
 go
 
+-- drop procedure usp_update_stage
 create procedure usp_update_stage 
-@id_stage bigint, @name nvarchar(100) = null, @stagePosition int = null, @userLog int as
+@id_stage bigint, @name nvarchar(100) = null, @stagePosition int = null, @isCompleted bit = null, @userLog int as
 begin
 begin transaction 
 	declare @event_log_id int, @table int
 	update Stage set name = ISNULL(@name, name),
-					stagePosition = ISNULL(@stagePosition, stagePosition)
+					stagePosition = ISNULL(@stagePosition, stagePosition),
+					isCompleted = ISNULL(@isCompleted, isCompleted)
 	where id_stage = @id_stage
 
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Stage')
@@ -133,6 +135,7 @@ begin transaction
 	exec usp_insert_Reference @attribute = 'name', @value = @name, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'stagePosition', @value = @stagePosition, @EventLog_id = @event_log_id
 	exec usp_insert_Reference @attribute = 'id_stage', @value = @id_stage, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'isCompleted', @value = @isCompleted, @EventLog_id = @event_log_id
 commit transaction 
 end
 go

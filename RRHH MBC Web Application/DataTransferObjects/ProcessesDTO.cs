@@ -26,6 +26,7 @@
         public string stagePosition { get; set; }
         public string createdBy { get; set; }
         public string createdDate { get; set; }
+        public string isCompleted { get; set; }
         public string userLog { get; set; }
     }
 

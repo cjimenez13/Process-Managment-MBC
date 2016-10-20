@@ -57,6 +57,7 @@ namespace Web_Service_API.DataAccess
                     stage.stagePosition = rdr["stagePosition"].ToString();
                     stage.createdBy = rdr["createdBy"].ToString();
                     stage.createdDate = rdr["createdDate"].ToString();
+                    stage.isCompleted = rdr["isCompleted"].ToString();
                     stagesDTO.Add(stage);
                 }
             };
@@ -81,6 +82,7 @@ namespace Web_Service_API.DataAccess
                     stage.stagePosition = rdr["stagePosition"].ToString();
                     stage.createdBy = rdr["createdBy"].ToString();
                     stage.createdDate = rdr["createdDate"].ToString();
+                    stage.isCompleted = rdr["isCompleted"].ToString();
                 }
             };
             return stage;
@@ -171,6 +173,8 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@name"].Value = pStage.name;
                 command.Parameters.Add("@stagePosition", SqlDbType.Int);
                 command.Parameters["@stagePosition"].Value = pStage.stagePosition;
+                command.Parameters.Add("@isCompleted", SqlDbType.Bit);
+                command.Parameters["@isCompleted"].Value = pStage.isCompleted;
                 command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pStage.userLog;
 
