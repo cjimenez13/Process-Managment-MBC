@@ -39,5 +39,14 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [HttpDelete]
+        public IHttpActionResult Delete(string id_process, string userLog)
+        {
+            if (!ProcessData.deleteProcess(id_process, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

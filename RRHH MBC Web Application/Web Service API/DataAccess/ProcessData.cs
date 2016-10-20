@@ -34,6 +34,8 @@ namespace Web_Service_API.DataAccess
                     process.state_color = rdr["state_color"].ToString();
                     process.template_id = rdr["template_id"].ToString();
                     process.template_name = rdr["template_name"].ToString();
+                    process.completedTasks = rdr["completedTasks"].ToString();
+                    process.totalTasks = rdr["totalTasks"].ToString();
                     processes.Add(process);
                 }
             };
@@ -65,6 +67,8 @@ namespace Web_Service_API.DataAccess
                     process.state_color = rdr["state_color"].ToString();
                     process.template_id = rdr["template_id"].ToString();
                     process.template_name = rdr["template_name"].ToString();
+                    process.completedTasks = rdr["completedTasks"].ToString();
+                    process.totalTasks = rdr["totalTasks"].ToString();
                 }
             };
             return process;
@@ -130,5 +134,27 @@ namespace Web_Service_API.DataAccess
             };
         }
         //------------------------------------------------ Deletes ----------------------------------------------------
+        public static bool deleteProcess(string id_process, string userLog)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_delete_process", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_process", SqlDbType.Int);
+                command.Parameters["@id_process"].Value = id_process;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
     }
 }

@@ -115,8 +115,8 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Select.HtmlToPdf, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
-      <HintPath>..\packages\Select.HtmlToPdf.2.3.0.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    <Reference Include="Select.HtmlToPdf, Version=2.4.0.1, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.2.4.0.1\lib\net40\Select.HtmlToPdf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -286,6 +286,7 @@
     <Content Include="assets\img\avatars\Osvaldus-Valutis.jpg" />
     <Content Include="assets\img\avatars\Sergey-Azovskiy.jpg" />
     <Content Include="assets\img\avatars\Stephanie-Walter.jpg" />
+    <Content Include="assets\img\favicon.ico" />
     <Content Include="assets\img\favicon.png" />
     <Content Include="assets\img\jquery.minicolors.png" />
     <Content Include="assets\img\logo-inverted.png" />
@@ -427,7 +428,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\Templates\Process\_Index.js" />
+    <Content Include="Scripts\Process\_Index.js" />
+    <Content Include="Scripts\Process\_Process.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskChanges.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskFiles.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskForm.js" />
@@ -468,7 +470,7 @@
     <Content Include="Views\Processes\Process.cshtml" />
     <Content Include="Views\Processes\Tasks.cshtml" />
     <Content Include="Views\Templates\Template.cshtml" />
-    <Content Include="Views\Templates\Tasks.cshtml" />
+    <Content Include="Views\Tasks\Index.cshtml" />
     <Content Include="Views\Categories\Categorie.cshtml" />
     <Content Include="Views\Users\_Index\_Register.cshtml" />
     <Content Include="Scripts\jquery-1.9.0.min.map" />
@@ -514,26 +516,26 @@
     <Content Include="Views\Templates\_Template\_Participants\_AddGroup.cshtml" />
     <Content Include="Views\Templates\_Template\_EditTemplate.cshtml" />
     <Content Include="Views\Templates\_Template\_Stages\_EditStage.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TasksList.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskInfo.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskForm.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskAdditionals.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_AddTask.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_AddTask\_AddGeneralInfo.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskResponsables.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_AddTask\_AddAditionals.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskResponsablesList.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChanges.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskQuestions.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_EditForm.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskDataChangesList.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_TaskFiles.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_AddTaskFile.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TasksList.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskInfo.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskForm.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskAdditionals.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_AddTask.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_AddTask\_AddGeneralInfo.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskResponsables.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskResponsablesList.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskDataChanges.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskQuestions.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_EditForm.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskDataChangesList.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFiles.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AddTaskFile.cshtml" />
     <Content Include="Views\Processes\_Index\_ProcessList.cshtml" />
     <Content Include="Views\Processes\_Index\_AddProcess.cshtml" />
     <Content Include="Views\Processes\_Process\_ProcessActivity.cshtml" />
-    <Content Include="Views\Templates\_Tasks\_TaskDetails\_EditTaskInfo.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_EditTaskInfo.cshtml" />
+    <Content Include="Views\Processes\_Process\_EditProcess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -688,12 +690,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets')" />
+  <Import Project="..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.3.0.0\build\Select.HtmlToPdf.targets'))" />
+    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

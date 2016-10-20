@@ -3,6 +3,11 @@
 
 @foreach (var process in Model.processesDTO)
 {
+    int completedPorcentage = 0;
+    if (process.completedTasks != "0")
+    {
+        completedPorcentage = Int32.Parse(process.totalTasks) / Int32.Parse(process.completedTasks);
+    }
     List<DataTransferObjects.ParticipantDTO> participants = Model.getParticipants(process.id_processManagment);
         <tr>
             <td onclick="location.href = '@(Url.Action("Process",new { id = process.id_processManagment}))'">#@Html.Raw(process.id_processManagment)</td>
@@ -10,7 +15,7 @@
             <td onclick="location.href = '@(Url.Action("Process",new { id = process.id_processManagment}))'">@Html.Raw(process.name)</td>
             <td onclick="location.href = '@(Url.Action("Process",new { id = process.id_processManagment}))'">
                 <div class="progress progress-striped progress-sm" style="margin-bottom:0px; margin-top:10px">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: @completedPorcentage%">
                         <span class="sr-only">
                         </span>
                     </div>

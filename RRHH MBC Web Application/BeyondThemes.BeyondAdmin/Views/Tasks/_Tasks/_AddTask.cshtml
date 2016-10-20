@@ -1,0 +1,68 @@
+﻿@model Model.AddTaskModel
+
+<!-- Modal to add task-->
+<div class="modal fade" id="modal_addTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width:70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Agregar tarea</h4>
+            </div>
+            <div class="modal-body fuelux">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="wizard" data-initialize="wizard" id="myWizard">
+                            <div class="steps-container">
+                                <ul class="steps">
+                                    <li data-step="1" data-name="campaign" class="active">
+                                        <span class="badge">1</span>Creación
+                                        <span class="chevron"></span>
+                                    </li>
+                                    <li data-step="2">
+                                        <span class="badge">2</span>Responsables
+                                        <span class="chevron"></span>
+                                    </li>
+                                    <li data-step="3" data-name="template">
+                                        <span class="badge">3</span>Formulario
+                                        <span class="chevron"></span>
+                                    </li>
+                                    <li data-step="4" data-name="template">
+                                        <span class="badge">4</span>Adicionales
+                                        <span class="chevron"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-pane active" data-step="1">
+                                    @{ Html.RenderPartial("/Views/Tasks/_Tasks/_AddTask/_AddGeneralInfo.cshtml", Model);}
+                                </div>
+                                <div class="step-pane sample-pane" data-step="2">
+                                    @*@{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel());}*@
+                                </div>
+                                <div class="step-pane sample-pane" data-step="3">
+                                    @*@{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(Model.i));}*@
+                                </div>
+                                <div class="step-pane sample-pane" data-step="4">
+                                    @*@{ Html.RenderPartial("/Views/Templates/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");}*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="actions actions-footer" id="WiredWizard-actions" style="background-color:inherit">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm btn-prev"> <i class="fa fa-angle-left"></i>Anterior</button>
+                                            <button class="btn btn-default btn-sm btn-next" data-last="Terminar" onclick="return;">Siguiente<i class="fa fa-angle-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model Model.TaskChangesModel
+@{ 
+    string idForm = "form-addTaskChange";
+}
+<h2>Cambios a realizar</h2>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="flip-scroll">
+            <table class="table flip-content table-hover" id="taskChanges-table">
+                <!-- column titles -->
+                <thead class="flip-content ">
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Operación</th>
+                        <th>Valor</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <!-- Table data-->
+                    @{Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", Model);}
+                    <tr>
+                        <td>
+                            @using (Ajax.BeginForm("_AddTaskChange", "Tasks", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskChangeAddedSucces", OnFailure = "TaskChangeAddedFailure" }, new { id = @idForm}))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.task_idA, new { @form = idForm })
+                                @Html.HiddenFor(m => m.attributeList_typeA, new { @form = idForm })
+                                @Html.HiddenFor(m => m.attribute_typeA, new { @form = idForm })
+                            }
+                            <select class="form-control" name="attribute_idA" form="@idForm">
+                                <optgroup label="Generales">
+                                    @foreach (var iAttribute in Model.attributes)
+                                    {
+                                        if (iAttribute.type_id != "4" && iAttribute.isGeneral == "True")
+                                        {
+                                            string id_GeneralAttribute = "g" + iAttribute.id_attribute;
+                                            <option value="@id_GeneralAttribute">@iAttribute.name</option>
+                                        }
+                                    }
+                                </optgroup>
+                                @foreach (var iAttribute in Model.attributes)
+                                {
+                                    if (iAttribute.type_id == "4" && iAttribute.isGeneral == "True")
+                                    {
+                                        List<DataTransferObjects.AttributeListDTO> listAttributes = Model.categorieProvider.getAttributesList(iAttribute.id_attribute).Result;
+                                        if (listAttributes.Count != 0)
+                                        {
+                                            <optgroup label="@iAttribute.name">
+                                                @foreach (var iAttributeValue in listAttributes)
+                                                {
+                                                    string id_listAttribute = "l" + iAttributeValue.id_attributeValue;
+                                                    <option value="@id_listAttribute">@iAttributeValue.name</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.operation_idA, Model.operationTypesList, new { @class = "form-control", @form = idForm})
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.valueA, new { @class="form-control", @form= @idForm})
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Agregar" , form=@idForm>
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

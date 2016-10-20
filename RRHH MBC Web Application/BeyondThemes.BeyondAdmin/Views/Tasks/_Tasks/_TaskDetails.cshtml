@@ -1,0 +1,61 @@
+﻿@model Model.TaskDetailsModel
+
+<div id="taskDetails" >
+    <div class="row">
+        <div class="col-xs-12" id="taskDetailsWidget">
+            @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskInfo.cshtml", Model);}
+        </div>
+    </div>
+    <div class="tabbable">
+        <ul class="nav nav-tabs" id="myTab7">
+            @if (Model.taskType.needConfirm == "True")
+            {
+                <li class="active tab-sky">
+                    <a data-toggle="tab" href="#responsables-tab">
+                        Responsables
+                    </a>
+                </li>
+            }
+            @if (Model.taskType.formNeeded == "True")
+            {
+                <li class="tab-sky">
+                    <a data-toggle="tab" href="#form-tab">
+                        Formulario
+                    </a>
+                </li>
+            }
+            <li class="tab-sky">
+                <a data-toggle="tab" href="#data-tab">
+                    Datos
+                </a>
+            </li>
+            <li class="tab-sky">
+                <a data-toggle="tab" href="#additionals-tab">
+                    Adicionales
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content radius-bordered">
+            @if (Model.taskType.needConfirm == "True")
+            {
+                <div id="responsables-tab" class="tab-pane in active">
+                    @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(Model.task));}
+                </div>
+            }
+            @if (Model.taskType.formNeeded == "True")
+            {
+                <div id="form-tab" class="tab-pane">
+                    @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(Model.task));}
+                </div>
+            }
+            <div id="data-tab" class="tab-pane">
+                @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(Model.task));}
+            </div>
+            <div id="additionals-tab" class="tab-pane">
+                @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskAdditionals.cshtml", Model);}
+            </div>
+        </div>
+    </div>
+</div>
+@{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_EditTaskInfo.cshtml", new Model.EditTaskInfo(Model.task));}
+

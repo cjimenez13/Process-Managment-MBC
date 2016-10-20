@@ -11,16 +11,20 @@
     {
         var name = user.name + " " + user.fLastName + " " + user.sLastName;
         string defaultUser = user.email != "" ? user.email : user.userName;
-        <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div class="databox databox-graded" style="margin-bottom:10px">
                 <div class="databox-left no-padding">
                     <img src="data:Image/png;base64,@user.photoBase64" style="width:65px; height:65px;">
                 </div>
                 <div class="databox-right padding-top-0 bg-whitesmoke">
                     <div class="row" >
-                        <div class="col-xs-10" >
+                            <div class="databox-stat danger radius-bordered">
+                                <a onclick="deleteGroupUser('@user.user_id','@Model.groupDTO.id_group', '@name',this)" style="cursor:pointer">
+                                    <i class="stat-icon fa fa-times danger"></i>
+                                </a>
+                            </div>
                             <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
-                                <div class="col-xs-12" style="margin:0px; padding:0px; padding-top:10px">
+                                <div class="col-xs-12" style=" padding-top:10px">
                                     <div class="databox-text darkgray" style="font-size:14px">@name</div>
                                     @if (user.email != "")
                                     {
@@ -32,14 +36,7 @@
                                     }
                                 </div>
                             </a>
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="widget-buttons">
-                                <a onclick="deleteGroupUser('@user.user_id','@Model.groupDTO.id_group', '@name',this)" style="cursor:pointer">
-                                    <i class="fa fa-times danger"></i>
-                                </a>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>

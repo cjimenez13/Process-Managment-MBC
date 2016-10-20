@@ -54,5 +54,37 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+
+        [ValidateAntiForgeryToken]
+        [HttpPut]
+        public ActionResult _EditProcess(string name, string id_process)
+        {
+            if (ModelState.IsValid)
+            {
+                ProcessDTO processDTO = new ProcessDTO();
+                processDTO.name = name;
+                processDTO.id_processManagment = id_process;
+                processDTO.userLog = Request.Cookies["user_id"].Value;
+                if (processProvider.putProcess(processDTO).Result)
+                {
+                    return Json(processDTO);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpDelete]
+        public ActionResult _DeleteProcess(string id_process)
+        {
+            if (ModelState.IsValid)
+            {
+                if (processProvider.deleteProcess(id_process, Request.Cookies["user_id"].Value).Result)
+                {
+                    return new HttpStatusCodeResult(404, "Can't find that");
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
     }
 }

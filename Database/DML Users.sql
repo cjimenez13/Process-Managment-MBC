@@ -12,7 +12,8 @@ begin
 	(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
 	(select up.photoData from UsersPhotos up where u.id_user = up.[user_id] ) as photoData
 	from Users u 
-	where u.isEnabled = 1;
+	where u.isEnabled = 1
+	order by u.name
 end
 go
 -- execute sp_get_User 'cjimenez13'

@@ -17,51 +17,60 @@ namespace BeyondThemes.BeyondAdmin.Controllers
     {
         TemplatesProvider templateProvider = new TemplatesProvider();
         TaskProvider taskProvider = new TaskProvider();
+        public ActionResult Index(string id)
+        {
+            TasksModel model = new TasksModel(id);
+            if(model.stage.name != null)
+            {
+                return View(model);
+            }
+            return View("/Views/Home/Error404.cshtml");
+        }
         public ActionResult _TaskList(string id_stage)
         {
-            return PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(id_stage));
+            return PartialView("/Views/Tasks/_Tasks/_TasksList.cshtml", new Model.TasksModel(id_stage));
         }
         public ActionResult _TaskDetails(string id_task)
         {
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails.cshtml", new Model.TaskDetailsModel(id_task));
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails.cshtml", new Model.TaskDetailsModel(id_task));
         }
         public ActionResult _AddGeneralInfo(string id_stage)
         {
-            return PartialView("/Views/Templates/_Tasks/_AddTask/_AddAditionals.cshtml");
+            return PartialView("/Views/Tasks/_Tasks/_AddTask/_AddAditionals.cshtml");
         }
         public ActionResult _AddResponsables(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(task));
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(task));
         }
         public ActionResult _AddForm(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(task));
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(task));
        }
         public ActionResult _AddAditionals(string id_task)
         {
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");
         }
         public ActionResult _AddTaskChanges(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(task));
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(task));
         }
         public ActionResult _TaskQuestions(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskQuestions.cshtml", new Model.FormQuestionsModel(task));
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskQuestions.cshtml", new Model.FormQuestionsModel(task));
         }
         public ActionResult _TaskDataChangesList(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
-            return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", new Model.TaskChangesModel(task));
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", new Model.TaskChangesModel(task));
         }
         
 
@@ -168,7 +177,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putTask(taskDTO).Result)
                 {
-                    return PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskInfo.cshtml", new Model.TaskDetailsModel(taskDTO.id_task));
+                    return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskInfo.cshtml", new Model.TaskDetailsModel(taskDTO.id_task));
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
@@ -214,7 +223,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 int errorCount = responsables.Count - addedCount;
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.id_task = id_task;
-                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Templates/_Tasks/_TaskDetails/_TaskResponsablesList.cshtml", new Model.TaskResponsablesModel(taskDTO)).RenderToString() };
+                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsablesList.cshtml", new Model.TaskResponsablesModel(taskDTO)).RenderToString() };
                 return Json(result);
             }
             return new HttpStatusCodeResult(404, "Can't find that");

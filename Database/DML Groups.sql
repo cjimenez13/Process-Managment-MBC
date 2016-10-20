@@ -1,9 +1,10 @@
 ------------------------------- Groups -------------------------------
---drop procedure sp_get_groups
+--drop procedure usp_get_groups
 create procedure usp_get_groups as
 begin
 	select g.id_group, g.groupName, g.createdDate, g.isEnabled
-	from Groups g 
+	from Groups g
+	order by g.groupName
 end
 go
 

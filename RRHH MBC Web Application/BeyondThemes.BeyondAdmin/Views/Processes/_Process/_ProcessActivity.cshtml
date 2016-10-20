@@ -1,10 +1,18 @@
 ﻿@model Model.ProcessModel
+@{ 
+    List<DataTransferObjects.StageDTO> stages;
+    stages = new BeyondThemes.BeyondAdmin.Providers.ProcessManagmentProvider().getStages(Model.processDTO.id_processManagment).Result;
+    string createdBy_name = Model.userDTO.name + " " + Model.userDTO.fLastName + " " + Model.userDTO.sLastName;
+    DateTime processDate = new DateTime(Int32.Parse(Model.processDTO.createdDate.Substring(6, 4)), Int32.Parse(Model.processDTO.createdDate.Substring(3, 2)), Int32.Parse(Model.processDTO.createdDate.Substring(0, 2)));
+    string process_weekDay = processDate.ToString("dddd", new System.Globalization.CultureInfo("es-ES"));
+    process_weekDay = process_weekDay.First().ToString().ToUpper() + process_weekDay.Substring(1);
+}
 <ul class="timeline animated fadeInDown">
     <li>
         <div class="timeline-datetime">
             <span class="timeline-time">
-                8:19
-            </span><span class="timeline-date">Hoy</span>
+                @Html.Raw(Model.processDTO.createdDate)
+            </span><span class="timeline-date">@process_weekDay</span>
         </div>
         <div class="timeline-badge blue">
             <i class="fa fa-suitcase"></i>
@@ -12,55 +20,125 @@
         <div class="timeline-panel bordered-top-3 bordered-azure">
             <div class="timeline-header bordered-bottom bordered-blue">
                 <span class="timeline-title">
-                    La gestion #12351521 inició
+                        La gestion #@Html.Raw(Model.processDTO.id_processManagment) inició
                 </span>
                 <p class="timeline-datetime">
                     <small class="text-muted">
                         <i class="glyphicon glyphicon-time">
                         </i>
-                        <span class="timeline-date">Hoy</span>
-                        -
-                        <span class="timeline-time">8:19</span>
+                        <span class="timeline-date">@Html.Raw(Model.processDTO.createdDate.Substring(0,10))</span>
+
                     </small>
                 </p>
             </div>
             <div class="timeline-body">
-                <p>La gestión (nombre de la gestión) ha sido creada por Diego Padilla</p>
+                <p>La gestión <strong>'@Html.Raw(Model.processDTO.name)'</strong>  ha sido creada por <strong>@Html.Raw(createdBy_name)</strong></p>
             </div>
         </div>
     </li>
-    <li>
-        <div class="timeline-datetime">
-            <span class="timeline-time">
-                7:00
-            </span><span class="timeline-date">Yesterday</span>
-        </div>
-        <div class="timeline-badge danger">
-            <i class="fa fa-exclamation font-120"></i>
-        </div>
-        <div class="timeline-panel">
-            <div class="timeline-header bordered-bottom bordered-blue">
-                <span class="timeline-title danger">
-                    Etapa 1
-                </span>
-                <p class="timeline-datetime">
-                    <small class="text-muted">
-                        <i class="glyphicon glyphicon-time">
-                        </i>
-                        <span class="timeline-date">Yesterday</span>
-                        -
-                        <span class="timeline-time">7:00</span>
-                    </small>
-                </p>
-            </div>
-            <div class="timeline-body">
-                <p>
-                    La etapa 1 ha iniciado, se encuentran 5 tareas pendiente por realizar en esta etapa.<br />
-                    La gestión lleva 40% completado
-                </p>
-            </div>
-        </div>
-    </li>
+    @foreach (var stage in stages)
+    {
+        if (!String.IsNullOrEmpty(stage.startDate))
+        {
+            DateTime stageDate = new DateTime(Int32.Parse(stage.startDate.Substring(6, 4)), Int32.Parse(stage.startDate.Substring(3, 2)), Int32.Parse(stage.startDate.Substring(0, 2)));
+            string stage_weekDay = stageDate.ToString("dddd", new System.Globalization.CultureInfo("es-ES"));
+            List<DataTransferObjects.TaskDTO> tasks = new BeyondThemes.BeyondAdmin.Providers.TaskProvider().getTasks(stage.id_stage).Result;
+            int pendingTasks = 0;
+            foreach (var task in tasks)
+            {
+                if (String.IsNullOrEmpty(task.completedDate))
+                {
+                    pendingTasks += 1;
+                }
+            }
+            <li>
+                <div class="timeline-datetime">
+                    <span class="timeline-time">
+                        @Html.Raw(stage.startDate)
+                    </span><span class="timeline-date">@stage_weekDay</span>
+                </div>
+                <div class="timeline-badge danger">
+                    <i class="fa fa-exclamation font-120"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-header bordered-bottom bordered-blue">
+                        <span class="timeline-title danger">
+                            @Html.Raw(stage.name)
+                        </span>
+                        <p class="timeline-datetime">
+                            <small class="text-muted">
+                                <i class="glyphicon glyphicon-time">
+                                </i>
+                                <span class="timeline-date">@Html.Raw(stage.startDate.Substring(0, 10))</span>
+
+                            </small>
+                        </p>
+                    </div>
+                    <div class="timeline-body">
+                        <p>
+                            La etapa <strong>'@Html.Raw(stage.name)'</strong> ha iniciado, se encuentran <strong>@pendingTasks</strong> tarea(s) pendiente(s) por realizar en esta etapa.<br />
+                        </p>
+                    </div>
+                </div>
+            </li>
+            foreach (var task in tasks)
+            {
+                string task_createdBy = task.createdBy;
+                List<DataTransferObjects.TaskResponsableDTO> responsables = new BeyondThemes.BeyondAdmin.Providers.TaskProvider().getTaskResponsables(task.id_task).Result;
+                DataTransferObjects.TaskTypeDTO task_type = new BeyondThemes.BeyondAdmin.Providers.TaskProvider().getTaskType(task.type_id).Result;
+                <li class="timeline-inverted">
+                    <div class="timeline-datetime">
+                        <span class="timeline-time">
+                            6:08
+                        </span><span class="timeline-date">Ayer</span>
+                    </div>
+                    <div class="timeline-badge sky">
+                        @if (responsables.Count > 0)
+                        {
+                            <img src="data:Image/png;base64,@responsables[0].photoData" class="badge-picture" />
+                        }
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-header bordered-bottom bordered-blue">
+                            <span class="timeline-title">
+                                La tarea <a href="/Tasks/@task.id_task">@task.name</a> ha sido completada por 
+                                @{
+                                    bool isFirstResponsable = true;
+                                }
+                                @foreach (var user in responsables)
+                                {
+                                    if (!isFirstResponsable)
+                                    {
+                                        @:,
+                                    }
+                                    string defaultUser = user.email != "" ? user.email : user.userName;
+                                    string responsableName = user.name + " " + user.fLastName + " " + user.sLastName;
+                                    isFirstResponsable = false;
+                                    <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">@responsableName</a>
+                                    
+                                }
+                            </span>
+                            <p class="timeline-datetime">
+                                <small class="text-muted">
+                                    <i class="glyphicon glyphicon-time">
+                                    </i>
+                                    <span class="timeline-date">Ayer</span>
+                                    -
+                                    <span class="timeline-time">6:08</span>
+                                </small>
+                            </p>
+                        </div>
+                        <div class="timeline-body">
+                            <p>
+                                Descripcion: @task.description<br>
+                                Tipo: @task_type.taskName
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+    }
     <li class="timeline-inverted">
         <div class="timeline-datetime">
             <span class="timeline-time">

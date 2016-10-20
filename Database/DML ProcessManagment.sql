@@ -81,7 +81,7 @@ go
 create procedure usp_get_process_stages
 @id_processManagment bigint as
 begin 
-	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted
+	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted, s.startDate, s.completedDate
 	from Stage s where  s.processManagment_id = @id_processManagment
 	order by s.stagePosition
 end
@@ -91,7 +91,7 @@ go
 create procedure usp_get_process_stage 
 @id_stage bigint as
 begin 
-	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted
+	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted, s.startDate, s.completedDate
 	from Stage s where  s.id_stage = @id_stage
 end
 go
@@ -120,13 +120,15 @@ go
 
 -- drop procedure usp_update_stage
 create procedure usp_update_stage 
-@id_stage bigint, @name nvarchar(100) = null, @stagePosition int = null, @isCompleted bit = null, @userLog int as
+@id_stage bigint, @name nvarchar(100) = null, @stagePosition int = null, @isCompleted bit = null, @completedDate date = null, @startDate date = null, @userLog int as
 begin
 begin transaction 
 	declare @event_log_id int, @table int
 	update Stage set name = ISNULL(@name, name),
 					stagePosition = ISNULL(@stagePosition, stagePosition),
-					isCompleted = ISNULL(@isCompleted, isCompleted)
+					isCompleted = ISNULL(@isCompleted, isCompleted),
+					completedDate = ISNULL(@completedDate, completedDate),
+					startDate = ISNULL(@startDate, startDate)
 	where id_stage = @id_stage
 
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Stage')

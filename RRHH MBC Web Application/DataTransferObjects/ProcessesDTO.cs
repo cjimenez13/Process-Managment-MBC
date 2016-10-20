@@ -16,6 +16,8 @@
         public string completedPorcentage { get; set; }
         public string nextProcess { get; set; }
         public string previousProcess { get; set; }
+        public string completedTasks { get; set; }
+        public string totalTasks { get; set; }
         public string userLog { get; set; }
     }
     public class StageDTO
@@ -27,6 +29,8 @@
         public string createdBy { get; set; }
         public string createdDate { get; set; }
         public string isCompleted { get; set; }
+        public string startDate { get; set; }
+        public string completedDate { get; set; }
         public string userLog { get; set; }
     }
 

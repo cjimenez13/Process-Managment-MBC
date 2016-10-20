@@ -115,7 +115,7 @@ function deleteGroup(group_id, name, self) {
                 id_groupBox = groupBox.attr('id')
                 groupContainers.find('#' + id_groupBox).remove()
                 pager.paragraphs = $('.visible', groupContainers).parent() // set of required containers
-                pager.showPage(1)
+                pager.showPage(pager.currentPage)
                 $("[data-toggle='tooltip']").tooltip();
             });
         },

@@ -1,27 +1,43 @@
 ﻿@model Model.ProcessModel
 @{
     Layout = "~/Views/Shared/_Default.cshtml";
-    ViewBag.Title = "Gestion #12351512";
-    ViewBag.Description = "Nombre de la gestion";
+    ViewBag.Title = "Gestion #"+Model.processDTO.id_processManagment;
+    ViewBag.Description = Model.processDTO.name;
+    int completedPorcentage = 0;
+    if (Model.processDTO.completedTasks != "0")
+    {
+        completedPorcentage = Int32.Parse(Model.processDTO.totalTasks) / Int32.Parse(Model.processDTO.completedTasks);
+    }
 }
-
 <div class="row">
     <div class="col-xs-12">
         <div class="widget radius-bordered">
             <div class="widget-header">
                 <span class="widget-caption">Gestión #@Html.Raw(Model.processDTO.id_processManagment)</span>
+                <div class="widget-buttons">
+                    <button class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_editProcess" type="button">Editar</button>
+                </div>
+                <div class="widget-buttons">
+                    @using (Ajax.BeginForm("_DeleteProcess", "Processes", new AjaxOptions { HttpMethod = "DELETE", OnSuccess = "ProcessDeletedSuccess", OnFailure = "ProcessDeletedFailure" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("id_process",Model.processDTO.id_processManagment)
+                           <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
+                    }
+                </div>
             </div>
             <div class="widget-body">
                 <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
                     <div class="col-xs-12">
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-6">
                             <dl class="dl-horizontal">
+                                <dt>Nombre</dt><dd id="processNameText">@Html.Raw(Model.processDTO.name)</dd>
+                                <dt># Gestión</dt><dd>#@Html.Raw(Model.processDTO.id_processManagment)</dd>
                                 <dt>Estado</dt><dd><span class="label" style="background-color:@Model.processDTO.state_color">@Html.Raw(Model.processDTO.state_name)</span></dd>
                                 <dt>Creado por</dt><dd>Jocsan Padilla</dd>
-                                <dt># Gestión</dt><dd>#@Html.Raw(Model.processDTO.id_processManagment)</dd>
                             </dl>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-6">
                             <dl class="dl-horizontal">
                                 <dt>Creado</dt><dd>16.08.2014 12:15:57</dd>
                                 <dt>Gestión anterior</dt><dd><a>#123144512</a></dd>
@@ -32,13 +48,13 @@
                 </div>
                 <!-- Project progress -->
                 <div class="row" style="font-size:14px;">
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-xs-12">
                         <dl class="dl-horizontal">
-                            <dt>Completado</dt>
-                            <dd style="width:70%">
+                            <dt style="margin-bottom:10px">Completado</dt>
+                            <dd style="width:60%">
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                        <span class="sr-only">40% Complete (success)</span>
+                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: @completedPorcentage%">
+                                        <span class="sr-only">10% Complete (success)</span>
                                     </div>
                                 </div>
                             </dd>
@@ -109,80 +125,16 @@
         </div>
     </div>
 </div>
-<!-- Modal to add a user -->
+<!-- Modal to add a user on participants-->
 @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_AddParticipantUser.cshtml", new Model.AddParticipantUserModel(Model.processDTO.id_processManagment));}
-<!-- Modal to add a group -->
+<!-- Modal to add a group on participants-->
 @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_AddGroup.cshtml", new Model.AddGroupModel(Model.processDTO.id_processManagment));}
-
+<!-- Modal to edit process-->
+@{ Html.RenderPartial("/Views/Processes/_Process/_EditProcess.cshtml", new Model.EditProcessModel(Model.processDTO));}
 @section PageScripts{
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="/assets/js/select2/select2.js"></script>
 <script src="~/Scripts/Templates/Template/Participants.js"></script>
 <script src="~/Scripts/Templates/Template/Stages.js"></script>
-@*<script>
-    (function ($) {
-
-        'use strict';
-
-        $.fn.todolist = function (options) {
-            // Render options
-            var settings = $.extend({
-                //When the user checks the input
-                onCheck: function (ele) {
-                    return ele;
-                },
-                //When the user unchecks the input
-                onUncheck: function (ele) {
-                    return ele;
-                }
-            }, options);
-
-            return this.each(function () {
-
-                if (typeof $.fn.iCheck != 'undefined') {
-                    $('input', this).on('ifChecked', function () {
-                        var ele = $(this).parents("li").first();
-                        ele.toggleClass("done");
-                        settings.onCheck.call(ele);
-                    });
-
-                    $('input', this).on('ifUnchecked', function () {
-                        var ele = $(this).parents("li").first();
-                        ele.toggleClass("done");
-                        settings.onUncheck.call(ele);
-                    });
-                } else {
-                    $('input', this).on('change', function () {
-                        var ele = $(this).parents("li").first();
-                        ele.toggleClass("done");
-                        if ($('input', ele).is(":checked")) {
-                            settings.onCheck.call(ele);
-                        } else {
-                            settings.onUncheck.call(ele);
-                        }
-                    });
-                }
-            });
-        };
-    }(jQuery));
-        /* The todo list plugin */
-        $(".todo-list").todolist({
-            onCheck: function (ele) {
-                window.console.log("The element has been checked");
-                return ele;
-            },
-            onUncheck: function (ele) {
-                window.console.log("The element has been unchecked");
-                return ele;
-            }
-        });
-
-
-        //jQuery UI sortable for the todo list
-        $(".todo-list").sortable({
-            placeholder: "sort-highlight",
-            handle: ".handle",
-            forcePlaceholderSize: true,
-            zIndex: 999999
-        });
-</script>*@
+<script src="~/Scripts/Process/_Process.js"></script>
 }

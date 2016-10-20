@@ -9,7 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Providers
 {
-    class TaskProvider : AProvider
+    public class TaskProvider : AProvider
     {
         public async Task<List<TaskDTO>> getTasks(string id_stage)
         {

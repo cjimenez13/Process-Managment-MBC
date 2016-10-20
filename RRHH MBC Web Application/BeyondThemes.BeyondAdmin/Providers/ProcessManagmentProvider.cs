@@ -9,7 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Providers
 {
-    class ProcessManagmentProvider : AProvider
+    public class ProcessManagmentProvider : AProvider
     {
         public async Task<List<ParticipantDTO>> getParticipants(string id_process)
         {

@@ -34,7 +34,7 @@
             @if (type_name == "Lista")
             {
                 string idModal = "#modal_Lists" + id_attribute;
-                <a class="btn btn-sky " data-toggle="modal" data-target=@idModal>Ver lista</a>
+                <a class="btn btn-sky " data-toggle="modal" data-target=@idModal><i class="fa fa-search"></i></a>
                 <!-- Modal to see lists-->
                 {Html.RenderPartial("/Views/Categories/_AttributeValues.cshtml", new Model.AttributesListModel(id_attribute, attribute));}
             }

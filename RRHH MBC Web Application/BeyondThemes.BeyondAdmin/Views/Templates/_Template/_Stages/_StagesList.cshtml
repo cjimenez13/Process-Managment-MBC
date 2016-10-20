@@ -13,7 +13,7 @@
             <span id="@id_stageName" class="text">@Html.Raw(stage.name)</span>
             <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
             <div class="tools" style="display:inline-block">
-                <a href="@Url.Action("Tasks","Templates",new { id = stage.id_stage})">
+                <a href="@Url.Action("Index","Tasks",new { id = stage.id_stage})">
                     <i class="fa fa-eye"></i>
                 </a>
                 <a href="#" data-toggle="modal" data-target="@id_editModal">

@@ -91,5 +91,14 @@ namespace BeyondThemes.BeyondAdmin.Providers
         }
 
         //-------------------------------------- Deletes -----------------------------------------------
+        public async Task<bool> deleteProcess(string id_process, string userLog)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/process/?id_process=" + id_process + "&userLog=" + userLog).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
     }
 }

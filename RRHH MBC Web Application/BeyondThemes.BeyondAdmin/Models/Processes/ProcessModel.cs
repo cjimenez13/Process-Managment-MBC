@@ -1,5 +1,6 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -10,8 +11,10 @@ namespace Model
     {
         private ProcessProvider processProvider = new ProcessProvider();
         private UsersProvider userProvider = new UsersProvider();
+        ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         public ProcessDTO processDTO;
         public UserDTO userDTO;
+
         public ProcessModel(string id)
         {
             processDTO = processProvider.getProcess(id).Result;
@@ -30,6 +33,21 @@ namespace Model
         {
             return processProvider.getParticipants(id_template).Result;
         }
+    }
+    public class EditProcessModel
+    {
+        public EditProcessModel() { }
+        public EditProcessModel(ProcessDTO processDTO)
+        {
+            this.id_process = processDTO.id_processManagment;
+            this.name = processDTO.name;
+        }
+        [Required]
+        public string id_process;
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
+        public string name { get; set; }
     }
     public class AddProcessModel
     {

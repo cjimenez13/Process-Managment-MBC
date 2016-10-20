@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <doc>
     <assembly>
         <name>SelectHtmlToPdf</name>
@@ -2603,6 +2603,11 @@
             </summary>
             <remarks>The default value is <see cref="F:SelectPdf.HtmlToPdfCssMediaType.Screen"/> and the page is rendered like in a regular web browser. 
             If the page contains printer specific styles, the property should be set to <see cref="F:SelectPdf.HtmlToPdfCssMediaType.Print"/> to have the page rendered using those css styles.</remarks>
+        </member>
+        <member name="P:SelectPdf.HtmlToPdfOptions.RenderPageOnTimeout">
+            <summary>
+            A flag indicating if the page is rendered even if a navigation timeout occurs. The default value is False and a navigation timeout exception is raised.
+            </summary>
         </member>
         <member name="P:SelectPdf.HtmlToPdfOptions.DrawBackground">
             <summary>
