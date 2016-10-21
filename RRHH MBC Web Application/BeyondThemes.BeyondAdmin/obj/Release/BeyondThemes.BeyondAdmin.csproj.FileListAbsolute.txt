@@ -198,3 +198,7 @@ C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web 
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\obj\Release\BeyondThemes.BeyondAdmin.csprojResolveAssemblyReference.cache
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\obj\Release\BeyondThemes.BeyondAdmin.dll
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\obj\Release\BeyondThemes.BeyondAdmin.pdb
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.Html.dep
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Microsoft.QualityTools.Testing.Fakes.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.HtmlToPdf.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.HtmlToPdf.xml

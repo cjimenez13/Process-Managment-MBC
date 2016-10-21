@@ -34,10 +34,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails.cshtml", new Model.TaskDetailsModel(id_task));
         }
-        public ActionResult _AddGeneralInfo(string id_stage)
-        {
-            return PartialView("/Views/Tasks/_Tasks/_AddTask/_AddAditionals.cshtml");
-        }
         public ActionResult _AddResponsables(string id_task)
         {
             TaskDTO task = new TaskDTO();
@@ -52,7 +48,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
        }
         public ActionResult _AddAditionals(string id_task)
         {
-            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskAdditionals.cshtml");
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskAdditionals.cshtml", new TaskDetailsModel(id_task));
         }
         public ActionResult _AddTaskChanges(string id_task)
         {
@@ -119,7 +115,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     }
                     if (isSuccess)
                     {
-                        var result = new { id_task = id_task, viewHtml = PartialView("/Views/Templates/_Tasks/_TasksList.cshtml", new Model.TasksModel(taskDTO.stage_id)).RenderToString() };
+                        var result = new { id_task = id_task, viewHtml = PartialView("/Views/Tasks/_Tasks/_TasksList.cshtml", new Model.TasksModel(taskDTO.stage_id)).RenderToString() };
                         return Json(result);
                     }
                 }

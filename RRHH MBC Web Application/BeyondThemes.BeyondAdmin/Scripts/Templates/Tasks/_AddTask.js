@@ -139,6 +139,7 @@ function addTask(step, callback) {
     var token = "__RequestVerificationToken=" + $('input[name="__RequestVerificationToken"]').val() + "&";
     var lengthFormData = form.serialize().length
     var isTaskedAdded = false;
+    console.log("hola")
     formData = token + form.serialize().substring(token.length, lengthFormData)
     $.ajax({
         headers: {
@@ -151,6 +152,8 @@ function addTask(step, callback) {
         success: function (data) {
             $('#taskListDiv').html(data.viewHtml)
             id_task = data.id_task;
+            console.log(id_task)
+            console.log("hola")
             $("#selected_taskType").prop("disabled", true);
             $(".todo-list").sortable({
                 placeholder: "sort-highlight",

@@ -2,12 +2,7 @@
 function StageAddedSuccess(content) {
     Notify("La etapa ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
     $('#StagesListDiv').html(content)
-    $(".todo-list").sortable({
-        placeholder: "sort-highlight",
-        handle: ".handle",
-        forcePlaceholderSize: true,
-        zIndex: 999999
-    });
+    enableStagesSorting();
 }
 function StageAddedFailure(content) {
     Notify("Error, no se puede agregar la etapa", 'bottom-right', '5000', 'danger', 'fa-edit', true);
@@ -77,32 +72,38 @@ function deleteStage(id_stage, name, element) {
         });
     };
 }(jQuery));
-// update position when sorting
-$(".todo-list").sortable({
-    placeholder: "sort-highlight",
-    handle: ".handle",
-    forcePlaceholderSize: true,
-    zIndex: 999999,
-    update: function (event, ui) {
-        var newpos = ui.item.index();
-        var count = 0;
-        ui.item.parent().children().each(function () {
-            var id = this.id
-            var name = $(this).find('#stageName' + id).text();
-            var newPos = count;
-            $.ajax({
-                url: "/Templates/_EditStage/?id_stage=" + id + '&stagePosition=' + newPos + '&name=' + name,
-                type: "PUT",
-                dataType: "html",
-                traditional: true,
-                contentType: false,
-                success: function (data) {
-                },
-                error: function () {
-                }
-            });
-            count += 1;
-        });
 
-    }
-});
+
+function enableStagesSorting() {
+    // update position when sorting
+    $(".todo-list").sortable({
+        placeholder: "sort-highlight",
+        handle: ".handle",
+        forcePlaceholderSize: true,
+        zIndex: 999999,
+        update: function (event, ui) {
+            var newpos = ui.item.index();
+            var count = 0;
+            ui.item.parent().children().each(function () {
+                var id = this.id
+                var name = $(this).find('#stageName' + id).text();
+                var newPos = count;
+                $.ajax({
+                    url: "/Templates/_EditStage/?id_stage=" + id + '&stagePosition=' + newPos + '&name=' + name,
+                    type: "PUT",
+                    dataType: "html",
+                    traditional: true,
+                    contentType: false,
+                    success: function (data) {
+                    },
+                    error: function () {
+                    }
+                });
+                count += 1;
+            });
+        }
+    });
+}
+$(document).ready(function () {
+    enableStagesSorting();
+})

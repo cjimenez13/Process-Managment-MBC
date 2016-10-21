@@ -1,6 +1,6 @@
 ﻿@model Model.RegisterModel
 
-<div class="modal fade" id="modal_register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modal_register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:5%;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" id="divModalRegister">
             @using (Ajax.BeginForm("_Register", "Users", new AjaxOptions { HttpMethod = "POST", OnSuccess = "UserAddedSuccess", OnFailure = "UserAddedFailure" }))

@@ -81,3 +81,9 @@
 .bootstrap-timepicker-widget.dropdown-menu {
     z-index: 99999!important;
 }
+.truncate-text{
+    width: 100%; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}

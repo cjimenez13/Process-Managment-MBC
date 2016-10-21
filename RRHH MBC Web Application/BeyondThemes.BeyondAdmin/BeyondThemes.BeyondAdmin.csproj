@@ -185,7 +185,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\Users\_Group\" />
     <Folder Include="Scripts\Users\_Profile\" />
   </ItemGroup>
   <ItemGroup>
@@ -245,11 +244,14 @@
     <Content Include="assets\css\animate.min.css" />
     <Content Include="assets\css\beyond-rtl.min.css" />
     <Content Include="assets\css\beyond.min.css" />
+    <Content Include="assets\css\bootstrap-modal-bs3patch.css" />
+    <Content Include="assets\css\bootstrap-modal.css" />
     <Content Include="assets\css\bootstrap-rtl.min.css" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\dataTables.bootstrap.css" />
     <Content Include="assets\css\demo.min.css" />
     <Content Include="assets\css\font-awesome.min.css" />
+    <Content Include="assets\css\jquery-confirm.min.css" />
     <Content Include="assets\css\personalStyle.css" />
     <Content Include="assets\css\skins\azure.min.css" />
     <Content Include="assets\css\skins\black.min.css" />
@@ -305,6 +307,8 @@
     <Content Include="assets\js\beyond.min.js" />
     <Content Include="assets\js\bootbox\bootbox.js" />
     <Content Include="assets\js\bootbox\bootbox.min.js" />
+    <Content Include="assets\js\bootstrap-modal.js" />
+    <Content Include="assets\js\bootstrap-modalmanager.js" />
     <Content Include="assets\js\bootstrap.js" />
     <Content Include="assets\js\bootstrap.min.js" />
     <Content Include="assets\js\charts\chartjs\Chart.js" />
@@ -392,6 +396,7 @@
     <Content Include="assets\js\jqueryval\jquery.validate.min.js" />
     <Content Include="assets\js\jqueryval\jquery.validate.unobtrusive.js" />
     <Content Include="assets\js\jqueryval\jquery.validate.unobtrusive.min.js" />
+    <Content Include="assets\js\jquery_confirm\jquery-confirm.min.js" />
     <Content Include="assets\js\knob\jquery.knob.js" />
     <Content Include="assets\js\nestable\jquery.nestable.min.js" />
     <Content Include="assets\js\select2\select2.full.js" />
@@ -439,6 +444,8 @@
     <Content Include="Scripts\Templates\Tasks\_TaskList.js" />
     <Content Include="Scripts\Templates\Template\Participants.js" />
     <Content Include="Scripts\Templates\Template\Stages.js" />
+    <Content Include="Scripts\Users\_Group\_Group.js" />
+    <Content Include="Scripts\Users\_Group\_GroupUsersList.js" />
     <Content Include="Scripts\Users\_Index\_AddGroup.js" />
     <Content Include="Scripts\Users\_Index\_GroupsList.js" />
     <Content Include="Scripts\Users\_Index\_RegisterUser.js" />
@@ -490,7 +497,6 @@
     <Content Include="Views\Users\_Profile\_ProfileConfigInfo.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileConfigRoles.cshtml" />
     <Content Include="Views\Users\_Index\_AddGroup.cshtml" />
-    <Content Include="Views\Users\_Index\_GroupWidget.cshtml" />
     <Content Include="Views\Users\_Group\_EditGroup.cshtml" />
     <Content Include="Views\Users\_Group\_AddGroupUser.cshtml" />
     <Content Include="Views\Users\_Group\_GroupUsersList.cshtml" />
@@ -536,6 +542,11 @@
     <Content Include="Views\Processes\_Process\_ProcessActivity.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_EditTaskInfo.cshtml" />
     <Content Include="Views\Processes\_Process\_EditProcess.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskNotifications.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskNotificationsList.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFilesList.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AddTaskNotification.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_ConfigTaskNotification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

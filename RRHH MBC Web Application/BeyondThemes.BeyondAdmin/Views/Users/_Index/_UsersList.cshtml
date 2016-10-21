@@ -11,7 +11,7 @@
                 </span>
             </div>
             <div class="col-lg-offset-4 col-lg-2 col-md-4 col-xs-2">
-                <button class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_register">
+                <button class="btn btn-success pull-right" data-toggle="modal" data-target="#modal_register">
                     <span class="visible-xs"><i class="fa fa-plus"></i></span>
                     <span class="hidden-xs">Registrar persona</span>
                 </button>
@@ -23,24 +23,26 @@
             {
                 var name = user.name + " " + user.fLastName + " " + user.sLastName;
                 string defaultUser = user.email != "" ? user.email : user.userName;
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 searchBox">
-                    <div class="databox databox-graded">
-                        <div class="databox-left no-padding">
-                            <img src="data:Image/png;base64,@user.photoBase64" style="width:65px; height:65px;">
-                        </div>
-                        <a href="@Url.Action("Profile/"+@HttpUtility.UrlPathEncode(@defaultUser))">
-                            <div class="databox-right padding-top-20 bg-whitesmoke">
-                                <div class="databox-text darkgray" style="font-size:14px">@name</div>
-                                <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@defaultUser</div>
+                <div class="userBox">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 searchBox">
+                        <div class="databox databox-graded">
+                            <a href="@Url.Action("Profile/"+@HttpUtility.UrlPathEncode(@defaultUser))">
+                            <div class="databox-left no-padding">
+                                <img src="data:Image/png;base64,@user.photoBase64" style="width:100%">
                             </div>
-                        </a>
+                                <div class="databox-right padding-top-20 bg-whitesmoke">
+                                    <div class="databox-text darkgray truncate-text" style="font-size:14px; ">@name</div>
+                                    <div class="databox-text darkgray truncate-text"><i class="fa fa-envelope"></i>@defaultUser</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             }
         </div>
+        <div class="row">
+            <div id="pagingControlsUsers" style="float:right;margin-right:30px">
+            </div>
+        </div>
     </div>
 </div>  
-
-
-
-

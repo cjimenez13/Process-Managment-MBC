@@ -21,6 +21,14 @@ $(document).ready(function () {
 function UserAddedSuccess(content) {
     Notify('El usuario se ha registrado con exito', 'bottom-right', '5000', 'success', 'fa-edit', true);
     $('#usersTab').html(content);
+    pager.pagingControlsContainer = '#pagingControlsUsers'; //string of paging controls
+    pager.pagingContainerPath = '#userList'; //string of the main container path
+    usersContainers = $(pager.pagingContainerPath).children(); //All containers
+    pager.paragraphsPerPage = 15; // set amount elements per page
+    pager.pagingContainer = $(pager.pagingContainerPath); // set of main container
+    pager.paragraphs = pager.pagingContainer.children() // set of required containers to search
+    pager.showPage(1);
+    $("[data-toggle='tooltip']").tooltip();
 }
 function UserAddedFailure(content) {
     Notify('Error, no se puede registrar el usuario', 'bottom-right', '5000', 'danger', 'fa-edit', true);

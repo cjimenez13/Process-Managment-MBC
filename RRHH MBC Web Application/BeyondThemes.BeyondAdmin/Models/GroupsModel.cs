@@ -8,7 +8,7 @@ namespace Model
 {
     public class GroupsListModel
     {
-        private GroupProvider groupProvider = new GroupProvider();
+        public GroupProvider groupProvider = new GroupProvider();
         public List<GroupDTO> groupsList = new List<GroupDTO>();
         public GroupsListModel()
         {

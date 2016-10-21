@@ -2,7 +2,7 @@
 <!-- Members -->
 <div class="row">
     <div class="col-xs-12">
-        <p>Mostrando @Model.groupUsers.Count miembros</p>
+        <p id="txtShowingUsers">Mostrando @Model.groupUsers.Count miembros</p>
     </div>
 </div>
 <!-- Users box -->
@@ -14,29 +14,21 @@
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div class="databox databox-graded" style="margin-bottom:10px">
                 <div class="databox-left no-padding">
-                    <img src="data:Image/png;base64,@user.photoBase64" style="width:65px; height:65px;">
+                    <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
+                        <img src="data:Image/png;base64,@user.photoBase64" style="width:65px; height:65px;">
+                    </a>
                 </div>
                 <div class="databox-right padding-top-0 bg-whitesmoke">
                     <div class="row" >
-                            <div class="databox-stat danger radius-bordered">
-                                <a onclick="deleteGroupUser('@user.user_id','@Model.groupDTO.id_group', '@name',this)" style="cursor:pointer">
-                                    <i class="stat-icon fa fa-times danger"></i>
-                                </a>
+                        <div class="databox-stat danger radius-bordered"  onclick="deleteGroupUser('@user.user_id','@Model.groupDTO.id_group', '@name',this)" style="cursor:pointer" >
+                            <i class="stat-icon fa fa-times danger"></i>
+                        </div>
+                        <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
+                            <div class="col-xs-10" style=" padding-top:10px">
+                                <div class="databox-text darkgray truncate-text" style="font-size:14px; ">@name</div>
+                                <div class="databox-text darkgray truncate-text"><i class="fa fa-envelope"></i>@defaultUser</div>
                             </div>
-                            <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
-                                <div class="col-xs-12" style=" padding-top:10px">
-                                    <div class="databox-text darkgray" style="font-size:14px">@name</div>
-                                    @if (user.email != "")
-                                    {
-                                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.email</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="databox-text darkgray"><i class="fa fa-envelope"></i>@user.userName</div>
-                                    }
-                                </div>
-                            </a>
-
+                        </a>
                     </div>
                 </div>
             </div>

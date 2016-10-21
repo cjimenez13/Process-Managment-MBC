@@ -1,13 +1,13 @@
 ﻿function GroupAddedSuccess(content) {
     Notify("El grupo ha sido agregado", 'bottom-right', '5000', 'success', 'fa-edit', true);
     $('#groupsTab').html(content);
-    groupContainers = $('#groupList').children();
-    pager.paragraphsPerPage = 9; // set amount elements per page
-    pager.pagingContainer = $('#groupList'); // set of main container
-    pager.paragraphs = $('.groupWidget', pager.pagingContainer); // set of required containers
-    pager.pagingControlsContainer = '#pagingControls';
-    pager.pagingContainerPath = '#groupList';
-    pager.showPage(1);
+    pagerGroup.pagingControlsContainer = '#pagingControlsGroups'; //string of paging controls
+    pagerGroup.pagingContainerPath = '#groupList'; //string of the main container path
+    groupContainers = $(pagerGroup.pagingContainerPath).children(); //All containers
+    pagerGroup.paragraphsPerPage = 12; // set amount elements per page
+    pagerGroup.pagingContainer = $(pagerGroup.pagingContainerPath); // set of main container
+    pagerGroup.paragraphs = pagerGroup.pagingContainer.children() // set of required containers to search
+    pagerGroup.showPage(1);
     $("[data-toggle='tooltip']").tooltip();
 }
 function GroupAddedFailure(content) {

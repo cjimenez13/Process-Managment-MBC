@@ -26,7 +26,8 @@ namespace BeyondThemes.BeyondAdmin
             //Style Bundles
             var bootstrapStylesBundle = new Bundle("~/css/bootstrap");
             bootstrapStylesBundle.Include(
-                "~/assets/css/bootstrap.min.css");
+                "~/assets/css/bootstrap.min.css"
+                );
             bootstrapStylesBundle.Builder = nullBuilder;
             bootstrapStylesBundle.Transforms.Add(styleTransformer);
             bootstrapStylesBundle.Orderer = nullOrderer;
@@ -47,7 +48,7 @@ namespace BeyondThemes.BeyondAdmin
                 "~/assets/css/font-awesome.min.css",
                 "~/assets/css/typicons.min.css",
          //       "~/assets/css/weather-icons.min.css",
-                "~/assets/css/animate.min.css");
+                "~/assets/css/animate.min.css", "~/assets/css/jquery-confirm.min.css");
             beyondStylesBundle.Builder = nullBuilder;
             beyondStylesBundle.Transforms.Add(styleTransformer);
             beyondStylesBundle.Orderer = nullOrderer;
@@ -76,7 +77,7 @@ namespace BeyondThemes.BeyondAdmin
             bundles.Add(skinBundle);
 
             var jQueryBundle = new Bundle("~/bundles/jquery");
-            jQueryBundle.Include("~/assets/js/jquery.min.js");
+            jQueryBundle.Include("~/assets/js/jquery.min.js", "~/assets/js/jquery_confirm/jquery-confirm.min.js");
             jQueryBundle.Builder = nullBuilder;
             jQueryBundle.Transforms.Add(scriptTransformer);
             jQueryBundle.Orderer = nullOrderer;
