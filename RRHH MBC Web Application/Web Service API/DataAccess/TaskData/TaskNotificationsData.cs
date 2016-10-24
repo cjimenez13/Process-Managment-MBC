@@ -27,12 +27,15 @@ namespace Web_Service_API.DataAccess.TaskData
                     taskNotification.message = rdr["message"].ToString();
                     taskNotification.task_id = rdr["task_id"].ToString();
                     taskNotification.isStarting = rdr["isStarting"].ToString();
+                    taskNotification.isEmail = rdr["isEmail"].ToString();
+                    taskNotification.isTelegram = rdr["isTelegram"].ToString();
+                    taskNotification.isIntern = rdr["isIntern"].ToString();
                     taskNotifications.Add(taskNotification);
                 }
             };
             return taskNotifications;
         }
-        public static bool insertTaskNotifications(TaskNotificationDTO pTaskNotification)
+        public static bool insertTaskNotification(TaskNotificationDTO pTaskNotification)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {

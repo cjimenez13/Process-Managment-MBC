@@ -65,20 +65,30 @@ begin try
 			set @stage_id = (select SCOPE_IDENTITY())
 			------ Tasks
 			declare cursor_tasks cursor forward_only fast_forward
-			for select t.name, t.[description], t.[type_id], t.taskState_id, t.taskPosition, t.daysAvailable, t.hoursAvailable from Task t where t.stage_id = @oldStage_id
-			declare @task_name nvarchar(100), @id_task bigint, @task_description nvarchar(150), @task_type_id int, @taskState_id int, @taskPosition int, @task_daysAvailable int, @task_hoursAvailable int;
+			for select t.id_task, t.name, t.[description], t.[type_id], t.taskState_id, t.taskPosition, t.daysAvailable, t.hoursAvailable from Task t where t.stage_id = @oldStage_id
+			declare @task_name nvarchar(100), @old_task_id bigint, @task_description nvarchar(150), @task_type_id int, @taskState_id int, @taskPosition int, @task_daysAvailable int, @task_hoursAvailable int;
 			open cursor_tasks
-			fetch next from cursor_tasks into @task_name, @task_description, @task_type_id, @taskState_id, @taskPosition, @task_daysAvailable, @task_hoursAvailable
+			fetch next from cursor_tasks into @old_task_id, @task_name, @task_description, @task_type_id, @taskState_id, @taskPosition, @task_daysAvailable, @task_hoursAvailable
 			while @@FETCH_STATUS = 0 
 			begin
+				declare @id_task bigint, @id_taskForm bigint;
 				insert into Task (stage_id, name, [description], [type_id], taskState_id, completedDate, createdBy, finishDate, taskPosition, createdDate, beginDate, daysAvailable, hoursAvailable)
 				values (@stage_id, @task_name, @task_description, @task_type_id, 0, null, @userLog, null, @taskPosition, GETDATE(), null, @task_daysAvailable, @task_hoursAvailable) 
-				fetch next from cursor_tasks into @task_name, @task_description, @task_type_id, @taskState_id, @taskState_id, @task_daysAvailable, @task_hoursAvailable
+				set @id_task = (SCOPE_IDENTITY())
+				-- Task Targets
+				insert into Task_Targets ([user_id],task_id) select tt.[user_id], @id_task from Task_Targets tt where task_id = @old_task_id
+				-- Task Form
+				declare @old_taskForm_id bigint = (select tf.id_taskForm from TaskForm tf where tf.task_id = @old_task_id)
+				insert into TaskForm (task_id, [description]) values (@old_task_id, (select tf.description from TaskForm tf where tf.task_id = @old_task_id))
+				set @id_taskForm = (SCOPE_IDENTITY())
+				insert into FormQuestions(taskForm_id, question, generalAttributeList, questionType_id, questionPosition, isRequired) 
+				select @id_taskForm, fq.question, fq.generalAttributeList, fq.questionType_id, fq.questionPosition, fq.isRequired from FormQuestions fq where fq.taskForm_id = @old_taskForm_id
+				--Task
+				fetch next from cursor_tasks into @old_task_id, @task_name, @task_description, @task_type_id, @taskState_id, @taskPosition, @task_daysAvailable, @task_hoursAvailable
 			end
 			close cursor_tasks
 			deallocate cursor_tasks
 		fetch next from cursor_stages into @stage_name, @stage_processManagment_id, @stage_stagePosition, @oldStage_id
-
 		end
 		close cursor_stages
 		deallocate cursor_stages

@@ -4,17 +4,20 @@
         <h2>Notificaciones</h2>
     </div>
     <div class="col-xs-3">
-        <button class="btn btn-success pull-right" data-toggle="modal" data-target="#modal_addTaskNotification">Agregar notificación</button>
+        <button class="btn btn-success pull-right" style="margin-top:15px" data-toggle="modal" data-target="#modal_addTaskNotification">
+            <span class="visible-xs"><i class="fa fa-plus"></i></span>
+            <span class="hidden-xs">Agregar notificación</span>
+        </button>
     </div>
 </div>
 <div class="row" style="margin-bottom:20px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-xs-12" style="margin-bottom:20px;">
-                <div class="flip-scroll">
-                    <table class="table flip-content table-hover">
+                <div class="table-scrollable">
+                    <table class="table table-hover" id="table-taskNotifications">
                         <!-- column titles -->
-                        <thead class="flip-content bordered-primary">
+                        <thead>
                             <tr>
                                 <th>Mensaje</th>
                                 <th>Tipos</th>

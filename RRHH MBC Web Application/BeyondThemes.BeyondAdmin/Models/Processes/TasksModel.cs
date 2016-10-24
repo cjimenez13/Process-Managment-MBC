@@ -184,7 +184,7 @@ namespace Model
     }
     public class TaskDetailsModel
     {
-        private TaskProvider taskProvider = new TaskProvider();
+        public TaskProvider taskProvider = new TaskProvider();
         private UsersProvider userProvider = new UsersProvider();
         public TaskDTO task;
         public UserDTO createdBy;
@@ -409,12 +409,12 @@ namespace Model
     public class TaskNotificationsModel
     {
         private TaskProvider taskProvider = new TaskProvider();
-        public List<FileTaskDTO> files;
+        public List<TaskNotificationDTO> notifications;
         public TaskDTO taskDTO;
         public TaskNotificationsModel(TaskDTO pTaskDTO)
         {
             taskDTO = pTaskDTO;
-            files = taskProvider.getTaskFiles(taskDTO.id_task).Result;
+            notifications = taskProvider.getTaskNotifications(taskDTO.id_task).Result;
         }
     }
     public class AddTaskNotificationModel
@@ -424,14 +424,40 @@ namespace Model
         {
             this.id_task = id_task;
         }
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "Se debe completar el campo del nombre")]
-        [StringLength(30, ErrorMessage = "La cantidad máxima de caracteres es 30")]
-        public string name { get; set; }
-        [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "Se debe completar el campo de la descripción")]
-        [StringLength(50, ErrorMessage = "La cantidad máxima de caracteres es 50")]
-        public string description { get; set; }
+
+        [Display(Name = "Mensaje")]
+        [Required(ErrorMessage = "Se debe completar el campo del mensaje")]
+        [StringLength(2000, ErrorMessage = "La cantidad máxima de caracteres es 2000")]
+        public string message { get; set; }
+        [Required]
         public string id_task { get; set; }
+        public string isTelegram { get; set; }
+        public string isIntern { get; set; }
+        public string isEmail { get; set; }
+
+    }
+    public class EditTaskNoficationModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<TaskNotificationDTO> notifications;
+        public TaskNotificationDTO taskNoficationDTO;
+        public EditTaskNoficationModel(TaskNotificationDTO taskNoficationDTO)
+        {
+            this.taskNoficationDTO = taskNoficationDTO;
+            this.message = taskNoficationDTO.message;
+            this.id_notification = taskNoficationDTO.id_notification;
+            this.isTelegram = taskNoficationDTO.isTelegram;
+            this.isIntern = taskNoficationDTO.isIntern;
+            this.isEmail = taskNoficationDTO.isEmail;
+        }
+        [Display(Name = "Mensaje")]
+        [Required(ErrorMessage = "Se debe completar el campo del mensaje")]
+        [StringLength(2000, ErrorMessage = "La cantidad máxima de caracteres es 2000")]
+        public string message { get; set; }
+        [Required]
+        public string id_notification { get; set; }
+        public string isTelegram { get; set; }
+        public string isIntern { get; set; }
+        public string isEmail { get; set; }
     }
 }

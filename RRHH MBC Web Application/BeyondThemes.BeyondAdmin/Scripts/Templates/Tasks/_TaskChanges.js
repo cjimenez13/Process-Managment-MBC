@@ -3,8 +3,6 @@
     var taskChangesTable = $('#taskChanges-table').find('tbody');
     taskChangesTable.children().not(':last').remove();
     taskChangesTable.prepend(content);
-    console.log(content);
-    console.log(taskChangesTable);
 }
 function TaskChangeAddedFailure(content) {
     Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
@@ -12,7 +10,6 @@ function TaskChangeAddedFailure(content) {
 
 function TaskChangeEditedSucces(content) {
     Notify("El cambio del dato ha sido editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-    console.log(content)
 }
 function TaskChangeEditedFailure(content) {
     Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);

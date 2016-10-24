@@ -115,8 +115,8 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Select.HtmlToPdf, Version=2.4.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
-      <HintPath>..\packages\Select.HtmlToPdf.2.4.0.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    <Reference Include="Select.HtmlToPdf, Version=2.4.0.1, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.2.4.0.1\lib\net40\Select.HtmlToPdf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -441,10 +441,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Process\_Index.js" />
     <Content Include="Scripts\Process\_Process.js" />
+    <Content Include="Scripts\Templates\Tasks\_AnswerTask.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskChanges.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskFiles.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskForm.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskInfo.js" />
+    <Content Include="Scripts\Templates\Tasks\_TaskNotification.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskResponsables.js" />
     <Content Include="Scripts\Templates\Tasks\_AddTask.js" />
     <Content Include="Scripts\Templates\Tasks\_TaskList.js" />
@@ -553,6 +555,7 @@
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFilesList.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AddTaskNotification.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_ConfigTaskNotification.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AnswerTaskForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -710,12 +713,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets')" />
+  <Import Project="..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets'))" />
+    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -296,5 +296,67 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [HttpGet]
+        [Route("notifications")]
+        public List<TaskNotificationDTO> getTaskNotifications(string id_task)
+        {
+            List<TaskNotificationDTO> taskNotifications = TaskNotificationsData.getTaskNotifications(id_task);
+            return taskNotifications;
+        }
+
+        [HttpPost]
+        [Route("notifications")]
+        public IHttpActionResult postTaskNotification(TaskNotificationDTO pTaskNotification)
+        {
+            if (!TaskNotificationsData.insertTaskNotification(pTaskNotification))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("notifications")]
+        public IHttpActionResult putTaskNotification(TaskNotificationDTO pTaskNotification)
+        {
+            if (!TaskNotificationsData.updateTaskNotification(pTaskNotification))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("notifications")]
+        public IHttpActionResult deleteTaskNotification(string id_taskNotification, string userLog)
+        {
+            if (!TaskNotificationsData.deleteTaskNotification(id_taskNotification, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("notificationTypes")]
+        public IHttpActionResult postTaskNotificationType(TaskNotificationTypeDTO taskNotificationType)
+        {
+            if (!TaskNotificationsData.insertTaskNotificationType(taskNotificationType))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("notificationTypes")]
+        public IHttpActionResult deleteTaskNotificationType(string id_taskNotification, string id_notificationType, string userLog)
+        {
+            if (!TaskNotificationsData.deleteTaskNotificationType(id_taskNotification, id_notificationType, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

@@ -49,5 +49,25 @@
                 </div>
             </div>
         </div>
+        @if (Model.task.id_task != "True")
+        {
+            <div class="row">
+                <div class="col-xs-offset-3 col-xs-6">
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded')">Responder</button>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-warning">Bifurcar</button>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-danger">Pausar</button>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
+@if (Model.taskType.formNeeded == "True")
+{
+    { Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_AnswerTaskForm.cshtml", Model);}
+}

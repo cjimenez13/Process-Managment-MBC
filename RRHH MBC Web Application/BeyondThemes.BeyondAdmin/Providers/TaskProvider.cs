@@ -267,6 +267,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return operationTypes;
             }
         }
+        public async Task<List<TaskNotificationDTO>> getTaskNotifications(string id_task)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskNotificationDTO> taskNotifications = new List<TaskNotificationDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/notifications?id_task=" + id_task).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    taskNotifications = new JavaScriptSerializer().Deserialize<List<TaskNotificationDTO>>(result);
+                }
+                return taskNotifications;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
 
         public async Task<string> postTask(TaskDTO taskDTO)
@@ -358,6 +375,17 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return response.IsSuccessStatusCode;
             }
         }
+        public async Task<bool> postTaskNotification(TaskNotificationDTO taskNotificationDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(taskNotificationDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/notifications", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
         //-------------------------------------- Puts --------------------------------------------------
         public async Task<bool> putTask(TaskDTO taskDTO)
         {
@@ -415,6 +443,17 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return response.IsSuccessStatusCode;
             }
         }
+        public async Task<bool> putTaskNotification(TaskChangeDTO taskNotificationDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(taskNotificationDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/tasks/notifications", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
 
         //-------------------------------------- Deletes -----------------------------------------------
         public async Task<bool> deleteTask(string id_task, string userLog)
@@ -460,6 +499,15 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/files/?id_taskFile=" + id_taskFile + "&userLog=" + userLog).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> deleteTaskNotification(string id_taskNotification, string userLog)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/notifications/?id_taskNotification=" + id_taskNotification + "&userLog=" + userLog).Result;
                 return response.IsSuccessStatusCode;
             }
         }

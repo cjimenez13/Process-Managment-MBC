@@ -25,6 +25,7 @@ function uploadTaskFile(event, self) {
             data: fileData,
             success: function (result) {
                 Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                $('#table-taskFiles tbody').html(result)
             },
             error: function (result) {
                 Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);

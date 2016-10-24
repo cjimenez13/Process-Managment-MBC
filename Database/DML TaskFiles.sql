@@ -8,9 +8,9 @@ begin
 	where tf.task_id = @id_task
 end
 go
--- drop procedure usp_insert_taskFile
+
 create procedure usp_insert_taskFile
-@id_task bigint, @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(100), @fileName nvarchar(200), @userLog int
+@id_task bigint, @fileData varbinary(MAX), @name nvarchar(30), @description nvarchar(50) = null, @fileType nvarchar(150), @fileName nvarchar(200), @userLog int
 as
 begin
 set transaction isolation level snapshot
@@ -49,11 +49,25 @@ go
 create procedure usp_get_taskNotifications
 @id_task bigint as
 begin
-	select n.id_Notification, n.[message], n.task_id, n.isStarting from Notifications n where n.task_id = @id_task
+	select n.id_Notification, n.[message], n.task_id, n.isStarting, 
+	CASE WHEN EXISTS (select * from Notifications_Types nt where notification_id = n.id_notification and nt.[type_id] = '2')
+       THEN 'True' 
+       ELSE 'False'
+	END AS isTelegram,
+	CASE WHEN EXISTS (select * from Notifications_Types nt where notification_id = n.id_notification and nt.[type_id] = '1')
+       THEN 'True' 
+       ELSE 'False'
+	END AS isEmail,
+	CASE WHEN EXISTS (select * from Notifications_Types nt where notification_id = n.id_notification and nt.[type_id] = '0')
+       THEN 'True' 
+       ELSE 'False'
+	END AS isIntern
+	from Notifications n 
+	where n.task_id = @id_task
 end
 go
 
--- drop procedure usp_insertTaskNotification
+-- drop procedure usp_insert_TaskNotification
 create procedure usp_insert_TaskNotification
 @task_id bigint, @message nvarchar(1000), @isStarting bit, @isTelegram bit, @isIntern bit, @isEmail bit, @userLog int as 
 begin 
@@ -64,15 +78,15 @@ begin transaction
 	set @id_notification = (select @@IDENTITY)
 	if @isTelegram = 0
 	begin
-		insert into Notifications_Types (id_Notification, id_type, isSended) values (@id_notification, 2, 0)
+		insert into Notifications_Types (notification_id, [type_id], isSended) values (@id_notification, 2, 0)
 	end
 	if @isIntern = 0
 	begin
-		insert into Notifications_Types (id_Notification, id_type, isSended) values (@id_notification, 0, 0)
+		insert into Notifications_Types (notification_id, [type_id], isSended) values (@id_notification, 0, 0)
 	end
 	if @isEmail = 0
 	begin
-		insert into Notifications_Types (id_Notification, id_type, isSended) values (@id_notification, 1, 0)
+		insert into Notifications_Types (notification_id, [type_id], isSended) values (@id_notification, 1, 0)
 	end
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Notifications')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted task notification', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
@@ -87,7 +101,7 @@ commit transaction
 end
 go
 
--- drop procedure usp_updateTaskNotification
+-- drop procedure usp_update_TaskNotification
 create procedure usp_update_TaskNotification 
 @id_notification bigint, @message nvarchar(1000) = null, @isStarting bit = null, @userLog int as 
 begin
@@ -120,23 +134,24 @@ commit transaction
 end
 go
 
+-- drop procedure usp_insert_taskNotificationType
 create procedure usp_insert_taskNotificationType
 @id_notification int, @id_notificationType int, @userLog int as 
 begin 
 set transaction isolation level snapshot
 begin transaction
-	insert into Notifications_Types (id_Notification, id_type, isSended) values ( @id_notification, @id_notificationType, 0)
+	insert into Notifications_Types (notification_id, [type_id], isSended) values ( @id_notification, @id_notificationType, 0)
 commit transaction
 end
 go
 
--- drop procedure usp_delete_notificationType
+-- drop procedure usp_delete_taskNotificationType
 create procedure usp_delete_taskNotificationType
 @id_notification int, @id_notificationType int, @userLog int as 
 begin 
 set transaction isolation level snapshot
 begin transaction
-	delete from Notifications_Types where id_Notification = @id_notification and id_type = @id_notificationType
+	delete from Notifications_Types where notification_id = @id_notification and [type_id] = @id_notificationType
 commit transaction
 end
 go

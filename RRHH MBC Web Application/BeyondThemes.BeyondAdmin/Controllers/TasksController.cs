@@ -76,7 +76,21 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", new Model.TaskChangesModel(task));
         }
-        
+        [Authorize]
+        public ActionResult _TaskFilesList(string id_task)
+        {
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskFilesList.cshtml", new Model.TaskFilesModel(task));
+        }
+        [Authorize]
+        public ActionResult _TaskNotificationList(string id_task)
+        {
+            TaskDTO task = new TaskDTO();
+            task.id_task = id_task;
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskNotificationsList.cshtml", new Model.TaskNotificationsModel(task));
+        }
+
 
         // -----------------------------------------------------------  Tasks ----------------------------------------------------------------
         [HttpPost]
@@ -471,7 +485,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                         fileDTO.userLog = Request.Cookies["user_id"].Value;
                         if (taskProvider.postTaskFile(fileDTO).Result)
                         {
-                            return new HttpStatusCodeResult(200, "El archivo se cargo con éxito");
+                            return _TaskFilesList(fileDTO.task_id);
                         }
                     }
                     return new HttpStatusCodeResult(404, "Error, el archivo no se puede cargar");
@@ -495,6 +509,43 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        //-- Task Notifications
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddTaskNotification(Model.AddTaskNotificationModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskProvider taskProvider = new TaskProvider();
+                TaskNotificationDTO taskNotification = new TaskNotificationDTO();
+                taskNotification.task_id = pModel.id_task;
+                taskNotification.message = pModel.message;
+                taskNotification.userLog = Request.Cookies["user_id"].Value;
+                taskNotification.isStarting = "False";
+                taskNotification.isTelegram = pModel.isTelegram == "on" ? "True" : "False";
+                taskNotification.isIntern = pModel.isIntern == "on" ? "True" : "False";
+                taskNotification.isEmail = pModel.isEmail == "on" ? "True" : "False";
+
+                if (taskProvider.postTaskNotification(taskNotification).Result)
+                {
+                    return _TaskNotificationList(taskNotification.task_id);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteTaskNotification(string id_taskNotification)
+        {
+            if (ModelState.IsValid)
+            {
+                if (taskProvider.deleteTaskNotification(id_taskNotification, Request.Cookies["user_id"].Value).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
     }
 }

@@ -10,6 +10,5 @@ C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Applicati
 C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Debug\DataTransferObjects.pdb
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\bin\Debug\DataTransferObjects.dll
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\bin\Debug\DataTransferObjects.pdb
-C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Debug\DataTransferObjects.csprojResolveAssemblyReference.cache
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Debug\DataTransferObjects.dll
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\DataTransferObjects\obj\Debug\DataTransferObjects.pdb

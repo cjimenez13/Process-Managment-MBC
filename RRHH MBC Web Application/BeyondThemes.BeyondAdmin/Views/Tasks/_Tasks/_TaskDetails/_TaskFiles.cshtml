@@ -5,7 +5,10 @@
         <h2>Archivos</h2>
     </div>
     <div class="col-xs-2">
-        <button class="btn btn-success" style="float:right; margin-right:5%" data-toggle="modal" data-target="#modal_addTaskFile">Agregar archivo</button>
+        <button class="btn btn-success" style="float:right; margin-right:5%; margin-top:15px" data-toggle="modal" data-target="#modal_addTaskFile">
+            <span class="visible-xs"><i class="fa fa-plus"></i></span>
+            <span class="hidden-xs">Agregar archivo</span>
+        </button>
     </div>
 </div>
 <div class="row" style="margin-bottom:20px;">
@@ -13,10 +16,10 @@
         <div class="row">
             <div class="col-xs-12" style="margin-bottom:20px;">
                 <!-- List of files -->
-                <div class="flip-scroll">
-                    <table class="table flip-content table-hover" id="table-taskFiles">
+                <div class="table-scrollable">
+                    <table class="table table-hover" id="table-taskFiles">
                         <!-- column titles -->
-                        <thead class="flip-content bordered-primary">
+                        <thead >
                             <tr>
                                 <th>Nombre</th>
                                 <th>Fecha</th>
