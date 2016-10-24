@@ -8,7 +8,7 @@
         <div class="widget radius-bordered">
             <div class="widget-header">
                 <span class="widget-caption">Lista de categorías</span>
-                <div class="widget-buttons" style="margin-right:20px">
+                <div class="widget-buttons" style="margin-right:10px">
                     <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_addCategorie">Nueva categoría</button>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         </div>
                         -->
                         <!-- Table -->
-                        @{ Html.RenderPartial("/Views/Categories/_CategoriesList.cshtml");}
+                        @{ Html.RenderPartial("/Views/Categories/_Index/_CategoriesList.cshtml");}
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
 </div>
 
 <!--Modal to add new categorie-->
-@{ Html.RenderPartial("/Views/Categories/_AddCategorie.cshtml", new Model.AddCategorieModel());}
+@{ Html.RenderPartial("/Views/Categories/_Index/_AddCategorie.cshtml", new Model.AddCategorieModel());}
 
 @section PageScripts{
     <!-- scripts for dataTable -->
@@ -47,16 +47,5 @@
     <script src="~/assets/js/datatable/dataTables.tableTools.min.js"></script>
     <script src="~/assets/js/datatable/dataTables.bootstrap.min.js"></script>
     <script src="~/assets/js/datatable/datatables-init.js"></script>
-    <script>
-        InitiateCategorieDataTable.init();
-        function CategorieAddedSuccess(content) {
-            Notify("La categoría ha sido creada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-            $("#CategoriesList").html(content)
-            InitiateCategorieDataTable.init();
-        }
-        function CategorieAddedFailure(content) {
-            Notify("Error, no se puede crear la categoría", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-
-    </script>
+    <script src="~/Scripts/Categories/_Index/_Index.js"></script>
 }

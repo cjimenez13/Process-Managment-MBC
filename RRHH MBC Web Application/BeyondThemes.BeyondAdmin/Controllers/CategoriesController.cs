@@ -1,5 +1,6 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -17,7 +18,11 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
         public ActionResult Categorie(string id)
         {
-            return View(new Model.CategorieModel(id));
+            Model.CategorieModel model = new Model.CategorieModel(id);
+            if (model.categorie.id_categorie != null) 
+                return View(model);
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
         public ActionResult Attribute(string id)
         {
@@ -25,23 +30,23 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
         public ActionResult _CategoriesList()
         {
-            return PartialView("/Views/Categories/_CategoriesList.cshtml", new Model.CategoriesListModel());
+            return PartialView("/Views/Categories/_Index/_CategoriesList.cshtml", new Model.CategoriesListModel());
         }
         public ActionResult _GeneralAttrList(string categorie_id)
         {
-            return PartialView("/Views/Categories/_GeneralAttrList.cshtml", new Model.GeneralAttributesModel(categorie_id));
+            return PartialView("/Views/Categories/_Categorie/_GeneralAttributes/_GeneralAttrList.cshtml", new Model.GeneralAttributesModel(categorie_id));
         }
-        public ActionResult _CategorieGeneralAtr(string categorie_id)
-        {
-            return PartialView("/Views/Categories/_CategorieGeneralAtr.cshtml", new Model.GeneralAttributesModel(categorie_id));
-        }
+        //public ActionResult _CategorieGeneralAtr(string categorie_id)
+        //{
+        //    return PartialView("/Views/Categories/_Categorie/_GeneralAttributes/_CategorieGeneralAtr.cshtml", new Model.GeneralAttributesModel(categorie_id));
+        //}
         public ActionResult _AttributeValuesList(string attribute_id, string attribute_name)
         {
-            return PartialView("/Views/Categories/_AttributeValuesList.cshtml", new Model.AttributesListModel(attribute_id, attribute_name));
+            return PartialView("/Views/Categories/_Categorie/_GeneralAttributes/_AttributeValuesList.cshtml", new Model.AttributesListModel(attribute_id, attribute_name));
         }
         public ActionResult _PersonalAttrList(string categorie_id)
         {
-            return PartialView("/Views/Categories/_PersonalAttrList.cshtml", new Model.PersonalAttributesModel(categorie_id));
+            return PartialView("/Views/Categories/_Categorie/_PersonalAttributes/_PersonalAttrList.cshtml", new Model.PersonalAttributesModel(categorie_id));
         }
 
 

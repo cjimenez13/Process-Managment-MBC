@@ -6,35 +6,48 @@ using BeyondThemes.BeyondAdmin.Tools;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
-    [ValidateLogin]
     public class TemplatesController : Controller
     {
         TemplatesProvider templateProvider = new TemplatesProvider();
         ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         // GET: Templates
         [Authorize]
+        [ValidateLogin]
         public ActionResult Index()
         {
             return View();
         }
         [Authorize]
+        [ValidateLogin]
         public ActionResult Template(string id)
         {
-            return View(new Model.TemplateModel(id));
+            Model.TemplateModel model = new Model.TemplateModel(id);
+            if (model.templateDTO.id_processManagment != null) 
+                return View(new Model.TemplateModel(id));
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
         [Authorize]
+        [ValidateLogin]
         public ActionResult Tasks(string id)
         {
-            return View(new Model.TasksModel(id));
+            Model.TasksModel model = new Model.TasksModel(id);
+            if (model.stage.id_stage != null)
+                return View(new Model.TasksModel(id));
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
+        [Authorize]
         public ActionResult _TemplatesList()
         {
             return PartialView("/Views/Templates/_Index/_TemplatesList.cshtml", new Model.TemplatesListModel());
         }
+        [Authorize]
         public ActionResult _TemplateParticipantsList(string id_process)
         {
             return PartialView("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(id_process));
         }
+        [Authorize]
         public ActionResult _StagesList(string id_process)
         {
             return PartialView("/Views/Templates/_Template/_Stages/_StagesList.cshtml", new Model.StagesListModel(id_process));

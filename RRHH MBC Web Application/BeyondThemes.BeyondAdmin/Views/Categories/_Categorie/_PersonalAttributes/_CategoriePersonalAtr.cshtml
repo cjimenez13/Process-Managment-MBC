@@ -1,0 +1,62 @@
+﻿@model Model.PersonalAttributesModel
+
+<div class="row" style="margin-bottom:20px">
+    <div class="col-md-12">
+        <h3>Datos relacionados con la categoria y las personas</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-scrollable">
+            <table class="table table-hover" id="table-PersonalAttributes">
+                <!-- column titles -->
+                <thead class="">
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Tipo</th>
+                        <th>Valor inicial</th>
+                        <th>Habilitado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data-->
+                    @{ Html.RenderPartial("/Views/Categories/_Categorie/_PersonalAttributes/_PersonalAttrList.cshtml", Model);}
+                    <!--Spaces for add new row -->
+                    <tr>
+                    @using (Ajax.BeginForm("_AddPersonalAttribute", "Categories", new AjaxOptions { HttpMethod = "POST", OnSuccess = "PersonalAttributeAddedSuccess", OnFailure = "PersonalAttributeAddedFailure"}, new {id = "form-addPersonalAttribute" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.categorie_idPA)
+                        <td >
+                            @Html.TextBoxFor(m => m.attributePA, new { @class = "form-control", @placeholder = "", @style = "min-width:15rem", @form= "form-addPersonalAttribute" })
+                            @Html.ValidationMessageFor(m => m.attributePA, "", new { @class = "text-danger" })
+                        </td>
+                        <td >
+                            @Html.DropDownListFor(m => m.id_typePA, Model._TypeSelect, new { @class = "form-control", @style = "min-width:18rem", @onchange = "onGeneralAttrChange(this)", @form= "form-addPersonalAttribute" })
+                        </td>
+                        <td >
+                            @Html.TextBoxFor(m => m.valuePA, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem", @form= "form-addPersonalAttribute" })
+                            @Html.ValidationMessageFor(m => m.valuePA, "", new { @class = "text-danger" })
+                        </td>
+                        <td >
+                            <div class="form-group">
+                                <div class="checkbox" style="margin-left:25%">
+                                    @Html.CheckBoxFor(m => m.isEnabledPA, new { @checked = "checked", @class = "colored-success", @disabled = "true", @form= "form-addPersonalAttribute" })
+                                    <span class="text"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width:5%">
+                            <button class="btn btn-success btn-sm" type="submit" style="margin-left:25px" data-toggle="tooltip" data-placement="top" title="Agregar", form="form-addPersonalAttribute">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                    }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

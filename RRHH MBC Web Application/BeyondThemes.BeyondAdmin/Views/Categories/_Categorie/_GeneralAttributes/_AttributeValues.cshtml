@@ -1,0 +1,76 @@
+﻿@model Model.AttributesListModel
+@{ 
+    string idModal = "modal_Lists" + Model.attribute_idVA;
+    string id_form = "form-addAttributeValueList";
+
+}
+<div class="modal fade" id=@idModal tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Lista @Html.Raw(Model.attribute_nameVA)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-scrollable">
+                            <table class="table table-hover" id="table-GeneralAttributesList">
+                                <!-- column titles -->
+                                <thead class="">
+                                    <tr>
+                                        <th>Atributo</th>
+                                        <th>Tipo</th>
+                                        <th>Valor</th>
+                                        <th>Habilitado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    @{ Html.RenderPartial("/Views/Categories/_Categorie/_GeneralAttributes/_AttributeValuesList.cshtml", Model);}
+                                    <!--Spaces for add new row -->
+                                    <tr>
+                                        <td>
+                                            @using (Ajax.BeginForm("_AddAttributeList", "Categories", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AttributeListAddedSuccess", OnFailure = "AttributeListAddedFailure" }, new { id = @id_form }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.HiddenFor(m => m.attribute_idVA, new { @form = @id_form })
+                                                @Html.HiddenFor(m => m.attribute_nameVA, new { @form = @id_form })
+                                            }
+                                            @Html.TextBoxFor(m => m.attributeVA, new { @class = "form-control", @placeholder = "", @style = "min-width:15rem", @form = @id_form })
+                                            @Html.ValidationMessageFor(m => m.attributeVA, "", new { @class = "text-danger" })
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(m => m.id_typeVA, Model._TypeSelect, new { @class = "form-control", @style = "min-width:18rem", @onchange = "onGeneralAttrChange(this)", @form = @id_form })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.valueVA, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem", @form = @id_form })
+                                            @Html.ValidationMessageFor(m => m.valueVA, "", new { @class = "text-danger" })
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <div class="checkbox" style="margin-left:25%">
+                                                    @Html.CheckBoxFor(m => m.isEnabledVA, new { @checked = "checked", @class = "colored-success", @disabled = "true", @form = @id_form })
+                                                    <span class="text"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:5%">
+                                            <button class="btn btn-success btn-sm" type="submit" style="margin-left:25px" data-toggle="tooltip" data-placement="top" title="Agregar" form="@id_form">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

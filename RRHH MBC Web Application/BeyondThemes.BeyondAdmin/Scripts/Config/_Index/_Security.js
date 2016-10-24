@@ -1,0 +1,31 @@
+﻿function UserAddedSuccess(content) {
+    Notify("El rol ha sido agregado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+    //$('#myTable > tbody:last-child').append('<tr><td>'+content.name+'</td><td>'+content.description+'</td><td>0</td><td><button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td></tr>');
+    var securityTab = $('#securityPartial')
+    securityTab.empty();
+    securityTab.html(content);
+}
+function UserAddedFailure(content) {
+    Notify("Error, no se puede agregar el rol", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
+function deleteRole(id_roll) {
+
+    //e.preventDefault(); // <------------------ stop default behaviour of button
+    var element = this;
+    $.ajax({
+        url: "/Config/_DeleteRole/?id_role=" + id_roll,
+        type: "DELETE",
+        dataType: "html",
+        traditional: true,
+        contentType: false,
+        success: function (data) {
+            Notify("El rol ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            var securityTab = $('#securityPartial')
+            securityTab.empty();
+            securityTab.html(data);
+        },
+        error: function () {
+            Notify("Error, no se puede borrar el rol", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+    });
+}

@@ -68,8 +68,10 @@ namespace Model
                 categoriesSelectList.Add(new SelectListItem { Text = iCategorie.name, Value = iCategorie.id_categorie });
             }
             _CategoriesSelect = new SelectList(categoriesSelectList, "Value", "Text");
-
-            templatesList = templatesProvider.getTemplatesByCategorie(categoriesList[0].id_categorie).Result;
+            if (categoriesList.Count > 0)
+            {
+                templatesList = templatesProvider.getTemplatesByCategorie(categoriesList[0].id_categorie).Result;
+            }
             List<SelectListItem> templatesSelectList = new List<SelectListItem>();
             foreach (TemplateDTO iTemmplate in templatesList)
             {

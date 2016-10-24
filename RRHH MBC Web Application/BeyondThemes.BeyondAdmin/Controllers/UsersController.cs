@@ -19,42 +19,52 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         CategorieProvider categorieProvider = new CategorieProvider();
 
         // GET: Users
+        [Authorize]
+        [ValidateLogin]
         public ActionResult Index()
         {
             return View();
         }
+        [Authorize]
+        [ValidateLogin]
         public ActionResult Group(string id)
         {
             GroupModel groupModel = new GroupModel(id);
             if(groupModel.groupDTO.groupName != null)
-            {
                 return View(groupModel);
-            }
-            return View("/Views/Home/Error404.cshtml");
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
+        [Authorize]
+        [ValidateLogin]
         public new ActionResult Profile(string id)
         {
             string user = HttpUtility.UrlDecode(id);
-            return View(new UserModel(user));
+            UserModel model = new UserModel(user);
+            if (model.user.id != null)
+                return View(model); 
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult _UsersList()
         {
             return PartialView("/Views/Users/_Index/_UsersList.cshtml", new Model.ListUserModel());
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult _ProfileConfigRoles(string user_id)
         {
             return PartialView("/Views/Users/_Profile/_ProfileConfigRoles.cshtml", new Model.UserRolesModel(user_id));
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult _GroupList()
         {
             return PartialView("/Views/Users/_Index/_GroupsList.cshtml", new Model.GroupsListModel());
         }
+        [Authorize]
         [HttpGet]
         public ActionResult _GroupUsersList(string id_group)
         {

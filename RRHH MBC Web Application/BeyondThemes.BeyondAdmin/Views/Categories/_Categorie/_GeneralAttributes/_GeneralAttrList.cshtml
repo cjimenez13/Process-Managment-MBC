@@ -1,0 +1,63 @@
+﻿@model Model.GeneralAttributesModel
+
+@foreach (var attributeDTO in Model.generalAttributesDTO)
+{
+    string attribute = attributeDTO.name;
+    string value = attributeDTO.value;
+    string type_name = "";
+    foreach (var type in Model.attributeTypes)
+    {
+        if (attributeDTO.type_id == type.id_type)
+        {
+            type_name = type.type;
+            break;
+        }
+    }
+    string id_type = attributeDTO.type_id;
+    string id_attribute = attributeDTO.id_attribute;
+    string isChecked = attributeDTO.isEnabled == "True" ? "checked" : "";
+    string id_form = "form-generalAttribute" + id_attribute;
+    <tr>
+            @Html.HiddenFor(m => id_attribute, new {@form = @id_form })
+            @Html.HiddenFor(m => id_type, new {@form = @id_form })
+        <td style="padding-left:10px;padding-right:50px">
+            @using (Ajax.BeginForm("_EditGeneralAttribute", "Categories", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "GeneralAttributeEditSuccess", OnFailure = "GeneralAttributeEditFailure" }, new { id = @id_form }))
+            {
+                @Html.AntiForgeryToken()
+            }
+            @Html.TextBoxFor(m => attribute, new { @class = "form-control", @placeholder = "", @style = "min-width:15rem", @form = @id_form })
+        </td>
+        <td style="width:15%;padding-right:50px">
+            <label>@Html.Raw(type_name)</label>
+        </td>
+        <td>
+            @if (type_name == "Lista")
+            {
+                string idModal = "#modal_Lists" + id_attribute;
+                <a class="btn btn-sky " data-toggle="modal" data-target=@idModal><i class="fa fa-search"></i></a>
+                <!-- Modal to see lists-->
+                {Html.RenderPartial("/Views/Categories/_Categorie/_GeneralAttributes/_AttributeValues.cshtml", new Model.AttributesListModel(id_attribute, attribute));}
+            }
+            else
+            {
+                @Html.TextBoxFor(m => value, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem", @form = @id_form })
+            }
+        </td>
+        <td>
+            <div class="form-group">
+                <div class="checkbox" style="margin-left:25%">
+                    <input type="checkbox" class="colored-success" @isChecked name="isEnabled" id="isEnabled" form="@id_form">
+                    <span class="text"></span>
+                </div>
+            </div>
+        </td>
+        <td style="width:10%">
+            <button class="btn btn-sky btn-sm" style="margin-right:20px" data-toggle="tooltip" data-placement="top" title="Guardar" form="@id_form" type="submit">
+                <span class="glyphicon glyphicon-floppy-saved"></span>
+            </button>
+            <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteGeneralAttribute('@id_attribute','@attribute',this)">
+                <span class="glyphicon glyphicon-minus"></span>
+            </a>
+        </td>
+    </tr>
+}

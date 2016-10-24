@@ -115,8 +115,8 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Select.HtmlToPdf, Version=2.4.0.1, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
-      <HintPath>..\packages\Select.HtmlToPdf.2.4.0.1\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    <Reference Include="Select.HtmlToPdf, Version=2.4.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.2.4.0.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -424,6 +424,12 @@
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\RRHH.pubxml" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
+    <Content Include="Scripts\Categories\_Categorie\_Categorie.js" />
+    <Content Include="Scripts\Categories\_Categorie\_GeneralAttributes.js" />
+    <Content Include="Scripts\Categories\_Categorie\_PersonalAttributes.js" />
+    <Content Include="Scripts\Categories\_Index\_Index.js" />
+    <Content Include="Scripts\Config\_Index\_Security.js" />
+    <Content Include="Scripts\Config\_Role\_Role.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -488,28 +494,28 @@
     <Content Include="Views\Users\_Profile\_AddUserFile.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileActivity.cshtml" />
     <Content Include="Views\Shared\_LoginDropdown.cshtml" />
-    <Content Include="Views\Config\_Security.cshtml" />
-    <Content Include="Views\Config\_AddRole.cshtml" />
+    <Content Include="Views\Config\_Index\_Security.cshtml" />
+    <Content Include="Views\Config\_Index\_AddRole.cshtml" />
     <Content Include="Views\Config\Role.cshtml" />
-    <Content Include="Views\Config\_Permissions.cshtml" />
-    <Content Include="Views\Config\_RoleModules.cshtml" />
-    <Content Include="Views\Config\_PermissionElements.cshtml" />
+    <Content Include="Views\Config\_Role\_Permissions.cshtml" />
+    <Content Include="Views\Config\_Role\_RoleModules.cshtml" />
+    <Content Include="Views\Config\_Role\_PermissionElements.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileConfigInfo.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileConfigRoles.cshtml" />
     <Content Include="Views\Users\_Index\_AddGroup.cshtml" />
     <Content Include="Views\Users\_Group\_EditGroup.cshtml" />
     <Content Include="Views\Users\_Group\_AddGroupUser.cshtml" />
     <Content Include="Views\Users\_Group\_GroupUsersList.cshtml" />
-    <Content Include="Views\Categories\_CategoriesList.cshtml" />
-    <Content Include="Views\Categories\_AddCategorie.cshtml" />
-    <Content Include="Views\Categories\_CategorieInfo.cshtml" />
-    <Content Include="Views\Categories\_CategorieGeneralAtr.cshtml" />
-    <Content Include="Views\Categories\_CategoriePersonalAtr.cshtml" />
-    <Content Include="Views\Categories\_EditCategorie.cshtml" />
-    <Content Include="Views\Categories\_GeneralAttrList.cshtml" />
-    <Content Include="Views\Categories\_AttributeValues.cshtml" />
-    <Content Include="Views\Categories\_AttributeValuesList.cshtml" />
-    <Content Include="Views\Categories\_PersonalAttrList.cshtml" />
+    <Content Include="Views\Categories\_Index\_CategoriesList.cshtml" />
+    <Content Include="Views\Categories\_Index\_AddCategorie.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_CategorieInfo.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_GeneralAttributes\_CategorieGeneralAtr.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_PersonalAttributes\_CategoriePersonalAtr.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_EditCategorie.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_GeneralAttributes\_GeneralAttrList.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_GeneralAttributes\_AttributeValues.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_GeneralAttributes\_AttributeValuesList.cshtml" />
+    <Content Include="Views\Categories\_Categorie\_PersonalAttributes\_PersonalAttrList.cshtml" />
     <Content Include="Views\Categories\Attribute.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileCategories.cshtml" />
     <Content Include="Views\Users\_Profile\_ProfileInfo.cshtml" />
@@ -672,6 +678,9 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -701,12 +710,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets')" />
+  <Import Project="..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.4.0.1\build\Select.HtmlToPdf.targets'))" />
+    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.4.0.0\build\Select.HtmlToPdf.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

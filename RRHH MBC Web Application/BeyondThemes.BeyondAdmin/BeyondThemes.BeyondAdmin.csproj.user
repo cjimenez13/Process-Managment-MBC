@@ -11,6 +11,7 @@
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <NameOfLastUsedPublishProfile>RRHH</NameOfLastUsedPublishProfile>
     <UseIISExpress>true</UseIISExpress>
+    <ToolsVersionPromptShown>1.8</ToolsVersionPromptShown>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

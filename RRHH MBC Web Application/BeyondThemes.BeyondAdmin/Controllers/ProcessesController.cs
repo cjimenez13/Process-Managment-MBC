@@ -12,14 +12,21 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         private TemplatesProvider templatesProvider = new TemplatesProvider();
 
         // GET: Proccess
+        [ValidateLogin]
         public ActionResult Index()
         {
             return View();
         }
+        [ValidateLogin]
         public ActionResult Process(string id)
         {
-            return View(new Model.ProcessModel(id));
+            Model.ProcessModel model = new Model.ProcessModel(id);
+            if (model.processDTO.id_processManagment != null)
+                return View(new Model.ProcessModel(id));
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
+        [ValidateLogin]
         public ActionResult Tasks()
         {
             return View();

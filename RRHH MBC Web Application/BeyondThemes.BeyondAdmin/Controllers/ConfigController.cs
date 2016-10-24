@@ -7,32 +7,42 @@ using System.Web.Mvc;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
-
     public class ConfigController : Controller
     {
         RoleProvider roleProvider = new RoleProvider();
         // GET: Config
+        [Authorize]
+        [ValidateLogin]
+        [HttpGet]
         public ActionResult Index(RolesListModel model)
         {
             return View(model);
         }
 
         [HttpGet]
+        [Authorize]
+        [ValidateLogin]
         public ActionResult Role(string id)
         {
-            return View(new Model.RoleModel(id));
+            RoleModel model = new RoleModel(id);
+            if (model.role.id_role != null)
+                return View(new Model.RoleModel(id));
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
 
 
         [HttpGet]
+        [Authorize]
         public ActionResult _RoleModules(string id_role)
         {
-            return PartialView("/Views/Config/_RoleModules.cshtml", new RoleModel(id_role));
+            return PartialView("/Views/Config/_Role/_RoleModules.cshtml", new RoleModel(id_role));
         }
         [HttpGet]
+        [Authorize]
         public ActionResult _PermissionElements(string id_rolePermission)
         {
-            return PartialView("/Views/Config/_PermissionElements.cshtml", new ElementsModel(id_rolePermission));
+            return PartialView("/Views/Config/_Role/_PermissionElements.cshtml", new ElementsModel(id_rolePermission));
         }
 
         [HttpPost]
@@ -49,7 +59,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 {
                     roleDTO.id_role = newRole.id_role;
                     //return Json(roleDTO);
-                    return PartialView("/Views/Config/_Security.cshtml", new Model.RolesListModel());
+                    return PartialView("/Views/Config/_Index/_Security.cshtml", new Model.RolesListModel());
                 }
             }
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -63,7 +73,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             roleDTO.id_role = id_role;
             if (roleProvider.deleteRole(roleDTO).Result)
             {
-                return PartialView("/Views/Config/_Security.cshtml", new Model.RolesListModel());
+                return PartialView("/Views/Config/Index/_Security.cshtml", new Model.RolesListModel());
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }

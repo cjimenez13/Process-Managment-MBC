@@ -1,0 +1,55 @@
+﻿@model Model.AttributesListModel
+
+@foreach (var attributeDTO in Model.attributeListDTO)
+{
+    string attribute = attributeDTO.name;
+    string value = attributeDTO.value;
+    string type_name = "";
+    foreach(var type in Model.attributeTypes)
+    {
+        if(attributeDTO.type_id == type.id_type)
+        {
+            type_name = type.type;
+            break;
+        }
+    }
+    string id_type = attributeDTO.type_id;
+    string id_attributeValue = attributeDTO.id_attributeValue;
+    string isChecked = attributeDTO.isEnabled == "True" ? "checked" : "";
+    string id_form = "form-attributeValueList" + id_attributeValue;
+    <tr>
+        @Html.HiddenFor(m => id_attributeValue, new { @form = @id_form })
+        @Html.HiddenFor(m => id_type, new {@form = @id_form })
+        <td>
+            @using (Ajax.BeginForm("_EditGeneralAttributeList", "Categories", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "GeneralAttributeListEditSuccess", OnFailure = "GeneralAttributeListEditFailure" }, new { id = @id_form }))
+            {
+                @Html.AntiForgeryToken()
+            }
+            @Html.TextBoxFor(m => attribute, new { @class = "form-control", @placeholder = "", @style = "min-width:15rem", @form = @id_form })
+        </td>
+        <td >
+            <label>@Html.Raw(type_name)</label>
+        </td>
+        <td>
+            @Html.TextBoxFor(m => value, new { @class = "form-control", @placeholder = "", @style = "min-width:20rem", @form = @id_form })
+        </td>
+        <td>
+            <div class="form-group">
+                <div class="checkbox" style="margin-left:25%">
+                    <label style="margin-left:15px">
+                        <input type="checkbox" class="colored-success" @isChecked name="isEnabled" id="isEnabled" , form="@id_form">
+                        <span class="text"></span>
+                    </label>
+                </div>
+            </div>
+        </td>
+        <td style="width:10%">
+            <button class="btn btn-sky btn-sm" style="margin-right:20px" data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" form="@id_form">
+                <span class="glyphicon glyphicon-floppy-saved"></span>
+            </button>
+            <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteGeneralAttributeList('@id_attributeValue','@attribute',this)">
+                <span class="glyphicon glyphicon-minus"></span>
+            </a>
+        </td>
+    </tr>
+}

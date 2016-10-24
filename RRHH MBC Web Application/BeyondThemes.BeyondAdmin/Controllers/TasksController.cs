@@ -12,56 +12,64 @@ using System.Web;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
-    [ValidateLogin]
     public class TasksController : Controller
     {
         TemplatesProvider templateProvider = new TemplatesProvider();
         TaskProvider taskProvider = new TaskProvider();
+        [ValidateLogin]
+        [Authorize]
         public ActionResult Index(string id)
         {
             TasksModel model = new TasksModel(id);
             if(model.stage.name != null)
-            {
                 return View(model);
-            }
-            return View("/Views/Home/Error404.cshtml");
+            else
+                return View("/Views/Home/Error404.cshtml");
         }
+        [Authorize]
         public ActionResult _TaskList(string id_stage)
         {
             return PartialView("/Views/Tasks/_Tasks/_TasksList.cshtml", new Model.TasksModel(id_stage));
         }
+        [Authorize]
         public ActionResult _TaskDetails(string id_task)
         {
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails.cshtml", new Model.TaskDetailsModel(id_task));
         }
+        [Authorize]
         public ActionResult _AddResponsables(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(task));
         }
+        [Authorize]
         public ActionResult _AddForm(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(task));
        }
+        [Authorize]
         public ActionResult _AddAditionals(string id_task)
         {
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskAdditionals.cshtml", new TaskDetailsModel(id_task));
         }
+        [Authorize]
         public ActionResult _AddTaskChanges(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(task));
         }
+        [Authorize]
         public ActionResult _TaskQuestions(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskQuestions.cshtml", new Model.FormQuestionsModel(task));
         }
+        [Authorize]
         public ActionResult _TaskDataChangesList(string id_task)
         {
             TaskDTO task = new TaskDTO();
