@@ -284,6 +284,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return taskNotifications;
             }
         }
+        public async Task<List<TaskNotificationUserDTO>> getTaskNotificationUsers(string id_notification)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskNotificationUserDTO> taskNotificationsUsers = new List<TaskNotificationUserDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/notificationsUsers?id_notification=" + id_notification).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    taskNotificationsUsers = new JavaScriptSerializer().Deserialize<List<TaskNotificationUserDTO>>(result);
+                }
+                return taskNotificationsUsers;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
 
         public async Task<string> postTask(TaskDTO taskDTO)
@@ -386,6 +403,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return response.IsSuccessStatusCode;
             }
         }
+        public async Task<List<TaskNotificationUserDTO>> postTaskNotificationUser(List<TaskNotificationUserDTO> taskNotificationUserDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskNotificationUserDTO> insertedUsers = new List<TaskNotificationUserDTO>();
+                var userJson = new JavaScriptSerializer().Serialize(taskNotificationUserDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/notificationsUsers", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    insertedUsers = new JavaScriptSerializer().Deserialize<List<TaskNotificationUserDTO>>(result);
+                }
+                return insertedUsers;
+            }
+        }
         //-------------------------------------- Puts --------------------------------------------------
         public async Task<bool> putTask(TaskDTO taskDTO)
         {
@@ -455,6 +489,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             }
         }
 
+
         //-------------------------------------- Deletes -----------------------------------------------
         public async Task<bool> deleteTask(string id_task, string userLog)
         {
@@ -508,6 +543,15 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/notifications/?id_taskNotification=" + id_taskNotification + "&userLog=" + userLog).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> deleteTaskNotificationUser(string taskNotification_id, string user_id, string userLog)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/notificationsUsers/?taskNotification_id=" + taskNotification_id + "&user_id="+user_id+"&userLog=" + userLog).Result;
                 return response.IsSuccessStatusCode;
             }
         }

@@ -28,6 +28,8 @@ function showTaskDetails(id_task) {
             $taskDiv.fadeIn('slow')
             $('.select2').select2()
             $('.spinbox').spinbox();
+            $('.date-picker').datepicker();
+            console.log($('.date-picker'))
             $("#taskForm").sortable({
                 items: "> tr:not(:last-child)",
                 placeholder: "sort-highlight",

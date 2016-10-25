@@ -13,31 +13,80 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Añadir Notificación</h4>
+                    <h4 class="modal-title" id="myModalLabel">Formulario</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            @foreach(var question in questions)
+                            @foreach (var question in questions)
                             {
                                 List<DataTransferObjects.QuestionTypeDTO> questionTypes = Model.taskProvider.getQuestionTypes().Result;
-                                DataTransferObjects.QuestionTypeDTO questionType;
-                                foreach(var iQuestionType in questionTypes)
+                                DataTransferObjects.QuestionTypeDTO questionTypeDTO = null;
+                                string questionType = "";
+                                foreach (var iQuestionType in questionTypes)
                                 {
                                     if (iQuestionType.id_questionType == question.questionType_id)
                                     {
-                                        questionType = iQuestionType;
+                                        questionTypeDTO = iQuestionType;
                                     }
                                 }
-                                <label class="control-label"><strong>@Html.Raw(question.question)</strong></label>
-
-                                <input class="form-control" type="@questionType.name" />
+                                <div class="form-group">
+                                    <label class="control-label"><strong>@Html.Raw(question.question)</strong></label>
+                                    @if (question.questionType_id == "0") //texto corto
+                                    {
+                                        <input class="form-control" type="text" name="answers" />
+                                    }
+                                    @if (question.questionType_id == "1") //Parrafo
+                                    {
+                                        <textarea class="form-control" name="answers" rows="3"/>
+                                    }
+                                    @if (question.questionType_id == "2") //Numero
+                                    {
+                                        <input class="form-control" type="number" name="answers" />
+                                    }
+                                    @if (question.questionType_id == "3") //Opcion unica
+                                    {
+                                        <select class="form-control" name="answers">
+                                            @{ 
+                                                List<DataTransferObjects.AttributeListDTO> attributes = new BeyondThemes.BeyondAdmin.Providers.CategorieProvider().getAttributesList(question.generalAttributeList).Result;
+                                            }
+                                            @foreach (var attribute in attributes)
+                                            {
+                                                <option value="@attribute.attribute_id">@attribute.name</option>
+                                            }
+                                        </select>
+                                    }
+                                    @if (question.questionType_id == "4") // Si/No
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input name="form-field-radio" type="radio" checked="checked">
+                                                <span class="text">Si </span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input name="form-field-radio" type="radio" class="inverted">
+                                                <span class="text">No</span>
+                                            </label>
+                                        </div>
+                                    }
+                                    @if (question.questionType_id == "5") // Archivo
+                                    {
+                                        <input class="form-control" type="file" name="answers" />
+                                    }
+                                    @if (question.questionType_id == "6") // Fecha
+                                    {
+                                        <div class="input-group" id="timeDate">
+                                            <input class="form-control date-picker" name="answers" data_date_format = "dd-mm-yyyy" />
+                                            @*@Html.TextBoxFor(model => model.timeDatePicker, new { @class = "form-control date-picker", @form = "formGeneralInfo", data_date_format = "dd-mm-yyyy" })*@
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
                             }
-                            @*<div class="form-group">
-                                @Html.LabelFor(m => m.message)
-                                @Html.TextAreaFor(m => m.message, new { @class = "form-control", @placeholder = "", @rows = "5" })
-                                @Html.ValidationMessageFor(m => m.message, "", new { @class = "text-danger" })
-                            </div>*@
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,5 @@
 ﻿@model Model.ProcessListModel
 
-
 @foreach (var process in Model.processesDTO)
 {
     int completedPorcentage = 0;
@@ -9,6 +8,16 @@
         completedPorcentage = Int32.Parse(process.totalTasks) / Int32.Parse(process.completedTasks);
     }
     List<DataTransferObjects.ParticipantDTO> participants = Model.getParticipants(process.id_processManagment);
+    bool isProcessMember = false;
+    foreach (var participant in participants)
+    {
+        if (participant.user_id == Model.actualUser)
+        {
+            isProcessMember = true;
+        }
+    }
+    if (isProcessMember)
+    {
         <tr>
             <td onclick="location.href = '@(Url.Action("Process",new { id = process.id_processManagment}))'">#@Html.Raw(process.id_processManagment)</td>
             <td onclick="location.href = '@(Url.Action("Process",new { id = process.id_processManagment}))'"><span class="label" style="background-color:@process.state_color; margin-top:5px">@Html.Raw(process.state_name)</span></td>
@@ -34,6 +43,7 @@
                 }
             </td>
         </tr>
+    }
 }
 
 

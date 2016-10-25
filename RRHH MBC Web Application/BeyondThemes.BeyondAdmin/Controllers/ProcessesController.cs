@@ -21,10 +21,23 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         public ActionResult Process(string id)
         {
             Model.ProcessModel model = new Model.ProcessModel(id);
+
             if (model.processDTO.id_processManagment != null)
-                return View(new Model.ProcessModel(id));
-            else
-                return View("/Views/Home/Error404.cshtml");
+            {
+                bool isProcess = false;
+                foreach (var participant in model.participantsModel.participants)
+                {
+                    if (participant.user_id == Request.Cookies["user_id"].Value)
+                    {
+                        isProcess = true;
+                    }
+                }
+                if (isProcess)
+                {
+                    return View(new Model.ProcessModel(id));
+                }
+            }
+            return View("/Views/Home/Error404.cshtml");
         }
         [ValidateLogin]
         public ActionResult Tasks()
@@ -34,7 +47,9 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 
         public ActionResult _ProcessList()
         {
-            return PartialView("/Views/Processes/_Index/_ProcessList.cshtml", new Model.ProcessListModel());
+            Model.ProcessListModel model = new Model.ProcessListModel();
+            model.actualUser = HttpContext.Request.Cookies.Get("user_id").ToString();
+            return PartialView("/Views/Processes/_Index/_ProcessList.cshtml", model);
         }
         [HttpGet]
         public ActionResult getTemplates(string categorie_id)

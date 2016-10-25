@@ -1,0 +1,29 @@
+﻿@model Model.TaskNotificationsUserModel
+
+@foreach (var user in Model.users)
+{
+    var name = user.name + " " + user.fLastName + " " + user.sLastName;
+    string defaultUser = user.email != "" ? user.email : user.userName;
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="databox databox-graded" style="margin-bottom:10px">
+            <div class="databox-left no-padding">
+                <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
+                    <img src="data:Image/png;base64,@user.photoData" style="width:65px; height:65px;">
+                </a>
+            </div>
+            <div class="databox-right padding-top-0 bg-whitesmoke">
+                <div class="row">
+                    <div class="databox-stat danger radius-bordered" onclick="deleteNotificationUser('@user.user_id','@Model.taskNoficationDTO.id_notification', '@name',this)" style="cursor:pointer">
+                        <i class="stat-icon fa fa-times danger"></i>
+                    </div>
+                    <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
+                        <div class="col-xs-10" style=" padding-top:10px">
+                            <div class="databox-text darkgray truncate-text" style="font-size:14px; ">@name</div>
+                            <div class="databox-text darkgray truncate-text"><i class="fa fa-envelope"></i>@defaultUser</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

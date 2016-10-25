@@ -556,6 +556,7 @@
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AddTaskNotification.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_ConfigTaskNotification.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AnswerTaskForm.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskNotificationsUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

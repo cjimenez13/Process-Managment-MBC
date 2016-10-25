@@ -441,15 +441,29 @@ namespace Model
         private TaskProvider taskProvider = new TaskProvider();
         public List<TaskNotificationDTO> notifications;
         public TaskNotificationDTO taskNoficationDTO;
-        public EditTaskNoficationModel(TaskNotificationDTO taskNoficationDTO)
+        public List<ParticipantDTO> userList = new List<ParticipantDTO>();
+        public SelectList _ParticipantsSelect { get; set; }
+        public TaskDTO taskDTO;
+        public EditTaskNoficationModel(TaskNotificationDTO taskNoficationDTO, TaskDTO pTaskDTO)
         {
+            taskDTO = pTaskDTO;
             this.taskNoficationDTO = taskNoficationDTO;
             this.message = taskNoficationDTO.message;
             this.id_notification = taskNoficationDTO.id_notification;
             this.isTelegram = taskNoficationDTO.isTelegram;
             this.isIntern = taskNoficationDTO.isIntern;
             this.isEmail = taskNoficationDTO.isEmail;
+            userList = taskProvider.getTaskParticipants(taskDTO.id_task).Result;
+            List<SelectListItem> usersSelectList = new List<SelectListItem>();
+            foreach (ParticipantDTO iUser in userList)
+            {
+                var name = iUser.name + " " + iUser.fLastName + " " + iUser.sLastName;
+                usersSelectList.Add(new SelectListItem { Text = name, Value = iUser.user_id });
+            }
+            _ParticipantsSelect = new SelectList(usersSelectList, "Value", "Text");
         }
+
+        public List<string> selected_userParticipants_id { get; set; }
         [Display(Name = "Mensaje")]
         [Required(ErrorMessage = "Se debe completar el campo del mensaje")]
         [StringLength(2000, ErrorMessage = "La cantidad máxima de caracteres es 2000")]
@@ -459,5 +473,17 @@ namespace Model
         public string isTelegram { get; set; }
         public string isIntern { get; set; }
         public string isEmail { get; set; }
+    }
+    public class TaskNotificationsUserModel
+    {
+        public List<TaskNotificationUserDTO> users;
+        private TaskProvider taskProvider = new TaskProvider();
+        public TaskNotificationDTO taskNoficationDTO;
+
+        public TaskNotificationsUserModel(TaskNotificationDTO taskNoficationDTO)
+        {
+            this.taskNoficationDTO = taskNoficationDTO;
+            this.users = taskProvider.getTaskNotificationUsers(taskNoficationDTO.id_notification).Result;
+        }
     }
 }

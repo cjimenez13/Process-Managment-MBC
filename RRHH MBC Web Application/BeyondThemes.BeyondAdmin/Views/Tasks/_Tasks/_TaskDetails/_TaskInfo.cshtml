@@ -16,7 +16,6 @@
 <div class="widget radius-bordered">
     <div class="widget-header  bordered-bottom bordered-sky">
         <span class="widget-caption">Información General</span>
-
         <div class="widget-buttons">
             <button class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_editTask" type="button">Editar</button>
         </div>
@@ -49,7 +48,7 @@
                 </div>
             </div>
         </div>
-        @if (Model.task.id_task != "True")
+        @if (Model.task.isProcess == "True")
         {
             <div class="row">
                 <div class="col-xs-offset-3 col-xs-6">
@@ -57,7 +56,7 @@
                         <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded')">Responder</button>
                     </div>
                     <div class="col-xs-4">
-                        <button type="button" class="btn btn-warning">Bifurcar</button>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_newProccess" >Bifurcar</button>
                     </div>
                     <div class="col-xs-4">
                         <button type="button" class="btn btn-danger">Pausar</button>
@@ -70,4 +69,5 @@
 @if (Model.taskType.formNeeded == "True")
 {
     { Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_AnswerTaskForm.cshtml", Model);}
+    { Html.RenderPartial("/Views/Processes/_Index/_AddProcess.cshtml", new Model.AddProcessModel()); }
 }

@@ -3,7 +3,9 @@
 create procedure usp_get_process_tasks
 @id_stage bigint as
 begin 
-	select t.id_task, t.stage_id, t.name, t.[description], t.[type_id], t.taskState_id, t.completedDate, t.createdBy, t.finishDate, t.taskPosition, t.createdDate, t.beginDate, t.daysAvailable, t.hoursAvailable
+	select t.id_task, t.stage_id, t.name, t.[description], t.[type_id], t.taskState_id, t.completedDate, t.createdBy, t.finishDate, t.taskPosition, t.createdDate, 
+	t.beginDate, t.daysAvailable, t.hoursAvailable,
+	(select pm.isProcess from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = @id_stage)) as isProcess
 	from Task t where t.stage_id = @id_stage
 	order by t.taskPosition
 end
@@ -12,7 +14,9 @@ go
 create procedure usp_get_process_task
 @id_task bigint as
 begin 
-	select t.id_task, t.stage_id, t.name, t.[description], t.[type_id], t.taskState_id, t.completedDate, t.createdBy, t.finishDate, t.taskPosition, t.createdDate, t.beginDate, t.daysAvailable, t.hoursAvailable
+	select t.id_task, t.stage_id, t.name, t.[description], t.[type_id], t.taskState_id, t.completedDate, t.createdBy, t.finishDate, t.taskPosition, t.createdDate, 
+	t.beginDate, t.daysAvailable, t.hoursAvailable,
+	(select pm.isProcess from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) as isProcess
 	from Task t where t.id_task = @id_task
 	order by t.taskPosition
 end

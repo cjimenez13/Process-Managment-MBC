@@ -358,5 +358,45 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [HttpGet]
+        [Route("notificationsUsers")]
+        public List<TaskNotificationUserDTO> getTaskNotificationsUsers(string id_notification)
+        {
+            List<TaskNotificationUserDTO> taskNotificationsUsers = TaskNotificationsData.getTaskNotificationUsers(id_notification);
+            return taskNotificationsUsers;
+        }
+
+        [HttpPost]
+        [Route("notificationsUsers")]
+        public IEnumerable<TaskNotificationUserDTO> postTaskNotificationUser(List<TaskNotificationUserDTO> pTaskNotificationUser)
+        {
+            List<TaskNotificationUserDTO> insertedUsers = new List<TaskNotificationUserDTO>();
+            foreach (TaskNotificationUserDTO responsable in pTaskNotificationUser)
+            {
+                try
+                {
+                    if (TaskNotificationsData.insertTaskNotificationUser(responsable))
+                    {
+                        insertedUsers.Add(responsable);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //e.Message;
+                }
+            }
+            return insertedUsers;
+        }
+
+        [HttpDelete]
+        [Route("notificationsUsers")]
+        public IHttpActionResult deleteTaskNotificationUser(string taskNotification_id, string user_id, string userLog)
+        {
+            if (!TaskNotificationsData.deleteTaskNotificationUser(taskNotification_id, user_id, userLog))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

@@ -8,6 +8,7 @@
     {
         completedPorcentage = Int32.Parse(Model.processDTO.totalTasks) / Int32.Parse(Model.processDTO.completedTasks);
     }
+    string createdBy_name = Model.userDTO.name + " " + Model.userDTO.fLastName + " " + Model.userDTO.sLastName;
 }
 <div class="row">
     <div class="col-xs-12">
@@ -33,15 +34,36 @@
                             <dl class="dl-horizontal">
                                 <dt>Nombre</dt><dd id="processNameText">@Html.Raw(Model.processDTO.name)</dd>
                                 <dt># Gestión</dt><dd>#@Html.Raw(Model.processDTO.id_processManagment)</dd>
-                                <dt>Estado</dt><dd><span class="label" style="background-color:@Model.processDTO.state_color">@Html.Raw(Model.processDTO.state_name)</span></dd>
-                                <dt>Creado por</dt><dd>Jocsan Padilla</dd>
+                                <dt>Tipo</dt><dd>@Html.Raw(Model.processDTO.template_name) </dd>
+                                <dt>Creado por</dt><dd>@Html.Raw(createdBy_name) </dd>
                             </dl>
                         </div>
                         <div class="col-md-4 col-xs-6">
                             <dl class="dl-horizontal">
-                                <dt>Creado</dt><dd>16.08.2014 12:15:57</dd>
-                                <dt>Gestión anterior</dt><dd><a>#123144512</a></dd>
-                                <dt>Siguiente gestión</dt><dd><a>#123144512</a></dd>
+                                <dt>Estado</dt><dd><span class="label" style="background-color:@Model.processDTO.state_color">@Html.Raw(Model.processDTO.state_name)</span></dd>
+                                <dt>Creado</dt><dd>@Html.Raw(Model.processDTO.createdDate)</dd>
+                                <dt>Gestión anterior</dt>
+                                <dd>
+                                    @if (String.IsNullOrEmpty(Model.processDTO.previousProcess))
+                                    {
+                                        @:-
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Process", "Processes", new { id = Model.processDTO.previousProcess})">@Html.Raw(Model.processDTO.previousProcess)</a>
+                                    }
+                                </dd>
+                                <dt>Siguiente gestión</dt>
+                                <dd>
+                                    @if (String.IsNullOrEmpty(Model.processDTO.nextProcess))
+                                    {
+                                        @:-
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Process", "Processes", new { id = Model.processDTO.nextProcess})">@Html.Raw(Model.processDTO.nextProcess)</a>
+                                    }
+                                </dd>
                             </dl>
                         </div>
                     </div>
@@ -108,7 +130,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12" id="participantsListDiv">
-                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", new Model.ParticipantsModel(Model.processDTO.id_processManagment));}
+                                            @{ Html.RenderPartial("/Views/Templates/_Template/_Participants/_TemplateParticipantsList.cshtml", Model.participantsModel);}
                                         </div>
                                     </div>
                                 }

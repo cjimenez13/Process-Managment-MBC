@@ -191,7 +191,7 @@ namespace Web_Service_API.DataAccess.TaskData
                 {
                     TaskNotificationUserDTO taskNotificationUser = new TaskNotificationUserDTO();
                     taskNotificationUser.notification_id = rdr["notification_id"].ToString();
-                    taskNotificationUser.name = rdr["user_id"].ToString();
+                    taskNotificationUser.user_id = rdr["user_id"].ToString();
                     taskNotificationUser.name = rdr["name"].ToString();
                     taskNotificationUser.sLastName = rdr["sLastName"].ToString();
                     taskNotificationUser.fLastName = rdr["fLastName"].ToString();

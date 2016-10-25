@@ -4,6 +4,7 @@
     string id_modal = "#modal_configTaskNotification" + notification.id_notification;
     <tr>
         <td style="width:50%">
+            @{Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_ConfigTaskNotification.cshtml", new Model.EditTaskNoficationModel(notification, Model.taskDTO));}
             @if (notification.message.Length > 40)
             {
                 @:<span>
@@ -31,5 +32,4 @@
         <td><button class="btn btn-sky" style="margin-left:20%" data-toggle="modal" data-target="@id_modal"><i class="fa fa-cog"></i></button></td>
         <td><button class="btn btn-danger" onclick="deleteTaskNotification('@notification.id_notification',this)"><i class="fa fa-trash"></i></button></td>
     </tr>
-    {Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_ConfigTaskNotification.cshtml", new Model.EditTaskNoficationModel(notification));}
 }

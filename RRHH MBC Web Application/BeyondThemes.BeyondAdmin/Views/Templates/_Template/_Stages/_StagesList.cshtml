@@ -1,16 +1,33 @@
 ﻿@model Model.StagesListModel
+@{ 
+    string backgroundColor = "#f4f4f4";
+    int iStageCount = 0;
+}
 <ul class="todo-list">
+
     @foreach (var stage in Model.stages)
     {
         string id_editModal = "#modal_editStage" + stage.id_stage;
         string id_stageName = "stageName" + stage.id_stage;
-        <li id="@stage.id_stage">
+        if (stage.isCompleted == "True")
+        {
+            backgroundColor = "#d0e9c6";
+        }
+        else if ((iStageCount == 0 && stage.isCompleted == "False") || (Model.stages[iStageCount-1].isCompleted == "True" && Model.stages[iStageCount+1].isCompleted == "False"))
+        {
+            backgroundColor = "#e5e5e5";
+        }
+        else
+        {
+            backgroundColor = "#f4f4f4";
+        }
+        <li id="@stage.id_stage" style="background-color:@backgroundColor">
             <span class="handle">
                 <i class="fa fa-ellipsis-v"></i>
                 <i class="fa fa-ellipsis-v"></i>
             </span>
             <input type="checkbox" value="">
-            <span id="@id_stageName" class="text">@Html.Raw(stage.name)</span>
+            <span id="@Html.Raw(id_stageName)" class="text">@Html.Raw(stage.name)</span>
             <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
             <div class="tools" style="display:inline-block">
                 <a href="@Url.Action("Index","Tasks",new { id = stage.id_stage})">
@@ -26,6 +43,7 @@
             <!-- Modal to edit stage name -->
             @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_EditStage.cshtml", new Model.EditStageModel(stage));}
         </li>
+        iStageCount++;
     }
 </ul>
 <div class="row">

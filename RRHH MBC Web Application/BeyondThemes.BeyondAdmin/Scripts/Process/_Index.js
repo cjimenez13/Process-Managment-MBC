@@ -7,7 +7,7 @@
             $("#template_id").empty();
             json = json || {};
             for (var i = 0; i < json.length; i++) {
-                $("#template_id").append('<option value="' + json[i].id_template + '">' + json[i].name + '</option>');
+                $("#template_id").append('<option value="' + json[i].id_processManagment + '">' + json[i].name + '</option>');
             }
             $("#template_id").prop("disabled", false);
         }

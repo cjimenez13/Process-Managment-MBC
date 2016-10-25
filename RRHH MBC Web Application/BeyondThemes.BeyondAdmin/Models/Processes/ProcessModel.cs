@@ -14,19 +14,22 @@ namespace Model
         ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         public ProcessDTO processDTO;
         public UserDTO userDTO;
-
+        public Model.ParticipantsModel participantsModel;
         public ProcessModel(string id)
         {
             processDTO = processProvider.getProcess(id).Result;
             userDTO = userProvider.getUserbyID(processDTO.createdBy).Result;
+            participantsModel = new Model.ParticipantsModel(processDTO.id_processManagment);
         }
     }
     public class ProcessListModel
     {
         private ProcessProvider processProvider = new ProcessProvider();
         public List<ProcessDTO> processesDTO = new List<ProcessDTO>();
+        public string actualUser;
         public ProcessListModel()
         {
+            
             processesDTO = processProvider.getProcesses().Result;
         }
         public List<ParticipantDTO> getParticipants(string id_template)

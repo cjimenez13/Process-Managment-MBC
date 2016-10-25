@@ -26,3 +26,42 @@ function deleteTaskNotification(id_taskNotification, self) {
         }
     });
 }
+
+function NotificationUserAddedSuccess(content) {
+    if (content.usersAdded == 1) {
+        Notify("Se ha agregado " + content.usersAdded + " usuario con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+    }
+    else if (content.usersAdded > 1) {
+        Notify("Se han agregado " + content.usersAdded + " usuarios con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+    }
+    if (content.usersError == 1) {
+        Notify(content.usersError + " de los usuarios ya se encuentra como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+    }
+    else if (content.usersError.length > 1) {
+        Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+    }
+    $("#NotificationsUsersList", '#modal_configTaskNotification' + content.id_notification).html(content.viewHtml)
+    console.log($("#NotificationsUsersList", '#modal_configTaskNotification' + content.id_notification))
+}
+function NotificationUSerAddedFailure(content) {
+    Notify('Error, el usuario no se puede agregar', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
+
+function deleteNotificationUser(user_id, id_taskNotification, name, element) {
+    $.ajax({
+        url: "/Tasks/_DeleteTaskNotificationUser/?user_id=" + user_id + "&id_taskNotification=" + id_taskNotification,
+        type: "DELETE",
+        dataType: "html",
+        traditional: true,
+        contentType: false,
+        success: function (data) {
+            Notify("El usuario '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $(element).closest(".databox").parent().hide(300, function () {
+                this.remove()
+            });
+        },
+        error: function () {
+            Notify("Error, no se puede remover el usuario '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+    });
+}

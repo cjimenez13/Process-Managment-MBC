@@ -18,6 +18,7 @@ namespace DataTransferObjects
         public string beginDate { get; set; }
         public string daysAvailable { get; set; }
         public string hoursAvailable { get; set; }
+        public string isProcess { get; set; }
         public string userLog { get; set; }
     }
 

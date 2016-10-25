@@ -37,6 +37,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     task.beginDate = rdr["beginDate"].ToString();
                     task.daysAvailable = rdr["daysAvailable"].ToString();
                     task.hoursAvailable = rdr["hoursAvailable"].ToString();
+                    task.isProcess = rdr["isProcess"].ToString();
                     tasks.Add(task);
                 }
             };
@@ -68,6 +69,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     task.createdDate = rdr["createdDate"].ToString();
                     task.daysAvailable = rdr["daysAvailable"].ToString();
                     task.hoursAvailable = rdr["hoursAvailable"].ToString();
+                    task.isProcess = rdr["isProcess"].ToString();
                 }
             };
             return task;

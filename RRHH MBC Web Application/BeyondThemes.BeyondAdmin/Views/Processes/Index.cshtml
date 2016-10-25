@@ -43,7 +43,11 @@
                                 </thead>
                                 <tbody>
                                     <!-- Table data-->
-                                    @{ Html.RenderPartial("/Views/Processes/_Index/_ProcessList.cshtml", new Model.ProcessListModel());}
+                                    @{ 
+                                        Model.ProcessListModel processListModel = new Model.ProcessListModel();
+                                        processListModel.actualUser = Request.Cookies["user_id"].Value;
+                                        Html.RenderPartial("/Views/Processes/_Index/_ProcessList.cshtml", processListModel);
+                                    }
                                 </tbody>
                             </table>
                         </div>

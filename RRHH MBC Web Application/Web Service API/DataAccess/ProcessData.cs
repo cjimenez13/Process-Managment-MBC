@@ -93,8 +93,8 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@userLog"].Value = pProcessDTO.userLog;
 
                 command.Connection.Open();
-                int result = command.ExecuteNonQuery();
-                if (result != 0)
+                string result = command.ExecuteScalar().ToString();
+                if (result != "-1")
                 {
                     return true;
                 }

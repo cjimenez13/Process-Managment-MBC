@@ -90,6 +90,13 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskNotificationsList.cshtml", new Model.TaskNotificationsModel(task));
         }
+        [Authorize]
+        public ActionResult _TaskNotificationUsers(string id_notification)
+        {
+            TaskNotificationDTO taskNotification = new TaskNotificationDTO();
+            taskNotification.id_notification = id_notification;
+            return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskNotificationUsers.cshtml", new Model.TaskNotificationsUserModel(taskNotification));
+        }
 
 
         // -----------------------------------------------------------  Tasks ----------------------------------------------------------------
@@ -111,7 +118,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 }
                 else if(model.timeSelected == "date")
                 {
-                    taskDTO.finishDate = model.timeDatePicker.Substring(0,11) + model.timeHour;
+                    taskDTO.finishDate = model.timeDatePicker + " " + model.timeHour;
                 }
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 string id_task;
@@ -544,6 +551,61 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 {
                     return new HttpStatusCodeResult(200);
                 }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddTaskNotificationUser(string id_notification, List<string> selected_userParticipants_id)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskProvider taskProvider = new TaskProvider();
+                List<TaskNotificationUserDTO> taskNotificationUsers = new List<TaskNotificationUserDTO>();
+                foreach (var user_id in selected_userParticipants_id)
+                {
+                    TaskNotificationUserDTO taskNotificationUser = new TaskNotificationUserDTO();
+                    taskNotificationUser.user_id = user_id;
+                    taskNotificationUser.userLog = Request.Cookies["user_id"].Value;
+                    taskNotificationUser.notification_id = id_notification;
+                    taskNotificationUsers.Add(taskNotificationUser);
+                }
+
+                List<TaskNotificationUserDTO> adddedUsers = taskProvider.postTaskNotificationUser(taskNotificationUsers).Result;
+                int addedCount = adddedUsers.Count;
+                int errorCount = taskNotificationUsers.Count - addedCount;
+                TaskNotificationDTO taskNotification = new TaskNotificationDTO();
+                taskNotification.id_notification = id_notification;
+                var result = new { id_notification = id_notification, usersAdded = addedCount, usersError = errorCount,
+                    viewHtml = PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskNotificationsUsers.cshtml", new Model.TaskNotificationsUserModel(taskNotification)).RenderToString() };
+
+                return Json(result);
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteTaskNotificationUser(string id_taskNotification, string user_id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (taskProvider.deleteTaskNotificationUser(id_taskNotification, user_id, Request.Cookies["user_id"].Value).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
+        }
+        [HttpPost]
+        public ActionResult _AnswerTaskForm(List<string> answers)
+        {
+            if (ModelState.IsValid)
+            {
+                var parameters = Request.Params;
+                TaskProvider taskProvider = new TaskProvider();
+                //if (taskProvider.postTaskNotification(taskNotification).Result)
+                //{
+                //    return _TaskNotificationList(taskNotification.task_id);
+                //}
             }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
