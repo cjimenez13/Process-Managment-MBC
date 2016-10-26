@@ -523,3 +523,7 @@ C:\Users\Christian\Documents\GitHub\Process-Managment-MBC\RRHH MBC Web Applicati
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Microsoft.QualityTools.Testing.Fakes.dll
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.HtmlToPdf.dll
 C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Select.HtmlToPdf.xml
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\System.Net.Http.Formatting.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Telegram.Bot.dll
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\System.Net.Http.Formatting.xml
+C:\Users\christian.jimenez\Documents\GitHub\Proccess-Managment-MBC\RRHH MBC Web Application\BeyondThemes.BeyondAdmin\bin\Telegram.Bot.xml

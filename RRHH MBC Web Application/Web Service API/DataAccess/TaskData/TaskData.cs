@@ -533,11 +533,11 @@ namespace Web_Service_API.DataAccess.TaskData
                 SqlCommand command = new SqlCommand("usp_update_taskTarget", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@task_id", SqlDbType.Int);
-                command.Parameters["@task_id"].Value = pTaskResponsable.task_id;
+                command.Parameters.Add("@id_task", SqlDbType.Int);
+                command.Parameters["@id_task"].Value = pTaskResponsable.task_id;
 
-                command.Parameters.Add("@group_id", SqlDbType.Int);
-                command.Parameters["@group_id"].Value = pTaskResponsable.user_id;
+                command.Parameters.Add("@id_user", SqlDbType.Int);
+                command.Parameters["@id_user"].Value = pTaskResponsable.user_id;
 
                 command.Parameters.Add("@isConfirmed", SqlDbType.Bit);
                 command.Parameters["@isConfirmed"].Value = pTaskResponsable.isConfirmed;

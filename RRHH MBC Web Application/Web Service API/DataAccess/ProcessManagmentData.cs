@@ -60,6 +60,7 @@ namespace Web_Service_API.DataAccess
                     stage.isCompleted = rdr["isCompleted"].ToString();
                     stage.startDate = rdr["startDate"].ToString();
                     stage.completedDate = rdr["completedDate"].ToString();
+                    stage.isProcess = rdr["isProcess"].ToString();
                     stagesDTO.Add(stage);
                 }
             };
@@ -87,6 +88,7 @@ namespace Web_Service_API.DataAccess
                     stage.isCompleted = rdr["isCompleted"].ToString();
                     stage.startDate = rdr["startDate"].ToString();
                     stage.completedDate = rdr["completedDate"].ToString();
+                    stage.isProcess = rdr["isProcess"].ToString();
                 }
             };
             return stage;

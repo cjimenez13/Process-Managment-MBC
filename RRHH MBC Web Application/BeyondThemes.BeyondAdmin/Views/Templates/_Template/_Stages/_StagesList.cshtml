@@ -9,17 +9,20 @@
     {
         string id_editModal = "#modal_editStage" + stage.id_stage;
         string id_stageName = "stageName" + stage.id_stage;
-        if (stage.isCompleted == "True")
+        if (stage.isProcess == "True")
         {
-            backgroundColor = "#d0e9c6";
-        }
-        else if ((iStageCount == 0 && stage.isCompleted == "False") || (Model.stages[iStageCount-1].isCompleted == "True" && Model.stages[iStageCount+1].isCompleted == "False"))
-        {
-            backgroundColor = "#e5e5e5";
-        }
-        else
-        {
-            backgroundColor = "#f4f4f4";
+            if (stage.isCompleted == "True")
+            {
+                backgroundColor = "#d0e9c6";
+            }
+            else if ((iStageCount == 0 && stage.isCompleted == "False") || (Model.stages[iStageCount - 1].isCompleted == "True" && Model.stages[iStageCount + 1].isCompleted == "False"))
+            {
+                backgroundColor = "#e5e5e5";
+            }
+            else
+            {
+                backgroundColor = "#f4f4f4";
+            }
         }
         <li id="@stage.id_stage" style="background-color:@backgroundColor">
             <span class="handle">

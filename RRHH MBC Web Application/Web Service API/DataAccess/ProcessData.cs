@@ -36,6 +36,8 @@ namespace Web_Service_API.DataAccess
                     process.template_name = rdr["template_name"].ToString();
                     process.completedTasks = rdr["completedTasks"].ToString();
                     process.totalTasks = rdr["totalTasks"].ToString();
+                    process.previousProcess = rdr["previousProcess"].ToString();
+                    process.nextProcess = rdr["nextProcess"].ToString();
                     processes.Add(process);
                 }
             };
@@ -69,12 +71,14 @@ namespace Web_Service_API.DataAccess
                     process.template_name = rdr["template_name"].ToString();
                     process.completedTasks = rdr["completedTasks"].ToString();
                     process.totalTasks = rdr["totalTasks"].ToString();
+                    process.previousProcess = rdr["previousProcess"].ToString();
+                    process.nextProcess = rdr["nextProcess"].ToString();
                 }
             };
             return process;
         }
         //--------------------------------------------- Inserts --------------------------------------------
-        public static bool insertProcess(ProcessDTO pProcessDTO)
+        public static string insertProcess(ProcessDTO pProcessDTO)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
@@ -94,11 +98,7 @@ namespace Web_Service_API.DataAccess
 
                 command.Connection.Open();
                 string result = command.ExecuteScalar().ToString();
-                if (result != "-1")
-                {
-                    return true;
-                }
-                return false;
+                return result;
             };
         }
         //--------------------------------------------- Updates --------------------------------------------
@@ -123,6 +123,29 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@state_id"].Value = pProcessDTO.state_id;
                 command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pProcessDTO.userLog;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+                return false;
+            };
+        }
+        public static bool bifurcateProcess(BifurcateProcessDTO pBifurcateDTO)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_bifurcateProcess", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@previousProcess", SqlDbType.BigInt);
+                command.Parameters["@previousProcess"].Value = pBifurcateDTO.previousProcess;
+                command.Parameters.Add("@nextProcess", SqlDbType.BigInt);
+                command.Parameters["@nextProcess"].Value = pBifurcateDTO.nextProcess;
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pBifurcateDTO.userLog;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();

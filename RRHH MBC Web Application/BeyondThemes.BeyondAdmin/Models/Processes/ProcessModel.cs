@@ -62,8 +62,12 @@ namespace Model
         private TemplatesProvider templatesProvider = new TemplatesProvider();
         public List<TemplateDTO> templatesList = new List<TemplateDTO>();
         public SelectList _TemplatesSelect { get; set; }
-        public AddProcessModel()
+        public string ajaxAction = "";
+        public AddProcessModel() { }
+        public AddProcessModel(string pAjaxAction, string bifurcateProcess_id)
         {
+            ajaxAction = pAjaxAction;
+            this.bifurcateProcess_id = bifurcateProcess_id;
             categoriesList = categorieProvider.getCategories().Result;
             List<SelectListItem> categoriesSelectList = new List<SelectListItem>();
             foreach (CategorieDTO iCategorie in categoriesList)
@@ -82,6 +86,8 @@ namespace Model
             }
             _TemplatesSelect = new SelectList(templatesSelectList, "Value", "Text");
         }
+        public string bifurcateProcess_id { get; set; }
+
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]

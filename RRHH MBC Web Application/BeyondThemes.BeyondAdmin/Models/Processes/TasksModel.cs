@@ -186,13 +186,17 @@ namespace Model
     {
         public TaskProvider taskProvider = new TaskProvider();
         private UsersProvider userProvider = new UsersProvider();
+        private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
+
         public TaskDTO task;
         public UserDTO createdBy;
         public TaskStateDTO taskState;
         public TaskTypeDTO taskType;
+        public StageDTO stageDTO;
         public TaskDetailsModel(string id_task)
         {
             task = taskProvider.getTask(id_task).Result;
+            this.stageDTO = processManagmentProvider.getStage(task.stage_id).Result;
             createdBy = userProvider.getUserbyID(task.createdBy).Result;
             taskState = taskProvider.getTaskState(task.taskState_id).Result;
             taskType = taskProvider.getTaskType(task.type_id).Result;

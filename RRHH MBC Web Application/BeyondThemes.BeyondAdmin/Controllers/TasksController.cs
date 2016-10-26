@@ -609,5 +609,24 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
+        [HttpPost]
+        public ActionResult _ConfirrmTask(string id_task)
+        {
+            if (ModelState.IsValid)
+            {
+                var parameters = Request.Params;
+                TaskProvider taskProvider = new TaskProvider();
+                TaskResponsableDTO taskResponsableDTO = new TaskResponsableDTO();
+                taskResponsableDTO.task_id = id_task;
+                taskResponsableDTO.user_id = Request.Cookies["user_id"].Value;
+                taskResponsableDTO.isConfirmed = "True";
+                taskResponsableDTO.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putTaskResponsable(taskResponsableDTO).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
+        }
     }
 }

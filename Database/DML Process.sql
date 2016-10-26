@@ -1,7 +1,8 @@
 -- drop procedure usp_get_processes
 create procedure usp_get_processes as
 begin
-	select pm2.id_ProcessManagment, pm2.name, pm2.createdBy, pm2.createdDate, pm2.categorie_id, p.completedPorcentage, p.template_id, p.state_id, report.completedTasks, report.totalTasks,
+	select pm2.id_ProcessManagment, pm2.name, pm2.createdBy, pm2.createdDate, pm2.categorie_id, p.completedPorcentage, p.template_id, p.state_id,
+	p.nextProcess, p.previousProcess, report.completedTasks, report.totalTasks,
 	ps.state_name, ps.state_color, (select c. name from Categories c where c.id_categorie = pm2.categorie_id) as categorie_name, 
 	(select t.name from ProcessManagment t where t.id_processManagment = p.template_id) as template_name
 	from (select pm.id_ProcessManagment, pm.name, pm.createdBy, pm.createdDate, pm.categorie_id from ProcessManagment pm where pm.isProcess = 1)pm2
@@ -20,7 +21,8 @@ go
 create procedure usp_get_process 
 @id_process bigint as
 begin
-	select pm2.id_ProcessManagment, pm2.name, pm2.createdBy, pm2.createdDate, pm2.categorie_id, p.completedPorcentage, p.template_id, p.state_id, report.completedTasks, report.totalTasks,
+	select pm2.id_ProcessManagment, pm2.name, pm2.createdBy, pm2.createdDate, pm2.categorie_id, p.completedPorcentage, p.template_id, p.state_id, 
+	p.nextProcess, p.previousProcess, report.completedTasks, report.totalTasks,
 	ps.state_name, ps.state_color, (select c. name from Categories c where c.id_categorie = pm2.categorie_id) as categorie_name, 
 	(select t.name from ProcessManagment t where t.id_processManagment = p.template_id) as template_name
 	from (select pm.id_ProcessManagment, pm.name, pm.createdBy, pm.createdDate, pm.categorie_id from ProcessManagment pm where pm.isProcess = 1 and pm.id_processManagment = @id_process)pm2
@@ -35,10 +37,22 @@ begin
 end
 go  
 
+--drop procedure usp_update_bifurcateProcess
+create procedure usp_update_bifurcateProcess
+@nextProcess bigint, @previousProcess bigint, @userLog int as
+begin
+	update Process set nextProcess = @nextProcess
+	where processManagment_id = @previousProcess
+
+	update Process set previousProcess = @previousProcess
+	where processManagment_id = @nextProcess
+end
+go
 -- delete from ProcessManagment where isProcess = 1
 -- exec usp_insert_process @name = 'test', @categorie_id = 17, @template_id = 1, @userLog = 76
 --delete from ProcessManagment where isProcess  = 1
 -- drop procedure usp_insert_process
+select * from Process
 create procedure usp_insert_process
 @name nvarchar(100), @categorie_id int = null, @template_id bigint, @previousProcess bigint = null, @userLog int as
 begin
@@ -110,7 +124,7 @@ begin try
 		deallocate cursor_stages
 	end
 commit transaction 
-select 1
+	select @processManagment_id
 end try
 begin catch
 	rollback transaction;

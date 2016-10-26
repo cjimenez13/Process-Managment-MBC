@@ -21,19 +21,25 @@ namespace Web_Service_API.Controllers
             return process;
         }
         [HttpPost]
-        public IHttpActionResult Post(ProcessDTO processDTO)
+        public string Post(ProcessDTO processDTO)
         {
-            if (!ProcessData.insertProcess(processDTO))
-            {
-                return BadRequest();
-            }
-            return Ok();
+            return ProcessData.insertProcess(processDTO);
         }
 
         [HttpPut]
         public IHttpActionResult Put(ProcessDTO processDTO)
         {
             if (!ProcessData.updateProcess(processDTO))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [Route("bifurcate")]
+        [HttpPut]
+        public IHttpActionResult bifurcateProcess(BifurcateProcessDTO bifurcateDTO)
+        {
+            if (!ProcessData.bifurcateProcess(bifurcateDTO))
             {
                 return BadRequest();
             }

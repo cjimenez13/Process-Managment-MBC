@@ -31,6 +31,7 @@
         public string isCompleted { get; set; }
         public string startDate { get; set; }
         public string completedDate { get; set; }
+        public string isProcess { get; set; }
         public string userLog { get; set; }
     }
 
@@ -44,6 +45,13 @@
         public string userName { get; set; }
         public string email { get; set; }
         public string photoData { get; set; }
+        public string userLog { get; set; }
+    }
+
+    public class BifurcateProcessDTO
+    {
+        public string nextProcess { get; set; }
+        public string previousProcess { get; set; }
         public string userLog { get; set; }
     }
 }

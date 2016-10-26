@@ -50,7 +50,7 @@
                                     }
                                     else
                                     {
-                                        <a href="@Url.Action("Process", "Processes", new { id = Model.processDTO.previousProcess})">@Html.Raw(Model.processDTO.previousProcess)</a>
+                                        <a href="@Url.Action("Process", "Processes", new { id = Model.processDTO.previousProcess})">#@Html.Raw(Model.processDTO.previousProcess)</a>
                                     }
                                 </dd>
                                 <dt>Siguiente gestión</dt>
@@ -61,7 +61,7 @@
                                     }
                                     else
                                     {
-                                        <a href="@Url.Action("Process", "Processes", new { id = Model.processDTO.nextProcess})">@Html.Raw(Model.processDTO.nextProcess)</a>
+                                        <a href="@Url.Action("Process", "Processes", new { id = Model.processDTO.nextProcess})">#@Html.Raw(Model.processDTO.nextProcess)</a>
                                     }
                                 </dd>
                             </dl>

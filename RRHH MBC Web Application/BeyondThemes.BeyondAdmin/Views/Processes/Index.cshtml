@@ -66,8 +66,8 @@
 </div>
 
 <!-- Modal to add process-->
-@{ Html.RenderPartial("/Views/Processes/_Index/_AddProcess.cshtml", new Model.AddProcessModel());}
+@{ Html.RenderPartial("/Views/Processes/_Index/_AddProcess.cshtml", new Model.AddProcessModel("_AddProcess",""));}
 @section PageScripts{
 <script src="~/Scripts/Process/_Index.js"></script>
-
+<script src="~/Scripts/Process/_AddProcess.js"></script>
 }

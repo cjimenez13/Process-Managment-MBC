@@ -57,7 +57,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
         }
         //-------------------------------------- Posts --------------------------------------------------
 
-        public async Task<bool> postProcess(ProcessDTO processDTO)
+        public async Task<string> postProcess(ProcessDTO processDTO)
         {
             using (var client = new HttpClient())
             {
@@ -67,9 +67,9 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 HttpResponseMessage response = client.PostAsync("api/process/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    return new JavaScriptSerializer().Deserialize<String>(await response.Content.ReadAsStringAsync());
                 }
-                return false;
+                return "-1";
             }
         }
         //-------------------------------------- Puts --------------------------------------------------
@@ -89,6 +89,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+
+        public async Task<bool> bifurcateProcess(BifurcateProcessDTO bifurcateProcessDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(bifurcateProcessDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/process/bifurcate", contentPost).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
 
         //-------------------------------------- Deletes -----------------------------------------------
         public async Task<bool> deleteProcess(string id_process, string userLog)

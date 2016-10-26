@@ -48,7 +48,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         public ActionResult _ProcessList()
         {
             Model.ProcessListModel model = new Model.ProcessListModel();
-            model.actualUser = HttpContext.Request.Cookies.Get("user_id").ToString();
+            model.actualUser = HttpContext.Request.Cookies["user_id"].Value;
             return PartialView("/Views/Processes/_Index/_ProcessList.cshtml", model);
         }
         [HttpGet]
@@ -69,9 +69,36 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 processDTO.categorie_id = model.categorie_id;
                 processDTO.template_id = model.template_id;
                 processDTO.userLog = Request.Cookies["user_id"].Value;
-                if (processProvider.postProcess(processDTO).Result)
+                if (processProvider.postProcess(processDTO).Result != "-1")
                 {
                     return _ProcessList();
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult _BifurcateProcess(Model.AddProcessModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ProcessDTO processDTO = new ProcessDTO();
+                processDTO.name = model.name;
+                processDTO.categorie_id = model.categorie_id;
+                processDTO.template_id = model.template_id;
+                processDTO.userLog = Request.Cookies["user_id"].Value;
+                string id_process;
+                if ((id_process = processProvider.postProcess(processDTO).Result) != "-1")
+                {
+                    BifurcateProcessDTO bifurcateProcessDTO = new BifurcateProcessDTO();
+                    bifurcateProcessDTO.previousProcess = model.bifurcateProcess_id;
+                    bifurcateProcessDTO.nextProcess = id_process;
+                    bifurcateProcessDTO.userLog = Request.Cookies["user_id"].Value;
+                    if (processProvider.bifurcateProcess(bifurcateProcessDTO).Result)
+                    {
+                        return new HttpStatusCodeResult(200);
+                    }
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");

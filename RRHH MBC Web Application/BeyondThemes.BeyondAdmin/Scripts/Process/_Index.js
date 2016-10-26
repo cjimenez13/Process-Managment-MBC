@@ -1,30 +1,4 @@
-﻿function onCategoriesSelectChanged() {
-    var id = $("#categorie_id").val();
-    $.ajax({
-        url: '/Processes/getTemplates?categorie_id='+id,
-        type: 'get',
-        success: function (json, textStatus) {
-            $("#template_id").empty();
-            json = json || {};
-            for (var i = 0; i < json.length; i++) {
-                $("#template_id").append('<option value="' + json[i].id_processManagment + '">' + json[i].name + '</option>');
-            }
-            $("#template_id").prop("disabled", false);
-        }
-    });
-}
-function ProcessAddedSuccess(content) {
-    Notify("La gestión ha sido creada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-    $('#table-processes tbody').html(content)
-    $("[data-toggle='tooltip']").tooltip();
-}
-function ProcessAddedFailure(content) {
-    Notify("Error, no se creó la gestión", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-}
-
-
-
-var Imtech = {};
+﻿var Imtech = {};
 Imtech.Pager = function () {
     this.currentPage = 1;
     this.numPages = function () {
@@ -45,6 +19,7 @@ Imtech.Pager = function () {
             });
         $(this.pagingContainerPath).html(html);
         renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
+        $("[data-toggle='tooltip']").tooltip();
     }
     var renderControls = function (container, currentPage, numPages) {
         nextPage = currentPage + 1;
@@ -83,7 +58,7 @@ var pager = new Imtech.Pager();
 var processContainer;
 $(document).ready(function () {
     processContainer = $('#table-processes tbody').children();
-    pager.paragraphsPerPage = 9; // set amount elements per page
+    pager.paragraphsPerPage = 20; // set amount elements per page
     pager.pagingContainer = $('#table-processes tbody'); // set of main container
     pager.paragraphs = $('tr', pager.pagingContainer); // set of required containers
     pager.pagingControlsContainer = '#pagingControls';

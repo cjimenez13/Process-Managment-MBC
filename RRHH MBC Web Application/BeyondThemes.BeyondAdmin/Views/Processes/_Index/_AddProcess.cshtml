@@ -3,9 +3,13 @@
 <div class="modal fade" id="modal_newProccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-        @using (Ajax.BeginForm("_AddProcess", "Processes", new AjaxOptions { HttpMethod = "POST", OnSuccess = "ProcessAddedSuccess", OnFailure = "ProcessAddedFailure" }))
+        @using (Ajax.BeginForm(Model.ajaxAction, "Processes", new AjaxOptions { HttpMethod = "POST", OnSuccess = "ProcessAddedSuccess", OnFailure = "ProcessAddedFailure" }))
         {
             @Html.AntiForgeryToken()
+            if (Model.bifurcateProcess_id != "")
+            {
+                @Html.HiddenFor(m => m.bifurcateProcess_id);
+            }
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -15,7 +19,6 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="form-group">
@@ -38,9 +41,6 @@
                                         @Html.LabelFor(model => model.template_id)
                                         @Html.DropDownListFor(m => m.template_id, Model._TemplatesSelect, new { @class = "form-control", @style = "width:100%" })
                                         @Html.ValidationMessageFor(m => m.template_id, "", new { @class = "text-danger" })
-                                        @*<label>Plantilla</label>
-                                        <select id="selectTemplates" style="width:100%;">
-                                        </select>*@
                                     </div>
                                 </div>
                             </div>

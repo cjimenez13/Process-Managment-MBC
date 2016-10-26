@@ -13,7 +13,6 @@ end
 go 
 -- drop procedure usp_insert_process_participant
 -- exec usp_insert_process_participant 1, 75, 75
-select * from ProcessManagment
 create procedure usp_insert_process_participant
 @id_processManagment bigint, @user_id int, @userLog int as
 begin
@@ -81,7 +80,8 @@ go
 create procedure usp_get_process_stages
 @id_processManagment bigint as
 begin 
-	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted, s.startDate, s.completedDate
+	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted, s.startDate, s.completedDate,
+	(select p.isProcess from ProcessManagment p where p.id_processManagment = s.processManagment_id) as isProcess
 	from Stage s where  s.processManagment_id = @id_processManagment
 	order by s.stagePosition
 end
@@ -91,7 +91,8 @@ go
 create procedure usp_get_process_stage 
 @id_stage bigint as
 begin 
-	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted, s.startDate, s.completedDate
+	select s.id_stage, s.name, s.processManagment_id, s.stagePosition, s.createdBy, s.createdDate, s.isCompleted, s.startDate, s.completedDate,
+	(select p.isProcess from ProcessManagment p where p.id_processManagment = s.processManagment_id) as isProcess
 	from Stage s where  s.id_stage = @id_stage
 end
 go
