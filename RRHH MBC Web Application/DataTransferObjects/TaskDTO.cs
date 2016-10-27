@@ -19,6 +19,7 @@ namespace DataTransferObjects
         public string daysAvailable { get; set; }
         public string hoursAvailable { get; set; }
         public string isProcess { get; set; }
+        public string process_name { get; set; }
         public string userLog { get; set; }
     }
 
@@ -127,6 +128,19 @@ namespace DataTransferObjects
     {
         public string notification_id { get; set; }
         public string user_id { get; set; }
+        public string name { get; set; }
+        public string sLastName { get; set; }
+        public string fLastName { get; set; }
+        public string userName { get; set; }
+        public string email { get; set; }
+        public string photoData { get; set; }
+        public string userLog { get; set; }
+    }
+    public class TaskFormUserDTO
+    {
+        public string taskForm_id { get; set; }
+        public string user_id { get; set; }
+        public string isAnswered { get; set; }
         public string name { get; set; }
         public string sLastName { get; set; }
         public string fLastName { get; set; }

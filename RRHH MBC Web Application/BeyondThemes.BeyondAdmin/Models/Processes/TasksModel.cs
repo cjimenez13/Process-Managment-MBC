@@ -90,6 +90,17 @@ namespace Model
         public string timeSelected { get; set; }
     }
 
+    public class UserTasksModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<TaskDTO> tasks;
+        public List<TaskStateDTO> taskStates;
+        public UserTasksModel(string user_id)
+        {
+            tasks = taskProvider.getTasksbyUser(user_id).Result;
+            taskStates = taskProvider.getTaskStates().Result;
+        }
+    }
     public class EditTaskInfo
     {
         public EditTaskInfo() { }
@@ -254,7 +265,45 @@ namespace Model
         public string id_taskForm { get; set; }
 
     }
+    public class AddFormUsersModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public SelectList _ParticipantsSelect { get; set; }
+        public List<ParticipantDTO> userList = new List<ParticipantDTO>();
+        public TaskDTO taskDTO;
+        public TaskFormDTO taskFormDTO;
+        public AddFormUsersModel(TaskDTO taskDTO, TaskFormDTO taskFormDTO)
+        {
+            this.taskDTO = taskDTO;
+            this.taskFormDTO = taskFormDTO;
+            userList = taskProvider.getTaskParticipants(taskDTO.id_task).Result;
+            this.taskForm_id = taskFormDTO.id_taskForm;
+            List<SelectListItem> usersSelectList = new List<SelectListItem>();
+            foreach (ParticipantDTO iUser in userList)
+            {
+                var name = iUser.name + " " + iUser.fLastName + " " + iUser.sLastName;
+                usersSelectList.Add(new SelectListItem { Text = name, Value = iUser.user_id });
+            }
+            _ParticipantsSelect = new SelectList(usersSelectList, "Value", "Text");
+        }
+        public string taskForm_id;
+        [Display(Name = "Usuarios")]
+        [Required(ErrorMessage = "Se debe seleccionar al menos un usuario")]
+        public List<string> selected_userForm_id { get; set; }
+    }
+    public class FormUsersModel
+    {
+        public List<TaskFormUserDTO> formUsers;
+        private TaskProvider taskProvider = new TaskProvider();
+        public string taskForm_id;
 
+        public FormUsersModel(string taskForm_id)
+        {
+            this.taskForm_id = taskForm_id;
+            formUsers = taskProvider.getFormUsers(taskForm_id).Result;
+
+        }
+    }
     public class FormQuestionsModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -409,7 +458,7 @@ namespace Model
         public string id_task { get; set; }
     }
 
-    //-------------------------------------- Task Files ---------------------------------------------
+    //-------------------------------------- Task Notifications ---------------------------------------------
     public class TaskNotificationsModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -490,4 +539,5 @@ namespace Model
             this.users = taskProvider.getTaskNotificationUsers(taskNoficationDTO.id_notification).Result;
         }
     }
+
 }

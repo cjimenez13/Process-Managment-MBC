@@ -15,6 +15,12 @@ namespace Web_Service_API.Controllers
             return processes;
         }
         [HttpGet]
+        public IEnumerable<ProcessDTO> GetProcessbyUser(string user_id)
+        {
+            List<ProcessDTO> processes = ProcessData.getProcessesbyUser(user_id);
+            return processes;
+        }
+        [HttpGet]
         public ProcessDTO GetProcess(string id_process)
         {
             ProcessDTO process = ProcessData.getProcess(id_process);

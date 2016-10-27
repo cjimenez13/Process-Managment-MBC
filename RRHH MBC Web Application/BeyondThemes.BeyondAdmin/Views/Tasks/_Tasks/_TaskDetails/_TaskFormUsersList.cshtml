@@ -1,10 +1,10 @@
-﻿@model Model.TaskResponsablesModel
-@foreach (var user in Model.responsables)
+﻿@model Model.FormUsersModel
+@foreach (var user in Model.formUsers)
 {
     var name = user.name + " " + user.fLastName + " " + user.sLastName;
     string defaultUser = user.email != "" ? user.email : user.userName;
     string backgroundColor = "#f5f5f5";
-    if (user.isConfirmed == "True")
+    if (user.isAnswered == "True")
     {
         backgroundColor = "#d0e9c6";
     }
@@ -15,9 +15,9 @@
                     <img src="data:Image/png;base64,@user.photoData" style="width:65px; height:65px;">
                 </a>
             </div>
-            <div class="databox-right padding-top-0 bg-whitesmoke">
+            <div class="databox-right padding-top-0 bg-whitesmoke" style="background-color:@backgroundColor">
                 <div class="row">
-                    <div class="databox-stat danger radius-bordered" onclick="deleteResponsableUser('@user.user_id','@Model.id_task', '@name',this)" style="cursor:pointer">
+                    <div class="databox-stat danger radius-bordered" onclick="deleteFormUser('@user.user_id','@Model.taskForm_id', '@name',this)" style="cursor:pointer">
                         <i class="stat-icon fa fa-times danger"></i>
                     </div>
                     <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">

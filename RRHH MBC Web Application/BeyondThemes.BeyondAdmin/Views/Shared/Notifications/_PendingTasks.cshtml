@@ -1,0 +1,66 @@
+﻿@model Model.UserTasksModel
+
+<li>
+    <a class=" dropdown-toggle" data-toggle="dropdown" title="Help" href="#">
+        <i class="icon fa fa-warning"></i><span class="badge badge-warning"><strong>@Model.tasks.Count</strong></span>
+    </a>
+    <!--Notification Dropdown-->
+    <ul class="pull-right dropdown-menu dropdown-arrow dropdown-notifications" >
+        @foreach (var task in Model.tasks)
+        {
+            string labelColor = "";
+            string labelText = "";
+            string timeLeft = "";
+            if (task.taskState_id == "0")
+            {
+                foreach (var taskType in Model.taskStates)
+                {
+                    if (task.taskState_id == taskType.id_taskState)
+                    {
+                        labelColor = taskType.state_color;
+                        labelText = taskType.state_name;
+                        IFormatProvider culture = new System.Globalization.CultureInfo("fr-FR", true);
+                        if (!String.IsNullOrEmpty(task.finishDate))
+                        {
+                            DateTime finishTime = DateTime.ParseExact(task.finishDate.Replace(".",""), "dd/MM/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+                            var difference = (finishTime - DateTime.Now);
+                            timeLeft = difference.Days != 0 ? difference.Days.ToString() + " días" : difference.Hours.ToString() + " horas";
+                        }
+                    }
+                }
+                <li>
+                    <a  href="@Url.Action("Index", "Tasks", new { id = task.stage_id})">
+                        <div class="clearfix">
+                            <div class="notification-body">
+                                <span class="title truncate-text" style="width:200px">@Html.Raw(task.name)asdddddddddddddssssssssssssssssssssssdddddddddd</span>
+                                <span class="description">@Html.Raw(timeLeft)</span>
+                            </div>
+                            <div class="notification-extra">
+                                <small class="label" style="font-size:10px; background-color: @labelColor">@Html.Raw(labelText)</small>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+        }
+        @*<li>
+            <a href="#">
+                <div class="clearfix">
+                    <div class="notification-body">
+                        <span class="title">Uncharted break</span>
+                        <span class="description">03:30 pm - 05:15 pm</span>
+                    </div>
+                    <div class="notification-extra">
+                        <i class="fa fa-clock-o darkorange"></i>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="dropdown-footer">
+            <a href="#">
+                Ver todas las tareas
+            </a>
+        </li>*@
+    </ul>
+    <!--/Notification Dropdown-->
+</li>

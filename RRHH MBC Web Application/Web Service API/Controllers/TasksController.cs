@@ -16,6 +16,12 @@ namespace Web_Service_API.Controllers
             return tasks;
         }
         [HttpGet]
+        public IEnumerable<TaskDTO> GetTasksbyUser(string user_id)
+        {
+            List<TaskDTO> tasks = TaskData.getTasksbyUser(user_id);
+            return tasks;
+        }
+        [HttpGet]
         public TaskDTO GetTask(string id_task)
         {
             TaskDTO task = TaskData.getTask(id_task);
@@ -157,21 +163,21 @@ namespace Web_Service_API.Controllers
         [Route("questions/types")]
         public IEnumerable<QuestionTypeDTO> getFormQuestionTypes()
         {
-            List<QuestionTypeDTO> questionTypes = TaskData.getQuestionTypes();
+            List<QuestionTypeDTO> questionTypes = TaskFormData.getQuestionTypes();
             return questionTypes;
         }
         [HttpGet]
         [Route("questions")]
         public IEnumerable<TaskQuestionDTO> getFormQuestions(string id_taskForm)
         {
-            List<TaskQuestionDTO> questions = TaskData.getTaskQuestions(id_taskForm);
+            List<TaskQuestionDTO> questions = TaskFormData.getTaskQuestions(id_taskForm);
             return questions;
         }
         [HttpPost]
         [Route("questions")]
         public IHttpActionResult postFormQuestion(TaskQuestionDTO pQuestion)
         {
-            if (!TaskData.insertQuestion(pQuestion))
+            if (!TaskFormData.insertQuestion(pQuestion))
             {
                 return BadRequest();
             }
@@ -182,7 +188,7 @@ namespace Web_Service_API.Controllers
         [Route("questions")]
         public IHttpActionResult putFormQuestion(TaskQuestionDTO pQuestionDTO)
         {
-            if (!TaskData.updateQuestion(pQuestionDTO))
+            if (!TaskFormData.updateQuestion(pQuestionDTO))
             {
                 return BadRequest();
             }
@@ -194,7 +200,7 @@ namespace Web_Service_API.Controllers
         [Route("forms")]
         public TaskFormDTO getTaskForm(string id_task)
         {
-            TaskFormDTO taskForm = TaskData.getTaskForm(id_task);
+            TaskFormDTO taskForm = TaskFormData.getTaskForm(id_task);
             return taskForm;
         }
 
@@ -202,7 +208,7 @@ namespace Web_Service_API.Controllers
         [Route("forms")]
         public IHttpActionResult postTaskForm(TaskFormDTO pTaskForm)
         {
-            if (!TaskData.insertForm(pTaskForm))
+            if (!TaskFormData.insertForm(pTaskForm))
             {
                 return BadRequest();
             }
@@ -213,8 +219,53 @@ namespace Web_Service_API.Controllers
         [Route("forms")]
         public IHttpActionResult putForm(TaskFormDTO pTaskForm)
         {
-            if (!TaskData.updateForm(pTaskForm))
+            if (!TaskFormData.updateForm(pTaskForm))
             { 
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("formUsers")]
+        public List<TaskFormUserDTO> getFormUsers(string taskForm_id)
+        {
+            List<TaskFormUserDTO> formUsers = TaskFormData.getFormUsers(taskForm_id);
+            return formUsers;
+        }
+
+        [HttpPost]
+        [Route("formUsers")]
+        public IEnumerable<TaskFormUserDTO> postFormUser(List<TaskFormUserDTO> formUsersDTO)
+        {
+            List<TaskFormUserDTO> insertedParticipants = new List<TaskFormUserDTO>();
+            foreach (TaskFormUserDTO responsable in formUsersDTO)
+            {
+                try
+                {
+                    if (TaskFormData.insertFormUser(responsable))
+                    {
+                        insertedParticipants.Add(responsable);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //e.Message;
+                }
+            }
+            return insertedParticipants;
+        }
+
+        [HttpDelete]
+        [Route("formUsers")]
+        public IHttpActionResult deleteFormUser(string userLog, string user_id, string taskForm_id)
+        {
+            TaskFormUserDTO formUser = new TaskFormUserDTO();
+            formUser.userLog = userLog;
+            formUser.user_id = user_id;
+            formUser.taskForm_id = taskForm_id;
+            if (!TaskFormData.deleteFormUser(formUser))
+            {
                 return BadRequest();
             }
             return Ok();

@@ -237,6 +237,7 @@
     <Compile Include="DataAccess\TaskData\TaskChangesData.cs" />
     <Compile Include="DataAccess\TaskData\TaskData.cs" />
     <Compile Include="DataAccess\TaskData\TaskFilesData.cs" />
+    <Compile Include="DataAccess\TaskData\TaskFormData.cs" />
     <Compile Include="DataAccess\TaskData\TaskNotificationsData.cs" />
     <Compile Include="DataAccess\TemplatesData.cs" />
     <Compile Include="DataAccess\UsersData.cs" />

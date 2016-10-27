@@ -28,6 +28,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return tasks;
             }
         }
+        public async Task<List<TaskDTO>> getTasksbyUser(string user_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskDTO> tasks = new List<TaskDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/?user_id=" + user_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    tasks = new JavaScriptSerializer().Deserialize<List<TaskDTO>>(result);
+                }
+                return tasks;
+            }
+        }
         public async Task<TaskDTO> getTask(string id_task)
         {
             using (var client = new HttpClient())
@@ -196,6 +213,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                     form = new JavaScriptSerializer().Deserialize<List<QuestionTypeDTO>>(result);
                 }
                 return form;
+            }
+        }
+        public async Task<List<TaskFormUserDTO>> getFormUsers(string taskForm_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskFormUserDTO> formUsers = new List<TaskFormUserDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/formUsers?taskForm_id="+taskForm_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    formUsers = new JavaScriptSerializer().Deserialize<List<TaskFormUserDTO>>(result);
+                }
+                return formUsers;
             }
         }
         public async Task<List<AttributeDTO>> getTaskAttributes(string id_task)
@@ -370,6 +404,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return response.IsSuccessStatusCode;
             }
         }
+        public async Task<List<TaskFormUserDTO>> postFormUsers(List<TaskFormUserDTO> formUserDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskFormUserDTO> insertedUsers = new List<TaskFormUserDTO>();
+                var userJson = new JavaScriptSerializer().Serialize(formUserDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/formUsers", contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    insertedUsers = new JavaScriptSerializer().Deserialize<List<TaskFormUserDTO>>(result);
+                }
+                return insertedUsers;
+            }
+        }
         public async Task<bool> postTaskChange(TaskChangeDTO taskChamgeDTO)
         {
             using (var client = new HttpClient())
@@ -525,6 +576,15 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 HttpResponseMessage response = client.DeleteAsync("api/tasks/dataChanges/?id_taskChange=" + id_taskChange + "&userLog=" + userLog).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> deleteFormUser(TaskFormUserDTO formUserDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                HttpResponseMessage response = client.DeleteAsync("api/tasks/formUsers/?taskForm_id=" + formUserDTO.taskForm_id+ "&user_id=" + formUserDTO.user_id+ "&userLog=" + formUserDTO.userLog).Result;
                 return response.IsSuccessStatusCode;
             }
         }

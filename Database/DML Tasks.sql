@@ -1,5 +1,16 @@
 -------------------------------------------- Tasks --------------------------------------------------
--- drop procedure usp_get_process_tasks
+-- drop procedure usp_get_userTasks
+create procedure usp_get_userTasks
+@user_id int as 
+begin 
+	select t.id_task, t.stage_id, t.name, t.[description], t.[type_id], t.stage_id, t.taskState_id, t.createdBy, t.finishDate, t.taskPosition, t.createdDate, 
+	t.beginDate, t.daysAvailable, t.hoursAvailable, tt.[user_id],
+	(select pm.name from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) as process_name
+	from Task_Targets tt inner join Task t on t.id_task = tt.task_id
+	where tt.[user_id] = 75 and tt.isConfirmed = 0 and t.taskState_id = 1 or t.taskState_id = 0
+	order by t.[type_id] desc, finishDate desc
+end
+
 create procedure usp_get_process_tasks
 @id_stage bigint as
 begin 
@@ -402,9 +413,69 @@ commit transaction
 end
 go
 
+--// Form users
+--drop procedure usp_get_formUsers
+create procedure usp_get_formUsers
+@taskForm_id bigint as
+begin
+	select part.[user_id], part.taskForm_id,  part.isAnswered, u.name, u.sLastName, u.fLastName, u.userName, u.email,
+	(select up.photoData from UsersPhotos up where u.id_user = up.[user_id] ) as photoData
+	from (select fu.[user_id], fu.isAnswered, fu.taskForm_id from Form_Users fu where fu.taskForm_id = @taskForm_id) part 
+	inner join Users u on part.[user_id] = u.id_user
+	where u.isEnabled = 1
+end
+go
+
+--drop procedure usp_insert_formUser
+create procedure usp_insert_formUser
+@taskForm_id bigint, @user_id nvarchar(300), @userLog int as 
+begin
+declare @event_log_id int, @table int, @id_taskForm bigint
+set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Form_Users')
+set transaction isolation level snapshot
+begin transaction
+	insert into Form_Users ([user_id],taskForm_id, isAnswered)
+	values (@user_id, @taskForm_id,0)
+	exec @event_log_id = usp_insert_EventLog @description = 'inserted form user', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
+	select '1'
+commit transaction
+--end try
+--begin catch
+--	declare @errorMessage nvarchar(max) = (SELECT ERROR_MESSAGE() AS ErrorMessage);  
+--	exec @event_log_id = usp_insert_EventLog @description = @errorMessage, @objectLog_id = @table, @eventTypeLog_id = 2, @eventSource_id = 1, @user = @userLog;
+--	rollback transaction
+--	select '0'
+--end catch
+exec usp_insert_Reference @attribute = 'taskForm_id', @value = @taskForm_id, @EventLog_id = @event_log_id
+exec usp_insert_Reference @attribute = 'user_id', @value = @user_id, @EventLog_id = @event_log_id
+end
+go
+-- drop procedure usp_delete_formUser
+create procedure usp_delete_formUser
+@taskForm_id bigint, @user_id nvarchar(300), @userLog int as 
+begin 
+declare @event_log_id int, @table int
+set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Form_Users')
+set transaction isolation level snapshot
+begin transaction
+begin try 
+	delete from Form_Users where [user_id] = @user_id and taskForm_id = @taskForm_id
+	exec @event_log_id = usp_insert_EventLog @description = 'deleted form user', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 3, @user = @userLog;
+	select '1'
+commit transaction
+end try
+begin catch 
+	declare @errorMessage nvarchar(max) = (SELECT ERROR_MESSAGE() AS ErrorMessage);  
+	exec @event_log_id = usp_insert_EventLog @description = @errorMessage, @objectLog_id = @table, @eventTypeLog_id = 2, @eventSource_id = 3, @user = @userLog;
+	select '0'
+	rollback transaction
+end catch
+exec usp_insert_Reference @attribute = 'taskForm_id', @value = @taskForm_id, @EventLog_id = @event_log_id
+exec usp_insert_Reference @attribute = 'user_id', @value = @user_id, @EventLog_id = @event_log_id 
+end
+go
 ------------------------------------- // Task Changes // ----------------------------------
 -- drop procedure usp_get_TaskChanges
-select * from CategorieAttributes
 create procedure usp_get_TaskChanges 
 @id_task bigint as 
 begin 

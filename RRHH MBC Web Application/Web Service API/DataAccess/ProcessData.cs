@@ -43,6 +43,42 @@ namespace Web_Service_API.DataAccess
             };
             return processes;
         }
+        public static List<ProcessDTO> getProcessesbyUser(string user_id)
+        {
+            List<ProcessDTO> processes = new List<ProcessDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_userProcess", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@user_id", SqlDbType.BigInt);
+                command.Parameters["@user_id"].Value = user_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ProcessDTO process = new ProcessDTO();
+                    process.id_processManagment = rdr["id_processManagment"].ToString();
+                    process.name = rdr["name"].ToString();
+                    process.createdBy = rdr["createdBy"].ToString();
+                    process.createdDate = rdr["createdDate"].ToString();
+                    process.categorie_id = rdr["categorie_id"].ToString();
+                    process.categorie_name = rdr["categorie_name"].ToString();
+                    process.completedPorcentage = rdr["completedPorcentage"].ToString();
+                    process.template_id = rdr["template_id"].ToString();
+                    process.state_id = rdr["state_id"].ToString();
+                    process.state_name = rdr["state_name"].ToString();
+                    process.state_color = rdr["state_color"].ToString();
+                    process.template_id = rdr["template_id"].ToString();
+                    process.template_name = rdr["template_name"].ToString();
+                    process.completedTasks = rdr["completedTasks"].ToString();
+                    process.totalTasks = rdr["totalTasks"].ToString();
+                    process.previousProcess = rdr["previousProcess"].ToString();
+                    process.nextProcess = rdr["nextProcess"].ToString();
+                    processes.Add(process);
+                }
+            };
+            return processes;
+        }
         public static ProcessDTO getProcess(string id_process)
         {
             ProcessDTO process = new ProcessDTO();

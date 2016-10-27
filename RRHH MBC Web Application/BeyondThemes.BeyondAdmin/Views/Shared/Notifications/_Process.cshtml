@@ -1,0 +1,41 @@
+﻿@model Model.UserProcessModel
+
+
+<li>
+    <a class="dropdown-toggle" data-toggle="dropdown" title="Gestiones" href="#">
+        <i class="icon fa fa-suitcase"></i>
+        <span class="badge badge-success">@Model.processesDTO.Count</span>
+    </a>
+    <!--Tasks Dropdown-->
+    <ul class="pull-right dropdown-menu dropdown-tasks dropdown-arrow ">
+        <li class="dropdown-header bordered-darkorange">
+            <i class="fa fa-suitcase"></i>
+            @Model.processesDTO.Count gestiones en progreso
+        </li>
+        @foreach (var process in Model.processesDTO)
+        {
+            int completedPorcentage = 0;
+            if (process.completedTasks != "0")
+            {
+                completedPorcentage = Int32.Parse(process.totalTasks) / Int32.Parse(process.completedTasks);
+            }
+            <li>
+                <a href="#">
+                    <div class="clearfix">
+                        <span class="pull-left">@Html.Raw(process.name)</span>
+                        <span class="pull-right">@Html.Raw(completedPorcentage) %</span>
+                    </div>
+                    <div class="progress progress-xs">
+                        <div style="width:@completedPorcentage  %" class="progress-bar"></div>
+                    </div>
+                </a>
+            </li>
+        }
+        <li class="dropdown-footer">
+            <a href="/">
+                Ver todas las gestiones
+            </a>
+        </li>
+    </ul>
+    <!--/Tasks Dropdown-->
+</li>

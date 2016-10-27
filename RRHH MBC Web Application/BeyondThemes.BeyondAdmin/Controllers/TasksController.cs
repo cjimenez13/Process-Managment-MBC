@@ -329,6 +329,42 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _AddFormUser(string taskForm_id, List<string> selected_userForm_id)
+        {
+            if (ModelState.IsValid)
+            {
+                List<TaskFormUserDTO> users = new List<TaskFormUserDTO>();
+                foreach (var responsable_id in selected_userForm_id)
+                {
+                    TaskFormUserDTO formUser = new TaskFormUserDTO();
+                    formUser.user_id = responsable_id;
+                    formUser.taskForm_id = taskForm_id;
+                    formUser.userLog = Request.Cookies["user_id"].Value;
+                    users.Add(formUser);
+                }
+                List<TaskFormUserDTO> addedUsers = taskProvider.postFormUsers(users).Result;
+                int addedCount = addedUsers.Count;
+                int errorCount = users.Count - addedCount;
+                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsersList.cshtml", new Model.FormUsersModel(taskForm_id)).RenderToString() };
+                return Json(result);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpDelete]
+        public ActionResult _DeleteFormUser(string taskForm_id, string user_id)
+        {
+            TaskFormUserDTO formUser = new TaskFormUserDTO();
+            formUser.taskForm_id = taskForm_id;
+            formUser.user_id = user_id;
+            formUser.userLog = Request.Cookies["user_id"].Value;
+            if (taskProvider.deleteFormUser(formUser).Result)
+            {
+                return new HttpStatusCodeResult(200);
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
         [HttpPut]
         public ActionResult _EditFormQuestion( string id_taskQuestion, string question = null, string questionType_id = null, string attribute_id = null, string questionPosition = null, string isRequired = null)
         {

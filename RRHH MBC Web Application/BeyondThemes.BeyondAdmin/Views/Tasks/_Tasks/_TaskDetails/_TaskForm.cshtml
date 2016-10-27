@@ -74,6 +74,8 @@
         </div>
     </div>
 </div>
+@{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsers.cshtml", new Model.AddFormUsersModel(Model.taskDTO, Model.taskForm));}
+<!-- modal to edit description -->
 @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_EditForm.cshtml", new Model.EditTaskForm(Model.taskForm));}
 
                        

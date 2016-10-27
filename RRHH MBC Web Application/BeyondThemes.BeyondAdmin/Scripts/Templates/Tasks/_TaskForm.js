@@ -80,15 +80,52 @@ function TaskFormEditedSuccess(taskFormDTO) {
     console.log("hola")
 }
 function TaskFormEditedFailure(error) {
-    console.log(error)
     Notify(error.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
 }
 function onQuestionTypeChanged(self) {
     var questionType = self.value;
     if (questionType == "3") {
-        console.log()
         $(self).parent().find('select:last-child').show();
     } else {
         $(self).parent().find('select:last-child').hide();
     }
+}
+
+// form users
+function FormUserAddedSuccess(content) {
+    if (content.usersAdded == 1) {
+        Notify("Se ha agregado " + content.usersAdded + " usuario con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+    }
+    else if (content.usersAdded > 1) {
+        Notify("Se han agregado " + content.usersAdded + " usuarios con éxito", 'bottom-right', '8000', 'success', 'fa-edit', true);
+    }
+    if (content.usersError == 1) {
+        Notify(content.usersError + " de los usuarios ya se encuentra como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+    }
+    else if (content.usersError.length > 1) {
+        Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
+    }
+    $("#formUsersList").html(content.viewHtml)
+}
+function FormUserAddedFailure() {
+    Notify("Error, no se agregó ningun usuario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
+// delete form user 
+function deleteFormUser(user_id, taskForm_id, name, element) {
+    $.ajax({
+        url: "/Tasks/_DeleteFormUser/?user_id=" + user_id + "&taskForm_id=" + taskForm_id,
+        type: "DELETE",
+        dataType: "html",
+        traditional: true,
+        contentType: false,
+        success: function (data) {
+            Notify("El usuario '" + name + "' ha sido removido", 'bottom-right', '5000', 'success', 'fa-edit', true);
+            $(element).closest(".databox").parent().hide(300, function () {
+                this.remove()
+            });
+        },
+        error: function () {
+            Notify("Error, no se puede remover el usuario '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+    });
 }

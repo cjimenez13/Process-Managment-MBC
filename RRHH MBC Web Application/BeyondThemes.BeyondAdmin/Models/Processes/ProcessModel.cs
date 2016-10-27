@@ -22,6 +22,16 @@ namespace Model
             participantsModel = new Model.ParticipantsModel(processDTO.id_processManagment);
         }
     }
+    public class UserProcessModel
+    {
+        private ProcessProvider processProvider = new ProcessProvider();
+        public List<ProcessDTO> processesDTO = new List<ProcessDTO>();
+
+        public UserProcessModel(string user_id)
+        {
+            processesDTO = processProvider.getProcessesbyUser(user_id).Result;
+        }
+    }
     public class ProcessListModel
     {
         private ProcessProvider processProvider = new ProcessProvider();

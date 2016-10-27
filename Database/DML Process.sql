@@ -1,4 +1,24 @@
 -- drop procedure usp_get_processes
+create procedure usp_get_userProcess
+@user_id int as
+begin 
+	select pm2.id_ProcessManagment, pm2.name, pm2.createdBy, pm2.createdDate, pm2.categorie_id, p.completedPorcentage, p.template_id, p.state_id,
+	p.nextProcess, p.previousProcess, report.completedTasks, report.totalTasks,
+	ps.state_name, ps.state_color, (select c. name from Categories c where c.id_categorie = pm2.categorie_id) as categorie_name, 
+	(select t.name from ProcessManagment t where t.id_processManagment = p.template_id) as template_name
+	from 
+	(select pm.id_ProcessManagment, pm.name, pm.createdBy, pm.createdDate, pm.categorie_id 
+	from ProcessManagment pm inner join Process_Participants pp on pp.processManagment_id = pm.id_processManagment 
+	where pm.isProcess = 1 and pp.[user_id] = @user_id )pm2
+	inner join Process p on p.processManagment_id = pm2.id_ProcessManagment
+	inner join ProcessState ps on ps.id_processState = p.state_id
+	inner join (
+	select pm.id_processManagment, sum(case when t.completedDate <> '' then 1 else 0 end) as completedTasks, count(t.id_task) as totalTasks from ProcessManagment pm	
+	left outer join Stage s on s.processManagment_id = pm.id_processManagment 
+	left outer join Task t on t.stage_id = s.id_stage
+	where pm.isProcess = 1 
+	group by pm.id_processManagment )report on report.id_processManagment = pm2.id_processManagment 
+end
 create procedure usp_get_processes as
 begin
 	select pm2.id_ProcessManagment, pm2.name, pm2.createdBy, pm2.createdDate, pm2.categorie_id, p.completedPorcentage, p.template_id, p.state_id,

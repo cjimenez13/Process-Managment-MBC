@@ -262,6 +262,7 @@
     <Content Include="assets\css\demo.min.css" />
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\jquery-confirm.min.css" />
+    <Content Include="assets\css\jquery.mCustomScrollbar.min.css" />
     <Content Include="assets\css\personalStyle.css" />
     <Content Include="assets\css\skins\azure.min.css" />
     <Content Include="assets\css\skins\black.min.css" />
@@ -409,6 +410,7 @@
     <Content Include="assets\js\jquery_confirm\jquery-confirm.min.js" />
     <Content Include="assets\js\knob\jquery.knob.js" />
     <Content Include="assets\js\nestable\jquery.nestable.min.js" />
+    <Content Include="assets\js\scrollbar\jquery.mCustomScrollbar.concat.min.js" />
     <Content Include="assets\js\select2\select2.full.js" />
     <Content Include="assets\js\select2\select2.full.min.js" />
     <Content Include="assets\js\select2\select2.js" />
@@ -568,6 +570,10 @@
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_ConfigTaskNotification.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_AnswerTaskForm.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskNotificationsUsers.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFormUsersList.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFormUsers.cshtml" />
+    <Content Include="Views\Shared\Notifications\_PendingTasks.cshtml" />
+    <Content Include="Views\Shared\Notifications\_Process.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
