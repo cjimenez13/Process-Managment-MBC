@@ -35,7 +35,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             else
                 return View("/Views/Home/Error404.cshtml");
         }
-        [Authorize]
         [ValidateLogin]
         public new ActionResult Profile(string id)
         {
@@ -189,6 +188,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPut]
+        [ValidateAntiForgeryToken]
         public ActionResult _ProfileConfigInfo(UpdateUserModel model)
         {
             if (ModelState.IsValid)
@@ -207,6 +207,24 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 userDTO.birthdate = model.birthdate;
 
                 if (userProvider.putUser(userDTO).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        public ActionResult _ChangePassword(string password, string confirmPassword, string oldPassword, string user_id)
+        {
+            if (ModelState.IsValid)
+            {
+                UserPasswordDTO passwordDTO = new UserPasswordDTO();
+                passwordDTO.password = password;
+                passwordDTO.id_user = user_id;
+                passwordDTO.oldPassword = oldPassword;
+                passwordDTO.confirmPassword = confirmPassword;
+                passwordDTO.userLog = Request.Cookies["user_id"].Value;
+                if (userProvider.putUserPassword(passwordDTO, Request.Cookies["token"].Value).Result)
                 {
                     return new HttpStatusCodeResult(200);
                 }

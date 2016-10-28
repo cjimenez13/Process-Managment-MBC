@@ -31,6 +31,14 @@
         public byte[] photoData { get; set; }
         public string photoBase64 { get; set; }
     }
+    public class UserPasswordDTO
+    {
+        public string password { get; set; }
+        public string id_user { get; set; }
+        public string userLog { get; set; }
+        public string oldPassword { get; set; }
+        public string confirmPassword { get; set; }
+    }
     public class ProvinceDTO
     {
         public string name { get; set; }
@@ -42,7 +50,6 @@
             id = pID;
         }
         public ProvinceDTO() { }
-
     }
     public class CantonDTO
     {

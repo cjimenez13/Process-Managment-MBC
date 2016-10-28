@@ -458,6 +458,32 @@ namespace Web_Service_API.DataAccess
             };
             return false;
         }
+
+        public static bool updateUserPassword(UserPasswordDTO pUserPassword)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_userPasssword", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@password", SqlDbType.NVarChar);
+                command.Parameters["@password"].Value = pUserPassword.password;
+
+                command.Parameters.Add("@id_user", SqlDbType.Int);
+                command.Parameters["@id_user"].Value = pUserPassword.id_user;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pUserPassword.userLog;
+
+                command.Connection.Open();
+                int result = command.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
         //------------------------------------------------ Deletes ----------------------------------------------------
         public static bool deleteUserRole(string role_id, string user_id)
         {

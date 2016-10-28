@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using Web_Service_API.Models;
 using Web_Service_API.Providers;
 using Web_Service_API.Results;
+using Web_Service_API.DataAccess;
+using DataTransferObjects;
 
 namespace Web_Service_API.Controllers
 {
@@ -116,22 +118,26 @@ namespace Web_Service_API.Controllers
 
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
+        [HttpPut]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
-            
-            if (!result.Succeeded)
+            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.oldPassword,model.password);
+            if (result.Succeeded)
             {
-                return GetErrorResult(result);
+                UserPasswordDTO userPassword = new UserPasswordDTO();
+                userPassword.id_user = model.id_user;
+                userPassword.password = model.password;
+                userPassword.userLog = model.userLog;
+                if (UsersData.updateUserPassword(userPassword))
+                {
+                    return Ok();
+                }
             }
-
-            return Ok();
+            return GetErrorResult(result);
         }
 
         // POST api/Account/SetPassword

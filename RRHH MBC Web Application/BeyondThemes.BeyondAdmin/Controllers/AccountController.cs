@@ -5,6 +5,7 @@ using BeyondThemes.BeyondAdmin.Models;
 using System;
 using System.Web.Security;
 using BeyondThemes.BeyondAdmin.Providers;
+using Model;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -31,7 +32,11 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        [AllowAnonymous]
+        public async Task<ActionResult> _ResetPassword(PasswordForgottedModel model)
+        {
+            return new HttpStatusCodeResult(200);
+        }
         //
         // POST: /Account/Login
         [HttpPost]

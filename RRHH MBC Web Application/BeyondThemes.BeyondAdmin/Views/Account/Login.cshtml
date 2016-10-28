@@ -1,8 +1,8 @@
 ﻿@using BeyondThemes.BeyondAdmin.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Login Page";
-    ViewBag.Description = "login page";
+    ViewBag.Title = "Iniciar sesión";
+    ViewBag.Description = "Inicio de sesión";
     Layout = "~/Views/Shared/_Empty.cshtml";
 }
 
@@ -29,18 +29,54 @@
                 @Html.Bootstrap().PasswordFor(t => t.Password).Placeholder("Contraseña")
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
-            <div class="loginbox-forgot">
-                <a href="">Olvidó la contraseña?</a>
-            </div>
+                <div class="loginbox-forgot">
+                    <a href="" data-toggle="modal" data-target="#modal_passwordForgotted">Olvidó la contraseña?</a>
+                </div>
             <div class="loginbox-submit">
                 @Html.Bootstrap().SubmitButton().Text("Iniciar sesión").Color(BootstrapColors.Primary).ButtonBlock()
             </div>
-
         }
     </div>
     <div class="logobox">
     </div>
 </div>
+
+<div class="modal fade" id="modal_passwordForgotted" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:15%;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("_ResetPassword", "Account", new AjaxOptions { HttpMethod = "POST", OnSuccess = "PasswordChangedSuccess", OnFailure = "PasswordChangeFailure" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Recuperar contraseña</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>Ingrese el correo asociado a la cuenta </label>
+                                @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "" })
+                                @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
 @section PageScripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function passwordForgoted(){
+            $('')
+        }
+    </script>
 }

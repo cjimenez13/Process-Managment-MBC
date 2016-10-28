@@ -18,18 +18,24 @@ namespace Web_Service_API.Models
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
+        public string oldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de carácteres es 50")]
         [DataType(DataType.Password)]
+        [RegularExpression(@"(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}", ErrorMessage = "Debe contener mayúsuclas, minúsculas y números y mínimo 8 carácteres")]
         [Display(Name = "New password")]
-        public string NewPassword { get; set; }
+        public string password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        [Compare("password", ErrorMessage = "Las contraseñas deben coincidir")]
+        public string confirmPassword { get; set; }
+
+        public string userLog { get; set; }
+        public string id_user { get; set; }
+
+
     }
 
     public class RegisterBindingModel

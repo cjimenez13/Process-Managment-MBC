@@ -227,8 +227,25 @@ namespace Model
         [Display(Name = "Cédula")]
         [RegularExpression(@"[0-9]{9}", ErrorMessage = "La cédula debe contener 9 numeros")]
         public string cedula { get; set; }
-        public string user_id { get; set; } 
+        public string user_id { get; set; }
 
+        [Required(ErrorMessage = "Se debe completar el campo de la contraseña")]
+        [Display(Name = "Contraseña")]
+        [DataType(DataType.Password)]
+        [RegularExpression(@"(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}", ErrorMessage = "Debe contener mayúsuclas, minúsculas y números y mínimo 8 carácteres")]
+        [StringLength(50, ErrorMessage = "La cantidad máxima de carácteres es 50")]
+        public string password { get; set; }
+
+        [Required(ErrorMessage = "Se debe completar el campo de la contraseña")]
+        [System.ComponentModel.DataAnnotations.Compare("password", ErrorMessage = "Las contraseñas deben coincidir")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmar contraseña")]
+        public string confirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña actual")]
+        public string oldPassword { get; set; }
     }
 
     public class RegisterModel

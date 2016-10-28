@@ -6,254 +6,82 @@
     Layout = "~/Views/Shared/_Default.cshtml";
 }
 
-        <div class="profile-container">
-            <div class="profile-header" style="margin-left:0px; margin-right:0px">
-                <div class="row">
-                    <div class="col-lg-2 col-md-4 col-sm-12 text-center">
-                        <img src=@Model.imageURL class="header-avatar avatar" />
-                    </div>
-                    <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
-                        <div class="header-fullname">@name</div>
-                        <div class="header-information">
-                            @Model.user.userName <br /> @Model.user.email <br /> 
-                        </div>
-                    </div>
+<div class="profile-container">
+    <div class="profile-header" style="margin-left:0px; margin-right:0px">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-12 text-center">
+                <img src=@Model.imageURL class="header-avatar avatar" />
+            </div>
+            <div class="col-lg-10 col-md-8 col-sm-12 profile-info">
+                <div class="header-fullname">@name</div>
+                <div class="header-information">
+                    @Model.user.userName <br /> @Model.user.email <br /> 
                 </div>
             </div>
-            <div class="profile-body">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="tabbable">
-                            <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
-                                <li class="active">
-                                    <a data-toggle="tab" href="#personalInformation">Información Personal</a>
-                                </li>
-                                <li class="tab-palegreen">
-                                    <a data-toggle="tab" href="#files">Archivos</a>
-                                </li>
-                                <li class="tab-palegreen">
-                                    <a data-toggle="tab" id="contacttab" href="#data">Datos</a>
-                                </li>
-                                <li class="tab-palegreen">
-                                    <a data-toggle="tab" href="#activity">Actividad</a>
-                                </li>
-                                <li class="tab-red">
-                                    <a data-toggle="tab" href="#settings">Configuración</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content tabs-flat">
-                                <div id="personalInformation" class="tab-pane active">
-                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileInfo.cshtml", Model);}
-                                </div>
-                                <div id="files" class="tab-pane">
-                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName, Model.user.user_id));}
-                                </div>
-                                <div id="data" class="tab-pane">
-                                    @{ Html.RenderPartial("/Views/Users/_Profile/_ProfileCategories.cshtml", new Model.UserCategoriesModel(Model.user.user_id));}
-                                </div>
-                                <div id="settings" class="tab-pane">
-                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileConfig.cshtml", Model); }
-                                </div>
-                                <div id="activity" class="tab-pane">
-                                    @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml"); }
-                                </div>
-                            </div>
+        </div>
+    </div>
+    <div class="profile-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
+                        <li class="active">
+                            <a data-toggle="tab" href="#personalInformation">Información Personal</a>
+                        </li>
+                        <li class="tab-palegreen">
+                            <a data-toggle="tab" href="#files">Archivos</a>
+                        </li>
+                        <li class="tab-palegreen">
+                            <a data-toggle="tab" id="contacttab" href="#data">Datos</a>
+                        </li>
+                        <li class="tab-palegreen">
+                            <a data-toggle="tab" href="#activity">Actividad</a>
+                        </li>
+                        <li class="tab-red">
+                            <a data-toggle="tab" href="#settings">Configuración</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content tabs-flat">
+                        <div id="personalInformation" class="tab-pane active">
+                            @{Html.RenderPartial("/Views/Users/_Profile/_ProfileInfo.cshtml", Model);}
+                        </div>
+                        <div id="files" class="tab-pane">
+                            @{Html.RenderPartial("/Views/Users/_Profile/_ProfileFiles.cshtml", new Model.ListUserFilesModel(Model.userName, Model.user.user_id));}
+                        </div>
+                        <div id="data" class="tab-pane">
+                            @{ Html.RenderPartial("/Views/Users/_Profile/_ProfileCategories.cshtml", new Model.UserCategoriesModel(Model.user.user_id));}
+                        </div>
+                        <div id="settings" class="tab-pane">
+                            @{Html.RenderPartial("/Views/Users/_Profile/_ProfileConfig.cshtml", Model); }
+                        </div>
+                        <div id="activity" class="tab-pane">
+                            @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml"); }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 
 @section PageScripts{
 <script src="~/assets/js/file_input/bootstrap-filestyle.min.js"></script>
-<script>
-    function editAttributeRow(id_attribute, self) {
-        $('#btnEditUserAttribute' + id_attribute).hide()
-        $('#valueLabel' + id_attribute).hide()
-        $('#btnSaveUserAttribute' + id_attribute).show()
-        $('#editValueInput' + id_attribute).show()
-    }
-    function UserAttributeEditFailure(content) {
-        Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
-    }1
-    function UserAttributeEditSuccess(content) {
-        id_attribute = content.attribute_id
-        value = content.value
-        Notify('El atributo ha sido editado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-        $('#btnEditUserAttribute' + id_attribute).show()
-        $('#valueLabel' + id_attribute).text(value)
-        $('#valueLabel' + id_attribute).show()
-        $('#btnSaveUserAttribute' + id_attribute).hide()
-        $('#editValueInput' + id_attribute).hide()
-    }
-    function CompletedFormRegister(data) {
-        Notify('El usuario se ha registrado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-    }
-    function ConfigInfoSuccess(data) {
-        Notify('La ha información se ha guardado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-    }
-    function ConfigInfoFailure(data) {
-        Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
-    }
-    function UserFileAddedSuccess(data) {
-        Notify('La ha información se ha guardado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-    }
-    function UserFileAddedFailure(data) {
-        Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
-    }
-    function onSuccessAddRole(data) {
-        Notify('El rol se ha añadido con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
-        var rolesTab = $('#roles-tab');
-        rolesTab.empty();
-        rolesTab.html(data);
-    }
-    function onFailureAddRole(data) {
-        Notify('Error, no puede añadir el rol', 'bottom-right', '5000', 'danger', 'fa-edit', true);
-    }
-    function deleteUserRole(user_id, id_role, name, self) {
-        var toolbarLink = $(self);
-        var widget = toolbarLink.parents(".widget").eq(0).parent();
-        var disposeinterval = 300;
-        $.ajax({
-            url: "/Users/_DeleteUserRole/?user_id=" + user_id + "&id_role=" + id_role,
-            type: "DELETE",
-            dataType: "html",
-            traditional: true,
-            contentType: false,
-            success: function (data) {
-                Notify("El rol '"+name+"' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                widget.hide(disposeinterval, function () {
-                    widget.remove();
-                });
-            },
-            error: function () {
-                Notify("Error, no se puede borrar el rol '"+name+"'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-            }
-        });
-    }
-    function deleteUserFile(id_file, name, self) {
-        var btnColumn = $(self);
-        var row = btnColumn.parents("tr").eq(0)
-        var disposeinterval = 300;
-        $.ajax({
-            url: "/Users/_DeleteUserFile/?id_file=" + id_file,
-            type: "DELETE",
-            dataType: "html",
-            traditional: true,
-            contentType: false,
-            success: function (data) {
-                Notify("El archivo '" + name + "' ha sido borrado", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                row.hide(disposeinterval, function () {
-                    row.remove();
-                });
-            },
-            error: function () {
-                Notify("Error, no se puede borrar el archivo '" + name + "'", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-            }
-        });
-    }
-</script>
-<script>
-    function uploadPhoto(userName) {
-        if (window.FormData !== undefined) {
-            var fileUpload = $("#userPhotoUpload").get(0);
-            var files = fileUpload.files;
-            var fileData = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                fileData.append(files[i].name, files[i]);
-            }
-            $.ajax({
-                url: '/Users/UploadPhoto?user='+userName,
-                type: "POST",
-                contentType: false, 
-                processData: false, 
-                data: fileData,
-                success: function (result) {
-                    Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                    location.reload(true)
-                },
-                error: function (err) {
-                    Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
-                }
-            });
-        } else {
-            Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-    };
-    function getFormData($form) {
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
-        $.map(unindexed_array, function (n, i) {
-            indexed_array[n['name']] = n['value'];
-        });
-        return indexed_array;
-    }
-    function uploadUserFile(event,self) {
-        event.preventDefault()
-        var form = $(self).closest("form")
-        var formData = getFormData(form);
-        if (window.FormData !== undefined) {
-            var fileUpload = $("#userFileUpload").get(0);
-            var files = fileUpload.files;
-            var fileData = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                fileData.append(files[i].name, files[i]);
-            }
-            $.ajax({
-                url: '/Users/UploadFile/?user_id='+formData.user_id+'&name='+formData.name+'&description='+formData.description,
-                type: "POST",
-                contentType: false, 
-                processData: false, 
-                data: fileData,
-                success: function (result) {
-                    Notify("El archivo se cargo con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
-                },
-                error: function (result) {
-                    Notify(result.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
-                }
-            });
-        } else {
-            Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
-        }
-    };
-</script>  
-<script>
-    // script to change the content on cantones select
-    $(document).ready(function () {
-        $('#province_id').change(function () {
-            var id = $("#province_id").val();
-            $.ajax({
-                url: '@Url.Action("getCantones", "Users")',
-                type: 'get',
-                data: { "pProvinceID": id },
-                success: function (json, textStatus) {
-                    $("#canton_id").empty();
-                    json = json || {};
-                    for (var i = 0; i < json.length; i++) {
-                        $("#canton_id").append('<option value="' + json[i].id + '">' + json[i].name + '</option>');
-                    }
-                    $("#canton_id").prop("disabled", false);
-                }
-            });
-        });
-    });
-</script>
 <!--Jquery Select2-->
 <script src="/assets/js/select2/select2.js"></script>
 <!--Bootstrap Tags Input-->
 <script src="/assets/js/tagsinput/bootstrap-tagsinput.js"></script>
-
+<script src="~/Scripts/Users/_Profile/_ProfileFiles.js"></script>
+<script src="~/Scripts/Users/_Profile/_ProfileConfig.js"></script>
+<script src="~/Scripts/Users/_Profile/_ProfileCategories.js"></script>
 <script>
-        //--Jquery Select2--
+    //--Jquery Select2--
     $("select#selectedRole").select2();
-
     // Javascript to enable link to tab
     var url = document.location.toString();
     if (url.match('#')) {
         $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
     }
-
     // Change hash for page-reload
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         window.location.hash = e.target.hash;

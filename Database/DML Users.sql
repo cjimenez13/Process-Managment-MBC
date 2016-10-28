@@ -55,7 +55,7 @@ delete from users where id_user = 78
 --drop procedure usp_insert_user
 create procedure usp_insert_user
 @userName nvarchar(50) = null, @name nvarchar(50), @fLastName nvarchar(50), @sLastName nvarchar(50) = null,
-@email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = 'tmp1234',
+@email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = 'Password12',
 @id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null
  as
 begin
@@ -125,6 +125,15 @@ commit transaction
 end
 go
 
+select * from Users
+--drop procedure usp_update_userPasssword
+create procedure usp_update_userPasssword
+@id_user int, @password nvarchar(50), @userLog int as 
+begin
+	update Users set [password] = @password
+	where [id_user] = @id_user
+end
+go
 
 --drop procedure usp_update_userPhoto
 create procedure usp_update_userPhoto
@@ -136,7 +145,7 @@ begin
 	update UsersPhotos set photoData = @photoData where [user_id] = @id;
 end
 go
-select * from UsersPhotos
+
 --drop procedure usp_insert_userPhoto
 create procedure usp_insert_userPhoto
 @user nvarchar(50), @photoData varbinary(MAX)

@@ -1,9 +1,9 @@
 ﻿@model Model.UpdateUserModel
 
 <div class="form-title">
-    Informacion personal
+    Información personal
 </div>
-@using (Ajax.BeginForm("_ProfileConfigInfo", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "ConfigInfoSuccess", OnFailure = "ConfigInfoFailure" }))
+@using (Ajax.BeginForm("_ProfileConfigInfo", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "PasswordChangedSuccess", OnFailure = "PasswordChangeFailure" }))
 {
     @Html.AntiForgeryToken()
     <div class="row">
@@ -40,7 +40,6 @@
                 @Html.LabelFor(model => model.userName)
                 @Html.TextBoxFor(m => m.userName, new { @class = "form-control", @placeholder = "" })
                 @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
-
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.phoneNumber)
@@ -113,3 +112,41 @@
         </div>
     </div>
 </div>
+@if (Request.Cookies["user_id"].Value == Model.user_id)
+{
+    <div class="form-title">
+        Seguridad
+    </div>
+    using (Ajax.BeginForm("_ChangePassword", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "PasswordChangedSuccess", OnFailure = "PasswordChangeFailure" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.user_id)
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.password)
+                    @Html.TextBoxFor(m => m.password, new { @class = "form-control", @placeholder = "", @type = "password" })
+                    @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.confirmPassword)
+                    @Html.TextBoxFor(m => m.confirmPassword, new { @class = "form-control", @placeholder = "", @type = "password" })
+                    @Html.ValidationMessageFor(m => m.confirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.oldPassword)
+                    @Html.TextBoxFor(m => m.oldPassword, new { @class = "form-control", @placeholder = "", @type = "password" })
+                    @Html.ValidationMessageFor(m => m.oldPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-11 col-xs-offset-9">
+                <button class="btn btn-primary" type="submit">Guardar</button>
+            </div>
+        </div>
+    }
+}
+

@@ -249,6 +249,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return false;
             }
         }
+        public async Task<bool> putUserPassword(UserPasswordDTO userPassword, string token)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(userPassword);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Substring(17, token.Length - 18));
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/Account/ChangePassword", contentPost).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<bool> putPhoto(FileDTO fileDTO)
         {
             using (var client = new HttpClient())

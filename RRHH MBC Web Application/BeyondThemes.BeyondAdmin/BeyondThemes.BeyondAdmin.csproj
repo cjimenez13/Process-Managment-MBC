@@ -193,9 +193,7 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\Users\_Profile\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -240,6 +238,7 @@
     <Compile Include="Providers\TemplatesProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tools\EmailService.cs" />
     <Compile Include="Tools\PDFExporter.cs" />
     <Compile Include="Tools\TelegramService.cs" />
     <Compile Include="Tools\ViewExtensions.cs" />
@@ -471,6 +470,9 @@
     <Content Include="Scripts\Users\_Index\_GroupsList.js" />
     <Content Include="Scripts\Users\_Index\_RegisterUser.js" />
     <Content Include="Scripts\Users\_Index\_UsersList.js" />
+    <Content Include="Scripts\Users\_Profile\_ProfileCategories.js" />
+    <Content Include="Scripts\Users\_Profile\_ProfileConfig.js" />
+    <Content Include="Scripts\Users\_Profile\_ProfileFiles.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
