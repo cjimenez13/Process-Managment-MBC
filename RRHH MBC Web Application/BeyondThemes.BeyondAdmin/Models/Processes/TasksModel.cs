@@ -13,6 +13,7 @@ namespace Model
         private TaskProvider taskProvider = new TaskProvider();
         private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
         public List<TaskDTO> tasks = new List<TaskDTO>();
+        public List<TaskStateDTO> taskStates;
         public StageDTO stage;
         public TasksModel(string id_stage)
         {
@@ -26,6 +27,8 @@ namespace Model
                     maxTaskPosition = stagePosition + 1;
                 }
             }
+            taskStates = taskProvider.getTaskStates().Result;
+
         }
         [Required(ErrorMessage = "Se debe completar el campo del nombre")]
         public string name { get; set; }
@@ -72,6 +75,7 @@ namespace Model
 
         [Display(Name = "Horas")]
         [Required(ErrorMessage = "Se debe completar el campo de horas")]
+        [Range(0, 24, ErrorMessage = "Ingresar solo numeros entre 0 y 24" )]
         public string hoursAmount { get; set; }
 
         [Display(Name = "Días")]
@@ -199,6 +203,7 @@ namespace Model
         private UsersProvider userProvider = new UsersProvider();
         private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
 
+        public TaskResponsablesModel taskResponsablesModel;
         public TaskDTO task;
         public UserDTO createdBy;
         public TaskStateDTO taskState;
@@ -211,6 +216,7 @@ namespace Model
             createdBy = userProvider.getUserbyID(task.createdBy).Result;
             taskState = taskProvider.getTaskState(task.taskState_id).Result;
             taskType = taskProvider.getTaskType(task.type_id).Result;
+            taskResponsablesModel = new TaskResponsablesModel(task);
         }
     }
     //-------------------------------------- Responsables ---------------------------------------------
@@ -221,12 +227,12 @@ namespace Model
         public List<TaskResponsableDTO> responsables = new List<TaskResponsableDTO>();
         public List<ParticipantDTO> userList = new List<ParticipantDTO>();
         public SelectList _ParticipantsSelect { get; set; }
-        public string id_task;
+        public TaskDTO task;
         public TaskResponsablesModel() { }
         public TaskResponsablesModel(TaskDTO task)
         {
-            this.id_task = task.id_task;
-            responsables = taskProvider.getTaskResponsables(id_task).Result;
+            this.task = task;
+            responsables = taskProvider.getTaskResponsables(task.id_task).Result;
             this.process_id = process_id;
             userList = taskProvider.getTaskParticipants(task.id_task).Result;
             List<SelectListItem> usersSelectList = new List<SelectListItem>();

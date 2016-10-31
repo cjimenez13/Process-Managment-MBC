@@ -100,8 +100,9 @@ $(".todo-list").sortable({
             var id = this.id
             var name = $(this).find('#stageName' + id).text();
             var newPos = count;
+            console.log(newPos)
             $.ajax({
-                url: "/Tasks/_EditTask/?id_task=" + id + '&taskPosition=' + newPos,
+                url: "/Tasks/_EditTaskPosition/?id_task=" + id + '&taskPosition=' + newPos,
                 type: "PUT",
                 dataType: "html",
                 traditional: true,

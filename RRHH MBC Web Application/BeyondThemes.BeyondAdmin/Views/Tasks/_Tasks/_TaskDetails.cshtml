@@ -39,7 +39,7 @@
             @if (Model.taskType.needConfirm == "True")
             {
                 <div id="responsables-tab" class="tab-pane in active">
-                    @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(Model.task));}
+                    @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsables.cshtml", Model.taskResponsablesModel);}
                 </div>
             }
             @if (Model.taskType.formNeeded == "True")

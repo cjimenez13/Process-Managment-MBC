@@ -113,6 +113,7 @@ namespace Web_Service_API.DataAccess
                     userDTO.direction = rdr["direction"].ToString();
                     userDTO.birthdate = rdr["birthdate"].ToString();
                     userDTO.userName = rdr["userName"].ToString();
+                    userDTO.password = rdr["password"].ToString();
                     userDTO.id = rdr["id"].ToString();
                     userDTO.user_id = rdr["id_user"].ToString();
                     byte[] photo = (byte[])rdr["photoData"];

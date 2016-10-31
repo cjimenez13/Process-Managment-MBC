@@ -70,6 +70,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     task.daysAvailable = rdr["daysAvailable"].ToString();
                     task.hoursAvailable = rdr["hoursAvailable"].ToString();
                     task.process_name = rdr["process_name"].ToString();
+                    task.beginDate = rdr["beginDate"].ToString();
                     tasks.Add(task);
                 }
             };
@@ -96,6 +97,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     task.taskState_id = rdr["taskState_id"].ToString();
                     task.createdBy = rdr["createdBy"].ToString();
                     task.taskPosition = rdr["taskPosition"].ToString();
+                    task.beginDate = rdr["beginDate"].ToString();
                     task.finishDate = rdr["finishDate"].ToString();
                     task.createdDate = rdr["createdDate"].ToString();
                     task.daysAvailable = rdr["daysAvailable"].ToString();
@@ -161,6 +163,8 @@ namespace Web_Service_API.DataAccess.TaskData
                     taskState.id_taskState = rdr["id_taskState"].ToString();
                     taskState.state_name = rdr["state_name"].ToString();
                     taskState.state_color = rdr["state_color"].ToString();
+                    taskState.state_sColor = rdr["state_sColor"].ToString();
+
                     taskStates.Add(taskState);
                 }
             };
@@ -182,6 +186,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     taskState.id_taskState = rdr["id_taskState"].ToString();
                     taskState.state_name = rdr["state_name"].ToString();
                     taskState.state_color = rdr["state_color"].ToString();
+                    taskState.state_sColor = rdr["state_sColor"].ToString();
                 }
             };
             return taskState;

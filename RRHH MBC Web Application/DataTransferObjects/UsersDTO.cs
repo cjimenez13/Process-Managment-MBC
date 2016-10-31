@@ -30,6 +30,9 @@
         public string userName { get; set; }
         public byte[] photoData { get; set; }
         public string photoBase64 { get; set; }
+        public string password { get; set; }
+        public string telegram_id { get; set; }
+        public string telegram_user { get; set; }
     }
     public class UserPasswordDTO
     {

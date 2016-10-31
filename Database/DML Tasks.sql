@@ -7,8 +7,9 @@ begin
 	t.beginDate, t.daysAvailable, t.hoursAvailable, tt.[user_id],
 	(select pm.name from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) as process_name
 	from Task_Targets tt inner join Task t on t.id_task = tt.task_id
-	where tt.[user_id] = 75 and tt.isConfirmed = 0 and t.taskState_id = 1 or t.taskState_id = 0
-	order by t.[type_id] desc, finishDate desc
+	where tt.[user_id] = @user_id and tt.isConfirmed = 0 and (t.taskState_id = 1 or t.taskState_id = 0) and 
+	(select pm.isProcess from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) = 1 
+	order by t.taskState_id desc, finishDate desc
 end
 
 create procedure usp_get_process_tasks
@@ -139,17 +140,18 @@ begin
 end
 go 
 
+--drop procedure usp_get_taskStates
 create procedure usp_get_taskStates as 
 begin 
-	select ts.id_taskState, state_name, state_color
+	select ts.id_taskState, state_name, state_color, state_sColor
 	from taskState ts
 end
 go
-
+--drop procedure usp_get_taskState
 create procedure usp_get_taskState 
 @id_taskState int as 
 begin 
-	select ts.id_taskState, state_name, state_color
+	select ts.id_taskState, state_name, state_color, state_sColor
 	from taskState ts
 	where ts.id_taskState = @id_taskState
 end
@@ -550,5 +552,14 @@ begin transaction
 	exec usp_insert_Reference @attribute = 'id_taskChange', @value = @id_taskChange, @EventLog_id = @event_log_id
 commit transaction
 end
+go
 
 
+
+-- drop procedure usp_jobUpdate_taskState
+--update Task set taskState_id = 1 where stage_id = 180 
+create procedure usp_jobUpdate_taskState as 
+begin 
+	update Task set taskState_id = 5
+	where finishDate < GETDATE() and taskState_id = 1;
+end

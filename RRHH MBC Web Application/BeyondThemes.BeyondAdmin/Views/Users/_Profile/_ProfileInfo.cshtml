@@ -21,7 +21,11 @@
                     <p>
                         Teléfono	: @Model.user.phoneNumber <br>
                         Email		: @Model.user.email<br>
-                        Telegram	: @Model.user.email<br>
+                        <i data-toggle="tooltip" data-placement="top"
+                           title="Enviar mensaje a SSHH con usuario y contraseña de la siguiente manera: /subscribe {usuario} {contraseña}"
+                           class="fa fa-question-circle"></i>
+                        Telegram	: @Model.user.telegram_user<br> 
+
                     </p>
                 </div>
             </div>

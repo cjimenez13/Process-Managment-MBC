@@ -1,4 +1,5 @@
 ﻿@using BeyondThemes.BeyondAdmin.Models
+
 @model LoginViewModel
 @{
     ViewBag.Title = "Iniciar sesión";
@@ -41,42 +42,26 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_passwordForgotted" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="top:15%;">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            @using (Ajax.BeginForm("_ResetPassword", "Account", new AjaxOptions { HttpMethod = "POST", OnSuccess = "PasswordChangedSuccess", OnFailure = "PasswordChangeFailure" }))
-            {
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Recuperar contraseña</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <label>Ingrese el correo asociado a la cuenta </label>
-                                @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "" })
-                                @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                    <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-
+@{ Html.RenderPartial("/Views/Account/_ForgotPassword.cshtml", new Model.PasswordForgottedModel()); }
 @section PageScripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        function passwordForgoted(){
-            $('')
+        function PasswordChangedSuccess(content) {
+            $.alert({
+                title: 'Recuperación de contraseña',
+                content: 'Se ha enviado un correo con su contraeña',
+                confirmButton: 'Cerrar'
+            });
+        }
+        function PasswordChangeFailure(content) {
+            $.alert({
+                icon: 'fa fa-warning',
+                title: 'Recuperación de contraseña',
+                content: 'El correo no pertenece a ningun usuario',
+                confirmButton: 'Cerrar'
+
+            });
         }
     </script>
+
 }

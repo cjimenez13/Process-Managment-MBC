@@ -6,14 +6,21 @@
     <ul class="todo-list">
     @foreach (var task in Model.tasks)
     {
-        if (task.taskState_id == "1")
+        foreach(var taskState in Model.taskStates)
         {
-            backgroundColor = "#d0e9c6";
+            if (taskState.id_taskState == task.taskState_id)
+            {
+                backgroundColor = taskState.state_sColor;
+            }
         }
-        else
-        {
-            backgroundColor = "#f4f4f4";
-        }
+        //if (task.taskState_id == "1")
+        //{
+        //    backgroundColor = "#d0e9c6";
+        //}
+        //else
+        //{
+        //    backgroundColor = "#f4f4f4";
+        //}
         string id_taskName = "taskName" + task.id_task;
         <li id="@task.id_task" style="background-color:@backgroundColor " >
             <span class="handle">

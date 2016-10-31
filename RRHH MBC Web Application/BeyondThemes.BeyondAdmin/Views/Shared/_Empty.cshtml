@@ -30,7 +30,9 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
     <!--Beyond styles-->
     @Styles.Render("~/css/beyond")
     <link id="skin-link" href="" rel="stylesheet" type="text/css" />
-
+    <script src="~/Scripts/jquery-1.9.0.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script> 
+    <script src="~/assets/js/toastr/toastr.js"></script>
     <!--Skin Script: Place this script in head to load scripts for skins and rtl support-->
     @Scripts.Render("~/bundles/skin")
 </head>
@@ -41,6 +43,8 @@ Purchase: https://wrapbootstrap.com/theme/beyondadmin-adminapp-angularjs-mvc-WB0
     <!--Basic Scripts-->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>  
 
     <!--Beyond Scripts-->
     @Scripts.Render("~/bundles/beyond")

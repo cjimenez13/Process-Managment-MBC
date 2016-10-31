@@ -48,10 +48,10 @@ function TaskQuestionAddedFailure() {
 
 //-- Question edited
 function QuestionEditedSuccess(data) {
-    Notify("La pregunta se ha editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+    Notify("La pregunta se ha guardado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
 }
 function QuestionEditedFailure() {
-    Notify("Error, no se edito la pregunta", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+    Notify("Error, no se guardo la pregunta", 'bottom-right', '5000', 'danger', 'fa-edit', true);
 }
 //-- Question deleted
 function deleteFormTask(id_formQuestion, element) {

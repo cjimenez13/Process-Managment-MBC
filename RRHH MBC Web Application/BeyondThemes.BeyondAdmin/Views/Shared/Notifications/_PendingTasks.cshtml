@@ -11,7 +11,7 @@
             string labelColor = "";
             string labelText = "";
             string timeLeft = "";
-            if (task.taskState_id == "0")
+            if (task.taskState_id == "0" || task.taskState_id == "1")
             {
                 foreach (var taskType in Model.taskStates)
                 {
@@ -32,10 +32,13 @@
                     <a  href="@Url.Action("Index", "Tasks", new { id = task.stage_id})">
                         <div class="clearfix">
                             <div class="notification-body">
-                                <span class="title truncate-text" style="width:200px">@Html.Raw(task.name)asdddddddddddddssssssssssssssssssssssdddddddddd</span>
+                                <span class="title truncate-text" style="width:200px">
+                                    <span style="color:black"><stong>@Html.Raw(task.name); </stong></span>
+                                    <span >@Html.Raw(task.process_name)</span>
+                                </span>
                                 <span class="description">@Html.Raw(timeLeft)</span>
                             </div>
-                            <div class="notification-extra">
+                            <div class="notification-extra" style="color:black">
                                 <small class="label" style="font-size:10px; background-color: @labelColor">@Html.Raw(labelText)</small>
                             </div>
                         </div>

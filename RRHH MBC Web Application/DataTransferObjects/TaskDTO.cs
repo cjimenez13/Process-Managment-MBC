@@ -36,6 +36,7 @@ namespace DataTransferObjects
         public string id_taskState { get; set; }
         public string state_name { get; set; }
         public string state_color { get; set; }
+        public string state_sColor { get; set; }
     }
     public class TaskResponsableDTO
     {

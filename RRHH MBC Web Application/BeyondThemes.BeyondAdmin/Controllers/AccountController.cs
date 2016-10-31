@@ -6,6 +6,7 @@ using System;
 using System.Web.Security;
 using BeyondThemes.BeyondAdmin.Providers;
 using Model;
+using DataTransferObjects;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -18,12 +19,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             _AccountProvider = new AccountProvider();
         }
 
-        [AllowAnonymous]
-        public ActionResult Lock()
-        {
-            return View();
-        }
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -33,11 +28,15 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return View();
         }
         [AllowAnonymous]
-        public async Task<ActionResult> _ResetPassword(PasswordForgottedModel model)
+        public async Task<ActionResult> _ForgotPassword(PasswordForgottedModel model)
         {
+            UsersProvider userProvider = new UsersProvider();
+            UserDTO user = await userProvider.getUser(model.forgot_email);
+            string name = user.name + " " + user.fLastName + " " + user.sLastName;
+            Tools.EmailService.sendEmail(model.forgot_email, "Recuperación de contraseña, MBC Developers", name + " ,la contraseña de su cuenta actualmente es:" + user .password);
             return new HttpStatusCodeResult(200);
         }
-        //
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -82,39 +81,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             return View();
         }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            /*
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
-            }
-            */
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
@@ -171,32 +137,32 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 
         //
         // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            /*
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            
-            AddErrors(result);
-            */
-            return View();
-        }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        //{
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    var user = await UserManager.FindByNameAsync(model.Email);
+        //    if (user == null)
+        //    {
+        //        Don't reveal that the user does not exist
+        //        return RedirectToAction("ResetPasswordConfirmation", "Account");
+        //    }
+        //    var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("ResetPasswordConfirmation", "Account");
+        //    }
+
+        //    AddErrors(result);
+
+        //    return View();
+        //}
 
         //
         // GET: /Account/ResetPasswordConfirmation

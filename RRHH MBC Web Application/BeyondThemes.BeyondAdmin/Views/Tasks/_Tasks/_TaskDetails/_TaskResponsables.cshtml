@@ -1,4 +1,11 @@
 ﻿@model Model.TaskResponsablesModel
+@{ 
+    string disabled = "";
+    if (Model.task.taskState_id == "1" || String.IsNullOrEmpty(Model.task.taskState_id))
+    {
+        disabled = "disabled";
+    }
+}
 <h2>Responsables</h2>
 <div class="row" style="margin-top:30px">
     <!-- search bar -->
@@ -12,14 +19,15 @@
     @using (Ajax.BeginForm("_AddTaskResponsableUser", "Tasks", new AjaxOptions { HttpMethod = "POST", OnSuccess = "ResponsableAddedSuccess", OnFailure = "ResponsableAddedFailure" }))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.id_task)
+        @Html.Hidden("id_task", Model.task.id_task)
         <div class="col-xs-11">
             @Html.DropDownListFor(model => model.selected_userParticipants_id, Model._ParticipantsSelect, new { @class = "form-control select2", @style = "width:100%", @multiple = "multiple" })
             @Html.ValidationMessageFor(model => model.selected_userParticipants_id, "", new { @class = "text-danger" })
         </div>
         <div class="col-xs-1">
-            <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser"><i class="fa fa-user-plus"></i></button>
+            <button class="btn btn-success" style="float:right" data-toggle="modal" data-target="#modal_addParticipantUser" @disabled><i class="fa fa-user-plus"></i></button>
         </div>
+
     }
     </div>
 </div>

@@ -34,13 +34,14 @@
                             <dt>Nombre</dt><dd>@Html.Raw(Model.task.name)</dd>
                             <dt>Agregado por </dt><dd>@Html.Raw(createdByName)</dd>
                             <dt>Tipo</dt><dd>@Html.Raw(Model.taskType.taskName)</dd>
+                            <dt>Duración</dt><dd>@Html.Raw(duration) </dd>
                             <dt>Estado</dt><dd><span class="label" style="background-color:@Html.Raw(Model.taskState.state_color)">@Html.Raw(Model.taskState.state_name)</span></dd>
                         </dl>
                     </div>
                     <div class="col-md-6">
                         <dl class="dl-horizontal">
-                            <dt>Duración</dt><dd>@Html.Raw(duration) </dd>
                             <dt>Creado</dt><dd>@Html.Raw(Model.task.createdDate)</dd>
+                            <dt>Fecha de inicio</dt><dd>@Html.Raw(Model.task.beginDate == null || Model.task.beginDate == "" ? "-" : Model.task.beginDate)</dd>
                             <dt>Finaliza</dt><dd>@Html.Raw(Model.task.finishDate == null || Model.task.finishDate == "" ? "-" : Model.task.finishDate)</dd>
                             <dt>Completado</dt><dd>@Html.Raw(Model.task.completedDate == null || Model.task.completedDate == "" ? "-" : Model.task.completedDate)</dd>
                         </dl>
@@ -50,15 +51,23 @@
         </div>
         @if (Model.task.isProcess == "True")
         {
+            string isAnswerButtonEnabled = "disabled";
+            foreach (var user in Model.taskResponsablesModel.responsables)
+            {
+                if(user.user_id == Request.Cookies["user_id"].Value && user.isConfirmed == "False")
+                {
+                    isAnswerButtonEnabled = "";
+                }
+            }
             <div class="row">
-                <div class="col-xs-offset-3 col-xs-6">
-                    <div class="col-xs-4">
-                        <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded','@Model.task.id_task')">Responder</button>
+                <div class="col-xs-12 col-md-offset-3 col-md-6">
+                    <div class="col-xs-4 text-center" >
+                        <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded','@Model.task.id_task')" @isAnswerButtonEnabled >Responder</button>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-4 text-center" >
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_newProccess" >Bifurcar</button>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-4 text-center">
                         <button type="button" class="btn btn-danger">Pausar</button>
                     </div>
                 </div>

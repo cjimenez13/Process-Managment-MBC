@@ -22,6 +22,6 @@ namespace Model
         [Display(Name = "Correo")]
         [Required(ErrorMessage = "Se debe completar el campo del correo")]
         [StringLength(100, ErrorMessage = "La cantidad máxima de caracteres es 100")]
-        public string email { get; set; }
+        public string forgot_email { get; set; }
     }
 }

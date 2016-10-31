@@ -1,6 +1,7 @@
 ﻿function TaskNotificationAddedSucces(content) {
     Notify("La notificación ha sido agregada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
     $('#table-taskNotifications tbody').html(content);
+    $('.select2').select2()
 }
 function TaskNotificationAddedFailure(content) {
     Notify('Error, la notificación no se puede agregar', 'bottom-right', '5000', 'danger', 'fa-edit', true);

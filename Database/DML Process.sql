@@ -70,10 +70,10 @@ end
 go
 -- delete from ProcessManagment where isProcess = 1
 -- exec usp_insert_process @name = 'test', @categorie_id = 17, @template_id = 1, @userLog = 76
---delete from ProcessManagment where isProcess  = 1
+-- delete from ProcessManagment where isProcess  = 1
 -- drop procedure usp_insert_process
-select * from Process
-create procedure usp_insert_process
+
+create procedure usp_insert_process 
 @name nvarchar(100), @categorie_id int = null, @template_id bigint, @previousProcess bigint = null, @userLog int as
 begin
 begin transaction
@@ -95,9 +95,10 @@ begin try
 		   end
 		-- stages 
 		declare cursor_stages cursor forward_only fast_forward
-		for select s.name, @processManagment_id, s.stagePosition, s.id_stage from Stage s where s.processManagment_id = @template_id
+		for select s.name, @processManagment_id, s.stagePosition, s.id_stage from Stage s where s.processManagment_id = @template_id order by s.stagePosition
 		declare @stage_name nvarchar(100), @stage_processManagment_id bigint, @stage_stagePosition int, @stage_id bigint, @oldStage_id bigint;
 		declare @isFirst bit = 0
+		declare @lastFinishDate datetime = GETDATE()
 		open cursor_stages
 		fetch next from cursor_stages into @stage_name, @stage_processManagment_id, @stage_stagePosition, @oldStage_id
 		while @@FETCH_STATUS = 0 
@@ -106,23 +107,25 @@ begin try
 			set @stage_id = (select SCOPE_IDENTITY())
 			------ Tasks
 			declare cursor_tasks cursor forward_only fast_forward
-			for select t.id_task, t.name, t.[description], t.[type_id], t.taskState_id, t.taskPosition, t.daysAvailable, t.hoursAvailable from Task t where t.stage_id = @oldStage_id
+			for select t.id_task, t.name, t.[description], t.[type_id], t.taskState_id, t.taskPosition, t.daysAvailable, t.hoursAvailable 
+			from Task t where t.stage_id = @oldStage_id order by t.taskPosition
 			declare @task_name nvarchar(100), @old_task_id bigint, @task_description nvarchar(150), @task_type_id int, @taskState_id int, @taskPosition int, @task_daysAvailable int, @task_hoursAvailable int;
 			open cursor_tasks
 			fetch next from cursor_tasks into @old_task_id, @task_name, @task_description, @task_type_id, @taskState_id, @taskPosition, @task_daysAvailable, @task_hoursAvailable
 			while @@FETCH_STATUS = 0 
 			begin
-				declare @id_task bigint, @id_taskForm bigint;
+				declare @id_task bigint, @id_taskForm bigint
+				set @lastFinishDate = DATEADD(hour, @task_hoursAvailable, (DATEADD(day, @task_daysAvailable, @lastFinishDate)));
 				if (@isFirst = 0)
 				begin
 				insert into Task (stage_id, name, [description], [type_id], taskState_id, completedDate, createdBy, finishDate, taskPosition, createdDate, beginDate, daysAvailable, hoursAvailable)
-				values (@stage_id, @task_name, @task_description, @task_type_id, 1, null, @userLog, null, @taskPosition, GETDATE(), null, @task_daysAvailable, @task_hoursAvailable) 
+				values (@stage_id, @task_name, @task_description, @task_type_id, 1, null, @userLog, @lastFinishDate, @taskPosition, GETDATE(), GETDATE(), @task_daysAvailable, @task_hoursAvailable) 
 				set @isFirst = 1
 				end
 				else
 				begin
 				insert into Task (stage_id, name, [description], [type_id], taskState_id, completedDate, createdBy, finishDate, taskPosition, createdDate, beginDate, daysAvailable, hoursAvailable)
-				values (@stage_id, @task_name, @task_description, @task_type_id, 0, null, @userLog, null, @taskPosition, GETDATE(), null, @task_daysAvailable, @task_hoursAvailable) 
+				values (@stage_id, @task_name, @task_description, @task_type_id, 0, null, @userLog, @lastFinishDate, @taskPosition, GETDATE(), null, @task_daysAvailable, @task_hoursAvailable) 
 				end
 				set @id_task = (SCOPE_IDENTITY())
 				-- Task Targets
@@ -153,6 +156,50 @@ end catch
 end
 go
 
+--select * from ProcessManagment where isProcess  = 1
+--select * from Task order by stage_id
+-- select * from QuestionResponse
+create procedure usp_update_taskTimes
+@processManagment_id int as
+begin 
+	-- stages 
+	declare cursor_stages cursor forward_only fast_forward
+	for select s.id_stage from Stage s where s.processManagment_id = @processManagment_id order by s.stagePosition
+	declare @stage_id bigint;
+	declare @lastFinishDate datetime = GETDATE();
+	declare @isFirst bit = 0
+	open cursor_stages
+	fetch next from cursor_stages into @stage_id
+	while @@FETCH_STATUS = 0 
+	begin
+		-- Tasks
+		declare cursor_tasks cursor forward_only fast_forward
+		for select t.id_task, t.name, t.[description], t.[type_id], t.taskState_id, t.taskPosition, t.daysAvailable, t.hoursAvailable, t.createdDate
+		from Task t where t.stage_id = @stage_id order by t.taskPosition
+		declare @task_name nvarchar(100), @old_task_id bigint, @task_description nvarchar(150), @task_type_id int, @taskState_id int, @taskPosition int, 
+		@task_daysAvailable int, @task_hoursAvailable int, @task_createdDate datetime
+		open cursor_tasks
+		fetch next from cursor_tasks into @old_task_id, @task_name, @task_description, @task_type_id, @taskState_id, @taskPosition, @task_daysAvailable, @task_hoursAvailable, @task_createdDate
+		while @@FETCH_STATUS = 0 
+		begin
+			if (@isFirst = 0)
+			begin
+				set @lastFinishDate = DATEADD(hour, @task_hoursAvailable, (DATEADD(day, @task_daysAvailable, @task_createdDate)));
+			end
+			else
+			begin
+				set @lastFinishDate = DATEADD(hour, @task_hoursAvailable, (DATEADD(day, @task_daysAvailable, @lastFinishDate)));
+			end
+			fetch next from cursor_tasks into @old_task_id, @task_name, @task_description, @task_type_id, @taskState_id, @taskPosition, @task_daysAvailable, @task_hoursAvailable, @task_createdDate
+		end
+		close cursor_tasks
+		deallocate cursor_tasks
+		fetch next from cursor_stages into @stage_id
+	end
+	close cursor_stages
+	deallocate cursor_stages
+end
+go 
 -- drop procedure usp_update_process
 create procedure usp_update_process
 @id_process int, @name nvarchar(100) = null, @previousProcess bigint = null, @completedPorcentage int = null, @nextProcess bigint = null, @state_id tinyint = null, @userLog int as

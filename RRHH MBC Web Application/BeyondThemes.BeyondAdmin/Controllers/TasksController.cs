@@ -170,7 +170,8 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 }
                 else if (model.timeSelected == "date")
                 {
-                    taskDTO.finishDate = model.timeDatePicker.Substring(0, 11) + model.timeHour;
+                    taskDTO.finishDate = model.timeDatePicker + " " + model.timeHour;
+
                 }
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putTask(taskDTO).Result)
@@ -197,7 +198,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 }
                 else if (model.timeSelectedE == "date")
                 {
-                    taskDTO.finishDate = model.finishTimeE.Substring(0, 11) + model.finishDateE;
+                    taskDTO.finishDate = model.finishDateE + " " + model.finishTimeE;
                 }
                 taskDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putTask(taskDTO).Result)
@@ -208,6 +209,22 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Can't find that");
         }
 
+        [HttpPut]
+        public ActionResult _EditTaskPosition(string id_task, string taskPosition)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.id_task = id_task;
+                taskDTO.taskPosition = taskPosition;
+                taskDTO.userLog = Request.Cookies["user_id"].Value;
+                if (taskProvider.putTask(taskDTO).Result)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
         [HttpDelete]
         public ActionResult _DeleteTask(string id_task)
         {
@@ -632,12 +649,18 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
         [HttpPost]
-        public ActionResult _AnswerTaskForm(List<string> answers)
+        public ActionResult _AnswerTaskForm(List<string> answers, string id_task)
         {
             if (ModelState.IsValid)
             {
                 var parameters = Request.Params;
                 TaskProvider taskProvider = new TaskProvider();
+                List<TaskQuestionDTO> taskQuestions = taskProvider.getFormQuestions(id_task).Result;
+                foreach(var question in taskQuestions)
+                {
+                    //taskProvider.put
+                }
+
                 //if (taskProvider.postTaskNotification(taskNotification).Result)
                 //{
                 //    return _TaskNotificationList(taskNotification.task_id);
@@ -659,7 +682,24 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 taskResponsableDTO.userLog = Request.Cookies["user_id"].Value;
                 if (taskProvider.putTaskResponsable(taskResponsableDTO).Result)
                 {
-                    return new HttpStatusCodeResult(200);
+                    List<TaskResponsableDTO> taskResponsables = taskProvider.getTaskResponsables(id_task).Result;
+                    bool isTaskCompleted = true;
+                    foreach(var user in taskResponsables)
+                    {
+                        if(user.isConfirmed == "False")
+                        {
+                            isTaskCompleted = false;
+                        }
+                    }
+                    if (isTaskCompleted)
+                    {
+                        TaskDTO task = new TaskDTO();
+                        task.id_task = id_task;
+                        task.taskState_id = "2";
+                        task.userLog = Request.Cookies["user_id"].Value;
+                        bool isSuccess = taskProvider.putTask(task).Result;
+                    }
+                    return Content(isTaskCompleted ? "True" : id_task);
                 }
             }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
