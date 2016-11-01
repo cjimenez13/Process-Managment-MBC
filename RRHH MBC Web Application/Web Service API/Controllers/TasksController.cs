@@ -194,7 +194,23 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
-
+        [HttpGet]
+        [Route("questionAnswers")]
+        public IEnumerable<TaskQuestionAnswerDTO> getQuestionAnswers(string id_taskQuestion)
+        {
+            List<TaskQuestionAnswerDTO> questionAnswers = TaskFormData.getQuestionsAnswers(id_taskQuestion);
+            return questionAnswers;
+        }
+        [HttpPost]
+        [Route("questionAnswers")]
+        public IHttpActionResult postQuestionAnswer(TaskQuestionAnswerDTO pQuestion)
+        {
+            if (!TaskFormData.insertQuestionAnswer(pQuestion))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
 
         [HttpGet]
         [Route("forms")]

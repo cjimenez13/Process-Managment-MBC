@@ -34,6 +34,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     task.finishDate = rdr["finishDate"].ToString();
                     task.createdDate = rdr["createdDate"].ToString();
                     task.beginDate = rdr["beginDate"].ToString();
+                    task.completedDate = rdr["completedDate"].ToString();
                     task.daysAvailable = rdr["daysAvailable"].ToString();
                     task.hoursAvailable = rdr["hoursAvailable"].ToString();
                     task.isProcess = rdr["isProcess"].ToString();

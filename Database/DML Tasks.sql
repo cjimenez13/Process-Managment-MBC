@@ -1,4 +1,5 @@
 -------------------------------------------- Tasks --------------------------------------------------
+exec usp_get_processes
 -- drop procedure usp_get_userTasks
 create procedure usp_get_userTasks
 @user_id int as 
@@ -553,8 +554,34 @@ begin transaction
 commit transaction
 end
 go
-
-
+ 
+create procedure usp_get_questionAnswers
+@id_taskQuestion bigint as
+begin
+	select fq.question, fq.questionPosition, fq.questionType_id, (select qt.name from QuestionType qt where qt.id_questionType = fq.questionType_id) as questionType_name, 
+	qr.taskQuestion_id, qr.response, qr.[user_id], qr.answered_date
+	from FormQuestions fq inner join QuestionResponse qr  on qr.taskQuestion_id = fq.id_taskQuestion
+	where fq.id_taskQuestion = @id_taskQuestion
+	order by fq.questionPosition
+end
+go
+select * from QuestionResponse
+create procedure usp_insert_questionAnswer 
+@taskQuestion_id bigint, @user_id int, @response varbinary(MAX), @userLog int as
+begin
+	set transaction isolation level snapshot
+	begin transaction
+	declare @event_log_id int, @table int, @id_taskChange bigint
+	insert into QuestionResponse(taskQuestion_id, [user_id], response, answered_date)
+	values (@taskQuestion_id, @user_id, @response, GETDATE())
+	set @id_taskChange = (select @@IDENTITY)
+	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'QuestionResponse')
+	exec @event_log_id = usp_insert_EventLog @description = 'inserted question answer', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;
+	exec usp_insert_Reference @attribute = 'taskQuestion_id', @value = @taskQuestion_id, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'user_id', @value = @user_id, @EventLog_id = @event_log_id
+commit transaction
+end
+go
 
 -- drop procedure usp_jobUpdate_taskState
 --update Task set taskState_id = 1 where stage_id = 180 

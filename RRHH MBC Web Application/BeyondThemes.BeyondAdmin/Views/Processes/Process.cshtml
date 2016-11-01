@@ -4,9 +4,9 @@
     ViewBag.Title = "Gestion #"+Model.processDTO.id_processManagment;
     ViewBag.Description = Model.processDTO.name;
     int completedPorcentage = 0;
-    if (Model.processDTO.completedTasks != "0")
+    if (Model.processDTO.totalTasks != "0")
     {
-        completedPorcentage = Int32.Parse(Model.processDTO.totalTasks) / Int32.Parse(Model.processDTO.completedTasks);
+        completedPorcentage = Int32.Parse(Model.processDTO.completedTasks) * 100 / Int32.Parse(Model.processDTO.totalTasks) ;
     }
     string createdBy_name = Model.userDTO.name + " " + Model.userDTO.fLastName + " " + Model.userDTO.sLastName;
 }

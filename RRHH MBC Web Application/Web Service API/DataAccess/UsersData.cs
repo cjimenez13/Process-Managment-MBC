@@ -400,6 +400,12 @@ namespace Web_Service_API.DataAccess
                 command.Parameters.Add("@direction", SqlDbType.NVarChar);
                 command.Parameters["@direction"].Value = pUserDTO.direction;
 
+                command.Parameters.Add("@telegram_id", SqlDbType.NVarChar);
+                command.Parameters["@telegram_id"].Value = pUserDTO.telegram_id;
+
+                command.Parameters.Add("@telegram_user", SqlDbType.NVarChar);
+                command.Parameters["@telegram_user"].Value = pUserDTO.telegram_user;
+
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();
                 if (result != 0)

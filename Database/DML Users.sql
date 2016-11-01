@@ -101,8 +101,8 @@ go
 --drop procedure usp_update_user
 create procedure usp_update_user
 @user nvarchar(50), @userName nvarchar(50) = null, @name nvarchar(50), @fLastName nvarchar(50), @sLastName nvarchar(50) = null,
-@email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = 'tmp1234',
-@id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX) = null
+@email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = null,
+@id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX) = null, @telegram_id nvarchar(50), @telegram_user nvarchar(50)
  as
 begin
 begin transaction 
@@ -117,7 +117,9 @@ begin transaction
 					 [password] = ISNULL(@password,[password]),
 					 id = ISNULL(@id, id),
 					 birthdate = ISNULL(try_convert(DATE,@birthdate,103), birthdate),
-					 direction = ISNULL(@direction, direction)
+					 direction = ISNULL(@direction, direction),
+					 telegram_id = ISNULL(@telegram_id, telegram_id),
+					 telegram_user = ISNULL(@telegram_user, telegram_user)
 		where email = @email or userName = @userName
 		update UsersPhotos set photoData = ISNULL(@photo, photoData)
 		where [user_id] = @id_user;

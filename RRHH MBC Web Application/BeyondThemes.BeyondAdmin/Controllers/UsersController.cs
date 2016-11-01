@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -68,7 +69,17 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         public ActionResult _GroupUsersList(string id_group)
         {
             return PartialView("/Views/Users/_Group/GroupsUsersList.cshtml", new Model.GroupModel(id_group));
-        } 
+        }
+
+        //[Authorize]
+        //[HttpGet]
+        //public async System.Threading.Tasks.Task<ActionResult> getTelegramMessages(string id_group)
+        //{
+        //    //await TelegramService.getInstance().listenMessages();
+        //    Thread oThread = new Thread(new ThreadStart(TelegramService.getInstance().listenMessages));
+        //    oThread.Start();
+        //    return new HttpStatusCodeResult(200);
+        //}
 
         public ActionResult getCantones(string pProvinceID)
         {

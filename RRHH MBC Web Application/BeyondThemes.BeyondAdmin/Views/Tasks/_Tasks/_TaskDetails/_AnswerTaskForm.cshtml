@@ -9,8 +9,7 @@
             @using (Ajax.BeginForm("_AnswerTaskForm", "Tasks", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskNotificationAddedSucces", OnFailure = "TaskNotificationAddedFailure" }))
             {
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(m => m.task.id_task)
-
+                @Html.Hidden("id_task", Model.task.id_task)
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Formulario</h4>

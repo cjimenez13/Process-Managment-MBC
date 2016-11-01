@@ -150,4 +150,18 @@ namespace DataTransferObjects
         public string photoData { get; set; }
         public string userLog { get; set; }
     }
+
+    public class TaskQuestionAnswerDTO
+    {
+        public string question { get; set; }
+        public string questionPosition { get; set; }
+        public string questionType_id { get; set; }
+        public string questionType_name { get; set; }
+        public string taskQuestion_id { get; set; }
+        public string user_id { get; set; }
+        public string answered_date { get; set; }
+        public string response { get; set; }
+        public byte[] responseData { get; set; }
+        public string userLog { get; set; }
+    }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using System.Web.Configuration;
 
 namespace Web_Service_API.DataAccess.TaskData
@@ -123,6 +124,44 @@ namespace Web_Service_API.DataAccess.TaskData
             return formUsers;
         }
 
+        public static List<TaskQuestionAnswerDTO> getQuestionsAnswers(string id_taskQuestion)
+        {
+            List<TaskQuestionAnswerDTO> questionAnswers = new List<TaskQuestionAnswerDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_questionAnswers", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_taskQuestion", SqlDbType.Int);
+                command.Parameters["@id_taskQuestion"].Value = id_taskQuestion;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    TaskQuestionAnswerDTO taskQuestionAnswer = new TaskQuestionAnswerDTO();
+                    taskQuestionAnswer.user_id = rdr["user_id"].ToString();
+                    taskQuestionAnswer.taskQuestion_id = rdr["taskQuestion_id"].ToString();
+                    taskQuestionAnswer.answered_date = rdr["answered_date"].ToString();
+                    taskQuestionAnswer.question = rdr["question"].ToString();
+                    taskQuestionAnswer.questionPosition = rdr["questionPosition"].ToString();
+                    taskQuestionAnswer.questionType_id = rdr["questionType_id"].ToString();
+                    taskQuestionAnswer.questionType_name = rdr["questionType_name"].ToString();
+                    byte[] response = (byte[])rdr["response"];
+                    if (taskQuestionAnswer.questionType_id != "5")
+                    {
+                        taskQuestionAnswer.response = Encoding.UTF8.GetString(response);
+                    }
+                    else
+                    {
+                        taskQuestionAnswer.response = Convert.ToBase64String(response);
+                    }
+                    //byte[] photo = (byte[])rdr["photoData"];
+                    //taskQuestionAnswer.photoData = Convert.ToBase64String(photo);
+                    questionAnswers.Add(taskQuestionAnswer);
+                }
+            };
+            return questionAnswers;
+        }
+
         //---------------------------------------------------------- Inserts -------------------------------------------------------------------
 
         public static bool insertForm(TaskFormDTO pTaskForm)
@@ -213,6 +252,35 @@ namespace Web_Service_API.DataAccess.TaskData
             };
             return false;
         }
+        public static bool insertQuestionAnswer(TaskQuestionAnswerDTO pQuestionAnswer)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_insert_questionAnswer", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@response", SqlDbType.VarBinary);
+                command.Parameters["@response"].Value = pQuestionAnswer.responseData;
+
+                command.Parameters.Add("@taskQuestion_id", SqlDbType.BigInt);
+                command.Parameters["@taskQuestion_id"].Value = pQuestionAnswer.taskQuestion_id;
+
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = pQuestionAnswer.user_id;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pQuestionAnswer.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteScalar().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+
 
         //--------------------------------------------- Updates --------------------------------------------
 

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using BeyondThemes.BeyondAdmin.Tools;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -16,6 +14,8 @@ namespace BeyondThemes.BeyondAdmin
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Thread oThread = new Thread(new ThreadStart(TelegramService.getInstance().listenMessages));
+            oThread.Start();
         }
     }
 }

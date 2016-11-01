@@ -204,6 +204,7 @@ namespace Model
         private ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
 
         public TaskResponsablesModel taskResponsablesModel;
+        public FormQuestionsModel formQuestionsModel;
         public TaskDTO task;
         public UserDTO createdBy;
         public TaskStateDTO taskState;
@@ -217,6 +218,7 @@ namespace Model
             taskState = taskProvider.getTaskState(task.taskState_id).Result;
             taskType = taskProvider.getTaskType(task.type_id).Result;
             taskResponsablesModel = new TaskResponsablesModel(task);
+            formQuestionsModel = new FormQuestionsModel(task);
         }
     }
     //-------------------------------------- Responsables ---------------------------------------------
@@ -255,6 +257,7 @@ namespace Model
     {
         private TaskProvider taskProvider = new TaskProvider();
         public TaskFormDTO taskFormDTO;
+
         public EditTaskForm() { }
         public EditTaskForm(TaskFormDTO taskForm)
         {
@@ -273,6 +276,7 @@ namespace Model
     }
     public class AddFormUsersModel
     {
+        public FormUsersModel formUsersModel;
         private TaskProvider taskProvider = new TaskProvider();
         public SelectList _ParticipantsSelect { get; set; }
         public List<ParticipantDTO> userList = new List<ParticipantDTO>();
@@ -291,6 +295,7 @@ namespace Model
                 usersSelectList.Add(new SelectListItem { Text = name, Value = iUser.user_id });
             }
             _ParticipantsSelect = new SelectList(usersSelectList, "Value", "Text");
+            formUsersModel = new FormUsersModel(taskFormDTO.id_taskForm);
         }
         public string taskForm_id;
         [Display(Name = "Usuarios")]
@@ -316,6 +321,7 @@ namespace Model
         public List<QuestionTypeDTO> questionsTypes = new List<QuestionTypeDTO>();
         public List<AttributeDTO> attributes = new List<AttributeDTO>();
         public TaskFormDTO taskForm = new TaskFormDTO();
+        public AddFormUsersModel addFormUsersModel;
         public List<TaskQuestionDTO> formQuestions = new List<TaskQuestionDTO>();
         public SelectList _QuestionTypesSelect { get; set; }
         public SelectList _AttributesSelect { get; set; }
@@ -343,6 +349,7 @@ namespace Model
                     maxQuestionPositionA = questionPosition + 1;
                 }
             }
+            addFormUsersModel = new AddFormUsersModel(taskDTO, taskForm);
         }
         private SelectList generateQuestionTypesSelect()
         {

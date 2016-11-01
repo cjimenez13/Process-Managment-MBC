@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Model;
 using System.Web;
+using System.Text;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -655,16 +656,31 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             {
                 var parameters = Request.Params;
                 TaskProvider taskProvider = new TaskProvider();
-                List<TaskQuestionDTO> taskQuestions = taskProvider.getFormQuestions(id_task).Result;
+                TaskFormDTO taskForm = taskProvider.getTaskForm(id_task).Result;
+                List<TaskQuestionDTO> taskQuestions = taskProvider.getFormQuestions(taskForm.id_taskForm).Result;
+                bool isFormAnswered = true;
+                int iQuestion = 0;
                 foreach(var question in taskQuestions)
                 {
-                    //taskProvider.put
+                    TaskQuestionAnswerDTO questionAnswer = new TaskQuestionAnswerDTO();
+                    questionAnswer.taskQuestion_id = question.id_taskQuestion;
+                    questionAnswer.user_id = Request.Cookies["user_id"].Value;
+                    questionAnswer.userLog = Request.Cookies["user_id"].Value;
+                    if (questionAnswer.questionType_id != "5") //string answer
+                    {
+                        questionAnswer.responseData = Encoding.UTF8.GetBytes(answers[iQuestion]);
+                    }
+                    if (taskProvider.postQuestionAnswer(questionAnswer).Result)
+                    {
+                        isFormAnswered = false;
+                    }
+                    iQuestion++;
                 }
-
-                //if (taskProvider.postTaskNotification(taskNotification).Result)
-                //{
-                //    return _TaskNotificationList(taskNotification.task_id);
-                //}
+                if (isFormAnswered)
+                {
+                    return new HttpStatusCodeResult(200);
+                }
+                
             }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
@@ -696,6 +712,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                         TaskDTO task = new TaskDTO();
                         task.id_task = id_task;
                         task.taskState_id = "2";
+                        task.completedDate = DateTime.Now.ToString();
                         task.userLog = Request.Cookies["user_id"].Value;
                         bool isSuccess = taskProvider.putTask(task).Result;
                     }

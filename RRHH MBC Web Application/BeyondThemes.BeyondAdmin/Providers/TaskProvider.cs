@@ -181,6 +181,26 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return questions;
             }
         }
+
+        public async Task<List<TaskQuestionAnswerDTO>> getQuestionAnswers(string id_taskQuestion)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<TaskQuestionAnswerDTO> questions = new List<TaskQuestionAnswerDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/questionAnswers?id_taskQuestion=" + id_taskQuestion).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    var serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
+                    questions = serializer.Deserialize<List<TaskQuestionAnswerDTO>>(result);
+                }
+                return questions;
+            }
+        }
         public async Task<TaskFormDTO> getTaskForm(string id_task)
         {
             using (var client = new HttpClient())
@@ -296,7 +316,9 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    operationTypes = new JavaScriptSerializer().Deserialize<List<FileTaskDTO>>(result);
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    serializer.MaxJsonLength = Int32.MaxValue;
+                    operationTypes = serializer.Deserialize<List<FileTaskDTO>>(result);
                 }
                 return operationTypes;
             }
@@ -393,6 +415,19 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return response.IsSuccessStatusCode;
             }
         }
+        public async Task<bool> postQuestionAnswer(TaskQuestionAnswerDTO questionDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                var userJson = serializer.Serialize(questionDTO);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync("api/tasks/questionAnswers", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
         public async Task<bool> postTaskForm(TaskFormDTO formDTO)
         {
             using (var client = new HttpClient())
@@ -437,7 +472,9 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                var userJson = new JavaScriptSerializer().Serialize(taskFileDTO);
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                var userJson = serializer.Serialize(taskFileDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync("api/tasks/files", contentPost).Result;
                 return response.IsSuccessStatusCode;
