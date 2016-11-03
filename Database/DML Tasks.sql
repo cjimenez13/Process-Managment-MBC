@@ -10,6 +10,13 @@ begin
 	from Task_Targets tt inner join Task t on t.id_task = tt.task_id
 	where tt.[user_id] = @user_id and tt.isConfirmed = 0 and (t.taskState_id = 1 or t.taskState_id = 0) and 
 	(select pm.isProcess from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) = 1 
+	union
+	select t.id_task, t.stage_id, t.name, t.[description], t.[type_id], t.stage_id, t.taskState_id, t.createdBy, t.finishDate, t.taskPosition, t.createdDate, 
+	t.beginDate, t.daysAvailable, t.hoursAvailable, fu.[user_id],
+	(select pm.name from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) as process_name
+	from Form_Users fu inner join Task t on fu.taskForm_id = (select tf.id_taskForm from TaskForm tf where tf.task_id = t.id_task)
+	where fu.[user_id] = @user_id and fu.isAnswered = 0 and (t.taskState_id = 1 or t.taskState_id = 0) and 
+	(select pm.isProcess from ProcessManagment pm where pm.id_processManagment = (select s.processManagment_id from Stage s where s.id_stage = t.stage_id)) = 1 
 	order by t.taskState_id desc, finishDate desc
 end
 
@@ -453,6 +460,24 @@ exec usp_insert_Reference @attribute = 'taskForm_id', @value = @taskForm_id, @Ev
 exec usp_insert_Reference @attribute = 'user_id', @value = @user_id, @EventLog_id = @event_log_id
 end
 go
+
+create procedure usp_update_formUser
+@taskForm_id bigint, @user_id nvarchar(300), @isAnswered bit, @answered_date datetime, @userLog int as 
+begin 
+set transaction isolation level snapshot
+begin transaction
+	declare @event_log_id int, @table int
+	update Form_Users set isAnswered = @isAnswered, answered_date = @answered_date
+	where taskForm_id = @taskForm_id and [user_id] = @user_id
+	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Form_Users')
+	exec @event_log_id = usp_insert_EventLog @description = 'updated form', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 2, @user = @userLog;
+	exec usp_insert_Reference @attribute = 'id_taskForm', @value = @taskForm_id, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'user_id', @value = @user_id, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'isAnswered', @value = @isAnswered, @EventLog_id = @event_log_id
+	exec usp_insert_Reference @attribute = 'answered_date', @value = @answered_date, @EventLog_id = @event_log_id
+commit transaction
+end
+go
 -- drop procedure usp_delete_formUser
 create procedure usp_delete_formUser
 @taskForm_id bigint, @user_id nvarchar(300), @userLog int as 
@@ -555,25 +580,26 @@ commit transaction
 end
 go
  
+--drop procedure usp_get_questionAnswers
 create procedure usp_get_questionAnswers
-@id_taskQuestion bigint as
+@id_taskQuestion bigint, @user_id int as
 begin
 	select fq.question, fq.questionPosition, fq.questionType_id, (select qt.name from QuestionType qt where qt.id_questionType = fq.questionType_id) as questionType_name, 
-	qr.taskQuestion_id, qr.response, qr.[user_id], qr.answered_date
+	qr.taskQuestion_id, qr.response, qr.[user_id]
 	from FormQuestions fq inner join QuestionResponse qr  on qr.taskQuestion_id = fq.id_taskQuestion
-	where fq.id_taskQuestion = @id_taskQuestion
+	where fq.id_taskQuestion = @id_taskQuestion and qr.[user_id] = @user_id
 	order by fq.questionPosition
 end
 go
-select * from QuestionResponse
+--drop procedure usp_insert_questionAnswer
 create procedure usp_insert_questionAnswer 
 @taskQuestion_id bigint, @user_id int, @response varbinary(MAX), @userLog int as
 begin
 	set transaction isolation level snapshot
 	begin transaction
 	declare @event_log_id int, @table int, @id_taskChange bigint
-	insert into QuestionResponse(taskQuestion_id, [user_id], response, answered_date)
-	values (@taskQuestion_id, @user_id, @response, GETDATE())
+	insert into QuestionResponse(taskQuestion_id, [user_id], response)
+	values (@taskQuestion_id, @user_id, @response)
 	set @id_taskChange = (select @@IDENTITY)
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'QuestionResponse')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted question answer', @objectLog_id = @table, @eventTypeLog_id = 1, @eventSource_id = 1, @user = @userLog;

@@ -217,8 +217,14 @@ namespace Model
             createdBy = userProvider.getUserbyID(task.createdBy).Result;
             taskState = taskProvider.getTaskState(task.taskState_id).Result;
             taskType = taskProvider.getTaskType(task.type_id).Result;
-            taskResponsablesModel = new TaskResponsablesModel(task);
-            formQuestionsModel = new FormQuestionsModel(task);
+            if (taskType.needConfirm == "True")
+            {
+                taskResponsablesModel = new TaskResponsablesModel(task);
+            }
+            if (taskType.formNeeded == "True")
+            {
+                formQuestionsModel = new FormQuestionsModel(task);
+            }
         }
     }
     //-------------------------------------- Responsables ---------------------------------------------

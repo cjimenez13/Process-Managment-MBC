@@ -1,9 +1,18 @@
 ﻿@model Model.TasksModel
 @{
     string backgroundColor = "#f4f4f4";
+    string canAddTask = "";
+    if (Model.stage.isCompleted == "True")
+    {
+        canAddTask = "disabled";
+    }
 }
 <div class="col-xs-12" style="margin-top:20px; margin-bottom:20px">
-    <ul class="todo-list">
+    <ul class="todo-list" id="taskList">
+    @if (Model.tasks.Count == 0)
+    {
+        <li>No se ha agredado ninguna tarea</li>
+    }
     @foreach (var task in Model.tasks)
     {
         foreach(var taskState in Model.taskStates)
@@ -13,14 +22,6 @@
                 backgroundColor = taskState.state_sColor;
             }
         }
-        //if (task.taskState_id == "1")
-        //{
-        //    backgroundColor = "#d0e9c6";
-        //}
-        //else
-        //{
-        //    backgroundColor = "#f4f4f4";
-        //}
         string id_taskName = "taskName" + task.id_task;
         <li id="@task.id_task" style="background-color:@backgroundColor " >
             <span class="handle">
@@ -44,7 +45,7 @@
 </div>
 <div class="col-xs-12">
     <div class="col-xs-offset-9">
-        <button class="btn btn-success pull-right" data-toggle="modal" data-target="#modal_addTask">Agregar tarea</button>
+        <button class="btn btn-success pull-right" data-toggle="modal" data-target="#modal_addTask" @canAddTask>Agregar tarea</button>
     </div>
 </div>
 

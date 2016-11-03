@@ -28,13 +28,21 @@
                         Dirigido a
                     </a>
                 </li>
+                @if (Model.taskDTO.taskState_id != "0")
+                {
+                    <li class="tab-red">
+                        <a data-toggle="tab" href="#formAnswers-tab">
+                            Respuestas
+                        </a>
+                    </li>
+                }
             </ul>
             <div class="tab-content tabs-flat">
                 <div id="questions-tab" class="tab-pane in active">
-                    <div class="flip-scroll">
-                        <table class="table flip-content table-hover" id="table-questions">
+                    <div class="table-scrollable">
+                        <table class="table table-hover noborder" id="table-questions" style="border:none !important;" cellspacing="0" cellpadding="0">
                             <!-- column titles -->
-                            <thead class="flip-content ">
+                            <thead>
                                 <tr>
                                     <th></th>
                                     <th>Pregunta</th>
@@ -91,6 +99,12 @@
                 <div id="formUsers-tab" class="tab-pane">
                     @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsers.cshtml", Model.addFormUsersModel);}
                 </div>
+                @if (Model.taskDTO.taskState_id != "0")
+                {
+                    <div id="formAnswers-tab" class="tab-pane">
+                        @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormAnswers.cshtml", Model);}
+                    </div>
+                }
             </div>
         </div>
     </div>

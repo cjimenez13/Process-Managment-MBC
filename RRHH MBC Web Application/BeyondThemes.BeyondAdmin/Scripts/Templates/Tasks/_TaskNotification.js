@@ -42,7 +42,6 @@ function NotificationUserAddedSuccess(content) {
         Notify(content.usersError + " de los usuarios ya se encuentran como participante", 'bottom-right', '8000', 'warning', 'fa-edit', true);
     }
     $("#NotificationsUsersList", '#modal_configTaskNotification' + content.id_notification).html(content.viewHtml)
-    console.log($("#NotificationsUsersList", '#modal_configTaskNotification' + content.id_notification))
 }
 function NotificationUSerAddedFailure(content) {
     Notify('Error, el usuario no se puede agregar', 'bottom-right', '5000', 'danger', 'fa-edit', true);

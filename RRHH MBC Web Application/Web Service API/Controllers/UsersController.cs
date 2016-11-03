@@ -63,11 +63,11 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+
         [HttpPut]
         [Route("password")]
         public IHttpActionResult updatePassword(UserPasswordDTO passwordDTO)
         {
-            //IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,model.NewPassword);
             if (!UsersData.updateUserPassword(passwordDTO))
             {
                 return BadRequest();

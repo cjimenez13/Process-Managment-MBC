@@ -41,6 +41,11 @@
                         <img alt="image" class="img-circle  img-responsive" src="@photo">
                     </div>
                 }
+                @if (participants.Count > 5)
+                {
+                    int plusParticipants = participants.Count - 5;
+                    <p style="font-size:20px" data-toggle="tooltip" data-placement="top" title="Más @plusParticipants usuarios">...</p>
+                }
             </td>
         </tr>
     }

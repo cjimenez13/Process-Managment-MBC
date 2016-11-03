@@ -199,7 +199,6 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         }
 
         [HttpPut]
-        [ValidateAntiForgeryToken]
         public ActionResult _ProfileConfigInfo(UpdateUserModel model)
         {
             if (ModelState.IsValid)
@@ -239,6 +238,20 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 {
                     return new HttpStatusCodeResult(200);
                 }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        public ActionResult _DisableUser(string user_id)
+        {
+            UserDTO userDTO = new UserDTO();
+            userDTO.user_id = user_id;
+            userDTO.isEnabled = "False";
+            userDTO.email = userProvider.getUserbyID(user_id).Result.email;
+            userDTO.userLog = Request.Cookies["user_id"].Value;
+            if (userProvider.putdisableUser(userDTO, Request.Cookies["token"].Value).Result)
+            {
+                return new HttpStatusCodeResult(200);
             }
             return new HttpStatusCodeResult(404, "Can't find that");
         }

@@ -81,6 +81,8 @@ namespace Web_Service_API.DataAccess
                     userDTO.userName = rdr["userName"].ToString();
                     userDTO.id = rdr["id"].ToString();
                     userDTO.user_id = rdr["id_user"].ToString();
+                    userDTO.telegram_id = rdr["telegram_id"].ToString();
+                    userDTO.telegram_user = rdr["telegram_user"].ToString();
                     byte[] photo = (byte[])rdr["photoData"];
                     userDTO.photoBase64 = Convert.ToBase64String(photo);
                     users.Add(userDTO);
@@ -116,6 +118,8 @@ namespace Web_Service_API.DataAccess
                     userDTO.password = rdr["password"].ToString();
                     userDTO.id = rdr["id"].ToString();
                     userDTO.user_id = rdr["id_user"].ToString();
+                    userDTO.telegram_id = rdr["telegram_id"].ToString();
+                    userDTO.telegram_user = rdr["telegram_user"].ToString();
                     byte[] photo = (byte[])rdr["photoData"];
                     userDTO.photoBase64 = Convert.ToBase64String(photo); 
                 }
@@ -389,7 +393,7 @@ namespace Web_Service_API.DataAccess
                 command.Parameters["@canton_id"].Value = pUserDTO.canton_id;
 
                 command.Parameters.Add("@user", SqlDbType.NVarChar);
-                command.Parameters["@user"].Value = pUserDTO.userName!=""? pUserDTO.userName : pUserDTO.email;
+                command.Parameters["@user"].Value = pUserDTO.userName == "" ? pUserDTO.userName : pUserDTO.email;
 
                 command.Parameters.Add("@id", SqlDbType.NVarChar);
                 command.Parameters["@id"].Value = pUserDTO.id;
@@ -405,6 +409,9 @@ namespace Web_Service_API.DataAccess
 
                 command.Parameters.Add("@telegram_user", SqlDbType.NVarChar);
                 command.Parameters["@telegram_user"].Value = pUserDTO.telegram_user;
+
+                command.Parameters.Add("@isEnabled", SqlDbType.Bit);
+                command.Parameters["@isEnabled"].Value = pUserDTO.isEnabled;
 
                 command.Connection.Open();
                 int result = command.ExecuteNonQuery();

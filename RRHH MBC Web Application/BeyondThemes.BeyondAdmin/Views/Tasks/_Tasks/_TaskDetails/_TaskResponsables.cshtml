@@ -1,9 +1,9 @@
 ﻿@model Model.TaskResponsablesModel
-@{ 
-    string disabled = "";
-    if (Model.task.taskState_id == "1" || String.IsNullOrEmpty(Model.task.taskState_id))
+@{
+    string disabled = "disabled";
+    if (Model.task.taskState_id == "0")
     {
-        disabled = "disabled";
+        disabled = "";
     }
 }
 <h2>Responsables</h2>

@@ -1,9 +1,17 @@
 ﻿@model Model.UpdateUserModel
 
 <div class="form-title">
-    Información personal
+@using (Ajax.BeginForm("_DisableUser", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "DisableUSerSuccess", OnFailure = "DisableUserFailure" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.user_id)
+    <button class="btn btn-danger pull-right" style="margin-top:-10px">Deshabilitar usuario</button>
+}
+    <span>
+        Información personal
+    </span>
 </div>
-@using (Ajax.BeginForm("_ProfileConfigInfo", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "PasswordChangedSuccess", OnFailure = "PasswordChangeFailure" }))
+@using (Ajax.BeginForm("_ProfileConfigInfo", "Users", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "ConfigInfoSuccess", OnFailure = "ConfigInfoFailure" }))
 {
     @Html.AntiForgeryToken()
     <div class="row">
@@ -124,21 +132,21 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.password)
-                    @Html.TextBoxFor(m => m.password, new { @class = "form-control", @placeholder = "", @type = "password" })
-                    @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.passwordResetModel.password)
+                    @Html.TextBoxFor(model => model.passwordResetModel.password, new { @class = "form-control", @placeholder = "", @type = "password" })
+                    @Html.ValidationMessageFor(m => m.passwordResetModel.password, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.confirmPassword)
-                    @Html.TextBoxFor(m => m.confirmPassword, new { @class = "form-control", @placeholder = "", @type = "password" })
-                    @Html.ValidationMessageFor(m => m.confirmPassword, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.passwordResetModel.confirmPassword)
+                    @Html.TextBoxFor(m => m.passwordResetModel.confirmPassword, new { @class = "form-control", @placeholder = "", @type = "password" })
+                    @Html.ValidationMessageFor(m => m.passwordResetModel.confirmPassword, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.oldPassword)
-                    @Html.TextBoxFor(m => m.oldPassword, new { @class = "form-control", @placeholder = "", @type = "password" })
-                    @Html.ValidationMessageFor(m => m.oldPassword, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.passwordResetModel.oldPassword)
+                    @Html.TextBoxFor(m => m.passwordResetModel.oldPassword, new { @class = "form-control", @placeholder = "", @type = "password" })
+                    @Html.ValidationMessageFor(m => m.passwordResetModel.oldPassword, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

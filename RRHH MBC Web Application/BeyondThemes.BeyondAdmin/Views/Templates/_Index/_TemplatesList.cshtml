@@ -17,7 +17,8 @@
             }
             @if(participants.Count > 5)
             {
-                <p>...</p>
+                int plusParticipants = participants.Count - 5;
+                <p style="font-size:20px" data-toggle="tooltip" data-placement="top" title="Más @plusParticipants usuarios">...</p>
             }
         </td>
     </tr>

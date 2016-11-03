@@ -77,7 +77,6 @@ function deleteFormTask(id_formQuestion, element) {
 function TaskFormEditedSuccess(taskFormDTO) {
     Notify("El formulario se ha editado con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
     $('#formDescription').text("Descripción: "+taskFormDTO.description)
-    console.log("hola")
 }
 function TaskFormEditedFailure(error) {
     Notify(error.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
@@ -107,8 +106,8 @@ function FormUserAddedSuccess(content) {
     }
     $("#formUsersList").html(content.viewHtml)
 }
-function FormUserAddedFailure() {
-    Notify("Error, no se agregó ningun usuario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+function FormUserAddedFailure(content) {
+    Notify(content.statusText, 'bottom-right', '5000', 'danger', 'fa-edit', true);
 }
 // delete form user 
 function deleteFormUser(user_id, taskForm_id, name, element) {

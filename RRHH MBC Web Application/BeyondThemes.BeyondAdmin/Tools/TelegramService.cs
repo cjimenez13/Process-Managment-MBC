@@ -18,10 +18,7 @@ namespace BeyondThemes.BeyondAdmin.Tools
         //private const string bot_id = "240787257:AAHi78qbuStEm6B-tV5G33HMLhJwiREgO-k";
         private const string bot_id = "257291055:AAEFvfpq5NAN4w4X8vywfKGhW82PqYlg0xY";
         private static TelegramService _Instance = null;
-        private TelegramService()
-        {
-            //Thread oThread = new Thread(new ThreadStart(this.listenMessages));
-        }
+        private TelegramService(){ }
         public static void createInstance()
         {
             if (_Instance == null)
@@ -99,30 +96,6 @@ namespace BeyondThemes.BeyondAdmin.Tools
                 await Task.Delay(10000);
             }
         }
-        //public async Task refreshStatus()
-        //{
-        //    var Bot = new Telegram.Bot.TelegramBotClient(bot_id);
-        //    var iMeessage = 0;
-        //    while (true)
-        //    {
-        //        var updates = await Bot.GetUpdatesAsync();
-        //        var metartext = "";
-        //        foreach (var update in updates)
-        //        {
-        //            // subscribe cjimenez13@outlook.com Password12
-        //            if (update.Message.Type == MessageType.TextMessage && update.Message.Text.StartsWith("/subscribe"))
-        //            {
-        //                var station = update.Message.Text.Substring(update.Message.Text.Length - 4);
-        //                await Bot.SendChatAction(update.Message.Chat.Id, ChatAction.Typing);
-        //                await Task.Delay(2000);
-        //                var t = await Bot.SendTextMessage(update.Message.Chat.Id, metartext);
-        //            }
-
-        //            iMeessage = update.Id + 1;
-        //        }
-        //        await Task.Delay(1000);
-        //    }
-        //}
     }
     public class TelegramStatus
     {

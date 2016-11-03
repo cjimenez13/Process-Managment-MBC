@@ -140,6 +140,7 @@ namespace Model
         public List<SelectListItem> _CantonesSelect { get; set; }
         List<CantonDTO> _CantonesList;
         public UserDTO userDTO = new UserDTO();
+        public PasswordResetModel passwordResetModel = new PasswordResetModel();
         public UpdateUserModel() { }
         public UpdateUserModel(UserDTO userDTO)
         {
@@ -229,6 +230,11 @@ namespace Model
         public string cedula { get; set; }
         public string user_id { get; set; }
 
+    }
+    public class PasswordResetModel
+    {
+        public PasswordResetModel() { }
+
         [Required(ErrorMessage = "Se debe completar el campo de la contraseña")]
         [Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
@@ -246,8 +252,9 @@ namespace Model
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña actual")]
         public string oldPassword { get; set; }
-    }
 
+        public string user_id { get; set; }
+    }
     public class RegisterModel
     {
         private UsersProvider userProvider = new UsersProvider();

@@ -196,9 +196,9 @@ namespace Web_Service_API.Controllers
         }
         [HttpGet]
         [Route("questionAnswers")]
-        public IEnumerable<TaskQuestionAnswerDTO> getQuestionAnswers(string id_taskQuestion)
+        public IEnumerable<TaskQuestionAnswerDTO> getQuestionAnswers(string id_taskQuestion, string user_id)
         {
-            List<TaskQuestionAnswerDTO> questionAnswers = TaskFormData.getQuestionsAnswers(id_taskQuestion);
+            List<TaskQuestionAnswerDTO> questionAnswers = TaskFormData.getQuestionsAnswers(id_taskQuestion, user_id);
             return questionAnswers;
         }
         [HttpPost]
@@ -270,6 +270,17 @@ namespace Web_Service_API.Controllers
                 }
             }
             return insertedParticipants;
+        }
+
+        [HttpPut]
+        [Route("formUsers")]
+        public IHttpActionResult putFormUser(TaskFormUserDTO pFormUser)
+        {
+            if (!TaskFormData.updateFormUser(pFormUser))
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
 
         [HttpDelete]

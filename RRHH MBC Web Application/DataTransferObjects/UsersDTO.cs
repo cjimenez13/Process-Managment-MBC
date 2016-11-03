@@ -33,6 +33,8 @@
         public string password { get; set; }
         public string telegram_id { get; set; }
         public string telegram_user { get; set; }
+        public string isEnabled { get; set; }
+        public string userLog { get; set; }
     }
     public class UserPasswordDTO
     {

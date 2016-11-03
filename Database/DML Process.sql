@@ -85,7 +85,7 @@ begin try
 	insert into Process(processManagment_id, template_id, state_id, completedPorcentage, previousProcess) values (@processManagment_id, @template_id, 1, 0, @previousProcess)
 	if (@template_id is not null)
 	begin 
-		-- Participans
+		-- Participants
 		insert into Process_Participants(processManagment_id, [user_id]) 
 		select @processManagment_id, pp.[user_id] from Process_Participants pp where pp.processManagment_id = @template_id
 		if NOT EXISTS (select * from Process_Participants pp where pp.processManagment_id = @processManagment_id and pp.[user_id] = @userLog)

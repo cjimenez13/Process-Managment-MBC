@@ -7,6 +7,22 @@ using System.Web.Mvc;
 
 namespace Model
 {
+    public class ProcessesModel
+    {
+        public List<CategorieDTO> categories;
+        public List<TemplateDTO> templates;
+        public List<TaskStateDTO> taskStates;
+        public ProcessesModel()
+        {
+            categories = new CategorieProvider().getCategories().Result;
+            if (categories.Count > 0)
+            {
+                templates = new TemplatesProvider().getTemplatesByCategorie(categories[0].id_categorie).Result;
+                taskStates = new TaskProvider().getTaskStates().Result;
+            }
+        }
+    }
+
     public class ProcessModel
     {
         private ProcessProvider processProvider = new ProcessProvider();

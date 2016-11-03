@@ -1,0 +1,39 @@
+﻿@model Model.FormQuestionsModel
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-scrollable">
+            <table class="table table-hover noborder" id="table-questions" style="border:none !important;" cellspacing="0" cellpadding="0">
+                <!-- column titles -->
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Fecha de respuesta</th>
+                        <th>Ver respuesta</th>
+                    </tr>
+                </thead>
+                <tbody id="taskForm">
+                    <!-- Table data-->
+                    @foreach (var user in Model.addFormUsersModel.formUsersModel.formUsers)
+                    {
+                        if (user.isAnswered == "True")
+                        {
+                            string name = user.name + " " + user.fLastName + " " + user.sLastName;
+                            <tr>
+                                <td>@name</td>
+                                <td>@user.answered_date</td>
+                                <td style="width:5%">
+                                    <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Ver respuestas" , form="form-addTaskQuestion">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -142,6 +142,7 @@ namespace DataTransferObjects
         public string taskForm_id { get; set; }
         public string user_id { get; set; }
         public string isAnswered { get; set; }
+        public string answered_date { get; set; }
         public string name { get; set; }
         public string sLastName { get; set; }
         public string fLastName { get; set; }
@@ -159,7 +160,6 @@ namespace DataTransferObjects
         public string questionType_name { get; set; }
         public string taskQuestion_id { get; set; }
         public string user_id { get; set; }
-        public string answered_date { get; set; }
         public string response { get; set; }
         public byte[] responseData { get; set; }
         public string userLog { get; set; }

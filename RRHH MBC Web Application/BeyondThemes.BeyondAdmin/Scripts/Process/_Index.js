@@ -17,6 +17,7 @@ Imtech.Pager = function () {
                 html += '<tr>' + $(this).html() + '</tr>';
                 count += 1;
             });
+
         $(this.pagingContainerPath).html(html);
         renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
         $("[data-toggle='tooltip']").tooltip();
@@ -57,14 +58,33 @@ Imtech.Pager = function () {
 var pager = new Imtech.Pager();
 var processContainer;
 $(document).ready(function () {
-    processContainer = $('#table-processes tbody').children();
-    pager.paragraphsPerPage = 20; // set amount elements per page
-    pager.pagingContainer = $('#table-processes tbody'); // set of main container
-    pager.paragraphs = $('tr', pager.pagingContainer); // set of required containers
-    pager.pagingControlsContainer = '#pagingControls';
-    pager.pagingContainerPath = '#table-processes tbody'
-    pager.showPage(1);
-    $("[data-toggle='tooltip']").tooltip();
+    //pager.pagingControlsContainer = '#pagingControls';
+    //pager.pagingContainerPath = '#table-processes tbody'
+    //processContainer = $(pager.pagingContainerPath).children();
+    //pager.paragraphsPerPage = 25; // set amount elements per page
+    //pager.pagingContainer = $(pager.pagingContainerPath); // set of main container
+    //pager.paragraphs = $('tr', pager.pagingContainer); // set of required containers
+    //pager.showPage(1);
+    //$("[data-toggle='tooltip']").tooltip();
+
+    var processListHtml = ""
+    $.ajax({
+        url: "/Processes/_ProcessList/", type: "GET", dataType: "html",
+        success: function (data) {
+            processListHtml = data;
+            //$('#table-processes tbody').html(data)
+            console.log("hoasdala")
+            pager.pagingControlsContainer = '#pagingControls';
+            pager.pagingContainerPath = '#table-processes tbody'
+            pager.pagingContainer = $(pager.pagingContainerPath); // set of main container
+            console.log(pager.pagingContainer)
+            processContainer = $(data);
+            pager.paragraphs = $(data); // set of required containers
+            pager.paragraphsPerPage = 25; // set amount elements per page
+            pager.showPage(1);
+            $("[data-toggle='tooltip']").tooltip();
+        },
+    });
 });
 var delay = (function () {
     var timer = 0;
@@ -78,7 +98,8 @@ function filterProcess(pValue) {
         var value = pValue
         $(processContainer).each(function () {
             var row = $(this)
-            if (row.text().toLowerCase().includes(value)) {
+            console.log(row.find('td:nth-child(1)').text())
+            if (row.find('td:nth-child(1)').text().toLowerCase().includes(value) || row.find('td:nth-child(3)').text().toLowerCase().includes(value)) {
                 row.addClass('visible')
                 row.show();
             }
@@ -92,3 +113,29 @@ function filterProcess(pValue) {
         $("[data-toggle='tooltip']").tooltip();
     }, 300);
 }
+function refreshProcesses() {
+    var id_categorie = $('#selectCategories').val()
+    var id_template = $('#selectTemplates').val()
+    var id_taskState = $('#selectTaskStates').val()
+
+}
+
+$(document).ready(function () {
+    $('#selectCategories').change(function () {
+        var id = $(this).val();
+        $.ajax({
+            url: '/Processes/getTemplates',
+            type: 'get',
+            data: { "categorie_id": id },
+            success: function (json, textStatus) {
+                $("#selectTemplates").empty();
+                json = json || {};
+                console.log(json)
+                for (var i = 0; i < json.length; i++) {
+                    $("#selectTemplates").append('<option value="' + json[i].categorie_id + '">' + json[i].categorie_name + '</option>');
+                }
+                $("#selectCantones").prop("disabled", false);
+            }
+        });
+    });
+});

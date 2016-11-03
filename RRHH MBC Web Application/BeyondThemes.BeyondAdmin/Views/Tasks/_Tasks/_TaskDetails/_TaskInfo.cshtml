@@ -12,7 +12,7 @@
         daysName = " día ";
     }
     string duration = Model.task.daysAvailable + daysName + Model.task.hoursAvailable + hoursName;
-}
+}+
 <div class="widget radius-bordered">
     <div class="widget-header  bordered-bottom bordered-sky">
         <span class="widget-caption">Información General</span>
@@ -53,31 +53,37 @@
         {
             string isAnswerButtonEnabled = "disabled";
             bool isFormAnswered = false;
-            foreach (var user in Model.taskResponsablesModel.responsables)
-            {
-                if(user.user_id == Request.Cookies["user_id"].Value && user.isConfirmed == "False" && Model.taskType.formNeeded == "False")
-                {
-                    isAnswerButtonEnabled = "";
-                }
-            }
-            foreach (var user in Model.formQuestionsModel.addFormUsersModel.formUsersModel.formUsers)
-            {
-                if (user.user_id == Request.Cookies["user_id"].Value && user.isAnswered == "False" && Model.taskType.formNeeded == "True")
-                {
-                    isAnswerButtonEnabled = "";
-                }
-            }
-            //foreach (var user in Model.)
             <div class="row">
                 <div class="col-xs-12 col-md-offset-3 col-md-6">
                     <div class="col-xs-4 text-center">
-                        @if (!isFormAnswered)
+                        @if (Model.taskType.formNeeded == "True")
                         {
-                            <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded','@Model.task.id_task')" @isAnswerButtonEnabled>Responder</button>
+                            foreach (var user in Model.formQuestionsModel.addFormUsersModel.formUsersModel.formUsers)
+                            {
+                                if (user.user_id == Request.Cookies["user_id"].Value && user.isAnswered == "False" && Model.taskType.formNeeded == "True")
+                                {
+                                    isAnswerButtonEnabled = "";
+                                }
+                            }
+                            if (!isFormAnswered)
+                            {
+                                <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded','@Model.task.id_task')" @isAnswerButtonEnabled>Responder</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-success" onclick="openAnsweredQuestionsModal('@Model.task.id_task')">Ver respuesta</button>
+                            }
                         }
                         else
                         {
-                            <button type="button" class="btn btn-success" onclick="openAnsweredQuestionsModal('@Model.task.id_task')">Ver respuesta</button>
+                            foreach (var user in Model.taskResponsablesModel.responsables)
+                            {
+                                if (user.user_id == Request.Cookies["user_id"].Value && user.isConfirmed == "False" && Model.taskType.formNeeded == "False")
+                                {
+                                    isAnswerButtonEnabled = "";
+                                }
+                            }
+                            <button type="button" class="btn btn-success" onclick="openAnswerModal('@Model.taskType.formNeeded','@Model.task.id_task')" @isAnswerButtonEnabled>Responder</button>
                         }
                     </div>
                     <div class="col-xs-4 text-center">
@@ -91,7 +97,6 @@
         }
     </div>
 </div>
-    
 @{ Html.RenderPartial("/Views/Processes/_Index/_AddProcess.cshtml", new Model.AddProcessModel("_BifurcateProcess", Model.stageDTO.processManagment_id)); }
 @if (Model.taskType.formNeeded == "True")
 {

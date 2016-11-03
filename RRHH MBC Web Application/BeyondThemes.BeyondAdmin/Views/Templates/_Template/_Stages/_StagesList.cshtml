@@ -4,6 +4,12 @@
     int iStageCount = 0;
 }
 <ul class="todo-list">
+    @if(Model.stages.Count == 0)
+    {
+        <li>
+            No se ha agregado ninguna etapa
+        </li>
+    }
 
     @foreach (var stage in Model.stages)
     {
@@ -39,9 +45,12 @@
                 <a href="#" data-toggle="modal" data-target="@id_editModal">
                     <i class="fa fa-edit"></i>
                 </a>
-                <a href="#" onclick="deleteStage('@stage.id_stage', '@stage.name', this)">
-                    <i class="fa fa-trash-o"></i>
-                </a>
+                @if (stage.isCompleted != "True" && (backgroundColor == "#f4f4f4"))
+                {
+                    <a href="#" onclick="deleteStage('@stage.id_stage', '@stage.name', this)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                }
             </div>
             <!-- Modal to edit stage name -->
             @{ Html.RenderPartial("/Views/Templates/_Template/_Stages/_EditStage.cshtml", new Model.EditStageModel(stage));}

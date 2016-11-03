@@ -1,5 +1,4 @@
 ﻿function openAnswerModal(isForm,id_task) {
-    console.log('aswering');
     if (isForm === "True") {
         $('#modal_answerTask').modal('show')
     } else {
@@ -11,7 +10,6 @@
             confirmButton: "Confirmar",
             cancelButton: "Cancelar",
             confirm: function () {
-                console.log('asd')
                 $.ajax({
                     url: "/Tasks/_ConfirrmTask/?id_task=" + id_task,
                     type: "POST",

@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -21,7 +20,6 @@ using DataTransferObjects;
 
 namespace Web_Service_API.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -139,6 +137,21 @@ namespace Web_Service_API.Controllers
             }
             return GetErrorResult(result);
         }
+        [HttpPut]
+        [Route("disableUser")]
+        public async Task<IHttpActionResult> disableUser(UserDTO userDTO)
+        {
+            var user = await UserManager.FindByEmailAsync(userDTO.email);
+            IdentityResult result =  await UserManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                if (UsersData.updateUser(userDTO))
+                {
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
 
         // POST api/Account/SetPassword
         [Route("SetPassword")]
@@ -159,43 +172,7 @@ namespace Web_Service_API.Controllers
             return Ok();
         }
 
-        // POST api/Account/AddExternalLogin
-        [Route("AddExternalLogin")]
-        public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-
-            AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
-
-            if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-                && ticket.Properties.ExpiresUtc.HasValue
-                && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
-            {
-                return BadRequest("External login failure.");
-            }
-
-            ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
-
-            if (externalData == null)
-            {
-                return BadRequest("The external login is already associated with an account.");
-            }
-
-            IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
-                new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
 
         // POST api/Account/RemoveLogin
         [Route("RemoveLogin")]

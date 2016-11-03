@@ -3,6 +3,7 @@ using DataTransferObjects;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BeyondThemes.BeyondAdmin.Tools;
+using System;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -160,11 +161,19 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<StageDTO> stages = processManagmentProvider.getStages(id_process).Result;
                 StageDTO stageDTO = new StageDTO();
                 stageDTO.processManagment_id = id_process;
                 stageDTO.name = name;
-                stageDTO.stagePosition = maxStagePosition;
                 stageDTO.userLog = Request.Cookies["user_id"].Value;
+                if (stages.Count == 0)
+                {
+                    stageDTO.stagePosition = "0";
+                }
+                else
+                {
+                    stageDTO.stagePosition = (Int32.Parse(stages[stages.Count - 1].stagePosition) + 1).ToString();
+                }
                 if (processManagmentProvider.postStage(stageDTO).Result){
                     return _StagesList(id_process);
                 }

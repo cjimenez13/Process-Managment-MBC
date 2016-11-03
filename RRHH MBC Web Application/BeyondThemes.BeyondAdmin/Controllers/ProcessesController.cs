@@ -1,5 +1,6 @@
 ﻿using BeyondThemes.BeyondAdmin.Providers;
 using DataTransferObjects;
+using Model;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -15,7 +16,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         [ValidateLogin]
         public ActionResult Index()
         {
-            return View();
+            return View(new ProcessesModel());
         }
         [ValidateLogin]
         public ActionResult Process(string id)
@@ -45,10 +46,47 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return View();
         }
 
-        public ActionResult _ProcessList()
+        public ActionResult _ProcessList(string id_categorie = "-1", string id_template = "-1", string id_taskState = "-1" )
         {
             Model.ProcessListModel model = new Model.ProcessListModel();
             model.actualUser = HttpContext.Request.Cookies["user_id"].Value;
+            List<ProcessDTO> tempProcesses = model.processesDTO;
+            //Categories filter
+            if (id_categorie != "-1")
+            {
+                foreach (var process in tempProcesses)
+                {
+                    if (process.categorie_id != id_categorie)
+                    {
+                        tempProcesses.Remove(process);
+                    }
+                }
+            }
+            //Templates filter
+            if (id_template != "-1")
+            {
+                foreach (var process in tempProcesses)
+                {
+                    if (process.template_id != id_template)
+                    {
+                        tempProcesses.Remove(process);
+                    }
+                }
+            }
+            //Task State filter
+            /*
+            if (id_taskState != "-1")
+            {
+                foreach (var process in tempProcesses)
+                {
+                    if (process.state_id != id_categorie)
+                    {
+                        tempProcesses.Remove(process);
+                    }
+                }
+            }
+            */
+
             return PartialView("/Views/Processes/_Index/_ProcessList.cshtml", model);
         }
         [HttpGet]
@@ -71,7 +109,9 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 processDTO.userLog = Request.Cookies["user_id"].Value;
                 if (processProvider.postProcess(processDTO).Result != "-1")
                 {
-                    return _ProcessList();
+                    //return _ProcessList("-1","-1","-1");
+                    return new HttpStatusCodeResult(200);
+
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");

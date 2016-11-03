@@ -29,23 +29,24 @@
                                         questionTypeDTO = iQuestionType;
                                     }
                                 }
+                                string isRequired = question.isRequired == "True" ? "required": "";
                                 <div class="form-group">
                                     <label class="control-label"><strong>@Html.Raw(question.question)</strong></label>
                                     @if (question.questionType_id == "0") //texto corto
                                     {
-                                        <input class="form-control" type="text" name="answers" />
+                                        <input class="form-control" type="text" name="answers" @isRequired/>
                                     }
                                     @if (question.questionType_id == "1") //Parrafo
                                     {
-                                        <textarea class="form-control" name="answers" rows="3"/>
+                                        <textarea class="form-control" name="answers" rows="3" @isRequired/>
                                     }
                                     @if (question.questionType_id == "2") //Numero
                                     {
-                                        <input class="form-control" type="number" name="answers" />
+                                        <input class="form-control" type="number" name="answers" @isRequired/>
                                     }
                                     @if (question.questionType_id == "3") //Opcion unica
                                     {
-                                        <select class="form-control" name="answers">
+                                        <select class="form-control" name="answers" @isRequired>
                                             @{ 
                                                 List<DataTransferObjects.AttributeListDTO> attributes = new BeyondThemes.BeyondAdmin.Providers.CategorieProvider().getAttributesList(question.generalAttributeList).Result;
                                             }
@@ -70,12 +71,12 @@
                                     }
                                     @if (question.questionType_id == "5") // Archivo
                                     {
-                                        <input class="form-control" type="file" name="answers" />
+                                        <input class="form-control" type="file" name="answers"  @isRequired/>
                                     }
                                     @if (question.questionType_id == "6") // Fecha
                                     {
                                         <div class="input-group" id="timeDate">
-                                            <input class="form-control date-picker" name="answers" data_date_format = "dd-mm-yyyy" />
+                                            <input class="form-control date-picker" name="answers" data_date_format = "dd-mm-yyyy" @isRequired/>
                                             @*@Html.TextBoxFor(model => model.timeDatePicker, new { @class = "form-control date-picker", @form = "formGeneralInfo", data_date_format = "dd-mm-yyyy" })*@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>

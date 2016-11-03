@@ -27,71 +27,60 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             else
                 return View("/Views/Home/Error404.cshtml");
         }
-        [Authorize]
         public ActionResult _TaskList(string id_stage)
         {
             return PartialView("/Views/Tasks/_Tasks/_TasksList.cshtml", new Model.TasksModel(id_stage));
         }
-        [Authorize]
         public ActionResult _TaskDetails(string id_task)
         {
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails.cshtml", new Model.TaskDetailsModel(id_task));
         }
-        [Authorize]
         public ActionResult _AddResponsables(string id_task)
         {
-            TaskDTO task = new TaskDTO();
+            TaskDTO task = taskProvider.getTask(id_task).Result;
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsables.cshtml", new Model.TaskResponsablesModel(task));
         }
-        [Authorize]
         public ActionResult _AddForm(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskForm.cshtml", new Model.FormQuestionsModel(task));
        }
-        [Authorize]
         public ActionResult _AddAditionals(string id_task)
         {
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskAdditionals.cshtml", new TaskDetailsModel(id_task));
         }
-        [Authorize]
         public ActionResult _AddTaskChanges(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChanges.cshtml", new Model.TaskChangesModel(task));
         }
-        [Authorize]
         public ActionResult _TaskQuestions(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskQuestions.cshtml", new Model.FormQuestionsModel(task));
         }
-        [Authorize]
         public ActionResult _TaskDataChangesList(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskDataChangesList.cshtml", new Model.TaskChangesModel(task));
         }
-        [Authorize]
         public ActionResult _TaskFilesList(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskFilesList.cshtml", new Model.TaskFilesModel(task));
         }
-        [Authorize]
         public ActionResult _TaskNotificationList(string id_task)
         {
             TaskDTO task = new TaskDTO();
             task.id_task = id_task;
             return PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskNotificationsList.cshtml", new Model.TaskNotificationsModel(task));
         }
-        [Authorize]
         public ActionResult _TaskNotificationUsers(string id_notification)
         {
             TaskNotificationDTO taskNotification = new TaskNotificationDTO();
@@ -106,12 +95,16 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<TaskDTO> tasks = taskProvider.getTasks(model.id_stage).Result; 
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.name = model.name;
                 taskDTO.description = model.description;
                 taskDTO.stage_id = model.id_stage;
-                taskDTO.type_id = model.selected_taskType; 
-                taskDTO.taskPosition = model.taskPosition;
+                taskDTO.type_id = model.selected_taskType;
+                if (tasks.Count == 0)
+                    taskDTO.taskPosition = "0";
+                else
+                    taskDTO.taskPosition = (Int32.Parse(tasks[tasks.Count - 1].taskPosition) + 1).ToString();
                 if (model.timeSelected == "time")
                 {
                     taskDTO.daysAvailable = model.daysAmount;
@@ -264,8 +257,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 List<TaskResponsableDTO> adddedResponsables = taskProvider.postResponsableUser(responsables).Result;
                 int addedCount = adddedResponsables.Count;
                 int errorCount = responsables.Count - addedCount;
-                TaskDTO taskDTO = new TaskDTO();
-                taskDTO.id_task = id_task;
+                TaskDTO taskDTO = taskProvider.getTask(id_task).Result;
                 var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskResponsablesList.cshtml", new Model.TaskResponsablesModel(taskDTO)).RenderToString() };
                 return Json(result);
             }
@@ -353,22 +345,37 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<TaskFormUserDTO> users = new List<TaskFormUserDTO>();
-                foreach (var responsable_id in selected_userForm_id)
+                List<TaskFormUserDTO> actualUsers = taskProvider.getFormUsers(taskForm_id).Result;
+                if (actualUsers.Count < 1)
                 {
-                    TaskFormUserDTO formUser = new TaskFormUserDTO();
-                    formUser.user_id = responsable_id;
-                    formUser.taskForm_id = taskForm_id;
-                    formUser.userLog = Request.Cookies["user_id"].Value;
-                    users.Add(formUser);
+                    List<TaskFormUserDTO> users = new List<TaskFormUserDTO>();
+                    if (selected_userForm_id.Count > 1)
+                    {
+                        return new HttpStatusCodeResult(404, "Solamente se permite agregar un usuario");
+                    }
+                    else
+                    {
+                        foreach (var responsable_id in selected_userForm_id)
+                        {
+                            TaskFormUserDTO formUser = new TaskFormUserDTO();
+                            formUser.user_id = responsable_id;
+                            formUser.taskForm_id = taskForm_id;
+                            formUser.userLog = Request.Cookies["user_id"].Value;
+                            users.Add(formUser);
+                        }
+                        List<TaskFormUserDTO> addedUsers = taskProvider.postFormUsers(users).Result;
+                        int addedCount = addedUsers.Count;
+                        int errorCount = users.Count - addedCount;
+                        var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsersList.cshtml", new Model.FormUsersModel(taskForm_id)).RenderToString() };
+                        return Json(result);
+                    }
                 }
-                List<TaskFormUserDTO> addedUsers = taskProvider.postFormUsers(users).Result;
-                int addedCount = addedUsers.Count;
-                int errorCount = users.Count - addedCount;
-                var result = new { usersAdded = addedCount, usersError = errorCount, viewHtml = PartialView("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsersList.cshtml", new Model.FormUsersModel(taskForm_id)).RenderToString() };
-                return Json(result);
+                else
+                {
+                    return new HttpStatusCodeResult(404, "Solamente se permite agregar un usuario");
+                }
             }
-            return new HttpStatusCodeResult(404, "Can't find that");
+            return new HttpStatusCodeResult(404, "Error, no se agregó ningun usuario");
         }
         [HttpDelete]
         public ActionResult _DeleteFormUser(string taskForm_id, string user_id)
@@ -709,12 +716,76 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     }
                     if (isTaskCompleted)
                     {
-                        TaskDTO task = new TaskDTO();
-                        task.id_task = id_task;
-                        task.taskState_id = "2";
-                        task.completedDate = DateTime.Now.ToString();
-                        task.userLog = Request.Cookies["user_id"].Value;
-                        bool isSuccess = taskProvider.putTask(task).Result;
+                        // update completed task
+                        TaskDTO completedTask = new TaskDTO();
+                        TaskDTO completedTaskTemporal = taskProvider.getTask(id_task).Result;
+                        completedTask.id_task = id_task;
+                        completedTask.taskState_id = "2";
+                        completedTask.completedDate = DateTime.Now.ToString();
+                        completedTask.taskPosition = completedTaskTemporal.taskPosition;
+                        completedTask.stage_id = completedTaskTemporal.stage_id;
+                        completedTask.userLog = Request.Cookies["user_id"].Value;
+                        bool isSuccess = taskProvider.putTask(completedTask).Result;
+                        //update next task
+                        TaskDTO nextTask = new TaskDTO();
+                        List<TaskDTO> tasks = taskProvider.getTasks(completedTaskTemporal.stage_id).Result;
+                        foreach(var task in tasks)
+                        {
+                            if (Int32.Parse(task.taskPosition) == (Int32.Parse(completedTask.taskPosition))+1)
+                            {
+                                nextTask.id_task = task.id_task;
+                                break;
+                            }
+                        }
+                        //update stage if is final task
+                        if (nextTask.id_task == null)
+                        {
+                            // completes actual stage
+                            ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
+                            StageDTO actualStage = new StageDTO();
+                            actualStage.id_stage = completedTask.stage_id;
+                            actualStage.isCompleted = "True";
+                            actualStage.completedDate = DateTime.Now.ToString();
+                            actualStage.userLog = Request.Cookies["user_id"].Value;
+                            actualStage.processManagment_id = processManagmentProvider.getStage(actualStage.id_stage).Result.processManagment_id;
+                            bool isStageUpdated = processManagmentProvider.putStage(actualStage).Result;
+                            // change state of first task 
+                            List<StageDTO> stages = processManagmentProvider.getStages(actualStage.processManagment_id).Result;
+                            foreach (var stage in stages)
+                            {
+                                if (stage.isCompleted == "False")
+                                {
+                                    List<TaskDTO> stageTasks = taskProvider.getTasks(stage.id_stage).Result;
+                                    if (stageTasks.Count >= 1)
+                                    {
+                                        TaskDTO firstTask = new TaskDTO();
+                                        firstTask.taskState_id = "1";
+                                        firstTask.id_task = stageTasks[0].id_task;
+                                        firstTask.userLog = Request.Cookies["user_id"].Value;
+                                        bool isFirstTaskSuccess = taskProvider.putTask(firstTask).Result;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        StageDTO emtpyStage = new StageDTO();
+                                        emtpyStage.id_stage = stage.id_stage;
+                                        emtpyStage.isCompleted = "True";
+                                        emtpyStage.completedDate = DateTime.Now.ToString();
+                                        emtpyStage.userLog = Request.Cookies["user_id"].Value;
+                                        bool isEmptyStageUpdated = processManagmentProvider.putStage(actualStage).Result;
+                                    }
+
+                                }
+                            }
+
+                        }
+                        //update next task if is not final task
+                        else
+                        {
+                            nextTask.userLog = Request.Cookies["user_id"].Value;
+                            nextTask.taskState_id = "1";
+                            bool isNextSuccess = taskProvider.putTask(nextTask).Result;
+                        }
                     }
                     return Content(isTaskCompleted ? "True" : id_task);
                 }

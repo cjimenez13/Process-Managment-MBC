@@ -23,7 +23,6 @@ ImtechGroup.Pager = function () {
         $(this.pagingContainerPath).html(html);
         renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
         $("[data-toggle='tooltip']").tooltip();
-        console.log('hola')
     }
     var renderControls = function (container, currentPage, numPages) {
         nextPage = currentPage + 1;

@@ -182,7 +182,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             }
         }
 
-        public async Task<List<TaskQuestionAnswerDTO>> getQuestionAnswers(string id_taskQuestion)
+        public async Task<List<TaskQuestionAnswerDTO>> getQuestionAnswers(string id_taskQuestion, string user_id)
         {
             using (var client = new HttpClient())
             {
@@ -190,7 +190,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<TaskQuestionAnswerDTO> questions = new List<TaskQuestionAnswerDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync("api/tasks/questionAnswers?id_taskQuestion=" + id_taskQuestion).Result;
+                HttpResponseMessage response = client.GetAsync("api/tasks/questionAnswers?id_taskQuestion=" + id_taskQuestion + "&user_id="+ user_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -551,6 +551,17 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 var userJson = new JavaScriptSerializer().Serialize(taskFormDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PutAsync("api/tasks/forms", contentPost).Result;
+                return response.IsSuccessStatusCode;
+            }
+        }
+        public async Task<bool> putFormUSer(TaskFormUserDTO pFormUser)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(pFormUser);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/tasks/formUsers", contentPost).Result;
                 return response.IsSuccessStatusCode;
             }
         }

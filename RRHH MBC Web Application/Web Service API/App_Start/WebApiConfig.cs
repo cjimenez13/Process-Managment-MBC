@@ -22,7 +22,7 @@ namespace Web_Service_API
                 defaults: new { id = RouteParameter.Optional }
             );
            // config.EnableCors();
-            config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore};
         }
     }
 }

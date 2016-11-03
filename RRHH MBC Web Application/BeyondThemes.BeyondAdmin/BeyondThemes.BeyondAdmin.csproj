@@ -576,6 +576,7 @@
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFormUsers.cshtml" />
     <Content Include="Views\Shared\Notifications\_PendingTasks.cshtml" />
     <Content Include="Views\Shared\Notifications\_Process.cshtml" />
+    <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFormAnswers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

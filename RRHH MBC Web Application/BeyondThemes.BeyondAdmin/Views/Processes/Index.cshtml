@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Model.ProcessesModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
     ViewBag.Title = "Processes Managment";
     ViewBag.Description = "Processes Managment";
@@ -19,10 +20,50 @@
                         <div class="row" style="margin-bottom:40px">
                             <div class="col-md-6">
                                 <!-- search bar -->
-                                <span class="input-icon">
-                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar"  onkeyup="filterProcess(this.value)">
-                                    <i class="glyphicon glyphicon-search blue"></i>
-                                </span>
+                                <div style="margin-top:20px">
+                                    <span class="input-icon">
+                                        <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar" onkeyup="filterProcess(this.value)">
+                                        <i class="glyphicon glyphicon-search blue"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Categoria</label>
+                                        <select class="form-control" id="selectCategories">
+                                            <option value="-1">Todos</option>
+                                            @foreach (var categorie in Model.categories)
+                                            {
+                                                <option value="@categorie.id_categorie">@categorie.name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Plantilla</label>
+                                        <select class="form-control" id="selectTemplates">
+                                            <option value="-1">Todos</option>
+                                            @foreach (var template in Model.templates)
+                                            {
+                                                <option value="@template.categorie_id">@template.name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Estado</label>
+                                        <select class="form-control" id="selectTaskStates">
+                                            <option value="-1">Todos</option>
+                                            @foreach (var taskState in Model.taskStates)
+                                            {
+                                                <option value="@taskState.id_taskState">@taskState.state_name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -43,11 +84,11 @@
                                 </thead>
                                 <tbody>
                                     <!-- Table data-->
-                                    @{ 
+                                    @*@{ 
                                         Model.ProcessListModel processListModel = new Model.ProcessListModel();
                                         processListModel.actualUser = Request.Cookies["user_id"].Value;
                                         Html.RenderPartial("/Views/Processes/_Index/_ProcessList.cshtml", processListModel);
-                                    }
+                                    }*@
                                 </tbody>
                             </table>
                         </div>

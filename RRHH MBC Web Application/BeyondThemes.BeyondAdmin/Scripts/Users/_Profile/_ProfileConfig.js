@@ -16,6 +16,13 @@ function UserFileAddedSuccess(data) {
 function UserFileAddedFailure(data) {
     Notify('Error, no se puede editar la información', 'bottom-right', '5000', 'danger', 'fa-edit', true);
 }
+
+function DisableUserSuccess(data) {
+    Notify('El usuario se ha deshabilitado con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
+}
+function DisableUserFailure(data) {
+    Notify('Error, no se puede deshabilitar el usuario ', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
 function onSuccessAddRole(data) {
     Notify('El rol se ha añadido con éxito', 'bottom-right', '5000', 'success', 'fa-edit', true);
     var rolesTab = $('#roles-tab');

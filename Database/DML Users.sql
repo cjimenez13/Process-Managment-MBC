@@ -6,7 +6,7 @@ go
 create procedure usp_get_Users as
 begin
 	select u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
-	u.direction, u.birthdate, u.[password], u.id_user , 
+	u.direction, u.birthdate, u.[password], u.id_user , u.[password], u.telegram_id, u.telegram_user, 
 	(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
 	(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
 	(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
@@ -24,7 +24,7 @@ create procedure usp_get_user
 begin
 	begin 
 		select u.id_user, u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
-		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password],
+		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password], u.telegram_id, u.telegram_user, 
 		(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
 		(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
 		(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
@@ -34,12 +34,13 @@ begin
 	end
 end
 go
+-- drop procedure usp_get_user_byID
 create procedure usp_get_user_byID 
 @user_id nvarchar(50) as
 begin
 	begin 
 		select u.id_user, u.userName, u.name, u.fLastName, u.sLastName, u.email, u.phoneNumber, u.canton_id, createdDate, u.id, 
-		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password],
+		u.direction, convert(nvarchar, u.birthdate, 103) as birthdate, u.[password], u.telegram_id, u.telegram_user, 
 		(select c.name  from Cantones c where c.id_canton = u.canton_id) as canton_name,
 		(select p.name  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_name,
 		(select p.id_province  from Cantones c inner join Provinces p on p.id_province = c.province_id where c.id_canton = u.canton_id) as province_id,
@@ -98,11 +99,12 @@ begin
 end
 go
 
---drop procedure usp_update_user
+-- drop procedure usp_update_user
 create procedure usp_update_user
-@user nvarchar(50), @userName nvarchar(50) = null, @name nvarchar(50), @fLastName nvarchar(50), @sLastName nvarchar(50) = null,
-@email nvarchar(50), @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = null,
-@id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX) = null, @telegram_id nvarchar(50), @telegram_user nvarchar(50)
+@user nvarchar(50) = null, @userName nvarchar(50) = null, @name nvarchar(50) = null, @fLastName nvarchar(50) = null, @sLastName nvarchar(50) = null,
+@email nvarchar(50) = null, @phoneNumber nvarchar(50) = null, @canton_id tinyint = 1, @password nvarchar(50) = null,
+@id numeric(9,0) = null, @birthdate nvarchar(20) = null, @direction nvarchar(50) = null, @photo varbinary(MAX) = null, 
+@telegram_id nvarchar(50) = null, @telegram_user nvarchar(50) = null, @isEnabled bit = null
  as
 begin
 begin transaction 
@@ -119,7 +121,8 @@ begin transaction
 					 birthdate = ISNULL(try_convert(DATE,@birthdate,103), birthdate),
 					 direction = ISNULL(@direction, direction),
 					 telegram_id = ISNULL(@telegram_id, telegram_id),
-					 telegram_user = ISNULL(@telegram_user, telegram_user)
+					 telegram_user = ISNULL(@telegram_user, telegram_user),
+					 isEnabled = ISNULL(@isEnabled, isEnabled)
 		where email = @email or userName = @userName
 		update UsersPhotos set photoData = ISNULL(@photo, photoData)
 		where [user_id] = @id_user;
@@ -127,7 +130,6 @@ commit transaction
 end
 go
 
-select * from Users
 --drop procedure usp_update_userPasssword
 create procedure usp_update_userPasssword
 @id_user int, @password nvarchar(50), @userLog int as 

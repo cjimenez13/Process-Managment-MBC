@@ -124,15 +124,17 @@ namespace Web_Service_API.DataAccess.TaskData
             return formUsers;
         }
 
-        public static List<TaskQuestionAnswerDTO> getQuestionsAnswers(string id_taskQuestion)
+        public static List<TaskQuestionAnswerDTO> getQuestionsAnswers(string id_taskQuestion, string user_id)
         {
             List<TaskQuestionAnswerDTO> questionAnswers = new List<TaskQuestionAnswerDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
                 SqlCommand command = new SqlCommand("usp_get_questionAnswers", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add("@id_taskQuestion", SqlDbType.Int);
+                command.Parameters.Add("@id_taskQuestion", SqlDbType.BigInt);
                 command.Parameters["@id_taskQuestion"].Value = id_taskQuestion;
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = user_id;
                 command.Connection.Open();
                 SqlDataReader rdr = command.ExecuteReader();
                 while (rdr.Read())
@@ -140,7 +142,6 @@ namespace Web_Service_API.DataAccess.TaskData
                     TaskQuestionAnswerDTO taskQuestionAnswer = new TaskQuestionAnswerDTO();
                     taskQuestionAnswer.user_id = rdr["user_id"].ToString();
                     taskQuestionAnswer.taskQuestion_id = rdr["taskQuestion_id"].ToString();
-                    taskQuestionAnswer.answered_date = rdr["answered_date"].ToString();
                     taskQuestionAnswer.question = rdr["question"].ToString();
                     taskQuestionAnswer.questionPosition = rdr["questionPosition"].ToString();
                     taskQuestionAnswer.questionType_id = rdr["questionType_id"].ToString();
@@ -341,7 +342,7 @@ namespace Web_Service_API.DataAccess.TaskData
                 SqlCommand command = new SqlCommand("usp_update_form", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@id_taskForm", SqlDbType.Int);
+                command.Parameters.Add("@id_taskForm", SqlDbType.BigInt);
                 command.Parameters["@id_taskForm"].Value = pTaskForm.id_taskForm;
 
                 command.Parameters.Add("@description", SqlDbType.NVarChar);
@@ -349,6 +350,37 @@ namespace Web_Service_API.DataAccess.TaskData
 
                 command.Parameters.Add("@userLog", SqlDbType.Int);
                 command.Parameters["@userLog"].Value = pTaskForm.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+        public static bool updateFormUser(TaskFormUserDTO pFormUser)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_form", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@taskForm_id", SqlDbType.BigInt);
+                command.Parameters["@taskForm_id"].Value = pFormUser.taskForm_id;
+
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = pFormUser.user_id;
+
+                command.Parameters.Add("@isAnswered", SqlDbType.Bit);
+                command.Parameters["@isAnswered"].Value = pFormUser.isAnswered;
+
+                command.Parameters.Add("@answered_date", SqlDbType.DateTime);
+                command.Parameters["@answered_date"].Value = pFormUser.answered_date;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pFormUser.userLog;
 
                 command.Connection.Open();
                 string result = command.ExecuteNonQuery().ToString();
