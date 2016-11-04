@@ -73,6 +73,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return process;
             }
         }
+        public async Task<List<ProcessStateDTO>> getProcessStates()
+        {
+            var user_id = System.Web.HttpContext.Current.Request.Cookies["user_id"].Value;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<ProcessStateDTO> process = new List<ProcessStateDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/process/states").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    process = new JavaScriptSerializer().Deserialize<List<ProcessStateDTO>>(result);
+                }
+                return process;
+            }
+        }
         //-------------------------------------- Posts --------------------------------------------------
 
         public async Task<string> postProcess(ProcessDTO processDTO)

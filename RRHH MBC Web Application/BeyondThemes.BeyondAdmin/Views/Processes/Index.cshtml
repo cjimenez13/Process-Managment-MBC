@@ -55,11 +55,11 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Estado</label>
-                                        <select class="form-control" id="selectTaskStates">
+                                        <select class="form-control" id="selectProcessStates">
                                             <option value="-1">Todos</option>
-                                            @foreach (var taskState in Model.taskStates)
+                                            @foreach (var processState in Model.processStates)
                                             {
-                                                <option value="@taskState.id_taskState">@taskState.state_name</option>
+                                                <option value="@processState.id_processState">@processState.state_name</option>
                                             }
                                         </select>
                                     </div>

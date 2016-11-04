@@ -60,5 +60,12 @@ namespace Web_Service_API.Controllers
             }
             return Ok();
         }
+        [HttpGet]
+        [Route("states")]
+        public IEnumerable<ProcessStateDTO> getProcessStates()
+        {
+            List<ProcessStateDTO> processesStates = ProcessData.getProcessStates();
+            return processesStates;
+        }
     }
 }

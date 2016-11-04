@@ -225,6 +225,7 @@
     <Compile Include="Models\Processes\TasksModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\Processes\TemplatesModel.cs" />
+    <Compile Include="Models\ScriptsModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AccountProvider.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Providers\ProcessManagmentProvider.cs" />
     <Compile Include="Providers\ProcessProvider.cs" />
     <Compile Include="Providers\RoleProvider.cs" />
+    <Compile Include="Providers\ScriptsProvider.cs" />
     <Compile Include="Providers\TaskProvider.cs" />
     <Compile Include="Providers\TemplatesProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
@@ -577,6 +579,10 @@
     <Content Include="Views\Shared\Notifications\_PendingTasks.cshtml" />
     <Content Include="Views\Shared\Notifications\_Process.cshtml" />
     <Content Include="Views\Tasks\_Tasks\_TaskDetails\_TaskFormAnswers.cshtml" />
+    <Content Include="Views\Scripts\_AddScript.cshtml" />
+    <Content Include="Views\Scripts\_ScriptsLogList.cshtml" />
+    <Content Include="Views\Scripts\_ScriptDetail.cshtml" />
+    <Content Include="Views\Scripts\_ScriptResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

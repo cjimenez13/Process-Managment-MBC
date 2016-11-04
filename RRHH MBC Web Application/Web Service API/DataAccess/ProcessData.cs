@@ -113,6 +113,27 @@ namespace Web_Service_API.DataAccess
             };
             return process;
         }
+
+        public static List<ProcessStateDTO> getProcessStates()
+        {
+            List<ProcessStateDTO> processStates = new List<ProcessStateDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_processesStates", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ProcessStateDTO processState = new ProcessStateDTO();
+                    processState.id_processState = rdr["id_processState"].ToString();
+                    processState.state_color = rdr["state_color"].ToString();
+                    processState.state_name = rdr["state_name"].ToString();
+                    processStates.Add(processState);
+                }
+            };
+            return processStates;
+        }
         //--------------------------------------------- Inserts --------------------------------------------
         public static string insertProcess(ProcessDTO pProcessDTO)
         {

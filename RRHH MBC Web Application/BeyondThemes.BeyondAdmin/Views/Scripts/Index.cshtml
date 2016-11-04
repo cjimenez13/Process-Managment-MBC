@@ -1,14 +1,14 @@
-﻿@{
+﻿@model Model.ScriptsModel
+@{
     Layout = "~/Views/Shared/_Default.cshtml";
     ViewBag.Title = "Consultas";
     ViewBag.Description = "Lista de consultas";
 }
-
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
-        <div class="widget radius-bordered">
+        <div class="widget radius-bordered" id="widget-scripts">
             <!-- Header -->
-            <div class="widget-header header-large">
+            <div class="widget-header">
                 <span class="widget-caption">Lista de consultas</span>
                 <div class="widget-buttons" style="margin-right:20px">
                     <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_addScript">Nueva consulta</button>
@@ -17,16 +17,6 @@
             <div class="widget-body">
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <!-- Filter area -->
-                        <div class="row" style="margin-bottom:20px">
-                            <div class="col-md-6">
-                                <!-- search bar -->
-                                <span class="input-icon">
-                                    <input type="text" class="form-control" id="glyphicon-search" placeholder="Buscar">
-                                    <i class="glyphicon glyphicon-search blue"></i>
-                                </span>
-                            </div>
-                        </div>
                         <!-- Table -->
                         <div class="flip-scroll">
                             <table class="table flip-content table-hover">
@@ -35,30 +25,13 @@
                                     <tr>
                                         <th>Realizado por</th>
                                         <th>Fecha</th>
-                                        <th>Hora</th>
-                                        <th>Descripción</th>
-                                        <th class="text-right">	&nbsp;	 &nbsp;Acción</th>
-                                        <th>	&nbsp;	 &nbsp;</th>
+                                        <th>Consulta</th>
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!-- Table data-->
-                                    <tr>
-                                        <td>John Doe</td>
-                                        <td>11-7-2014</td>
-                                        <td>23:59</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td><a class="btn btn-sky" data-toggle="modal" data-target="#modal_seeScript"><i class="fa fa-eye"></i>	&nbsp;	&nbsp; Ver </a></td>
-                                        <td><a class="btn btn-sky"><i class="fa fa-play"></i>	&nbsp;	&nbsp; Ejecutar </a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alexander Pierce</td>
-                                        <td>11-7-2014</td>
-                                        <td>23:59</td>
-                                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                        <td><button class="btn btn-sky"><i class="fa fa-eye"></i>	&nbsp;	&nbsp; Ver </button></td>
-                                        <td><button class="btn btn-sky"><i class="fa fa-play"></i>	&nbsp;	&nbsp; Ejecutar </button></td>
-                                    </tr>
+                                    @{ Html.RenderPartial("/Views/Scripts/_ScriptsLogList.cshtml", Model);}
                                 </tbody>
                             </table>
                         </div>
@@ -68,77 +41,91 @@
         </div>
     </div>
 </div>
-
-
-
-
-<!-- Modal to add see script-->
-<div class="modal fade" id="modal_seeScript" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Consulta</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form role="form">
-                            <div class="form-group">
-                                <textarea class="form-control"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="div-modalResult">
 </div>
+@{ Html.RenderPartial("/Views/Scripts/_AddScript.cshtml", new  Model.AddScriptModel());}
 
-<!-- Modal to add scripts-->
-<div class="modal fade" id="modal_addScript" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Nueva Consulta</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form role="form">
-                            <div class="form-group">
-                                <h4>Seleccione la manera en que desea realizar la consulta:</h4>
-                                <label>
-                                    <input type="radio" name="r3" class="flat-red" checked>
-                                    Archivo
-                                </label>
-                                <label>
-                                    <input type="radio" name="r3" class="flat-red">
-                                    Texto
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Seleccione el archivo</label>
-                                <input type="file" id="exampleInputFile">
-                                <p class="help-block">Example block-level help text here.</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Ingrese su consulta</label>
-                                <textarea class="form-control" placeholder=""></textarea>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Ejecutar</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
+@section PageScripts{
+    <script src="~/assets/js/file_input/bootstrap-filestyle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('input:radio[name=scriptType]').change(function () {
+                if (this.value == 'file') {
+                    $('#formGroup-scriptFile').show()
+                    $('#formGroup-scriptText').hide()
+                }
+                else if (this.value == 'text') {
+                    $('#formGroup-scriptFile').hide()
+                    $('#formGroup-scriptText').show()
+                }
+            });
+        });
+        function ScriptAddedSuccess(content) {
+            if (content.type == "table") {
+                $('#modal_addScript').modal('hide');
+                $('#div-modalResult').html(content.result)
+                $('#modal_scriptResult').modal('show');
+            } else {
+                if (content.result == "0") {
+                    Notify("El script se ha ejecutado correctamente, " + content.result + " fila ha sido afectada", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                } else {
+                    Notify("El script se ha ejecutado correctamente, " + content.result + " filas han sido afectadas", 'bottom-right', '5000', 'success', 'fa-edit', true);
+                }
+            }
+        }
+        function ScriptAddedFailure(content) {
+            Notify("Error, no se puede ejecutar el script", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+        }
+        function getFormData($form) {
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+            $.map(unindexed_array, function (n, i) {
+                indexed_array[n['name']] = n['value'];
+            });
+            return indexed_array;
+        }
+        function postScriptAdded(event, self) {
+            var form = $(self).closest("form")
+            var formData = getFormData(form);
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#scriptFileUpload").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+                if (files.length > 0) {
+                    event.preventDefault()
+                    $.ajax({
+                        url: '/Scripts/_AddScript/?scriptType=' + formData.scriptType,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fileData,
+                        success: function (result) {
+                            ScriptAddedSuccess(result)
+                        },
+                        error: function (result) {
+                            ScriptAddedFailure(result)
+                        }
+                    });
+                }
+            } else {
+                Notify("Error, explorador no soportado", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+            }
+        }
+        function reexecuteScript(scriptText, self) {
+            $.ajax({
+                url: '/Scripts/_AddScript/?scriptType=text' + "&scriptText=" + scriptText,
+                type: "POST",
+                success: function (result) {
+                    ScriptAddedSuccess(result)
+                },
+                error: function (result) {
+                    ScriptAddedFailure(result)
+                }
+            });
+        }
+    </script>
+}
+

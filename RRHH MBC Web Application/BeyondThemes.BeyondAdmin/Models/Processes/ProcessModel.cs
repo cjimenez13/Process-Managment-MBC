@@ -10,15 +10,15 @@ namespace Model
     public class ProcessesModel
     {
         public List<CategorieDTO> categories;
-        public List<TemplateDTO> templates;
-        public List<TaskStateDTO> taskStates;
+        public List<TemplateDTO> templates = new List<TemplateDTO>();
+        public List<ProcessStateDTO> processStates;
         public ProcessesModel()
         {
             categories = new CategorieProvider().getCategories().Result;
             if (categories.Count > 0)
             {
-                templates = new TemplatesProvider().getTemplatesByCategorie(categories[0].id_categorie).Result;
-                taskStates = new TaskProvider().getTaskStates().Result;
+                //templates = new TemplatesProvider().getTemplatesByCategorie(categories[0].id_categorie).Result;
+                processStates = new ProcessProvider().getProcessStates().Result;
             }
         }
     }

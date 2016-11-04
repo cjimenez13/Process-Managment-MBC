@@ -73,7 +73,6 @@ $(document).ready(function () {
         success: function (data) {
             processListHtml = data;
             //$('#table-processes tbody').html(data)
-            console.log("hoasdala")
             pager.pagingControlsContainer = '#pagingControls';
             pager.pagingContainerPath = '#table-processes tbody'
             pager.pagingContainer = $(pager.pagingContainerPath); // set of main container
@@ -116,8 +115,23 @@ function filterProcess(pValue) {
 function refreshProcesses() {
     var id_categorie = $('#selectCategories').val()
     var id_template = $('#selectTemplates').val()
-    var id_taskState = $('#selectTaskStates').val()
-
+    var id_taskState = $('#selectProcessStates').val()
+    var processListHtml = ""
+    $.ajax({
+        url: "/Processes/_ProcessList/?id_categorie=" + id_categorie + "&id_template=" + id_template + "&id_taskState=" + id_taskState, type: "GET", dataType: "html",
+        success: function (data) {
+            processListHtml = data;
+            pager.pagingControlsContainer = '#pagingControls';
+            pager.pagingContainerPath = '#table-processes tbody'
+            pager.pagingContainer = $(pager.pagingContainerPath); // set of main container
+            console.log(pager.pagingContainer)
+            processContainer = $(data);
+            pager.paragraphs = $(data); // set of required containers
+            pager.paragraphsPerPage = 25; // set amount elements per page
+            pager.showPage(1);
+            $("[data-toggle='tooltip']").tooltip();
+        },
+    });
 }
 
 $(document).ready(function () {
@@ -131,11 +145,19 @@ $(document).ready(function () {
                 $("#selectTemplates").empty();
                 json = json || {};
                 console.log(json)
+                $("#selectTemplates").append('<option value="' + "-1" + '">' + "Todos"+'</option>');
                 for (var i = 0; i < json.length; i++) {
-                    $("#selectTemplates").append('<option value="' + json[i].categorie_id + '">' + json[i].categorie_name + '</option>');
+                    $("#selectTemplates").append('<option value="' + json[i].id_processManagment + '">' + json[i].name + '</option>');
                 }
-                $("#selectCantones").prop("disabled", false);
+                refreshProcesses();
             }
         });
+    });
+    $('#selectTemplates').change(function () {
+        refreshProcesses();
+    });
+    $('#selectProcessStates').change(function () {
+        console.log('hola')
+        refreshProcesses();
     });
 });

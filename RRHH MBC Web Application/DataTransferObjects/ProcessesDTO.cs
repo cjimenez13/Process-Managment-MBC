@@ -54,4 +54,11 @@
         public string previousProcess { get; set; }
         public string userLog { get; set; }
     }
+
+    public class ProcessStateDTO
+    {
+        public string id_processState { get; set; }
+        public string state_color { get; set; }
+        public string state_name { get; set; }
+    }
 }

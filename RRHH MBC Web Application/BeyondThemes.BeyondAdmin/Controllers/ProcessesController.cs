@@ -48,45 +48,24 @@ namespace BeyondThemes.BeyondAdmin.Controllers
 
         public ActionResult _ProcessList(string id_categorie = "-1", string id_template = "-1", string id_taskState = "-1" )
         {
-            Model.ProcessListModel model = new Model.ProcessListModel();
+            ProcessListModel model = new Model.ProcessListModel();
             model.actualUser = HttpContext.Request.Cookies["user_id"].Value;
             List<ProcessDTO> tempProcesses = model.processesDTO;
             //Categories filter
             if (id_categorie != "-1")
             {
-                foreach (var process in tempProcesses)
-                {
-                    if (process.categorie_id != id_categorie)
-                    {
-                        tempProcesses.Remove(process);
-                    }
-                }
+                tempProcesses.RemoveAll(i => i.categorie_id != id_categorie);
             }
             //Templates filter
             if (id_template != "-1")
             {
-                foreach (var process in tempProcesses)
-                {
-                    if (process.template_id != id_template)
-                    {
-                        tempProcesses.Remove(process);
-                    }
-                }
+                tempProcesses.RemoveAll(i => i.template_id != id_template);
             }
-            //Task State filter
-            /*
-            if (id_taskState != "-1")
+            //State filter
+            if(id_taskState != "-1")
             {
-                foreach (var process in tempProcesses)
-                {
-                    if (process.state_id != id_categorie)
-                    {
-                        tempProcesses.Remove(process);
-                    }
-                }
+                tempProcesses.RemoveAll(i => i.state_id != id_taskState);
             }
-            */
-
             return PartialView("/Views/Processes/_Index/_ProcessList.cshtml", model);
         }
         [HttpGet]

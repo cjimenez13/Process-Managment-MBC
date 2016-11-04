@@ -1,5 +1,4 @@
 -------------------------------------------- Tasks --------------------------------------------------
-exec usp_get_processes
 -- drop procedure usp_get_userTasks
 create procedure usp_get_userTasks
 @user_id int as 
@@ -204,7 +203,6 @@ begin
 set transaction isolation level snapshot
 begin transaction
 	declare @event_log_id int, @table int
-
 	declare cursor_users cursor
 	for select gu.[user_id] from Group_Users gu where gu.group_id = @group_id 
 	declare @user_id nvarchar(30);

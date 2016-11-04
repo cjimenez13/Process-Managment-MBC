@@ -156,9 +156,6 @@ end catch
 end
 go
 
---select * from ProcessManagment where isProcess  = 1
---select * from Task order by stage_id
--- select * from QuestionResponse
 create procedure usp_update_taskTimes
 @processManagment_id int as
 begin 
@@ -231,3 +228,9 @@ begin transaction
 commit transaction 
 end 
 go
+
+
+create procedure usp_get_processesStates as
+begin 
+	select ps.id_processState, ps.state_color, ps.state_name from ProcessState ps 
+end

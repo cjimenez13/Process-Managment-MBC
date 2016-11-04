@@ -1,0 +1,46 @@
+﻿@model Model.ScriptResultTable
+<div class="modal fade" id=modal_scriptResult tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Resultado de la consulta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-scrollable" style="overflow:scroll; height:700px" >
+                            <table class="table table-hover" id="table-scriptResult">
+                                <!-- column titles -->
+                                <thead class="">
+                                    <tr>
+                                        @foreach(var row in Model.dictionaryRows[0])
+                                        {
+                                            <th>@row.Key</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data-->
+                                    <!--Spaces for add new row -->
+                                    @foreach (var row in Model.dictionaryRows)
+                                    {
+                                        <tr>
+                                            @foreach (var value in row)
+                                            {
+                                                <td>@value.Value</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
