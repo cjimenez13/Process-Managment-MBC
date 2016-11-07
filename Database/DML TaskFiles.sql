@@ -197,3 +197,12 @@ commit transaction
 end
 go
 
+
+create procedure usp_get_internNotifications
+@user_id int as 
+begin 
+	select nu.[user_id], nu.notification_id, nt.[type_id], n.[message], n.isStarting
+	from Notifications_Users nu inner join Notifications_Types nt on nt.notification_id = nu.notification_id inner join Notifications n on n.id_notification = nu.notification_id
+	where nu.[user_id] = 75
+	--select * from Notifications_Types
+end

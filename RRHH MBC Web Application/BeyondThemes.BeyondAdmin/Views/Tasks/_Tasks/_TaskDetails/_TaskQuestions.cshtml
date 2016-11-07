@@ -1,4 +1,11 @@
 ﻿@model Model.FormQuestionsModel
+@{ 
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 @foreach (var iQuestion in Model.formQuestions)
 {
     string id_form = "questionForm" + iQuestion.id_taskQuestion;
@@ -28,10 +35,17 @@
     _AttributesSelect = new SelectList(_AttributeListSelectList, "Value", "Text", attribute_id);
     <tr id="@question_id">
         <td style="font-size:16px; width:3%">
-            <span class="handle-form">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-            </span>
+            @if (Model.taskDTO.taskState_id == "0")
+            {
+                <span class="handle-form">
+                    <i class="fa fa-ellipsis-v"></i>
+                    <i class="fa fa-ellipsis-v"></i>
+                </span>
+            }
+            else
+            {
+                <span class="no-handle-form"></span>
+            }
         </td>
         <td>
             @using (Ajax.BeginForm("_EditFormQuestion", "Tasks", new AjaxOptions { HttpMethod = "PUT", OnSuccess = "QuestionEditedSuccess", OnFailure = "QuestionEditedFailure" }, new { id = @id_form }))
@@ -63,13 +77,13 @@
             </div>
         </td>
         <td>
-            <button class="btn btn-sky btn-sm" type="button"><span class="fa fa-cog"></span></button>
+            <button class="btn btn-sky btn-sm" type="button" @isDisabled><span class="fa fa-cog"></span></button>
         </td>
         <td style="width:12%">
-            <button class="btn btn-sky btn-sm" style="margin-right:10px" data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" form="@id_form">
+            <button class="btn btn-sky btn-sm" style="margin-right:10px" data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" form="@id_form" @isDisabled>
                 <span class="glyphicon glyphicon-floppy-saved"></span>
             </button>
-            <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteFormTask('@id_taskQuestion',this)">
+            <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteFormTask('@id_taskQuestion',this)" @isDisabled>
                 <span class="glyphicon glyphicon-minus"></span>
             </a>
         </td>

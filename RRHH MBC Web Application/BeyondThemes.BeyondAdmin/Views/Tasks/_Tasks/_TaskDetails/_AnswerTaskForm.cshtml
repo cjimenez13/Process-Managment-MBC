@@ -1,6 +1,6 @@
 ﻿@model Model.TaskDetailsModel
 @{ 
-    DataTransferObjects.TaskFormDTO form = Model.taskProvider.getTaskForm(Model.task.id_task).Result;
+    DataTransferObjects.TaskFormDTO form = Model.taskProvider.getTaskFormbyTask(Model.task.id_task).Result;
     List<DataTransferObjects.TaskQuestionDTO> questions = Model.taskProvider.getFormQuestions(form.id_taskForm).Result;
 }
 <div class="modal fade" id="modal_answerTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

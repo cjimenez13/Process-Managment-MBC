@@ -1,18 +1,43 @@
 ﻿@model Model.TasksModel
 @{
     Layout = "~/Views/Shared/_Default.cshtml";
+    ViewBag.Title = "Etapa " + Model.stage.name;
 }
 @{ Html.RenderPartial("/Views/Tasks/_Tasks/_AddTask.cshtml", new Model.AddTaskModel(Model.stage.id_stage, Model.maxTaskPosition));}
 <div class="row">
     <div class="col-md-4 col-sm-12 col-xs-12" id="taskListDivAll">
-        <div class="widget radius-bordered ">
-            <div class="widget-header bordered-bottom bordered-sky">
-                <span class="widget-caption">Tareas @Html.Raw(Model.stage.name)</span>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="widget radius-bordered ">
+                    <div class="widget-header bordered-bottom bordered-sky">
+                        <span class="widget-caption">Información Etapa</span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row" style="font-size:14px; margin-top:25px; margin-bottom:10px">
+                            <div class="col-md-12">
+                                <dl class="dl-horizontal">
+                                    <dt style="text-align:left">Etapa</dt><dd>@Html.Raw(Model.stage.name)</dd>
+                                    <dt style="text-align:left"># Gestión</dt><dd><a href="/Processes/Process/@Html.Raw(Model.stage.processManagment_id)">#@Html.Raw(Model.stage.processManagment_id)</a></dd>
+                                    <dt style="text-align:left">Cantidad de tareas</dt><dd>@Html.Raw(Model.tasks.Count) </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="widget-body">
-                <div class="row" id="taskListDiv">
-                    @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TasksList.cshtml", Model);}
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="widget radius-bordered ">
+                    <div class="widget-header bordered-bottom bordered-sky">
+                        <span class="widget-caption">Lista de tareas</span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row" id="taskListDiv">
+                            @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TasksList.cshtml", Model);}
 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

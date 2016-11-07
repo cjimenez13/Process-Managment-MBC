@@ -164,5 +164,12 @@ namespace Web_Service_API.Controllers
             return UsersData.getUserCategories(user_id);
         }
 
+        [Route("activity")]
+        [HttpGet]
+        public List<UserActivityDTO> userActivity(string user_id)
+        {
+            return UsersData.getUserActivity(user_id);
+        }
+
     }
 }

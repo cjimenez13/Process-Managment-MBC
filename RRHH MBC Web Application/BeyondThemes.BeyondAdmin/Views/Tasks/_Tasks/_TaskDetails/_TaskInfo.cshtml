@@ -12,10 +12,10 @@
         daysName = " día ";
     }
     string duration = Model.task.daysAvailable + daysName + Model.task.hoursAvailable + hoursName;
-}+
+}
 <div class="widget radius-bordered">
     <div class="widget-header  bordered-bottom bordered-sky">
-        <span class="widget-caption">Información General</span>
+        <span class="widget-caption">Información Tarea</span>
         <div class="widget-buttons">
             <button class="btn btn-sky btn-sm" data-toggle="modal" data-target="#modal_editTask" type="button">Editar</button>
         </div>
@@ -40,10 +40,10 @@
                     </div>
                     <div class="col-md-6">
                         <dl class="dl-horizontal">
-                            <dt>Creado</dt><dd>@Html.Raw(Model.task.createdDate)</dd>
-                            <dt>Fecha de inicio</dt><dd>@Html.Raw(Model.task.beginDate == null || Model.task.beginDate == "" ? "-" : Model.task.beginDate)</dd>
-                            <dt>Finaliza</dt><dd>@Html.Raw(Model.task.finishDate == null || Model.task.finishDate == "" ? "-" : Model.task.finishDate)</dd>
-                            <dt>Completado</dt><dd>@Html.Raw(Model.task.completedDate == null || Model.task.completedDate == "" ? "-" : Model.task.completedDate)</dd>
+                            <dt>Fecha de creación</dt><dd>@Html.Raw(Model.task.createdDate)</dd>
+                            <dt>Fecha a iniciar</dt><dd>@Html.Raw(Model.task.beginDate == null || Model.task.beginDate == "" ? "-" : Model.task.beginDate)</dd>
+                            <dt>Fecha a finalizar</dt><dd>@Html.Raw(Model.task.finishDate == null || Model.task.finishDate == "" ? "-" : Model.task.finishDate)</dd>
+                            <dt>Fecha completado</dt><dd>@Html.Raw(Model.task.completedDate == null || Model.task.completedDate == "" ? "-" : Model.task.completedDate)</dd>
                         </dl>
                     </div>
                 </div>

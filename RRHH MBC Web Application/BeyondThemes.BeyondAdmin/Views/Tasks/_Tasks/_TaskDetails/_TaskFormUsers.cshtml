@@ -1,5 +1,11 @@
 ﻿@model Model.AddFormUsersModel
-
+@{ 
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 <h2>Dirigo a</h2>
 <div class="row" style="margin-top:30px">
     <!-- search bar -->
@@ -19,7 +25,7 @@
                 @Html.ValidationMessageFor(model => model.selected_userForm_id, "", new { @class = "text-danger" })
             </div>
             <div class="col-xs-1">
-                <button class="btn btn-success" style="float:right" ><i class="fa fa-user-plus"></i></button>
+                <button class="btn btn-success" style="float:right" @isDisabled><i class="fa fa-user-plus"></i></button>
             </div>
         }
     </div>
@@ -27,7 +33,7 @@
 <div class="row" style="margin-top:40px;">
     <div class="col-xs-12">
         <div class="row" id="formUsersList">
-            @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsersList.cshtml", Model.formUsersModel);}
+            @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsersList.cshtml", Model);}
         </div>
     </div>
 </div>

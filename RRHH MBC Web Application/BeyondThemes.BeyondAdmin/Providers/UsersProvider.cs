@@ -179,6 +179,23 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return userCategories;
             }
         }
+        public async Task<List<UserActivityDTO>> getUserActivity(string user_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<UserActivityDTO> userCategories = new List<UserActivityDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/users/activity/?user_id=" + user_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    userCategories = new JavaScriptSerializer().Deserialize<List<UserActivityDTO>>(result);
+                }
+                return userCategories;
+            }
+        }
         //-------------------------------------- Posts -----------------------------------------------
         public async Task<bool> postUser(UserDTO userDTO)
         {

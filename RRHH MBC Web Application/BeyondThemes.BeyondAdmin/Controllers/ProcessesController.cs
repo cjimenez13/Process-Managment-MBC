@@ -88,9 +88,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 processDTO.userLog = Request.Cookies["user_id"].Value;
                 if (processProvider.postProcess(processDTO).Result != "-1")
                 {
-                    //return _ProcessList("-1","-1","-1");
-                    return new HttpStatusCodeResult(200);
-
+                    return _ProcessList();
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");
@@ -118,6 +116,20 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     {
                         return new HttpStatusCodeResult(200);
                     }
+                }
+            }
+            return new HttpStatusCodeResult(404, "Can't find that");
+        }
+        [HttpPut]
+        [AllowAnonymous]
+        public ActionResult _RefreshStageTimes(string id_stage)
+        {
+            if (ModelState.IsValid)
+            {
+                StageDTO stage = new ProcessManagmentProvider().getStage(id_stage).Result;
+                if (new TaskProvider().putRefreshTaskTimes(stage.processManagment_id).Result)
+                {
+                    return new HttpStatusCodeResult(200);
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");

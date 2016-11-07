@@ -1,6 +1,11 @@
 ﻿@model Model.TaskChangesModel
 @{ 
     string idForm = "form-addTaskChange";
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
 }
 <h2>Cambios a realizar</h2>
 <div class="row">
@@ -65,7 +70,7 @@
                             @Html.TextBoxFor(model => model.valueA, new { @class="form-control", @form= @idForm})
                         </td>
                         <td>
-                            <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Agregar" , form=@idForm>
+                            <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Agregar" , form=@idForm @isDisabled>
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </td>

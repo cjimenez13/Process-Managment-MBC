@@ -123,6 +123,7 @@ go
 create procedure usp_update_stage 
 @id_stage bigint, @name nvarchar(100) = null, @stagePosition int = null, @isCompleted bit = null, @completedDate date = null, @startDate date = null, @userLog int as
 begin
+set transaction isolation level snapshot
 begin transaction 
 	declare @event_log_id int, @table int
 	update Stage set name = ISNULL(@name, name),

@@ -24,20 +24,29 @@
         }
         string id_taskName = "taskName" + task.id_task;
         <li id="@task.id_task" style="background-color:@backgroundColor " >
+            @if (task.taskState_id == "0")
+            {
             <span class="handle">
                 <i class="fa fa-ellipsis-v"></i>
                 <i class="fa fa-ellipsis-v"></i>
             </span>
-            <input type="checkbox" value="">
+            }
+            else
+            {
+                <span class="no-handle"></span>
+            }
             <span class="text" id="@id_taskName">@Html.Raw(task.name)</span>
             <small class="label label-default"><i class="fa fa-clock-o"></i> @Html.Raw(task.daysAvailable) dias y @Html.Raw(task.hoursAvailable) horas</small>
             <div class="tools" style="display:inline-block">
                 <a onclick="showTaskDetails('@task.id_task')">
                     <i class="fa fa-eye"></i>
                 </a>
-                <a onclick="deleteTask('@task.id_task', '@task.name', this)">
-                    <i class="fa fa-trash-o"></i>
-                </a>
+                @if (task.taskState_id == "0")
+                {
+                    <a onclick="deleteTask('@task.id_task', '@task.name', this)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                }
             </div>
         </li>
         }

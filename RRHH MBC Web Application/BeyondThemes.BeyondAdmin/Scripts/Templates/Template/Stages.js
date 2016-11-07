@@ -95,6 +95,7 @@ function deleteStage(id_stage, name, element) {
 function enableStagesSorting() {
     // update position when sorting
     $(".todo-list").sortable({
+        items: "> li:not(:has(>.no-handle))",
         placeholder: "sort-highlight",
         handle: ".handle",
         forcePlaceholderSize: true,
@@ -102,8 +103,10 @@ function enableStagesSorting() {
         update: function (event, ui) {
             var newpos = ui.item.index();
             var count = 0;
+            var lastStage_id 
             ui.item.parent().children().each(function () {
                 var id = this.id
+                lastStage_id = id;
                 var name = $(this).find('#stageName' + id).text();
                 var newPos = count;
                 $.ajax({
@@ -119,9 +122,15 @@ function enableStagesSorting() {
                 });
                 count += 1;
             });
+            $.ajax({
+                url: "/Processes/_RefreshStageTimes/?id_stage=" + lastStage_id,
+                type: "PUT",
+                dataType: "html",
+                traditional: true,
+                contentType: false,
+            });
         }
     });
-    $(".todo-list").disableSelection();
 
     //$(".todo-list").children().filter(function () {
     //    var completedStages = "#d0e9c6"

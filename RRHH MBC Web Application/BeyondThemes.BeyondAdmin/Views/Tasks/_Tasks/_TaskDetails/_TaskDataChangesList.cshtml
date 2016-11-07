@@ -1,5 +1,11 @@
 ﻿@model Model.TaskChangesModel
-
+@{
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 @foreach (var taskChange in Model.taskChanges)
 {
     string idForm = "form-editTaskChange"+taskChange.id_taskChange;
@@ -58,10 +64,10 @@
         @Html.TextBox("value",taskChange.value, new { @class = "form-control", @form = @idForm })
     </td>
     <td style="width:12%">
-        <button class="btn btn-sky btn-sm" style="margin-right:10px" data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" form="@idForm">
+        <button class="btn btn-sky btn-sm" style="margin-right:10px" data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" form="@idForm" @isDisabled>
             <span class="glyphicon glyphicon-floppy-saved"></span>
         </button>
-        <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteTaskChange('@taskChange.id_taskChange',this)">
+        <a class="btn btn-danger btn-sm btn-remove" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="deleteTaskChange('@taskChange.id_taskChange',this)" @isDisabled>
             <span class="glyphicon glyphicon-minus"></span>
         </a>
     </td>

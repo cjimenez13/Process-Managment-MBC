@@ -69,4 +69,17 @@
         }
         public CantonDTO() { }
     }
+    public class UserActivityDTO
+    {
+        public string user_id { get; set; }
+        public string task_id { get; set; }
+        public string isConfirmed { get; set; }
+        public string confirm_date { get; set; }
+        public string task_name { get; set; }
+        public string stage_name { get; set; }
+        public string stage_id { get; set; }
+        public string process_id { get; set; }
+        public string process_name { get; set; }
+        public string isConfirmation { get; set; }
+    }
 }

@@ -58,42 +58,49 @@ namespace BeyondThemes.BeyondAdmin.Tools
             int lastUpdate_id = 0;
             while (true)
             {
-                var messages = await getMessages();
-                foreach (var message in messages.result)
+                try
                 {
-                    if (Int32.Parse(message.update_id) > lastUpdate_id)
+                    var messages = await getMessages();
+                    foreach (var message in messages.result)
                     {
-                        lastUpdate_id = Int32.Parse(message.update_id);
-                        if (message.message.text.StartsWith("/subscribe"))
+                        if (Int32.Parse(message.update_id) > lastUpdate_id)
                         {
-                            string[] words = message.message.text.Split(' ');
-                            if(words.Length == 3)
+                            lastUpdate_id = Int32.Parse(message.update_id);
+                            if (message.message.text.StartsWith("/subscribe"))
                             {
-                                string user = words[1];
-                                string password = words[2];
-                                UsersProvider userProvider = new UsersProvider();
-                                UserDTO userDTO = userProvider.getUser(user).Result;
-                                if (!String.IsNullOrEmpty(userDTO.user_id) && userDTO.password == password)
+                                string[] words = message.message.text.Split(' ');
+                                if(words.Length == 3)
                                 {
-                                    if (String.IsNullOrEmpty(userDTO.telegram_id))
+                                    string user = words[1];
+                                    string password = words[2];
+                                    UsersProvider userProvider = new UsersProvider();
+                                    UserDTO userDTO = userProvider.getUser(user).Result;
+                                    if (!String.IsNullOrEmpty(userDTO.user_id) && userDTO.password == password)
                                     {
-                                        userDTO.telegram_id = message.message.from.id;
-                                        userDTO.telegram_user = message.message.from.username;
-                                        if (userProvider.putUser(userDTO).Result)
+                                        if (String.IsNullOrEmpty(userDTO.telegram_id))
                                         {
-                                            await sendMessage(message.message.from.id, "El usuario telegram " + userDTO.telegram_user + " se ha asignado correctamente a la cuenta de " + userDTO.name + " " + userDTO.fLastName + " " + userDTO.sLastName);
+                                            userDTO.telegram_id = message.message.from.id;
+                                            userDTO.telegram_user = message.message.from.username;
+                                            if (userProvider.putUser(userDTO).Result)
+                                            {
+                                                await sendMessage(message.message.from.id, "El usuario telegram " + userDTO.telegram_user + " se ha asignado correctamente a la cuenta de " + userDTO.name + " " + userDTO.fLastName + " " + userDTO.sLastName);
+                                            }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    await sendMessage(message.message.from.id, "El usuario o la contraseña son incorrectos");
+                                    else
+                                    {
+                                        await sendMessage(message.message.from.id, "El usuario o la contraseña son incorrectos");
+                                    }
                                 }
                             }
                         }
                     }
+                    await Task.Delay(10000);
                 }
-                await Task.Delay(10000);
+                catch(Exception e)
+                {
+
+                }
             }
         }
     }

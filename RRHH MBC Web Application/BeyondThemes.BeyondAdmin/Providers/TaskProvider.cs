@@ -201,7 +201,24 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 return questions;
             }
         }
-        public async Task<TaskFormDTO> getTaskForm(string id_task)
+        public async Task<TaskFormDTO> getTaskForm(string id_taskForm)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                TaskFormDTO form = new TaskFormDTO();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync("api/tasks/forms?id_taskForm=" + id_taskForm).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    form = new JavaScriptSerializer().Deserialize<TaskFormDTO>(result);
+                }
+                return form;
+            }
+        }
+        public async Task<TaskFormDTO> getTaskFormbyTask(string id_task)
         {
             using (var client = new HttpClient())
             {
@@ -473,6 +490,8 @@ namespace BeyondThemes.BeyondAdmin.Providers
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 var serializer = new JavaScriptSerializer();
+                //taskFileDTO.fileBase64 = Convert.ToBase64String(taskFileDTO.fileData);
+                //taskFileDTO.fileData = null;
                 serializer.MaxJsonLength = Int32.MaxValue;
                 var userJson = serializer.Serialize(taskFileDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
@@ -509,6 +528,21 @@ namespace BeyondThemes.BeyondAdmin.Providers
             }
         }
         //-------------------------------------- Puts --------------------------------------------------
+        public async Task<bool> putRefreshTaskTimes(string processManagment_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                var userJson = new JavaScriptSerializer().Serialize(processManagment_id);
+                HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync("api/tasks/refreshTimes/?processManagment_id="+ processManagment_id, contentPost).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<bool> putTask(TaskDTO taskDTO)
         {
             using (var client = new HttpClient())

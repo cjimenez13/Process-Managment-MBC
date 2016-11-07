@@ -84,6 +84,17 @@ namespace Model
             imageURL = "data:Image/png;base64," + user.photoBase64;
         }
     }
+    public class UserActivityModel
+    {
+        public UserDTO user;
+        private UsersProvider userProvider = new UsersProvider();
+        public List<UserActivityDTO> userActivity;
+        public UserActivityModel(UserDTO pUserDTO)
+        {
+            user = pUserDTO;
+            userActivity = userProvider.getUserActivity(pUserDTO.user_id).Result;
+        }
+    }
     public class UserRolesModel
     {
         private UsersProvider userProvider = new UsersProvider();

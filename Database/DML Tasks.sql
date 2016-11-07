@@ -185,8 +185,8 @@ begin
 set transaction isolation level snapshot
 begin transaction
 	declare @event_log_id int, @table int
-	insert into Task_Targets ([user_id], task_id, isConfirmed)
-	values (@user_id, @task_id, 0);
+	insert into Task_Targets ([user_id], task_id, isConfirmed, confirm_date)
+	values (@user_id, @task_id, 0, GETDATE());
 
 	set @table = (select objectLog_id from ObjectLog ol where ol.name = 'Task_Targets')
 	exec @event_log_id = usp_insert_EventLog @description = 'inserted responsable', 
@@ -378,7 +378,17 @@ begin
 end
 go
 ------- //Form
+--drop procedure usp_getTaskForm
 create procedure usp_getTaskForm
+@id_taskForm bigint as
+begin
+	select tf.id_taskForm, tf.[description], tf.task_id
+	from TaskForm tf 
+	where tf.id_taskForm = @id_taskForm
+end
+go
+
+create procedure usp_getTaskFormbyTask
 @id_task bigint as
 begin
 	select tf.id_taskForm, tf.[description], tf.task_id

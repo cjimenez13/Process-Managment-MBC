@@ -1,10 +1,17 @@
 ﻿@model Model.TaskNotificationsModel
+@{ 
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 <div class="row" style="margin-bottom:20px;">
     <div class="col-xs-9">
         <h2>Notificaciones</h2>
     </div>
     <div class="col-xs-3">
-        <button class="btn btn-success pull-right" style="margin-top:15px" data-toggle="modal" data-target="#modal_addTaskNotification">
+        <button class="btn btn-success pull-right" style="margin-top:15px" data-toggle="modal" data-target="#modal_addTaskNotification" @isDisabled>
             <span class="visible-xs"><i class="fa fa-plus"></i></span>
             <span class="hidden-xs">Agregar notificación</span>
         </button>
@@ -35,4 +42,8 @@
         </div>
     </div>
 </div>
-@{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_AddTaskNotification.cshtml", new Model.AddTaskNotificationModel(Model.taskDTO.id_task));}
+@if (Model.taskDTO.taskState_id =="0")
+{
+    { Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_AddTaskNotification.cshtml", new Model.AddTaskNotificationModel(Model.taskDTO.id_task));}
+}
+

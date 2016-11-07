@@ -1,4 +1,11 @@
 ﻿@model Model.TaskFilesModel
+@{ 
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 @foreach (var file in Model.files)
 {
     string imgURL = "data:" + file.fileType + ";base64," + file.fileBase64;
@@ -8,6 +15,6 @@
         <td>@file.description</td>
         <td style="width:7%"><a class="btn btn-sky" href="@imgURL"><i class="fa fa-eye"></i></a></td>
         <td style="width:7%"><a class="btn btn-sky" href="@imgURL" download="@file.fileName"><i class="fa fa-download"></i></a></td>
-        <td style="width:7%"><button class="btn btn-danger" onclick="deleteTaskFile('@file.id_taskFile','@file.name',this)"><i class="fa fa-trash"></i></button></td>
+        <td style="width:7%"><button class="btn btn-danger" onclick="deleteTaskFile('@file.id_taskFile','@file.name',this)" @isDisabled><i class="fa fa-trash"></i></button></td>
     </tr>
 }

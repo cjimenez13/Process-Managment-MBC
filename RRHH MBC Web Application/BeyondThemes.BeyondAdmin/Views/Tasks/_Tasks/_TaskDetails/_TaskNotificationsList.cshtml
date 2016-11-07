@@ -1,4 +1,11 @@
 ﻿@model Model.TaskNotificationsModel
+@{
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 @foreach (var notification in Model.notifications)
 {
     string id_modal = "#modal_configTaskNotification" + notification.id_notification;
@@ -29,7 +36,7 @@
             @:Correo;
         }
         </td>
-        <td><button class="btn btn-sky" style="margin-left:20%" data-toggle="modal" data-target="@id_modal"><i class="fa fa-cog"></i></button></td>
-        <td><button class="btn btn-danger" onclick="deleteTaskNotification('@notification.id_notification',this)"><i class="fa fa-trash"></i></button></td>
+        <td><button class="btn btn-sky" style="margin-left:20%" data-toggle="modal" data-target="@id_modal" @isDisabled><i class="fa fa-cog"></i></button></td>
+        <td><button class="btn btn-danger" onclick="deleteTaskNotification('@notification.id_notification',this)" @isDisabled><i class="fa fa-trash"></i></button></td>
     </tr>
 }

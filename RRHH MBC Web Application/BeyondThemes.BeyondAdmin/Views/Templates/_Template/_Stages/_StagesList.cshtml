@@ -31,11 +31,18 @@
             }
         }
         <li id="@stage.id_stage" style="background-color:@backgroundColor">
-            <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-            </span>
-            <input type="checkbox" value="">
+            @if (backgroundColor == "#f4f4f4")
+            {
+                <span class="handle">
+                    <i class="fa fa-ellipsis-v"></i>
+                    <i class="fa fa-ellipsis-v"></i>
+                </span>
+            }
+            else
+            {
+                <span class="no-handle"></span>
+            }
+            @*<input type="checkbox" value="">*@
             <span id="@Html.Raw(id_stageName)" class="text">@Html.Raw(stage.name)</span>
             <small class="label label-default"><i class="fa fa-clock-o"></i> 1 día</small>
             <div class="tools" style="display:inline-block">

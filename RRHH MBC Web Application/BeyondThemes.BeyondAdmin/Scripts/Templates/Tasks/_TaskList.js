@@ -30,7 +30,8 @@ function showTaskDetails(id_task) {
             $('.spinbox').spinbox();
             $('.date-picker').datepicker();
             $("#taskForm").sortable({
-                items: "> tr:not(:last-child)",
+                items: "> tr:not(:has(:has(>.no-handle-form)))",
+                //items: "> li:not(:has(>.no-handle))",
                 placeholder: "sort-highlight",
                 handle: ".handle-form",
                 forcePlaceholderSize: true,
@@ -107,6 +108,7 @@ function deleteTask(id_task, name, element) {
 function updateTasksPosition(ui) {
     var newpos
     var count = 0;
+    var lastTask_id
     ui.item.parent().children().each(function () {
         var id = this.id
         var name = $(this).find('#stageName' + id).text();
@@ -123,10 +125,19 @@ function updateTasksPosition(ui) {
             }
         });
         count += 1;
+        lastTask_id = id;
+    });
+    $.ajax({
+        url: "/Tasks/_RefreshTaskTimes/?id_task=" + lastTask_id,
+        type: "PUT",
+        dataType: "html",
+        traditional: true,
+        contentType: false,
     });
 }
 // update position when sorting
 $(".todo-list").sortable({
+    items: "> li:not(:has(>.no-handle))",
     placeholder: "sort-highlight",
     handle: ".handle",
     forcePlaceholderSize: true,

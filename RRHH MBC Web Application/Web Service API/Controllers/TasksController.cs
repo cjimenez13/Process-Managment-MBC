@@ -54,6 +54,17 @@ namespace Web_Service_API.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("refreshTimes")]
+        public IHttpActionResult putTaskResponsable(string processManagment_id)
+        {
+            if (!TaskData.updateTaskTimes(processManagment_id))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
         [HttpGet]
         [Route("taskTypes")]
         public IEnumerable<TaskTypeDTO> getTaskTypes()
@@ -214,9 +225,16 @@ namespace Web_Service_API.Controllers
 
         [HttpGet]
         [Route("forms")]
-        public TaskFormDTO getTaskForm(string id_task)
+        public TaskFormDTO getTaskFormbyTask(string id_task)
         {
-            TaskFormDTO taskForm = TaskFormData.getTaskForm(id_task);
+            TaskFormDTO taskForm = TaskFormData.getTaskFormbyTask(id_task);
+            return taskForm;
+        }
+        [HttpGet]
+        [Route("forms")]
+        public TaskFormDTO getTaskForm(string id_taskForm)
+        {
+            TaskFormDTO taskForm = TaskFormData.getTaskForm(id_taskForm);
             return taskForm;
         }
 

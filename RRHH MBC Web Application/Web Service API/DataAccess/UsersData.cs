@@ -258,6 +258,36 @@ namespace Web_Service_API.DataAccess
             };
             return personaAttributeList;
         }
+        public static List<UserActivityDTO> getUserActivity(string user_id)
+        {
+            List<UserActivityDTO> personaAttributeList = new List<UserActivityDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_userActivity", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = user_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    UserActivityDTO userActivity = new UserActivityDTO();
+                    userActivity.user_id = rdr["user_id"].ToString();
+                    userActivity.task_id = rdr["task_id"].ToString();
+                    userActivity.isConfirmed = rdr["isConfirmed"].ToString();
+                    userActivity.confirm_date = rdr["confirm_date"].ToString();
+                    userActivity.task_name = rdr["task_name"].ToString();
+                    userActivity.stage_name = rdr["stage_name"].ToString();
+                    userActivity.stage_id = rdr["stage_id"].ToString();
+                    userActivity.process_id = rdr["process_id"].ToString();
+                    userActivity.process_name = rdr["process_name"].ToString();
+                    userActivity.isConfirmation = rdr["isConfirmation"].ToString();
+                    personaAttributeList.Add(userActivity);
+                }
+            };
+            return personaAttributeList;
+        }
+
 
         //-------------------------------------------------- Creates -----------------------------------------------------------------
         public static bool createUser(UserDTO pUserDTO)

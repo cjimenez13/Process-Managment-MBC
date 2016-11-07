@@ -10,12 +10,32 @@ namespace Web_Service_API.DataAccess.TaskData
 {
     class TaskFormData
     {
-        public static TaskFormDTO getTaskForm(string id_task)
+        public static TaskFormDTO getTaskForm(string id_taskForm)
         {
             TaskFormDTO taskForm = new TaskFormDTO();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
                 SqlCommand command = new SqlCommand("usp_getTaskForm", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_taskForm", SqlDbType.Int);
+                command.Parameters["@id_taskForm"].Value = id_taskForm;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    taskForm.id_taskForm = rdr["id_taskForm"].ToString();
+                    taskForm.id_task = rdr["task_id"].ToString();
+                    taskForm.description = rdr["description"].ToString();
+                }
+            };
+            return taskForm;
+        }
+        public static TaskFormDTO getTaskFormbyTask(string id_task)
+        {
+            TaskFormDTO taskForm = new TaskFormDTO();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_getTaskFormbyTask", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@id_task", SqlDbType.Int);
                 command.Parameters["@id_task"].Value = id_task;

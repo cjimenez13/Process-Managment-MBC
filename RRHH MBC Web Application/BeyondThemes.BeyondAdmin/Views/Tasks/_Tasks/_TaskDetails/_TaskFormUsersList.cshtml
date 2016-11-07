@@ -1,5 +1,12 @@
-﻿@model Model.FormUsersModel
-@foreach (var user in Model.formUsers)
+﻿@model Model.AddFormUsersModel
+@{ 
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
+@foreach (var user in Model.formUsersModel.formUsers)
 {
     var name = user.name + " " + user.fLastName + " " + user.sLastName;
     string defaultUser = user.email != "" ? user.email : user.userName;
@@ -17,9 +24,12 @@
             </div>
             <div class="databox-right padding-top-0 bg-whitesmoke" style="background-color:@backgroundColor">
                 <div class="row">
-                    <div class="databox-stat danger radius-bordered" onclick="deleteFormUser('@user.user_id','@Model.taskForm_id', '@name',this)" style="cursor:pointer">
-                        <i class="stat-icon fa fa-times danger"></i>
-                    </div>
+                    @if (Model.taskDTO.taskState_id == "0")
+                    {
+                        <div class="databox-stat danger radius-bordered" onclick="deleteFormUser('@user.user_id','@Model.taskForm_id', '@name',this)" style="cursor:pointer">
+                            <i class="stat-icon fa fa-times danger"></i>
+                        </div>
+                    }
                     <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">
                         <div class="col-xs-10" style=" padding-top:10px">
                             <div class="databox-text darkgray truncate-text" style="font-size:14px; ">@name</div>

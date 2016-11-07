@@ -449,7 +449,26 @@ namespace Web_Service_API.DataAccess.TaskData
             };
             return false;
         }
-        
+        public static bool updateTaskTimes(string processManagment_id)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_taskTimes", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@processManagment_id", SqlDbType.Int);
+                command.Parameters["@processManagment_id"].Value = processManagment_id;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
+
         //------------------------------------------------ Deletes ----------------------------------------------------
         public static bool deleteTask(string id_task, string userLog)
         {

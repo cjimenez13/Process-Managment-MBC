@@ -205,9 +205,13 @@ namespace BeyondThemes.BeyondAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
+                StageDTO stage = processManagmentProvider.getStage(id_stage).Result;
                 if (processManagmentProvider.deleteStage(id_stage, Request.Cookies["user_id"].Value).Result)
                 {
-                    return new HttpStatusCodeResult(200);
+                    if (new TaskProvider().putRefreshTaskTimes(stage.processManagment_id).Result)
+                    {
+                        return new HttpStatusCodeResult(200);
+                    }
                 }
             }
             return new HttpStatusCodeResult(404, "Can't find that");

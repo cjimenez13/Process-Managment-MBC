@@ -189,3 +189,18 @@ begin
 	delete from UsersFiles where id_file = @id_file;
 	select @@ROWCOUNT 
 end
+go
+
+create procedure usp_get_userActivity
+@user_id int as 
+begin 
+	select tt.[user_id], tt.task_id, tt.isConfirmed, tt.confirm_date, t.name as task_name,
+	s.name as stage_name, s.id_stage as stage_id, pm.id_processManagment as process_id, pm.name as process_name, 1 as isConfirmation
+	from Task_Targets tt inner join Task t on t.id_task = tt.task_id inner join Stage s on s.id_stage = t.stage_id inner join ProcessManagment pm on pm.id_processManagment = s.processManagment_id
+	where tt.[user_id] = 75 and isConfirmed = 1
+	union
+	select fu.[user_id], t.id_task as task_id, fu.isAnswered as isConfirmed, fu.answered_date as confirmed_date, t.name as task_name, 
+	s.name as stage_name, s.id_stage as stage_id, pm.id_processManagment as process_id, pm.name as process_name, 0 as isConfirmation
+	from Form_Users fu inner join TaskForm tf on tf.id_taskForm = fu.taskForm_id inner join Task t on t.id_task = tf.task_id inner join Stage s on s.id_stage = t.stage_id inner join ProcessManagment pm on pm.id_processManagment = s.processManagment_id
+	where fu.[user_id] = 75 and fu.isAnswered = 1
+end

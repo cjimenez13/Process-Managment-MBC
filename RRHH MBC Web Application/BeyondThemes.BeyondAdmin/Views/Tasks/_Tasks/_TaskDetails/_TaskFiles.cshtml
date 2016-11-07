@@ -1,11 +1,17 @@
 ﻿@model Model.TaskFilesModel
-
+@{ 
+    string isDisabled = "disabled";
+    if (Model.taskDTO.taskState_id == "0")
+    {
+        isDisabled = "";
+    }
+}
 <div class="row" style="margin-bottom:20px;">
     <div class="col-xs-10">
         <h2>Archivos</h2>
     </div>
     <div class="col-xs-2">
-        <button class="btn btn-success" style="float:right; margin-right:5%; margin-top:15px" data-toggle="modal" data-target="#modal_addTaskFile">
+        <button class="btn btn-success" style="float:right; margin-right:5%; margin-top:15px" data-toggle="modal" data-target="#modal_addTaskFile" @isDisabled>
             <span class="visible-xs"><i class="fa fa-plus"></i></span>
             <span class="hidden-xs">Agregar archivo</span>
         </button>

@@ -146,7 +146,7 @@ namespace Model
         public string finishDateE { get; set; }
 
         [Display(Name = "Tiempo")]
-        [RegularExpression("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-9][0-9]$", ErrorMessage = "Formato inválido")]
+        //[RegularExpression("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-9][0-9]$", ErrorMessage = "Formato inválido")]
         [Required(ErrorMessage = "Se debe completar el campo de tiempo")]
         public string finishTimeE { get; set; }
 
@@ -337,7 +337,7 @@ namespace Model
         {
             //-- Get questions
             this.taskDTO = taskDTO;
-            taskForm = taskProvider.getTaskForm(this.taskDTO.id_task).Result;
+            taskForm = taskProvider.getTaskFormbyTask(this.taskDTO.id_task).Result;
             if (taskForm.id_taskForm != null)
             {
                 formQuestions = taskProvider.getFormQuestions(taskForm.id_taskForm).Result;

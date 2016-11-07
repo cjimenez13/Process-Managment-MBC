@@ -55,7 +55,7 @@
                             @{Html.RenderPartial("/Views/Users/_Profile/_ProfileConfig.cshtml", Model); }
                         </div>
                         <div id="activity" class="tab-pane">
-                            @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml"); }
+                            @{Html.RenderPartial("/Views/Users/_Profile/_ProfileActivity.cshtml", new Model.UserActivityModel(Model.user)); }
                         </div>
                     </div>
                 </div>
