@@ -19,6 +19,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<TemplateDTO> templates = new List<TemplateDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/templates/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -38,6 +39,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 TemplateDTO template = new TemplateDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/templates/?id_template=" + id_template).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,6 +58,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<TemplateDTO> templates = new List<TemplateDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/templates/?categorie_id="+ categorie_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -75,6 +78,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(templateDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/templates/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -91,6 +95,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(templateDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/templates/", contentPost).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -107,6 +112,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/templates/?id_template=" + id_template + "&userLog=" + userLog ).Result;
                 if (response.IsSuccessStatusCode)
                 {

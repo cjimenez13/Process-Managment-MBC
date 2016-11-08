@@ -6,6 +6,7 @@ using Web_Service_API.DataAccess;
 namespace Web_Service_API.Controllers
 {
     [RoutePrefix("api/process")]
+    [Authorize]
     public class ProcessController : ApiController
     {
         [HttpGet]

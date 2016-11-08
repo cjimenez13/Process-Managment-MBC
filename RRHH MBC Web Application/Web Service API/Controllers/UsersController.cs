@@ -6,6 +6,7 @@ using DataTransferObjects;
 namespace Web_Service_API.Controllers
 {
     [RoutePrefix("api/Users")]
+    [Authorize]
     public class UsersController : ApiController
     {
         // GET: api/users/provinces

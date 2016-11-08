@@ -19,6 +19,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<ScriptsLogDTO> scripts = new List<ScriptsLogDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/scripts/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -41,6 +42,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 serializer.MaxJsonLength = Int32.MaxValue;
                 var userJson = serializer.Serialize(scriptDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/scripts/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -61,6 +63,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 serializer.MaxJsonLength = Int32.MaxValue;
                 var userJson = serializer.Serialize(scriptDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/scripts/reexecute", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {

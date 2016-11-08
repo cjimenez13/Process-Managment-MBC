@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using System;
-using System.Collections.Generic;
 using DataTransferObjects;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace BeyondThemes.BeyondAdmin.Providers
@@ -26,6 +20,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<ProcessDTO> processes = new List<ProcessDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/process/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -44,6 +39,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<ProcessDTO> processes = new List<ProcessDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/process/?user_id="+user_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -63,6 +59,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 ProcessDTO process = new ProcessDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/process/?id_process=" + id_process).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -75,13 +72,13 @@ namespace BeyondThemes.BeyondAdmin.Providers
         }
         public async Task<List<ProcessStateDTO>> getProcessStates()
         {
-            var user_id = System.Web.HttpContext.Current.Request.Cookies["user_id"].Value;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
                 List<ProcessStateDTO> process = new List<ProcessStateDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/process/states").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -100,6 +97,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(processDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/process/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -116,6 +114,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(processDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/process/", contentPost).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -133,6 +132,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(bifurcateProcessDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/process/bifurcate", contentPost).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -150,6 +150,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/process/?id_process=" + id_process + "&userLog=" + userLog).Result;
                 return response.IsSuccessStatusCode;
             }

@@ -7,6 +7,7 @@ using Web_Service_API.DataAccess.TaskData;
 namespace Web_Service_API.Controllers
 {
     [RoutePrefix("api/tasks")]
+    [Authorize]
     public class TasksController :ApiController
     {
         [HttpGet]

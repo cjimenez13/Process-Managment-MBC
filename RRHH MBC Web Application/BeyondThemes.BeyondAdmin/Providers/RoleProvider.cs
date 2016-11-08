@@ -20,6 +20,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<RoleDTO> roles = new List<RoleDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/roles/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -38,6 +39,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 RoleDTO role = new RoleDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/roles/?id_role="+id_role).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,6 +58,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<ModuleDTO> modules = new List<ModuleDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/roles/modules").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -74,6 +77,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<PermissionDTO> permissions = new List<PermissionDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/roles/role/module_permissions/?id_rol="+id_role+"&id_module="+id_module).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -92,6 +96,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<ElementDTO> elements = new List<ElementDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/roles/role/permission_elements/?id_rolePermission=" + id_rolePermission).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -113,8 +118,8 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(rollDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/roles/", contentPost).Result;
-
                 RoleDTO newRole = new RoleDTO();
                 if (response.IsSuccessStatusCode)
                 {
@@ -133,6 +138,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pElementDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/roles/role/element/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -149,6 +155,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pPermissionDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/roles/role/permission/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -163,6 +170,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/Roles/?id_role="+ roleDTO.id_role).Result;
                 if (response.IsSuccessStatusCode)
                 {

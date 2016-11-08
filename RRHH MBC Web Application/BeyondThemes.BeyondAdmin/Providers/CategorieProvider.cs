@@ -19,6 +19,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<CategorieDTO> categories = new List<CategorieDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -37,6 +38,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 CategorieDTO categorie = new CategorieDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/?id_categorie=" + id_categorie).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,6 +58,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<AttributeTypeDTO> attributeTypes = new List<AttributeTypeDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/AttrTypes/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -75,6 +78,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 AttributeTypeDTO attributeType = new AttributeTypeDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/AttrTypes/?id_type="+ id_type).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -94,6 +98,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<GeneralAttributeDTO> generalAttributes = new List<GeneralAttributeDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/generalAttr/?categorie_id="+ categorie_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -112,6 +117,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 GeneralAttributeDTO generalAttribute = new GeneralAttributeDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/generalAttr/?id_attribute=" + id_attribute).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -130,6 +136,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<PersonalAttributeDTO> personalAttributesDTO = new List<PersonalAttributeDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/personalAttr/?categorie_id=" + categorie_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -148,6 +155,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 PersonalAttributeDTO personalAttributeDTO = new PersonalAttributeDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/personalAttr/?id_attribute=" + id_attribute).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -166,6 +174,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<AttributeListDTO> attributesList = new List<AttributeListDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/attributesList/?id_attribute=" + id_attribute).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -184,6 +193,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 AttributeListDTO attributeList = new AttributeListDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/categories/attributesList/?id_attributeValue=" + id_attributeValue).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -202,6 +212,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pCategorieDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/categories/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -217,6 +228,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pGeneralAttribute);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/categories/generalAttr", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -232,6 +244,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pPersonalAttributeDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/categories/personalAttr", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -247,6 +260,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pAttributeList);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/categories/attributesList", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -263,6 +277,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pCategorieDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/categories/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -278,6 +293,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pGeneralAttributeDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/categories/generalAttr", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -293,6 +309,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pPersonalAttributeDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/categories/personalAttr", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -308,6 +325,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(pAttributeList);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/categories/attributesList", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -322,6 +340,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/categories/?id_categorie=" + pCategorieDTO.id_categorie).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -335,6 +354,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/categories/generalAttr/?id_attribute=" + pGeneralAttributeDTO.id_attribute+"&user="+pGeneralAttributeDTO.user).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -348,6 +368,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/categories/personalAttr/?id_attribute=" + pPersonalAttributeDTO.id_attribute + "&userLog=" + pPersonalAttributeDTO.userLog).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -361,6 +382,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/categories/attributesList/?id_attributeValue=" + pAttributeList.id_attributeValue + "&user=" + pAttributeList.user).Result;
                 if (response.IsSuccessStatusCode)
                 {

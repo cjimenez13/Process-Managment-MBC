@@ -21,6 +21,7 @@ using DataTransferObjects;
 namespace Web_Service_API.Controllers
 {
     [RoutePrefix("api/Account")]
+    [Authorize]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";

@@ -19,6 +19,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<GroupDTO> groups = new List<GroupDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/groups/").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -38,6 +39,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 GroupDTO group = new GroupDTO();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/groups/?id_group="+id_group).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,6 +58,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<UserDTO> groupUsers = new List<UserDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.GetAsync("api/groups/members/?group_id="+ group_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -82,6 +85,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(groupDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/groups/", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -98,6 +102,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 List<GroupUserDTO> groupUsersDTOList = new List<GroupUserDTO>();
                 var userJson = new JavaScriptSerializer().Serialize(groupUserDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PostAsync("api/groups/members", contentPost).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -117,6 +122,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 client.BaseAddress = new Uri(_BaseAddress);
                 var userJson = new JavaScriptSerializer().Serialize(groupDTO);
                 HttpContent contentPost = new StringContent(userJson, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.PutAsync("api/groups/", contentPost).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -133,6 +139,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/groups/?id_group=" + groupDTO.id_group).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -146,6 +153,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
                 HttpResponseMessage response = client.DeleteAsync("api/groups/members/?id_group=" + groupUserDTO.id_group+"&id_user="+groupUserDTO.user_id).Result;
                 if (response.IsSuccessStatusCode)
                 {
