@@ -82,4 +82,18 @@
         public string process_name { get; set; }
         public string isConfirmation { get; set; }
     }
+    public class UserNotificationDTO
+    {
+        public string id_notification { get; set; }
+        public string message { get; set; }
+        public string isStarting { get; set; }
+        public string sended_date { get; set; }
+        public string task_id { get; set; }
+        public string task_name { get; set; }
+        public string stage_id { get; set; }
+        public string stage_name { get; set; }
+        public string process_id { get; set; }
+        public string process_name { get; set; }
+        public string userLog { get; set; }
+    }
 }

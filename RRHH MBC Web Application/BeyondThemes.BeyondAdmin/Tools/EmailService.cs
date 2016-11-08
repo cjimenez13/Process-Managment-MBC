@@ -1,11 +1,12 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace BeyondThemes.BeyondAdmin.Tools
 {
     public class EmailService
     {
-        public static bool sendEmail(string to, string subject, string body)
+        public async static Task<bool> sendEmail(string to, string subject, string body)
         {
             SmtpClient smtpClient = new SmtpClient
             {

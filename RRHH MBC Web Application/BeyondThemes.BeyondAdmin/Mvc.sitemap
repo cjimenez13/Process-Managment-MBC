@@ -5,10 +5,10 @@
   <mvcSiteMapNode title="Gestión de procesos" controller="Processes" action="Index" imageUrl="fa fa-suitcase" description="Lista de procesos">
     <mvcSiteMapNode title="Etapa" controller="Tasks" action="Index" description="Lista de tareas" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"/>
     <mvcSiteMapNode title="Plantillas" controller="Templates" action="Index" imageUrl="fa fa-file-o" description="Lista de plantillas">
-      <mvcSiteMapNode title="Plantilla" controller="Templates" action="Template" description="Plantilla" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id">
+      <mvcSiteMapNode title="Plantilla" controller="Templates" action="Template" description="Plantilla" visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"  >
       </mvcSiteMapNode>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Categorías" controller="Categories" action="Index" imageUrl="fa fa-th-large" description="Lista de categorías">
+    <mvcSiteMapNode title="Categorías" controller="Categories" action="Index" imageUrl="fa fa-th-large" description="Lista de categorías" key="categories">
       <mvcSiteMapNode title="Categoría vacaciones" controller="Categories" action="Categorie" description=" " visibility="SiteMapPathHelper,!*" preservedRouteParameters="id"/>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Consultas" url="/Scripts/Index" imageUrl="fa fa-code" description="Registro de consultas" route="Default"/>

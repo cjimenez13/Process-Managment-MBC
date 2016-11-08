@@ -633,6 +633,41 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult _EditTaskNotification(Model.EditTaskNoficationModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+                TaskProvider taskProvider = new TaskProvider();
+                TaskNotificationDTO taskNotification = new TaskNotificationDTO();
+                taskNotification.id_notification = pModel.id_notification;
+                taskNotification.message = pModel.message;
+                taskNotification.userLog = Request.Cookies["user_id"].Value;
+                taskNotification.isStarting = "False";
+                taskNotification.isTelegram = pModel.isTelegram == "on" ? "True" : "False";
+                taskNotification.isIntern = pModel.isIntern == "on" ? "True" : "False";
+                taskNotification.isEmail = pModel.isEmail == "on" ? "True" : "False";
+                taskNotification.task_id = pModel.id_task;
+                if (taskProvider.putTaskNotification(taskNotification).Result)
+                {
+                    if(taskNotification.isTelegram == "True")
+                    {
+                        
+                    }
+                    if (taskNotification.isIntern == "True")
+                    {
+
+                    }
+                    if (taskNotification.isEmail == "True")
+                    {
+
+                    }
+                    return _TaskNotificationList(taskNotification.task_id);
+                }
+            }
+            return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
+        }
         [HttpDelete]
         public ActionResult _DeleteTaskNotification(string id_taskNotification)
         {
@@ -707,6 +742,10 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     {
                         questionAnswer.responseData = Encoding.UTF8.GetBytes(answers[iQuestion]);
                     }
+                    if (questionAnswer.questionType_id != "4") //string answer
+                    {
+                        questionAnswer.responseData = Encoding.UTF8.GetBytes(answers[iQuestion]);
+                    }
                     if (taskProvider.postQuestionAnswer(questionAnswer).Result)
                     {
                         isFormAnswered = false;
@@ -746,81 +785,132 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     }
                     if (isTaskCompleted)
                     {
-                        // update completed task
-                        TaskDTO completedTask = new TaskDTO();
-                        TaskDTO completedTaskTemporal = taskProvider.getTask(id_task).Result;
-                        completedTask.id_task = id_task;
-                        completedTask.taskState_id = "2";
-                        completedTask.completedDate = DateTime.Now.ToString();
-                        completedTask.taskPosition = completedTaskTemporal.taskPosition;
-                        completedTask.stage_id = completedTaskTemporal.stage_id;
-                        completedTask.userLog = Request.Cookies["user_id"].Value;
-                        bool isSuccess = taskProvider.putTask(completedTask).Result;
-                        //update next task
-                        TaskDTO nextTask = new TaskDTO();
-                        List<TaskDTO> tasks = taskProvider.getTasks(completedTaskTemporal.stage_id).Result;
-                        foreach(var task in tasks)
-                        {
-                            if (Int32.Parse(task.taskPosition) == (Int32.Parse(completedTask.taskPosition))+1)
-                            {
-                                nextTask.id_task = task.id_task;
-                                break;
-                            }
-                        }
-                        //update stage if is final task
-                        if (nextTask.id_task == null)
-                        {
-                            // completes actual stage
-                            ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
-                            StageDTO actualStage = new StageDTO();
-                            actualStage.id_stage = completedTask.stage_id;
-                            actualStage.isCompleted = "True";
-                            actualStage.completedDate = DateTime.Now.ToString();
-                            actualStage.userLog = Request.Cookies["user_id"].Value;
-                            actualStage.processManagment_id = processManagmentProvider.getStage(actualStage.id_stage).Result.processManagment_id;
-                            bool isStageUpdated = processManagmentProvider.putStage(actualStage).Result;
-                            // change state of first task 
-                            List<StageDTO> stages = processManagmentProvider.getStages(actualStage.processManagment_id).Result;
-                            foreach (var stage in stages)
-                            {
-                                if (stage.isCompleted == "False")
-                                {
-                                    List<TaskDTO> stageTasks = taskProvider.getTasks(stage.id_stage).Result;
-                                    if (stageTasks.Count >= 1)
-                                    {
-                                        TaskDTO firstTask = new TaskDTO();
-                                        firstTask.taskState_id = "1";
-                                        firstTask.id_task = stageTasks[0].id_task;
-                                        firstTask.userLog = Request.Cookies["user_id"].Value;
-                                        bool isFirstTaskSuccess = taskProvider.putTask(firstTask).Result;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        StageDTO emtpyStage = new StageDTO();
-                                        emtpyStage.id_stage = stage.id_stage;
-                                        emtpyStage.isCompleted = "True";
-                                        emtpyStage.completedDate = DateTime.Now.ToString();
-                                        emtpyStage.userLog = Request.Cookies["user_id"].Value;
-                                        bool isEmptyStageUpdated = processManagmentProvider.putStage(actualStage).Result;
-                                    }
-
-                                }
-                            }
-
-                        }
-                        //update next task if is not final task
-                        else
-                        {
-                            nextTask.userLog = Request.Cookies["user_id"].Value;
-                            nextTask.taskState_id = "1";
-                            bool isNextSuccess = taskProvider.putTask(nextTask).Result;
-                        }
+                        completeTask(id_task);
                     }
                     return Content(isTaskCompleted ? "True" : id_task);
                 }
             }
             return new HttpStatusCodeResult(404, "Error, no se puede agregar la notificación");
         }
+        private void completeTask(string id_task)
+        {
+            // update completed task
+            TaskDTO completedTask = new TaskDTO();
+            TaskDTO completedTaskTemporal = taskProvider.getTask(id_task).Result;
+            completedTask.id_task = id_task;
+            completedTask.taskState_id = "2";
+            completedTask.completedDate = DateTime.Now.ToString();
+            completedTask.taskPosition = completedTaskTemporal.taskPosition;
+            completedTask.stage_id = completedTaskTemporal.stage_id;
+            completedTask.userLog = Request.Cookies["user_id"].Value;
+            bool isSuccess = taskProvider.putTask(completedTask).Result;
+            ProcessDTO actualProcess = new ProcessProvider().getProcess(new ProcessProvider().getStage(completedTask.stage_id).Result.processManagment_id).Result;
+            //update next task
+            TaskDTO nextTask = new TaskDTO();
+            List<TaskDTO> tasks = taskProvider.getTasks(completedTaskTemporal.stage_id).Result;
+            foreach (var task in tasks)
+            {
+                if (Int32.Parse(task.taskPosition) == (Int32.Parse(completedTask.taskPosition)) + 1)
+                {
+                    nextTask.id_task = task.id_task;
+                    break;
+                }
+            }
+            //update stage if is final task
+            if (nextTask.id_task == null)
+            {
+                // completes actual stage
+                ProcessManagmentProvider processManagmentProvider = new ProcessManagmentProvider();
+                StageDTO actualStage = new StageDTO();
+                actualStage.id_stage = completedTask.stage_id;
+                actualStage.isCompleted = "True";
+                actualStage.completedDate = DateTime.Now.ToString();
+                actualStage.userLog = Request.Cookies["user_id"].Value;
+                actualStage.processManagment_id = processManagmentProvider.getStage(actualStage.id_stage).Result.processManagment_id;
+                bool isStageUpdated = processManagmentProvider.putStage(actualStage).Result;
+                // change state of first task 
+                List<StageDTO> stages = processManagmentProvider.getStages(actualStage.processManagment_id).Result;
+                foreach (var stage in stages)
+                {
+                    if (stage.isCompleted == "False")
+                    {
+                        List<TaskDTO> stageTasks = taskProvider.getTasks(stage.id_stage).Result;
+                        if (stageTasks.Count >= 1)
+                        {
+                            TaskDTO firstTask = new TaskDTO();
+                            firstTask.taskState_id = "1";
+                            firstTask.id_task = stageTasks[0].id_task;
+                            firstTask.userLog = Request.Cookies["user_id"].Value;
+                            bool isFirstTaskSuccess = taskProvider.putTask(firstTask).Result;
+                            break;
+                        }
+                        else
+                        {
+                            StageDTO emtpyStage = new StageDTO();
+                            emtpyStage.id_stage = stage.id_stage;
+                            emtpyStage.isCompleted = "True";
+                            emtpyStage.completedDate = DateTime.Now.ToString();
+                            emtpyStage.userLog = Request.Cookies["user_id"].Value;
+                            bool isEmptyStageUpdated = processManagmentProvider.putStage(actualStage).Result;
+                        }
+
+                    }
+                }
+            }
+            //update next task if is not final task
+            else
+            {
+                nextTask.userLog = Request.Cookies["user_id"].Value;
+                List<TaskResponsableDTO> nextResponsables = taskProvider.getTaskResponsables(nextTask.id_task).Result;
+                if (nextResponsables.Count == 0)
+                {
+                    completeTask(nextTask.id_task);
+                }
+                else
+                {
+                    nextTask.taskState_id = "1";
+                    bool isNextSuccess = taskProvider.putTask(nextTask).Result;
+                }
+            }
+            //send notifications
+            List<TaskNotificationDTO> notifications = taskProvider.getTaskNotifications(id_task).Result;
+            foreach (var notification in notifications)
+            {
+                TaskNotificationTypeDTO taskNotificationType = new TaskNotificationTypeDTO();
+                taskNotificationType.notification_id = notification.id_notification;
+                taskNotificationType.userLog = Request.Cookies["user_id"].Value;
+                taskNotificationType.isSended = "True";
+                List<TaskNotificationUserDTO> notificationUsers = taskProvider.getTaskNotificationUsers(notification.id_notification).Result;
+                string msgHeader = "Gestión #" + actualProcess.id_processManagment + " " + actualProcess.name + ", Tarea " + completedTaskTemporal.name;
+                //email
+                if (notification.isEmail == "True")
+                {
+                    taskNotificationType.type_id = "1";
+                    foreach (var user in notificationUsers)
+                    {
+                        if (!String.IsNullOrEmpty(user.email))
+                            Tools.EmailService.sendEmail(user.email, msgHeader, notification.message);
+                    }
+                }
+                //Telegram 
+                if (notification.isTelegram == "True")
+                {
+                    taskNotificationType.type_id = "2";
+                    foreach (var user in notificationUsers)
+                    {
+                        if (!String.IsNullOrEmpty(user.telegram_id))
+                        {
+                            TelegramService.sendMessage(user.telegram_id, msgHeader + "\nMensaje:" + notification.message);
+                        }
+                    }
+                }
+                if (notification.isIntern == "True")
+                {
+                    taskNotificationType.type_id = "0";
+                }
+                bool isTypeUpdated = taskProvider.putTaskNotificationType(taskNotificationType).Result;
+            }
+        }
     }
+
 }

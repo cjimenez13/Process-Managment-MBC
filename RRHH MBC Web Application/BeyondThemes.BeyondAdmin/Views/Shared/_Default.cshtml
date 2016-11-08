@@ -66,54 +66,7 @@
                     <div class="navbar-account">
                         <ul class="account-area">
                             @{ Html.RenderPartial("/Views/Shared/Notifications/_PendingTasks.cshtml", new Model.UserTasksModel(Request.Cookies["user_id"].Value));}
-                            <li>
-                                <a class="dropdown-toggle" data-toggle="dropdown" title="Help" href="#">
-                                    <i class="icon fa fa-bell"></i>
-                                    <span class="badge">3</span>
-                                </a>
-                                <!--Messages Dropdown-->
-                                <ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages">
-                                    <li>
-                                        <a href="#">
-                                            <img src="~/assets/img/avatars/divyia.jpg" class="message-avatar" alt="Divyia Austin">
-                                            <div class="message">
-                                                <span class="message-sender">
-                                                    Divyia Austin
-                                                </span>
-                                                <span class="message-time">
-                                                    Hace 2 minutos
-                                                </span>
-                                                <span class="message-subject">
-                                                    Here's the recipe for apple pie
-                                                </span>
-                                                <span class="message-body">
-                                                    to identify the sending application when the senders image is shown for the main icon
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="~/assets/img/avatars/adam-jansen.jpg" class="message-avatar" alt="Divyia Austin">
-                                            <div class="message">
-                                                <span class="message-sender">
-                                                    Nicolas
-                                                </span>
-                                                <span class="message-time">
-                                                    Viernes, Setiembre 22
-                                                </span>
-                                                <span class="message-subject">
-                                                    New 4K Cameras
-                                                </span>
-                                                <span class="message-body">
-                                                    The 4K revolution has come over the horizon and is reaching the general populous
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <!--/Messages Dropdown-->
-                            </li>
+                            @{ Html.RenderPartial("/Views/Shared/Notifications/_InternNotifications.cshtml", new Model.UserNotificationsModel(Request.Cookies["user_id"].Value));}
                             @{ Html.RenderPartial("/Views/Shared/Notifications/_Process.cshtml", new Model.UserProcessModel(Request.Cookies["user_id"].Value));}
                         <!-- 
                             <li>
@@ -244,7 +197,18 @@
                 });
             });
         })(jQuery);
-
+        $.ajax({
+            url: "/Users/getElements/",
+            type: "GET",
+            success: function (elements) {
+                for (iElement = 0; iElement != elements.length; iElement++) {
+                    if(elements[iElement.type = "Menu"])
+                    console.log(elements[iElement].name)
+                }
+            },
+            error: function () {
+            }
+        });
     </script>
     <!--Page Related Scripts-->
     @RenderSection("PageScripts", required: false)

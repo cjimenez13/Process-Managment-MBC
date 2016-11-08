@@ -6,7 +6,7 @@
 <div class="modal fade" id="modal_answerTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            @using (Ajax.BeginForm("_AnswerTaskForm", "Tasks", new AjaxOptions { HttpMethod = "POST", OnSuccess = "TaskNotificationAddedSucces", OnFailure = "TaskNotificationAddedFailure" }))
+            @using (Ajax.BeginForm("_AnswerTaskForm", "Tasks", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AnswerAddedSucces", OnFailure = "AnswerAddedFailure" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.Hidden("id_task", Model.task.id_task)
@@ -60,11 +60,11 @@
                                     {
                                         <div class="radio">
                                             <label class="radio-inline">
-                                                <input name="answers" type="radio" checked="checked">
+                                                <input name="answers" type="radio" checked="checked" value="Si">
                                                 <span class="text">Si </span>
                                             </label>
                                             <label class="radio-inline">
-                                                <input name="answers" type="radio" class="inverted">
+                                                <input name="answers" type="radio" class="inverted" value="No">
                                                 <span class="text">No</span>
                                             </label>
                                         </div>

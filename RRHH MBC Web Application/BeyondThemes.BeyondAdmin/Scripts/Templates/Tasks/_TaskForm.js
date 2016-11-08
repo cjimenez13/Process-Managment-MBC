@@ -45,6 +45,12 @@ function TaskQuestionAddedSuccess(data) {
 function TaskQuestionAddedFailure() {
     Notify("Error, no se agregó la pregunta", 'bottom-right', '5000', 'danger', 'fa-edit', true);
 }
+function AnswerAddedSucces(data) {
+    Notify("El formulario ha sido respondido con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+}
+function AnswerAddedFailure() {
+    Notify("Error, no se respondio el formulario", 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
 
 //-- Question edited
 function QuestionEditedSuccess(data) {
@@ -83,6 +89,8 @@ function TaskFormEditedFailure(error) {
 }
 function onQuestionTypeChanged(self) {
     var questionType = self.value;
+    console.log(questionType);
+    console.log("hola")
     if (questionType == "3") {
         $(self).parent().find('select:last-child').show();
     } else {

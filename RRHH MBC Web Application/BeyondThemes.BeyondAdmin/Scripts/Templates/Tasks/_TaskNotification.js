@@ -6,6 +6,18 @@
 function TaskNotificationAddedFailure(content) {
     Notify('Error, la notificación no se puede agregar', 'bottom-right', '5000', 'danger', 'fa-edit', true);
 }
+function TaskNotificationEditedSucces(content) {
+    Notify("La notificación ha sido editada con éxito", 'bottom-right', '5000', 'success', 'fa-edit', true);
+    $('.modal').modal('hide');
+    console.log($('.modal'))
+    setTimeout(function () {
+        $('#table-taskNotifications tbody').html(content);
+        $('.select2').select2()
+    },1000)
+}
+function TaskNotificationEditedFailure(content) {
+    Notify('Error, la notificación no se puede editar', 'bottom-right', '5000', 'danger', 'fa-edit', true);
+}
 function deleteTaskNotification(id_taskNotification, self) {
     var btnColumn = $(self);
     var row = btnColumn.parents("tr").eq(0)

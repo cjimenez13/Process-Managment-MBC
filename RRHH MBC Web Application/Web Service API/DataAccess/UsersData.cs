@@ -288,7 +288,60 @@ namespace Web_Service_API.DataAccess
             return personaAttributeList;
         }
 
-
+        public static List<UserNotificationDTO> getUserNotifications(string user_id)
+        {
+            List<UserNotificationDTO> taskNotifications = new List<UserNotificationDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_internNotifications", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = user_id;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    UserNotificationDTO taskNotification = new UserNotificationDTO();
+                    taskNotification.id_notification = rdr["id_notification"].ToString();
+                    taskNotification.message = rdr["message"].ToString();
+                    taskNotification.task_id = rdr["task_id"].ToString();
+                    taskNotification.isStarting = rdr["isStarting"].ToString();
+                    taskNotification.sended_date = rdr["sended_date"].ToString();
+                    taskNotification.task_id = rdr["task_id"].ToString();
+                    taskNotification.task_name = rdr["task_name"].ToString();
+                    taskNotification.stage_id = rdr["stage_id"].ToString();
+                    taskNotification.stage_name = rdr["stage_name"].ToString();
+                    taskNotification.process_id = rdr["process_id"].ToString();
+                    taskNotification.process_name = rdr["process_name"].ToString();
+                    taskNotifications.Add(taskNotification);
+                }
+            };
+            return taskNotifications;
+        }
+        public static List<ElementDTO> getUserElements(string user_id, string isEnabled)
+        {
+            List<ElementDTO> elements = new List<ElementDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_userElements", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@user_id", SqlDbType.Int);
+                command.Parameters["@user_id"].Value = user_id;
+                command.Parameters.Add("@isEnabled", SqlDbType.Bit);
+                command.Parameters["@isEnabled"].Value = isEnabled;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ElementDTO element = new ElementDTO();
+                    element.id_element = rdr["id_element"].ToString();
+                    element.name = rdr["name"].ToString();
+                    element.type = rdr["type"].ToString();
+                    elements.Add(element);
+                }
+            };
+            return elements;
+        }
         //-------------------------------------------------- Creates -----------------------------------------------------------------
         public static bool createUser(UserDTO pUserDTO)
         {

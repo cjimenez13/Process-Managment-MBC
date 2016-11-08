@@ -144,15 +144,15 @@ namespace Web_Service_API.DataAccess.TaskData
             return formUsers;
         }
 
-        public static List<TaskQuestionAnswerDTO> getQuestionsAnswers(string id_taskQuestion, string user_id)
+        public static List<TaskQuestionAnswerDTO> getQuestionsAnswers(string id_taskForm, string user_id)
         {
             List<TaskQuestionAnswerDTO> questionAnswers = new List<TaskQuestionAnswerDTO>();
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
             {
                 SqlCommand command = new SqlCommand("usp_get_questionAnswers", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add("@id_taskQuestion", SqlDbType.BigInt);
-                command.Parameters["@id_taskQuestion"].Value = id_taskQuestion;
+                command.Parameters.Add("@id_taskForm", SqlDbType.BigInt);
+                command.Parameters["@id_taskForm"].Value = id_taskForm;
                 command.Parameters.Add("@user_id", SqlDbType.Int);
                 command.Parameters["@user_id"].Value = user_id;
                 command.Connection.Open();
@@ -175,9 +175,31 @@ namespace Web_Service_API.DataAccess.TaskData
                     {
                         taskQuestionAnswer.response = Convert.ToBase64String(response);
                     }
-                    //byte[] photo = (byte[])rdr["photoData"];
-                    //taskQuestionAnswer.photoData = Convert.ToBase64String(photo);
                     questionAnswers.Add(taskQuestionAnswer);
+                }
+            };
+            return questionAnswers;
+        }
+        public static List<UserDTO> getusersAnsweredForm(string id_taskForm)
+        {
+            List<UserDTO> questionAnswers = new List<UserDTO>();
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_get_usersAnsweredForm", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id_taskForm", SqlDbType.BigInt);
+                command.Parameters["@id_taskForm"].Value = id_taskForm;
+                command.Connection.Open();
+                SqlDataReader rdr = command.ExecuteReader();
+                while (rdr.Read())
+                {
+                    UserDTO user = new UserDTO();
+                    user.user_id = rdr["user_id"].ToString();
+                    user.name = rdr["name"].ToString();
+                    user.sLastName = rdr["sLastName"].ToString();
+                    user.fLastName = rdr["fLastName"].ToString();
+                    user.email = rdr["email"].ToString();
+                    questionAnswers.Add(user);
                 }
             };
             return questionAnswers;
@@ -293,7 +315,7 @@ namespace Web_Service_API.DataAccess.TaskData
                 command.Parameters["@userLog"].Value = pQuestionAnswer.userLog;
 
                 command.Connection.Open();
-                string result = command.ExecuteScalar().ToString();
+                string result = command.ExecuteNonQuery().ToString();
                 if (result != "0")
                 {
                     return true;

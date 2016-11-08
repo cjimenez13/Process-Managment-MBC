@@ -1,0 +1,39 @@
+﻿@model Model.FormQuestionsModel
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-scrollable">
+            <table class="table table-hover noborder" id="table-questions" style="border:none !important;" cellspacing="0" cellpadding="0">
+                <!-- column titles -->
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha de respuesta</th>
+                        <th>Ver respuesta</th>
+                    </tr>
+                </thead>
+                <tbody id="taskForm">
+                    <!-- Table data-->
+                    @foreach (var user in Model.usersAnswered)
+                    {
+                        string name = user.name + " " + user.fLastName + " " + user.sLastName;
+                        string id_modal = "modal_formAnswers" + user.user_id;
+                        <tr>
+                            <td>@name</td>
+                            <td>@user.email</td>
+                            <td style="width:5%">
+                                <span data-toggle="modal" data-target="#@id_modal">
+                                    <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Ver respuestas">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </td>
+                        </tr>
+                        {Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormAnswer.cshtml", new Model.TaskAnswerModel(Model.taskForm.id_taskForm, user.user_id));}
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -9,6 +9,7 @@ namespace Web_Service_API.DataAccess.TaskData
 {
     public class TaskNotificationsData
     {
+
         public static List<TaskNotificationDTO> getTaskNotifications(string id_task)
         {
             List<TaskNotificationDTO> taskNotifications = new List<TaskNotificationDTO>();
@@ -149,6 +150,34 @@ namespace Web_Service_API.DataAccess.TaskData
             };
             return false;
         }
+        public static bool updateTaskNotificationType(TaskNotificationTypeDTO pTaskNotificationType)
+        {
+            using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("usp_update_taskNotificationType", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@id_notification", SqlDbType.Int);
+                command.Parameters["@id_notification"].Value = pTaskNotificationType.notification_id;
+
+                command.Parameters.Add("@id_notificationType", SqlDbType.Int);
+                command.Parameters["@id_notificationType"].Value = pTaskNotificationType.type_id;
+
+                command.Parameters.Add("@isSended", SqlDbType.Bit);
+                command.Parameters["@isSended"].Value = pTaskNotificationType.isSended;
+
+                command.Parameters.Add("@userLog", SqlDbType.Int);
+                command.Parameters["@userLog"].Value = pTaskNotificationType.userLog;
+
+                command.Connection.Open();
+                string result = command.ExecuteNonQuery().ToString();
+                if (result != "0")
+                {
+                    return true;
+                }
+            };
+            return false;
+        }
         public static bool deleteTaskNotificationType(string id_notification, string id_notificationType, string userLog)
         {
             using (SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["connectionRRHHDatabase"].ConnectionString))
@@ -197,6 +226,7 @@ namespace Web_Service_API.DataAccess.TaskData
                     taskNotificationUser.fLastName = rdr["fLastName"].ToString();
                     taskNotificationUser.userName = rdr["userName"].ToString();
                     taskNotificationUser.email = rdr["email"].ToString();
+                    taskNotificationUser.telegram_id = rdr["telegram_id"].ToString();
                     byte[] photo = (byte[])rdr["photoData"];
                     taskNotificationUser.photoData = Convert.ToBase64String(photo);
                     taskNotificationsUsers.Add(taskNotificationUser);

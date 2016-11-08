@@ -122,6 +122,7 @@ namespace DataTransferObjects
         public string notification_id { get; set; }
         public string type_id { get; set; }
         public string isSended { get; set; }
+        public string sended_date { get; set; }
         public string type_name { get; set; }
         public string userLog { get; set; }
     }
@@ -135,6 +136,7 @@ namespace DataTransferObjects
         public string userName { get; set; }
         public string email { get; set; }
         public string photoData { get; set; }
+        public string telegram_id { get; set; }
         public string userLog { get; set; }
     }
     public class TaskFormUserDTO

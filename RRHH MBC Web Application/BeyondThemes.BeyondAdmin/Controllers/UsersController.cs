@@ -71,16 +71,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             return PartialView("/Views/Users/_Group/GroupsUsersList.cshtml", new Model.GroupModel(id_group));
         }
 
-        //[Authorize]
-        //[HttpGet]
-        //public async System.Threading.Tasks.Task<ActionResult> getTelegramMessages(string id_group)
-        //{
-        //    //await TelegramService.getInstance().listenMessages();
-        //    Thread oThread = new Thread(new ThreadStart(TelegramService.getInstance().listenMessages));
-        //    oThread.Start();
-        //    return new HttpStatusCodeResult(200);
-        //}
-
+        [HttpGet]
         public ActionResult getCantones(string pProvinceID)
         {
             int id;
@@ -88,6 +79,13 @@ namespace BeyondThemes.BeyondAdmin.Controllers
             List<CantonDTO> cantones;
             cantones = userProvider.getCantones(id).Result;
             return Json(cantones, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult getElements()
+        {
+            List<ElementDTO> elements;
+            elements = userProvider.getUserElements(Request.Cookies["user_id"].Value,"False").Result;
+            return Json(elements, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

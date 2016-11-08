@@ -76,15 +76,15 @@ begin transaction
 	declare @event_log_id int, @table int, @id_notification int
 	insert into Notifications ([message], task_id, isStarting) values (@message, @task_id, @isStarting)
 	set @id_notification = (select @@IDENTITY)
-	if @isTelegram = 0
+	if @isTelegram = 1
 	begin
 		insert into Notifications_Types (notification_id, [type_id], isSended) values (@id_notification, 2, 0)
 	end
-	if @isIntern = 0
+	if @isIntern = 1
 	begin
 		insert into Notifications_Types (notification_id, [type_id], isSended) values (@id_notification, 0, 0)
 	end
-	if @isEmail = 0
+	if @isEmail = 1
 	begin
 		insert into Notifications_Types (notification_id, [type_id], isSended) values (@id_notification, 1, 0)
 	end
@@ -145,6 +145,13 @@ commit transaction
 end
 go
 
+create procedure usp_update_taskNotificationType
+@id_notification int, @id_notificationType int, @isSended bit,  @userLog int as 
+begin 
+	update Notifications_Types set isSended = @isSended 
+	where notification_id = @id_notification and [type_id] = @id_notificationType
+end
+
 -- drop procedure usp_delete_taskNotificationType
 create procedure usp_delete_taskNotificationType
 @id_notification int, @id_notificationType int, @userLog int as 
@@ -159,7 +166,7 @@ go
 create procedure usp_get_taskNotificationUser
 @id_notification int as 
 begin
-	select part.notification_id, part.[user_id], u.name, u.sLastName, u.fLastName, u.userName, u.email,
+	select part.notification_id, part.[user_id], u.name, u.sLastName, u.fLastName, u.userName, u.email, u.telegram_id,
 	(select up.photoData from UsersPhotos up where u.id_user = up.[user_id] ) as photoData
 	from (select nu.[user_id], nu.notification_id from Notifications_Users nu where nu.notification_id = @id_notification)part 
 	inner join Users u on part.[user_id] = u.id_user
@@ -197,12 +204,16 @@ commit transaction
 end
 go
 
-
+--select * from Notifications_Types
+--select * from Notifications
+--select * from Notifications_Users
+-- drop procedure usp_get_internNotifications
 create procedure usp_get_internNotifications
 @user_id int as 
 begin 
-	select nu.[user_id], nu.notification_id, nt.[type_id], n.[message], n.isStarting
+	select n.id_notification, n.[message], n.isStarting, nt.sended_date, 
+	t.name as task_name, t.id_task as task_id, s.id_stage as stage_id, s.name as stage_name, pm.id_processManagment as process_id, pm.name as process_name 
 	from Notifications_Users nu inner join Notifications_Types nt on nt.notification_id = nu.notification_id inner join Notifications n on n.id_notification = nu.notification_id
-	where nu.[user_id] = 75
-	--select * from Notifications_Types
+	inner join Task t on t.id_task = n.task_id inner join Stage s on s.id_stage = t.stage_id inner join ProcessManagment pm on pm.id_processManagment = s.processManagment_id
+	where nu.[user_id] = @user_id and nt.[type_id] = 0 and nt.isSended = 1
 end

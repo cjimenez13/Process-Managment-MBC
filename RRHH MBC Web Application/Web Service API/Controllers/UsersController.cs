@@ -172,5 +172,18 @@ namespace Web_Service_API.Controllers
             return UsersData.getUserActivity(user_id);
         }
 
+        [Route("elements")]
+        [HttpGet]
+        public List<ElementDTO> userElements(string user_id, string isEnabled)
+        {
+            return UsersData.getUserElements(user_id, isEnabled);
+        }
+        [Route("notifications")]
+        [HttpGet]
+        public List<UserNotificationDTO> userNotifications(string user_id)
+        {
+            return UsersData.getUserNotifications(user_id);
+        }
+
     }
 }

@@ -193,7 +193,7 @@ namespace BeyondThemes.BeyondAdmin.Providers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_BaseAddress);
-                List<UserActivityDTO> userCategories = new List<UserActivityDTO>();
+                List<UserActivityDTO> userLogActivity = new List<UserActivityDTO>();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
@@ -201,9 +201,45 @@ namespace BeyondThemes.BeyondAdmin.Providers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    userCategories = new JavaScriptSerializer().Deserialize<List<UserActivityDTO>>(result);
+                    userLogActivity = new JavaScriptSerializer().Deserialize<List<UserActivityDTO>>(result);
                 }
-                return userCategories;
+                return userLogActivity;
+            }
+        }
+        public async Task<List<UserNotificationDTO>> getUserNotifications(string user_id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<UserNotificationDTO> userNotifications = new List<UserNotificationDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
+                HttpResponseMessage response = client.GetAsync("api/users/notifications/?user_id=" + user_id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    userNotifications = new JavaScriptSerializer().Deserialize<List<UserNotificationDTO>>(result);
+                }
+                return userNotifications;
+            }
+        }
+        public async Task<List<ElementDTO>> getUserElements(string user_id, string isEnabled)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_BaseAddress);
+                List<ElementDTO> userElements = new List<ElementDTO>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", getToken());
+                HttpResponseMessage response = client.GetAsync("api/users/elements/?user_id=" + user_id + "&isEnabled="+isEnabled).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    userElements = new JavaScriptSerializer().Deserialize<List<ElementDTO>>(result);
+                }
+                return userElements;
             }
         }
         //-------------------------------------- Posts -----------------------------------------------

@@ -588,17 +588,40 @@ commit transaction
 end
 go
  
+--create procedure usp_get_questionAnswers
+--@id_taskQuestion bigint, @user_id int as
+--begin
+--	select fq.question, fq.questionPosition, fq.questionType_id, (select qt.name from QuestionType qt where qt.id_questionType = fq.questionType_id) as questionType_name, 
+--	qr.taskQuestion_id, qr.response, qr.[user_id]
+--	from FormQuestions fq inner join QuestionResponse qr  on qr.taskQuestion_id = fq.id_taskQuestion
+--	where fq.id_taskQuestion = @id_taskQuestion and qr.[user_id] = 75
+--	order by fq.questionPosition
+--end
+--go
+--select * from QuestionResponse
+--select * from FormQuestions
 --drop procedure usp_get_questionAnswers
 create procedure usp_get_questionAnswers
-@id_taskQuestion bigint, @user_id int as
+@id_taskForm bigint, @user_id int as
 begin
 	select fq.question, fq.questionPosition, fq.questionType_id, (select qt.name from QuestionType qt where qt.id_questionType = fq.questionType_id) as questionType_name, 
 	qr.taskQuestion_id, qr.response, qr.[user_id]
-	from FormQuestions fq inner join QuestionResponse qr  on qr.taskQuestion_id = fq.id_taskQuestion
-	where fq.id_taskQuestion = @id_taskQuestion and qr.[user_id] = @user_id
+	from FormQuestions fq inner join QuestionResponse qr  on qr.taskQuestion_id = fq.id_taskQuestion inner join TaskForm tf on tf.id_taskForm = fq.taskForm_id
+	inner join Users u on u.id_user = qr.[user_id]
+	where tf.id_taskForm = @id_taskForm and qr.[user_id] = @user_id
 	order by fq.questionPosition
 end
 go
+create procedure usp_get_usersAnsweredForm 
+@id_taskForm bigint as
+begin 
+	select qr.[user_id], u.name, u.fLastName, u.sLastName, u.email
+	from FormQuestions fq inner join QuestionResponse qr  on qr.taskQuestion_id = fq.id_taskQuestion inner join TaskForm tf on tf.id_taskForm = fq.taskForm_id
+	inner join Users u on u.id_user = qr.[user_id]
+	where tf.id_taskForm = @id_taskForm
+	group by qr.[user_id], u.name, u.fLastName, u.sLastName, u.email
+end
+
 --drop procedure usp_insert_questionAnswer
 create procedure usp_insert_questionAnswer 
 @taskQuestion_id bigint, @user_id int, @response varbinary(MAX), @userLog int as

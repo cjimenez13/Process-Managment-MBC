@@ -208,10 +208,17 @@ namespace Web_Service_API.Controllers
         }
         [HttpGet]
         [Route("questionAnswers")]
-        public IEnumerable<TaskQuestionAnswerDTO> getQuestionAnswers(string id_taskQuestion, string user_id)
+        public IEnumerable<TaskQuestionAnswerDTO> getQuestionAnswers(string id_taskForm, string user_id)
         {
-            List<TaskQuestionAnswerDTO> questionAnswers = TaskFormData.getQuestionsAnswers(id_taskQuestion, user_id);
+            List<TaskQuestionAnswerDTO> questionAnswers = TaskFormData.getQuestionsAnswers(id_taskForm, user_id);
             return questionAnswers;
+        }
+        [HttpGet]
+        [Route("questionAnswersUsers")]
+        public IEnumerable<UserDTO> getQuestionAnswers(string id_taskQuestion)
+        {
+            List<UserDTO> users = TaskFormData.getusersAnsweredForm(id_taskQuestion);
+            return users;
         }
         [HttpPost]
         [Route("questionAnswers")]
@@ -439,6 +446,16 @@ namespace Web_Service_API.Controllers
         public IHttpActionResult postTaskNotificationType(TaskNotificationTypeDTO taskNotificationType)
         {
             if (!TaskNotificationsData.insertTaskNotificationType(taskNotificationType))
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpPut]
+        [Route("notificationTypes")]
+        public IHttpActionResult putTaskNotificationType(TaskNotificationTypeDTO taskNotificationType)
+        {
+            if (!TaskNotificationsData.updateTaskNotificationType(taskNotificationType))
             {
                 return BadRequest();
             }

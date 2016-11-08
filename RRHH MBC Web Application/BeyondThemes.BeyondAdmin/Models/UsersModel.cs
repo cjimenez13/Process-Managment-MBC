@@ -33,6 +33,17 @@ namespace Model
             userCategories = userProvider.getUserCategories(user_id).Result;
         }
     }
+    public class UserNotificationsModel
+    {
+        private UsersProvider userProvider = new UsersProvider();
+        public List<UserNotificationDTO> userNotifications = new List<UserNotificationDTO>();
+        public string user_id;
+        public UserNotificationsModel(string user_id)
+        {
+            this.user_id = user_id;
+            userNotifications = userProvider.getUserNotifications(user_id).Result;
+        }
+    }
     public class UserAttributesModel
     {
         private UsersProvider userProvider = new UsersProvider();

@@ -11,13 +11,14 @@
         <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Añadir Notificación</h4>
+                    <h4 class="modal-title" id="myModalLabel">Editar Notificación</h4>
                 </div>
                 <div class="modal-body">
-                    @using (Ajax.BeginForm("/Tasks/uploadTaskFile", "Tasks", new AjaxOptions { HttpMethod = "POST" }, new { @form = @id_form }))
+                    @using (Ajax.BeginForm("_EditTaskNotification", "Tasks", new AjaxOptions { HttpMethod = "PUT", OnSuccess= "TaskNotificationEditedSucces", OnFailure = "TaskNotificationEditedFailure" }, new { @id = @id_form }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(m => m.id_notification)
+                        @Html.HiddenFor(m => m.id_task)
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -87,7 +88,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-dismiss="modal" form="saveNotificationChanges">Guardar</button>
+                    <button type="submit" class="btn btn-primary" form="@id_form">Guardar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
         </div>

@@ -35,7 +35,7 @@
                         Dirigido a
                     </a>
                 </li>
-                @if (Model.taskDTO.taskState_id != "0")
+                @if (Model.usersAnswered.Count > 0)
                 {
                     <li class="tab-red">
                         <a data-toggle="tab" href="#formAnswers-tab">
@@ -108,10 +108,10 @@
                 <div id="formUsers-tab" class="tab-pane">
                     @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormUsers.cshtml", Model.addFormUsersModel);}
                 </div>
-                @if (Model.taskDTO.taskState_id != "0")
+                @if (Model.usersAnswered.Count > 0)
                 {
                     <div id="formAnswers-tab" class="tab-pane">
-                        @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormAnswers.cshtml", Model);}
+                        @{ Html.RenderPartial("/Views/Tasks/_Tasks/_TaskDetails/_TaskFormAnswerList.cshtml", Model);}
                     </div>
                 }
             </div>

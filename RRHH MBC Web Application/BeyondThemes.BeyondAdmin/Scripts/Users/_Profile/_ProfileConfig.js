@@ -83,7 +83,7 @@ $(document).ready(function () {
     $('#province_id').change(function () {
         var id = $("#province_id").val();
         $.ajax({
-            url: '@Url.Action("getCantones", "Users")',
+            url: '/Users/getCantones',
             type: 'get',
             data: { "pProvinceID": id },
             success: function (json, textStatus) {

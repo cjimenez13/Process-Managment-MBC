@@ -321,6 +321,20 @@ namespace Model
 
         }
     }
+    public class TaskAnswerModel
+    {
+        private TaskProvider taskProvider = new TaskProvider();
+        public List<TaskQuestionAnswerDTO> taskAnswers = new List<TaskQuestionAnswerDTO>();
+        public string id_taskForm;
+        public string user_id;
+        public TaskAnswerModel(string id_taskForm , string user_id)
+        {
+            this.user_id = user_id;
+            this.id_taskForm = id_taskForm;
+            taskAnswers = taskProvider.getQuestionAnswers(id_taskForm, user_id).Result;
+        }
+
+    }
     public class FormQuestionsModel
     {
         private TaskProvider taskProvider = new TaskProvider();
@@ -329,6 +343,8 @@ namespace Model
         public TaskFormDTO taskForm = new TaskFormDTO();
         public AddFormUsersModel addFormUsersModel;
         public List<TaskQuestionDTO> formQuestions = new List<TaskQuestionDTO>();
+        //public List<TaskQuestionAnswerDTO> taskAnswers = new List<TaskQuestionAnswerDTO>();
+        public List<UserDTO> usersAnswered = new List<UserDTO>();
         public SelectList _QuestionTypesSelect { get; set; }
         public SelectList _AttributesSelect { get; set; }
         public TaskDTO taskDTO;
@@ -356,6 +372,7 @@ namespace Model
                 }
             }
             addFormUsersModel = new AddFormUsersModel(taskDTO, taskForm);
+            usersAnswered = taskProvider.getQuestionAnswersUsers(taskForm.id_taskForm).Result;
         }
         private SelectList generateQuestionTypesSelect()
         {
@@ -516,6 +533,7 @@ namespace Model
         public List<ParticipantDTO> userList = new List<ParticipantDTO>();
         public SelectList _ParticipantsSelect { get; set; }
         public TaskDTO taskDTO;
+        public EditTaskNoficationModel() { }
         public EditTaskNoficationModel(TaskNotificationDTO taskNoficationDTO, TaskDTO pTaskDTO)
         {
             taskDTO = pTaskDTO;
@@ -525,6 +543,7 @@ namespace Model
             this.isTelegram = taskNoficationDTO.isTelegram;
             this.isIntern = taskNoficationDTO.isIntern;
             this.isEmail = taskNoficationDTO.isEmail;
+            this.id_task = taskNoficationDTO.task_id;
             userList = taskProvider.getTaskParticipants(taskDTO.id_task).Result;
             List<SelectListItem> usersSelectList = new List<SelectListItem>();
             foreach (ParticipantDTO iUser in userList)
@@ -545,6 +564,8 @@ namespace Model
         public string isTelegram { get; set; }
         public string isIntern { get; set; }
         public string isEmail { get; set; }
+        public string id_task { get; set; }
+
     }
     public class TaskNotificationsUserModel
     {

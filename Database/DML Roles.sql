@@ -194,10 +194,10 @@ go
 create procedure usp_get_userElements
 @user_id int, @isEnabled int as
 begin 
-	select distinct rpe.element_id, e.name, (select type from ElementTypes et where et.id_elementType = e.[type_id]) as [type]
+	select distinct e.id_element, e.name, (select type from ElementTypes et where et.id_elementType = e.[type_id]) as [type]
 	from Users_Roles ur inner join Roles_Permissions rp on rp.role_id = ur.role_id
 	inner join Roles_Permissions_Elements rpe on rp.id_role_permission= rpe.role_permission_id
 	left outer join Elements e on e.id_element = rpe.element_id
-	where ur.[user_id] = 59 and rpe.isEnabled = 0
+	where ur.[user_id] = @user_id and rpe.isEnabled = @isEnabled
 end
 go

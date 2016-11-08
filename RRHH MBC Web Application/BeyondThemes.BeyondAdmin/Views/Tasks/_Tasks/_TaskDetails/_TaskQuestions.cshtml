@@ -56,7 +56,7 @@
             @Html.TextBoxFor(model => question, new { @class = "form-control", @type = "text", form=id_form })
         </td>
         <td>
-            @Html.DropDownListFor(model => questionType_id, _QuestionTypesSelect, new { @class = "", @form=id_form })
+            @Html.DropDownListFor(model => questionType_id, _QuestionTypesSelect, new { @class = "", @form=id_form, @onchange = "onQuestionTypeChanged(this)"})
             @if (questionType_id == "3")
             {
                 @Html.DropDownListFor(model => attribute_id, _AttributesSelect, new { @class = "", @form = id_form})
