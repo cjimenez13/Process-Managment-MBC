@@ -97,13 +97,22 @@ begin try
 		declare cursor_stages cursor forward_only fast_forward
 		for select s.name, @processManagment_id, s.stagePosition, s.id_stage from Stage s where s.processManagment_id = @template_id order by s.stagePosition
 		declare @stage_name nvarchar(100), @stage_processManagment_id bigint, @stage_stagePosition int, @stage_id bigint, @oldStage_id bigint;
-		declare @isFirst bit = 0
+		declare @isFirstTask bit = 0, @isFirstStage bit = 0
 		declare @lastFinishDate datetime = GETDATE(), @lastStartDate datetime 
 		open cursor_stages
 		fetch next from cursor_stages into @stage_name, @stage_processManagment_id, @stage_stagePosition, @oldStage_id
 		while @@FETCH_STATUS = 0 
 		begin
+			if (@isFirstStage = 0)
+			begin
+			insert into Stage(name, processManagment_id, stagePosition, createdBy, createdDate, startDate) values (@stage_name, @stage_processManagment_id, @stage_stagePosition, @userLog, GETDATE(), GETDATE())
+			set @isFirstStage = 1
+			end
+			else
+			begin 
 			insert into Stage(name, processManagment_id, stagePosition, createdBy, createdDate) values (@stage_name, @stage_processManagment_id, @stage_stagePosition, @userLog, GETDATE())
+			end
+
 			set @stage_id = (select SCOPE_IDENTITY())
 			------ Tasks
 			declare cursor_tasks cursor forward_only fast_forward
@@ -117,11 +126,11 @@ begin try
 				declare @id_task bigint, @id_taskForm bigint
 				set @lastStartDate = @lastFinishDate
 				set @lastFinishDate = DATEADD(hour, @task_hoursAvailable, (DATEADD(day, @task_daysAvailable, @lastFinishDate)));
-				if (@isFirst = 0)
+				if (@isFirstTask = 0)
 				begin
 				insert into Task (stage_id, name, [description], [type_id], taskState_id, completedDate, createdBy, finishDate, taskPosition, createdDate, beginDate, daysAvailable, hoursAvailable)
 				values (@stage_id, @task_name, @task_description, @task_type_id, 1, null, @userLog, @lastFinishDate, @taskPosition, GETDATE(), @lastStartDate, @task_daysAvailable, @task_hoursAvailable) 
-				set @isFirst = 1
+				set @isFirstTask = 1
 				end
 				else
 				begin

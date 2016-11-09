@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using Model;
 using System.Web;
 using System.Text;
+using System.Data;
 
 namespace BeyondThemes.BeyondAdmin.Controllers
 {
@@ -746,7 +747,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     {
                         questionAnswer.responseData = Encoding.UTF8.GetBytes(answers[iQuestion]);
                     }
-                    if (taskProvider.postQuestionAnswer(questionAnswer).Result)
+                    if (!taskProvider.postQuestionAnswer(questionAnswer).Result)
                     {
                         isFormAnswered = false;
                     }
@@ -816,7 +817,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     break;
                 }
             }
-            //update stage if is final task
+            //update actual stage if is final task
             if (nextTask.id_task == null)
             {
                 // completes actual stage
@@ -828,7 +829,7 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 actualStage.userLog = Request.Cookies["user_id"].Value;
                 actualStage.processManagment_id = processManagmentProvider.getStage(actualStage.id_stage).Result.processManagment_id;
                 bool isStageUpdated = processManagmentProvider.putStage(actualStage).Result;
-                // change state of first task 
+                bool isFirstTaskSuccess = false;
                 List<StageDTO> stages = processManagmentProvider.getStages(actualStage.processManagment_id).Result;
                 foreach (var stage in stages)
                 {
@@ -837,15 +838,17 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                         List<TaskDTO> stageTasks = taskProvider.getTasks(stage.id_stage).Result;
                         if (stageTasks.Count >= 1)
                         {
+                            // change state of first task on next stage
                             TaskDTO firstTask = new TaskDTO();
                             firstTask.taskState_id = "1";
                             firstTask.id_task = stageTasks[0].id_task;
                             firstTask.userLog = Request.Cookies["user_id"].Value;
-                            bool isFirstTaskSuccess = taskProvider.putTask(firstTask).Result;
+                            isFirstTaskSuccess = taskProvider.putTask(firstTask).Result;
                             break;
                         }
                         else
                         {
+                            // completes next stage
                             StageDTO emtpyStage = new StageDTO();
                             emtpyStage.id_stage = stage.id_stage;
                             emtpyStage.isCompleted = "True";
@@ -853,8 +856,17 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                             emtpyStage.userLog = Request.Cookies["user_id"].Value;
                             bool isEmptyStageUpdated = processManagmentProvider.putStage(actualStage).Result;
                         }
-
                     }
+                }
+                // completes process
+                if (!isFirstTaskSuccess)
+                {
+                    ProcessProvider processProvider = new ProcessProvider();
+                    ProcessDTO editedProcess = new ProcessDTO();
+                    editedProcess.id_processManagment = actualProcess.id_processManagment;
+                    editedProcess.state_id = "2";
+                    editedProcess.userLog = Request.Cookies["user_id"].Value;
+                    bool isProcessEdited = processProvider.putProcess(editedProcess).Result;
                 }
             }
             //update next task if is not final task
@@ -909,6 +921,30 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                     taskNotificationType.type_id = "0";
                 }
                 bool isTypeUpdated = taskProvider.putTaskNotificationType(taskNotificationType).Result;
+            }
+            // apply changes
+            List<TaskChangeDTO> changes = taskProvider.getTaskChanges(id_task).Result;
+            List<OperationTypeDTO> operations = taskProvider.getOperationTypes().Result;
+            foreach(var change in changes)
+            {
+                string operatorString = "";
+                foreach(var operation in operations)
+                {
+                    if (operation.id_operationType == change.operation_id)
+                        operatorString = operation.operation;
+                }
+                if (String.IsNullOrEmpty(change.attributeList_id))
+                {
+                    GeneralAttributeDTO attribute = new CategorieProvider().getGeneralAttribute(change.attribute_id).Result;
+                    GeneralAttributeDTO editAttribute = new GeneralAttributeDTO();
+                    editAttribute.id_attribute = change.attribute_id;
+                    editAttribute.value = change.value;
+                    DataTable dt = new DataTable();
+                    var v = dt.Compute(attribute.value + operatorString + change.value,"");
+                    //var v = dt.Compute("3 * (2+4)","");
+                    change.operation_id
+                }
+
             }
         }
     }

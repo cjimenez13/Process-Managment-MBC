@@ -86,60 +86,116 @@
                 string task_createdBy = task.createdBy;
                 List<DataTransferObjects.TaskResponsableDTO> responsables = new BeyondThemes.BeyondAdmin.Providers.TaskProvider().getTaskResponsables(task.id_task).Result;
                 DataTransferObjects.TaskTypeDTO task_type = new BeyondThemes.BeyondAdmin.Providers.TaskProvider().getTaskType(task.type_id).Result;
-                <li class="timeline-inverted">
-                    <div class="timeline-datetime">
-                        <span class="timeline-time">
-                            6:08
-                        </span><span class="timeline-date">Ayer</span>
-                    </div>
-                    <div class="timeline-badge sky">
-                        @if (responsables.Count > 0)
-                        {
-                            <img src="data:Image/png;base64,@responsables[0].photoData" class="badge-picture" />
-                        }
-                    </div>
-                    <div class="timeline-panel">
-                        <div class="timeline-header bordered-bottom bordered-blue">
-                            <span class="timeline-title">
-                                La tarea <a href="/Tasks/@task.id_task">@task.name</a> ha sido completada por 
-                                @{
-                                    bool isFirstResponsable = true;
-                                }
-                                @foreach (var user in responsables)
-                                {
-                                    if (!isFirstResponsable)
-                                    {
-                                        @:,
+                if (task.taskState_id == "2")
+                {
+                    <li class="timeline-inverted">
+                        <div class="timeline-datetime">
+                            <span class="timeline-time">
+                                6:08
+                            </span><span class="timeline-date">Ayer</span>
+                        </div>
+                        <div class="timeline-badge sky">
+                            @if (responsables.Count > 0)
+                            {
+                                <img src="data:Image/png;base64,@responsables[0].photoData" class="badge-picture" />
+                            }
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-header bordered-bottom bordered-blue">
+                                <span class="timeline-title">
+                                    La tarea <a href="/Tasks/@task.id_task">@task.name</a> ha sido completada por
+                                    @{
+                                        bool isFirstResponsable = true;
                                     }
-                                    string defaultUser = user.email != "" ? user.email : user.userName;
-                                    string responsableName = user.name + " " + user.fLastName + " " + user.sLastName;
-                                    isFirstResponsable = false;
-                                    <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">@responsableName</a>
-                                    
-                                }
-                            </span>
-                            <p class="timeline-datetime">
-                                <small class="text-muted">
-                                    <i class="glyphicon glyphicon-time">
-                                    </i>
-                                    <span class="timeline-date">Ayer</span>
-                                    -
-                                    <span class="timeline-time">6:08</span>
-                                </small>
-                            </p>
+                                    @foreach (var user in responsables)
+                                    {
+                                        if (!isFirstResponsable)
+                                        {
+                                            @:,
+                                    }
+                                        string defaultUser = user.email != "" ? user.email : user.userName;
+                                        string responsableName = user.name + " " + user.fLastName + " " + user.sLastName;
+                                        isFirstResponsable = false;
+                                        <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">@responsableName</a>
+
+                                    }
+                                </span>
+                                <p class="timeline-datetime">
+                                    <small class="text-muted">
+                                        <i class="glyphicon glyphicon-time">
+                                        </i>
+                                        <span class="timeline-date">Ayer</span>
+                                        -
+                                        <span class="timeline-time">6:08</span>
+                                    </small>
+                                </p>
+                            </div>
+                            <div class="timeline-body">
+                                <p>
+                                    Descripcion: @task.description<br>
+                                    Tipo: @task_type.taskName
+                                </p>
+                            </div>
                         </div>
-                        <div class="timeline-body">
-                            <p>
-                                Descripcion: @task.description<br>
-                                Tipo: @task_type.taskName
-                            </p>
+                    </li>
+                    }
+                if (task.taskState_id == "1")
+                {
+                    <li class="timeline-inverted">
+                        <div class="timeline-datetime">
+                            <span class="timeline-time">
+                                6:08
+                            </span><span class="timeline-date">Ayer</span>
                         </div>
-                    </div>
-                </li>
+                        <div class="timeline-badge sky">
+                            @if (responsables.Count > 0)
+                            {
+                                <img src="data:Image/png;base64,@responsables[0].photoData" class="badge-picture" />
+                            }
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-header bordered-bottom bordered-blue">
+                                <span class="timeline-title">
+                                    La tarea <a href="/Tasks/@task.id_task">@task.name</a> se encuentra en progreso, los responsables son:
+                                    @{
+                                        bool isFirstResponsable = true;
+                                    }
+                                    @foreach (var user in responsables)
+                                    {
+                                        if (!isFirstResponsable)
+                                        {
+                                            @:,
+                                    }
+                                        string defaultUser = user.email != "" ? user.email : user.userName;
+                                        string responsableName = user.name + " " + user.fLastName + " " + user.sLastName;
+                                        isFirstResponsable = false;
+                                        <a href="@Url.Action("Profile", "Users", new { id = defaultUser})">@responsableName</a>
+
+                                    }
+                                </span>
+                                <p class="timeline-datetime">
+                                    <small class="text-muted">
+                                        <i class="glyphicon glyphicon-time">
+                                        </i>
+                                        <span class="timeline-date">Ayer</span>
+                                        -
+                                        <span class="timeline-time">6:08</span>
+                                    </small>
+                                </p>
+                            </div>
+                            <div class="timeline-body">
+                                <p>
+                                    Descripcion: @task.description<br>
+                                    Tipo: @task_type.taskName
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    }
+                }
             }
         }
-    }
-    <li class="timeline-inverted">
+    @*<li class="timeline-inverted">
         <div class="timeline-datetime">
             <span class="timeline-time">
                 6:08
@@ -234,5 +290,5 @@
                 </p>
             </div>
         </div>
-    </li>
+    </li>*@
 </ul>

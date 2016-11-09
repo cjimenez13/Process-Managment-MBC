@@ -105,15 +105,39 @@ namespace BeyondThemes.BeyondAdmin.Controllers
                 processDTO.categorie_id = model.categorie_id;
                 processDTO.template_id = model.template_id;
                 processDTO.userLog = Request.Cookies["user_id"].Value;
+                
                 string id_process;
                 if ((id_process = processProvider.postProcess(processDTO).Result) != "-1")
                 {
+                    //update next and before process
                     BifurcateProcessDTO bifurcateProcessDTO = new BifurcateProcessDTO();
                     bifurcateProcessDTO.previousProcess = model.bifurcateProcess_id;
                     bifurcateProcessDTO.nextProcess = id_process;
                     bifurcateProcessDTO.userLog = Request.Cookies["user_id"].Value;
                     if (processProvider.bifurcateProcess(bifurcateProcessDTO).Result)
                     {
+                        // completes actual process
+                        ProcessDTO actualProcess = processProvider.getProcess(model.bifurcateProcess_id).Result;
+                        ProcessDTO editActualProcess = new ProcessDTO();
+                        editActualProcess.id_processManagment = actualProcess.id_processManagment;
+                        editActualProcess.state_id = "2";
+                        editActualProcess.userLog = Request.Cookies["user_id"].Value;
+                        bool isProcessEdited = processProvider.putProcess(editActualProcess).Result;
+                        //completes cancel next tasks   
+                        foreach (var stage in processProvider.getStages(actualProcess.id_processManagment).Result)
+                        {
+                            foreach(var task in new TaskProvider().getTasks(stage.id_stage).Result)
+                            {
+                                TaskDTO editTask = new TaskDTO();
+                                editTask.id_task = task.id_task;
+                                editTask.taskState_id = (task.taskState_id != "2")? "3":"2";
+                                editTask.userLog = Request.Cookies["user_id"].Value;
+                                if (editTask.taskState_id == "3")
+                                {
+                                    bool isTaskEdited = new TaskProvider().putTask(editTask).Result;
+                                }
+                            }
+                        }
                         return new HttpStatusCodeResult(200);
                     }
                 }

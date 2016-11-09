@@ -55,7 +55,7 @@
                                     <th>Pregunta</th>
                                     <th>Tipo</th>
                                     <th>Requerido</th>
-                                    <th>Datos</th>
+                                    @*<th>Datos</th>*@
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -90,13 +90,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="width:5%">
+                                    @*<td style="width:5%">
                                         <button class="btn btn-sky btn-sm" style="margin-right:10px" type="button" data-toggle="tooltip" data-placement="top" title="Cambios en datos">
                                             <span class="fa fa-cog"></span>
                                         </button>
-                                    </td>
+                                    </td>*@
                                     <td style="width:5%">
-                                        <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Agregar" , form="form-addTaskQuestion">
+                                        <button class="btn btn-success btn-sm" style="margin-left:2rem" type="submit" data-toggle="tooltip" data-placement="top" title="Agregar" , form="form-addTaskQuestion" @isDisabled>
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     </td>
